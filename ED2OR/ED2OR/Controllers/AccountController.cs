@@ -15,7 +15,7 @@ using System.Net.Mail;
 namespace ED2OR.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -60,7 +60,6 @@ namespace ED2OR.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            var db = new ApplicationDbContext();
             if (!db.Users.Any())
             {
                 return RedirectToAction("Register");
@@ -101,7 +100,6 @@ namespace ED2OR.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var db = new ApplicationDbContext();
             if (db.Users.Any())
             {
                 return RedirectToAction("Login");

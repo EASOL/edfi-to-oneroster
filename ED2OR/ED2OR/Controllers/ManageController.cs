@@ -11,7 +11,7 @@ using ED2OR.Models;
 namespace ED2OR.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
