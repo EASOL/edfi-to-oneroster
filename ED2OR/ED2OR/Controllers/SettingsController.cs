@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ED2OR.ViewModels;
@@ -37,7 +35,7 @@ namespace ED2OR.Controllers
 
         public ActionResult Index()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = UserManager.FindById(UserId);
 
             var model = new SettingsViewModel
             {
@@ -52,9 +50,6 @@ namespace ED2OR.Controllers
         [HttpPost]
         public ActionResult TestConnection(string apiBaseUrl, string apiKey, string apiSecret)
         {
-            //apiBaseUrl = "http://api21b.easol.betaspaces.com/";
-            //apiKey = "1BW3WaqcFv8f";
-            //apiSecret = "1QZiYjEkUK8VhOxbVvwwnsAt";
             var tokenResult = GetToken(apiBaseUrl, apiKey, apiSecret);
             return Json(tokenResult, JsonRequestBehavior.AllowGet);
         }
@@ -74,11 +69,15 @@ namespace ED2OR.Controllers
                     ModelState.AddModelError("", "The new password and confirmation password do not match");
                     return View(model);
                 }
-                var result = UserManager.ChangePassword(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                var result = UserManager.ChangePassword(UserId, model.OldPassword, model.NewPassword);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", result.Errors.ToList()[0]);
+                    return View(model);
+                }
             }
 
-            var userId = User.Identity.GetUserId();
-            var user = db.Users.FirstOrDefault(x => x.Id == userId);
+            var user = db.Users.FirstOrDefault(x => x.Id == UserId);
             user.ApiBaseUrl = model.ApiBaseUrl;
             user.ApiKey = model.ApiKey;
             user.ApiSecret = model.ApiSecret;

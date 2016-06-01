@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNet.Identity;
+using ED2OR.Enums;
 
 namespace ED2OR.Controllers
 {
@@ -17,25 +18,28 @@ namespace ED2OR.Controllers
     {
         protected readonly ApplicationDbContext db = new ApplicationDbContext();
 
+        protected string UserId
+        {
+            get
+            {
+                return User.Identity.GetUserId();
+            }
+        }
+
+        //public async Task<ApiCallViewModel> GetToken()
         public ApiCallViewModel GetToken()
         {
-            var userId = User.Identity.GetUserId();
-            var user = db.Users.FirstOrDefault(x => x.Id == userId);
-
+            var user = db.Users.FirstOrDefault(x => x.Id == UserId);
             return GetToken(user.ApiBaseUrl, user.ApiKey, user.ApiSecret);
         }
 
-        //public async Task<bool> TestConnection()
-        //public async Task<List<Student>> GetStudents(string schoolId)
         public ApiCallViewModel GetToken(string apiBaseUrl, string apiKey, string apiSecret)
         {
-            var callResult = new ApiCallViewModel();
-
             using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
             {
                 try
                 {
-                    var authorizeResult = client.PostAsync("oauth/authorize",
+                    var authorizeResult = client.PostAsync(ApiEndPoints.OauthAuthorize,
                     new FormUrlEncodedContent(new[]
                     {
                             new KeyValuePair<string,string>("Client_id",apiKey),
@@ -43,15 +47,19 @@ namespace ED2OR.Controllers
                     })).Result;
                     var codeJson = authorizeResult.Content.ReadAsStringAsync().Result;
 
+                    if (!authorizeResult.IsSuccessStatusCode)
+                    {
+                        return GetApiCallViewModel(false, "Request returned \"" + authorizeResult.ReasonPhrase + "\"", "");
+                    }
+
                     if (JObject.Parse(codeJson)["error"] != null)
                     {
-                        callResult.IsSuccessful = false;
-                        callResult.ErrorMessage = JObject.Parse(codeJson)["error"].ToString();
-                        return callResult;
+                        return GetApiCallViewModel(false, JObject.Parse(codeJson)["error"].ToString(), "");
                     }
+
                     var code = JObject.Parse(codeJson)["code"].ToString();
 
-                    var tokenRequestResult = client.PostAsync("oauth/token",
+                    var tokenRequestResult = client.PostAsync(ApiEndPoints.OauthGetToken,
                         new FormUrlEncodedContent(new[]
                         {
                         new KeyValuePair<string,string>("Client_id",apiKey),
@@ -63,22 +71,26 @@ namespace ED2OR.Controllers
 
                     if (JObject.Parse(tokenJson)["error"] != null)
                     {
-                        callResult.IsSuccessful = false;
-                        callResult.ErrorMessage = JObject.Parse(tokenJson)["error"].ToString();
-                        return callResult;
+                        return GetApiCallViewModel(false, JObject.Parse(tokenJson)["error"].ToString(), "");
                     }
 
-                    callResult.IsSuccessful = true;
-                    callResult.Token = JObject.Parse(tokenJson)["access_token"].ToString();
-                    return callResult;
+                    return GetApiCallViewModel(true, "", JObject.Parse(tokenJson)["access_token"].ToString());
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    callResult.IsSuccessful = false;
-                    callResult.ErrorMessage = ex.InnerException.InnerException.Message;
-                    return callResult;
+                    return GetApiCallViewModel(false, ex.InnerException.InnerException.Message, "");
                 }
             }
+        }
+
+        private ApiCallViewModel GetApiCallViewModel(bool isSuccessful, string errorMsg, string token)
+        {
+            return new ApiCallViewModel
+            {
+                IsSuccessful = isSuccessful,
+                ErrorMessage = errorMsg,
+                Token = token
+            };
         }
     }
 }

@@ -4,6 +4,17 @@
     ViewBag.Title = "Settings";
 }
 
+<style>
+    .connectionFailed {
+        font-weight: bold;
+        color: darkred;
+    }
+    .connectionSuccessful {
+        font-weight: bold;
+        color: darkgreen;
+    }
+</style>
+
 <h3>@ViewBag.Title</h3>
 
 @using (Html.BeginForm("Index", "Settings", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -70,6 +81,8 @@
 
     <script>
         function testConnection() {
+            $("#testConnectionResult").hide();
+
             var apiBaseUrl = $("#@Html.IdFor(m => m.ApiBaseUrl)").val();
             var apiKey = $("#@Html.IdFor(m => m.ApiKey)").val();
             var apiSecret = $("#@Html.IdFor(m => m.ApiSecret)").val();
@@ -80,24 +93,17 @@
                 data: { apiBaseUrl: apiBaseUrl, apiKey: apiKey, apiSecret: apiSecret },
                 success: function (result) {
                     if (result["IsSuccessful"]) {
-                        $("#testConnectionResult").text("Connection Successful");
+                        $("#testConnectionResult").text("Connection Successful").removeClass("connectionFailed").addClass("connectionSuccessful");
                     }
                     else {
                         var errorMsg = result["ErrorMessage"];
-                        $("#testConnectionResult").text("Connection Failed: " + errorMsg);
+                        $("#testConnectionResult").text("Connection Failed: " + errorMsg).removeClass("connectionSuccessful").addClass("connectionFailed");
                     }
+                    $("#testConnectionResult").show();
                 },
                 error: function () {
                 }
             });
-
-
-
-            //contentType: 'application/json; charset=UTF-8',
-            //dataType: 'json',
-            //jsonp: false,
-            //timeout: 300000,
-            //cache: false,
         }
     </script>
 }
