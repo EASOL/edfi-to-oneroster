@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 
 namespace ED2OR.Models
 {
@@ -9,9 +10,7 @@ namespace ED2OR.Models
         {
         }
 
-        //        public DbSet<MyObject> MyObjects { get; set; }
-
-
+        public DbSet<Template> Templates { get; set; }
 
         public static ApplicationDbContext Create()
         {

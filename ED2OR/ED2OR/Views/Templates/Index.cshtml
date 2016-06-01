@@ -1,0 +1,34 @@
+﻿@model List<ED2OR.ViewModels.TemplateViewModel>
+@{
+    ViewBag.Title = "Templates";
+}
+
+<h3>@ViewBag.Title</h3>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+@*<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>*@
+@*<div style="container"></div>*@
+
+<table class="table">
+    <tr>
+        <th>Template Name</th>
+        <th>Vendor</th>
+        <th>Access URL</th>
+        <th>Access Token</th>
+        <th># of Downloads</th>
+        <th>Last Access</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var template in Model)
+    {
+        var tokenText = string.IsNullOrEmpty(template.AccessToken) ? "Assign Token" : "Revoke Token";
+        <tr>
+            <td>@template.TemplateName</td>
+            <td>@template.VendorName</td>
+            <td>@template.AccessUrl</td>
+            <td>@template.AccessToken</td>
+            <td>@template.NumberOfDownloads</td>
+            <td>@template.LastAccess</td>
+            <td>Preview | Download | View Log | Clone | Edit | @Html.ActionLink(tokenText, "AssignToken", new { templateId = template.TemplateId })</td>
+        </tr>
+    }
+</table>
