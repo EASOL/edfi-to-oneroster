@@ -6,9 +6,14 @@ using System.Web.Mvc;
 
 namespace ED2OR.Controllers
 {
-    public class ExportsController : BaseController
+    public class ExportController : BaseController
     {
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Index(string id)
         {
             return View();
         }

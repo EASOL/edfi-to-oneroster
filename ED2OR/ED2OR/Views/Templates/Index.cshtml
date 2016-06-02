@@ -5,6 +5,8 @@
 
 <h3>@ViewBag.Title</h3>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link href="~/Content/jquery.modal.min.css" rel="stylesheet" />
+
 @*<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>*@
 @*<div style="container"></div>*@
 
@@ -28,7 +30,104 @@
             <td>@template.AccessToken</td>
             <td>@template.NumberOfDownloads</td>
             <td>@template.LastAccess</td>
-            <td>Preview | Download | View Log | Clone | Edit | @Html.ActionLink(tokenText, "AssignToken", new { templateId = template.TemplateId })</td>
+            <td>
+                Preview | 
+                Download | 
+                View Log | 
+                <a href="javascript:openCloneWindow(@template.TemplateId);">Clone</a> |
+                <a href="javascript:openEditWindow(@template.TemplateId);">Edit</a> | 
+                <a href="@Url.Action("Delete", new { templateId = template.TemplateId })">Delete</a> |
+                @Html.ActionLink(tokenText, "AssignToken", new { templateId = template.TemplateId })
+            </td>
         </tr>
     }
 </table>
+
+<a href="@Url.Action("Index", "Export")" class="btn btn-default">Create New Template</a>
+
+
+@*@using (Html.BeginForm("Edit", "Index", FormMethod.Post))
+{*@
+    <div id="editWindow" style="display:none;">
+        <input type="hidden" id="editTemplateId" />
+
+        <h4 align="center" id="modalHeader"></h4>
+
+        <div class="form-group">
+            <label class="col-md-6 control-label">Template Name:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="editTemplateName" />
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            <label class="col-md-6 control-label">Vendor Name:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="editTemplateVendorName" />
+            </div>
+        </div>
+        <br />
+        <br />
+        <div style="text-align:center;">
+            <button type="button" class="btn btn-default" id="cloneSave" onclick="cloneTemplate()">Save</button>
+            <button type="button" class="btn btn-default" id="editSave" onclick="editTemplate()">Save</button>
+            <a href="#" class="btn btn-default" rel="modal:close">Cancel</a>
+        </div>
+    </div>
+@* } *@
+
+
+@section scripts{
+<script src="~/Scripts/jquery.modal.min.js"></script>
+  <script>
+      function openEditWindow(templateId) {
+          $("#editTemplateId").val(templateId);
+          $("#cloneSave").hide();
+          $("#editSave").show();
+          $("#modalHeader").text("Edit Template");
+          
+          
+          $("#editWindow").modal({
+              showClose: false
+          });
+      }
+
+      function openCloneWindow(templateId) {
+          $("#editTemplateId").val(templateId);
+          $("#editSave").hide();
+          $("#cloneSave").show();
+          $("#modalHeader").text("Clone Template");
+
+          $("#editWindow").modal({
+              showClose: false
+          });
+      }
+
+      function editTemplate() {
+          var editTemplateId = $("#editTemplateId").val();
+          var editTemplateName = $("#editTemplateName").val();
+          var editTemplateVendorName = $("#editTemplateVendorName").val();
+
+          var url = "@Url.Action("Edit")";
+          url += "?templateId=" + editTemplateId;
+          url += "&templateName=" + editTemplateName;
+          url += "&vendorName=" + editTemplateVendorName;
+
+          window.location.href = url;
+      }
+
+      function cloneTemplate() {
+          var editTemplateId = $("#editTemplateId").val();
+          var editTemplateName = $("#editTemplateName").val();
+          var editTemplateVendorName = $("#editTemplateVendorName").val();
+
+          var url = "@Url.Action("Clone")";
+          url += "?templateId=" + editTemplateId;
+          url += "&templateName=" + editTemplateName;
+          url += "&vendorName=" + editTemplateVendorName;
+
+          window.location.href = url;
+      }
+    </script>   
+}
