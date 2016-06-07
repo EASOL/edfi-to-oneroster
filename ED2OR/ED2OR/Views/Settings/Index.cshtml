@@ -1,0 +1,109 @@
+﻿@model ED2OR.ViewModels.SettingsViewModel
+
+@{
+    ViewBag.Title = "Settings";
+}
+
+<style>
+    .connectionFailed {
+        font-weight: bold;
+        color: darkred;
+    }
+    .connectionSuccessful {
+        font-weight: bold;
+        color: darkgreen;
+    }
+</style>
+
+<h3>@ViewBag.Title</h3>
+
+@using (Html.BeginForm("Index", "Settings", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.OldPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.NewPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApiBaseUrl, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.ApiBaseUrl, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApiKey, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.ApiKey, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApiSecret, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.ApiSecret, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Test Connection" onclick="testConnection()"class="btn btn-default" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <span id="testConnectionResult"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function testConnection() {
+            $("#testConnectionResult").hide();
+
+            var apiBaseUrl = $("#@Html.IdFor(m => m.ApiBaseUrl)").val();
+            var apiKey = $("#@Html.IdFor(m => m.ApiKey)").val();
+            var apiSecret = $("#@Html.IdFor(m => m.ApiSecret)").val();
+
+            $.ajax({
+                url: '@Url.Action("TestConnection")',
+                type: 'POST',
+                data: { apiBaseUrl: apiBaseUrl, apiKey: apiKey, apiSecret: apiSecret },
+                success: function (result) {
+                    if (result["IsSuccessful"]) {
+                        $("#testConnectionResult").text("Connection Successful").removeClass("connectionFailed").addClass("connectionSuccessful");
+                    }
+                    else {
+                        var errorMsg = result["ErrorMessage"];
+                        $("#testConnectionResult").text("Connection Failed: " + errorMsg).removeClass("connectionSuccessful").addClass("connectionFailed");
+                    }
+                    $("#testConnectionResult").show();
+                },
+                error: function () {
+                }
+            });
+        }
+    </script>
+}
