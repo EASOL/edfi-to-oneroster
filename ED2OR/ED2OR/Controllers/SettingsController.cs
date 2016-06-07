@@ -7,7 +7,6 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace ED2OR.Controllers
 {
-    [Authorize]
     public class SettingsController : BaseController
     {
         private ApplicationUserManager _userManager;

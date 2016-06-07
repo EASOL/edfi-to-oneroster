@@ -6,7 +6,6 @@ using System.Web.Mvc;
 
 namespace ED2OR.Controllers
 {
-    [Authorize]
     public class HomeController : BaseController
     {
         public ActionResult Index()

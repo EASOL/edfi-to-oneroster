@@ -1,7 +1,87 @@
-﻿
+﻿@model ED2OR.ViewModels.ExportsViewModel
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Exports";
 }
 
-<h2>Index</h2>
+<style>
+    .accordionHeader {
+        width:100%;
+    }
+</style>
 
+<h3>@ViewBag.Title</h3>
+
+@*http://v4-alpha.getbootstrap.com/components/collapse/*@
+
+@using (Html.BeginForm())
+{
+    <div id="criteriaContainer">
+        @Html.EditorFor(x => x.CriteriaSections)
+        <input type="submit" value="OK" />
+    </div>
+    
+
+    @*<div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#schools">
+        Schools
+    </div>
+    <div class="collapse.in" id="schools">
+        <a href="javascript:deselectAll('schools');">(deselect all)</a><br />
+        @Html.EditorFor(x => x.SchoolsCheckboxes)
+    </div>
+    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#subjects">
+        Subjects
+    </div>
+    <div class="collapse" id="subjects">
+        @Html.EditorFor(x => x.SubjectsCheckboxes)
+    </div>
+    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#courses">
+        Courses
+    </div>
+    <div class="collapse" id="courses">
+        @Html.EditorFor(x => x.CoursesCheckboxes)
+    </div>
+    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#sections">
+        Sections
+    </div>
+    <div class="collapse" id="sections">
+        @Html.EditorFor(x => x.SectionsCheckboxes)
+    </div>
+    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#teachers">
+        Teachers
+    </div>
+    <div class="collapse" id="teachers">
+        @Html.EditorFor(x => x.TeachersCheckboxes)
+    </div>*@
+}
+
+
+
+@section scripts{
+        <script>
+            function deselectAll(divId) {
+                $("#" + divId).find("input:checkbox").removeAttr("checked");
+                $("#numSelected_" + divId).text("(0 selected)");
+                checkboxRecount(divId);
+            }
+            
+            function checkboxRecount(divId) {
+                var numCheckedBoxes = $("#" + divId).find("input:checkbox:checked").length;
+                var numTotalBoxes = $("#" + divId).find("input:checkbox").length;
+
+                var txt = numCheckedBoxes == numTotalBoxes ? "(all selected)" : "(" + numCheckedBoxes + " selected)"
+                $("#numSelected_" + divId).text(txt);
+            }
+
+            $('#criteriaContainer :checkbox').change(function () {
+                var parentDivId = $(this).closest("div").attr("id");
+                checkboxRecount(parentDivId);
+
+                //if ($(this).is(':checked')) {
+                //    console.log($(this).val() + ' is now checked');
+                //} else {
+                //    console.log($(this).val() + ' is now unchecked');
+                //}
+            });
+        </script>
+    }
