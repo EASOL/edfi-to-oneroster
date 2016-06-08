@@ -75,7 +75,18 @@
 
             $('#criteriaContainer :checkbox').change(function () {
                 var parentDivId = $(this).closest("div").attr("id");
+
+                //if parentdiv == schools
+                //get selected schoolIds
+                //get container.checkboxes where custompropertyschoolid not in schoolIds
+                //uncheck them
+                //hide them
+                //get container.checkboxes where custompropertyschoolid in schoolIds
+                //show them
+                //checkboxrecount
+
                 checkboxRecount(parentDivId);
+
 
                 //if ($(this).is(':checked')) {
                 //    console.log($(this).val() + ' is now checked');
@@ -83,5 +94,6 @@
                 //    console.log($(this).val() + ' is now unchecked');
                 //}
             });
+
         </script>
     }

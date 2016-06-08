@@ -206,6 +206,7 @@
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ApiCallViewModel.cs" />
     <Compile Include="ViewModels\ExportsViewModel.cs" />
+    <Compile Include="ViewModels\SchoolViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
   </ItemGroup>

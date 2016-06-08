@@ -4,20 +4,37 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ED2OR.ViewModels;
+using System.Threading.Tasks;
+using System.Net.Http;
+using ED2OR.Enums;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 namespace ED2OR.Controllers
 {
     public class ExportsController : BaseController
     {
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+
+            var schools = await GetSchools();
+            //if (schools != null)
+            var schoolsCbs = (from s in schools
+                                select new ExportsCheckbox
+                                {
+                                    Id = s.id,
+                                    SchoolId = s.schoolId,
+                                    Text = s.nameOfInstitution,
+                                    Visible = true
+                                }).ToList();
+
             var model = new ExportsViewModel();
 
             model.CriteriaSections = new List<ApiCriteriaSection>
             {
                 new ApiCriteriaSection
                 {
-                    FilterCheckboxes = GenerateCbList(),
+                    FilterCheckboxes = schoolsCbs,
                     SectionName = "Schools",
                     Level = 1
                 },
@@ -56,23 +73,54 @@ namespace ED2OR.Controllers
                 {
                     new ExportsCheckbox
                     {
-                        Id = 1,
+                        Id = "a",
                         Selected = true,
                         Text = "abc"
                     },
                      new ExportsCheckbox
                     {
-                        Id = 2,
+                        Id = "b",
                         Selected = false,
                         Text = "def"
                     },
                       new ExportsCheckbox
                     {
-                        Id = 3,
+                        Id = "c",
                         Selected = true,
                         Text = "ghi"
                     }
                 };
+        }
+
+        public async Task<List<SchoolViewModel>> GetSchools()
+        {
+            var tokenModel = GetToken();
+            if (!tokenModel.IsSuccessful)
+            {
+                return null;
+            }
+
+            var token = tokenModel.Token;
+            var apiBaseUrl = db.Users.FirstOrDefault(x => x.Id == UserId).ApiBaseUrl;
+
+            using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
+            {
+                client.DefaultRequestHeaders.Authorization =
+                       new AuthenticationHeaderValue("Bearer", token);
+
+                var schoolsResponse = await client.GetAsync(ApiEndPoints.ApiPrefix + ApiEndPoints.Schools);
+                var schoolsJson = await schoolsResponse.Content.ReadAsStringAsync();
+                var schoolsArray = JArray.Parse(schoolsJson);
+
+                var schools = (from s in schoolsArray
+                                select new SchoolViewModel
+                                {
+                                    id = (string)s["id"],
+                                    schoolId = (string)s["schoolId"],
+                                    nameOfInstitution = (string)s["nameOfInstitution"]
+                                }).ToList();
+                return schools;
+            }
         }
 
         [HttpPost]
