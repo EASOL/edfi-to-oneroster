@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ED2OR.ViewModels;
 using ED2OR.Models;
+using ED2OR.Enums;
 
 namespace ED2OR.Controllers
 {
@@ -31,9 +32,7 @@ namespace ED2OR.Controllers
             var template = db.Templates.FirstOrDefault(x => x.TemplateId == templateId);
             if (string.IsNullOrEmpty(template.AccessUrl))
             {
-                var urlHelper = new UrlHelper(this.ControllerContext.RequestContext);
-                string url = urlHelper.Action("Index", "Export", new { }, Request.Url.Scheme);
-                template.AccessUrl = url + "/" + Guid.NewGuid().ToString();
+                template.AccessUrl = Guid.NewGuid().ToString();
             }
             template.AccessToken = Guid.NewGuid().ToString();
             db.SaveChanges();

@@ -15,6 +15,12 @@ apiBaseUrl = "http://api21b.easol.betaspaces.com/";
 apiKey = "1BW3WaqcFv8f";
 apiSecret = "1QZiYjEkUK8VhOxbVvwwnsAt";
 
+apiBaseUrl = "http://api.ef2or.learningtapestry.com/";
+apiKey = "5AecoikxPt93";
+apiSecret = "x0ufijMP3g1LsuRjwZ7n2fS9";
+
+
+
 curl http://api21b.easol.betaspaces.com/oauth/authorize  -d "Client_id=1BW3WaqcFv8f&Response_type=code"
 curl http://api21b.easol.betaspaces.com/oauth/token -H "Content-Type: application/json" -d "{'Client_id':'1BW3WaqcFv8f','Client_secret':'1QZiYjEkUK8VhOxbVvwwnsAt','Code':'bd44176100ea49c4be341bfc47dfdd1f','Grant_type':'authorization_code'}"
 curl http://api21b.easol.betaspaces.com/roster/localEducationAgencies/{LocalEducationAgency_Id}/schools
@@ -22,3 +28,4 @@ curl http://api21b.easol.betaspaces.com:80/api/v2.0/roster/localEducationAgencie
 curl http://api21b.easol.betaspaces.com:80/api/v2.0/roster/schools/{School_Id}/students  -H "Authorization: Bearer 6f0bba1bb9c349d4845b70717f40dbba"
 curl http://api21b.easol.betaspaces.com:80/api/v2.0/roster/schools/CEAA310E-2967-4CE2-9A15-8AD4F2D487A7/students  -H "Authorization: Bearer 6f0bba1bb9c349d4845b70717f40dbba"
 
+curl http://localhost:7429/Export/id=1717b649-e11b-42d7-89df-b1d1ed633040 -H "Token: 56693283-3243-42a0-a60e-32ec3ebb6b3e"

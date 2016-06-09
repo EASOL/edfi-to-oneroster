@@ -170,10 +170,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
+    <Compile Include="Controllers\ExportsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
+    <Compile Include="Enums\ActionTypes.cs" />
     <Compile Include="Enums\ApiEndPoints.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -190,14 +192,30 @@
     <Compile Include="Migrations\201606011916297_Templates.Designer.cs">
       <DependentUpon>201606011916297_Templates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606062111586_AuditLogs.cs" />
+    <Compile Include="Migrations\201606062111586_AuditLogs.Designer.cs">
+      <DependentUpon>201606062111586_AuditLogs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\AuditLog.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\ApiCalls.cs" />
+    <Compile Include="Utils\CsvMethods.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
-    <Compile Include="ViewModels\ApiCallViewModel.cs" />
+    <Compile Include="ViewModels\ApiResponse.cs" />
+    <Compile Include="ViewModels\CsvClasses.cs" />
+    <Compile Include="ViewModels\CsvEnrollments.cs" />
+    <Compile Include="ViewModels\CsvAcademicSessions.cs" />
+    <Compile Include="ViewModels\CsvCourses.cs" />
+    <Compile Include="ViewModels\CsvUsers.cs" />
+    <Compile Include="ViewModels\TokenViewModel.cs" />
+    <Compile Include="ViewModels\CsvOrgs.cs" />
+    <Compile Include="ViewModels\ExportsViewModel.cs" />
+    <Compile Include="ViewModels\SchoolViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
@@ -209,6 +227,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Migrations\SQL\201606062111586_AuditLogs.sql" />
     <Content Include="Migrations\SQL\201606011916297_Templates.sql" />
     <Content Include="Migrations\SQL\201605301855140_ExtendUserWithApiInfo.sql" />
     <Content Include="Migrations\SQL\201605301521119_InitialUserTables.sql" />
@@ -257,8 +276,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Templates\Index.cshtml" />
-    <Content Include="Views\Exports\Index.cshtml" />
     <Content Include="Views\Logs\Index.cshtml" />
+    <Content Include="Views\Exports\Index.cshtml" />
+    <Content Include="Views\Exports\EditorTemplates\ExportsCheckbox.cshtml" />
+    <Content Include="Views\Exports\EditorTemplates\ApiCriteriaSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -280,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606011916297_Templates.resx">
       <DependentUpon>201606011916297_Templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606062111586_AuditLogs.resx">
+      <DependentUpon>201606062111586_AuditLogs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

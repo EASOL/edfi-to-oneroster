@@ -2,12 +2,12 @@
 using System.Web;
 using System.Web.Mvc;
 using ED2OR.ViewModels;
+using ED2OR.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace ED2OR.Controllers
 {
-    [Authorize]
     public class SettingsController : BaseController
     {
         private ApplicationUserManager _userManager;
@@ -50,7 +50,7 @@ namespace ED2OR.Controllers
         [HttpPost]
         public ActionResult TestConnection(string apiBaseUrl, string apiKey, string apiSecret)
         {
-            var tokenResult = GetToken(apiBaseUrl, apiKey, apiSecret);
+            var tokenResult = ApiCalls.GetToken(apiBaseUrl, apiKey, apiSecret);
             return Json(tokenResult, JsonRequestBehavior.AllowGet);
         }
 

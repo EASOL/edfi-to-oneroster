@@ -14,7 +14,6 @@ using System.Net.Mail;
 
 namespace ED2OR.Controllers
 {
-    [Authorize]
     public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
