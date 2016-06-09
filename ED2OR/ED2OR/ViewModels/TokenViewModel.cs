@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ED2OR.ViewModels
+﻿namespace ED2OR.ViewModels
 {
-    public class ApiCallViewModel
+    public class TokenViewModel
     {
         public bool IsSuccessful { get; set; }
         public string ErrorMessage { get; set; }

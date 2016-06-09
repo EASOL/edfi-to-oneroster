@@ -9,6 +9,7 @@ using System.Net.Http;
 using ED2OR.Enums;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
+using ED2OR.Utils;
 
 namespace ED2OR.Controllers
 {
@@ -16,19 +17,21 @@ namespace ED2OR.Controllers
     {
         public async Task<ActionResult> Index()
         {
-
-            var schools = await GetSchools();
-            //if (schools != null)
-            var schoolsCbs = (from s in schools
-                                select new ExportsCheckbox
-                                {
-                                    Id = s.id,
-                                    SchoolId = s.schoolId,
-                                    Text = s.nameOfInstitution,
-                                    Visible = true
-                                }).ToList();
-
             var model = new ExportsViewModel();
+            var schools = await ApiCalls.GetSchools();
+            //if (schools != null)
+            //{
+
+            //}
+            var schoolsCbs = (from s in schools
+                            select new ExportsCheckbox
+                            {
+                                Id = s.id,
+                                SchoolId = s.schoolId,
+                                Text = s.nameOfInstitution,
+                                Visible = true
+                            }).ToList();
+
 
             model.CriteriaSections = new List<ApiCriteriaSection>
             {
@@ -92,36 +95,7 @@ namespace ED2OR.Controllers
                 };
         }
 
-        public async Task<List<SchoolViewModel>> GetSchools()
-        {
-            var tokenModel = GetToken();
-            if (!tokenModel.IsSuccessful)
-            {
-                return null;
-            }
-
-            var token = tokenModel.Token;
-            var apiBaseUrl = db.Users.FirstOrDefault(x => x.Id == UserId).ApiBaseUrl;
-
-            using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
-            {
-                client.DefaultRequestHeaders.Authorization =
-                       new AuthenticationHeaderValue("Bearer", token);
-
-                var schoolsResponse = await client.GetAsync(ApiEndPoints.ApiPrefix + ApiEndPoints.Schools);
-                var schoolsJson = await schoolsResponse.Content.ReadAsStringAsync();
-                var schoolsArray = JArray.Parse(schoolsJson);
-
-                var schools = (from s in schoolsArray
-                                select new SchoolViewModel
-                                {
-                                    id = (string)s["id"],
-                                    schoolId = (string)s["schoolId"],
-                                    nameOfInstitution = (string)s["nameOfInstitution"]
-                                }).ToList();
-                return schools;
-            }
-        }
+        
 
         [HttpPost]
         public ActionResult Index(ExportsViewModel model)
