@@ -7,7 +7,7 @@
         public string schoolYearId { get; set; }
         public string title { get; set; }
         public string courseCode { get; set; }
-        public string grade { get; set; }
+        public string orgSourcedId { get; set; }
         public string subjects { get; set; }
     }
 }
