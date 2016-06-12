@@ -120,62 +120,136 @@ namespace ED2OR.Utils
                             name = (string)o["nameOfInstitution"],
                             type = "school",
                             identifier = ""
-                            //parentSourcedId = (string)o["xxxxxxx"]  //doesnt exist in API yet
+                            //parentSourcedId = (string)o["localEducationAgencyReference"]["id"]  //TODO: doesnt exist in API yet
                         }).ToList();
             return listOfObjects;
         }
 
-        public static async Task<List<CsvOrgs>> GetCsvUsers()
+        public static async Task<List<CsvUsers>> GetCsvUsers()
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
-            var listOfObjects = (from o in responseArray
-                        select new CsvOrgs
-                        {
-                            sourcedId = (string)o["id"],
-                        }).ToList();
-            return listOfObjects;
+            var responseArrayStudents = await GetApiResponseArray(ApiEndPoints.CsvUsersStudents);
+            var listOfStudents = (from o in responseArrayStudents
+                                  let telephone = o["telephones"].Children().Count() > 0 ? (string)o["telephones"][0]["telephoneNumber"] : "" //TODO: just pick 0?.  or get based on type field?
+                                  let emailAddress = o["electronicMails"].Children().Count() > 0 ? (string)o["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
+                                  let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
+                                  let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+                                  let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
+                                  let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
+                                  let orgIds = schoolAssociationsIds == null ? "" :
+                                      (
+                                       schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
+                                      )
+                                  select new CsvUsers
+                                  {
+                                      sourcedId = (string)o["id"],
+                                      status = "active",
+                                      orgSourcedIds = orgIds,
+                                      role = "student",
+                                      username = (string)o["loginId"], //TODO: doesnt exist in API yet
+                                      userId = (string)o["studentUniqueId"],
+                                      givenName = (string)o["firstName"],
+                                      familyName = (string)o["lastSurname"],
+                                      identifier = (string)o["studentUniqueId"],
+                                      email = emailAddress,
+                                      sms = mobileNumber,
+                                      phone = telephone
+                                  });
+
+            var responseArrayStaff = await GetApiResponseArray(ApiEndPoints.CsvUsersStaff);
+            var listOfStaff = (from o in responseArrayStaff
+                               let telephone = o["telephones"].Children().Count() > 0 ? (string)o["telephones"][0]["telephoneNumber"] : "" //TODO: just pick 0?.  or get based on type field?
+                               let emailAddress = o["electronicMails"].Children().Count() > 0 ? (string)o["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
+                               let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
+                               let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+                               let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
+                               let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
+                               let orgIds = schoolAssociationsIds == null ? "" :
+                                   (
+                                    schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
+                                   )
+                               select new CsvUsers
+                               {
+                                   sourcedId = (string)o["id"],
+                                   status = "active",
+                                   orgSourcedIds = "",
+                                   role = "teacher",
+                                   username = (string)o["loginId"], //TODO: doesnt exist in API yet
+                                   userId = (string)o["staffUniqueId"],
+                                   givenName = (string)o["firstName"],
+                                   familyName = (string)o["lastSurname"],
+                                   identifier = (string)o["staffUniqueId"],
+                                   email = emailAddress,
+                                   sms = mobileNumber,
+                                   phone = telephone
+                               });
+            return listOfStudents.Concat(listOfStaff).ToList();
         }
 
         public static async Task<List<CsvCourses>> GetCsvCourses()
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
+            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvCourses);
             var listOfObjects = (from o in responseArray
                                  select new CsvCourses
                                  {
-                                     sourcedId = (string)o["id"],
+                                     sourcedId = (string)o["courseOfferingReference"]["id"],
+                                     status = "active",
+                                     //schoolYearId = (string)o["id"],//TODO: dont understand the mapping
+                                     title = (string)o["courseOfferingReference"]["localCourseCode"],
+                                     courseCode = (string)o["courseOfferingReference"]["localCourseCode"],
+                                     orgSourcedId = (string)o["schoolReference"]["id"],
+                                     subjects = (string)o["academicSubjectDescriptor"]
                                  }).ToList();
             return listOfObjects;
         }
 
         public static async Task<List<CsvClasses>> GetCsvClasses()
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
+            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvClasses);
             var listOfObjects = (from o in responseArray
                                  select new CsvClasses
                                  {
                                      sourcedId = (string)o["id"],
+                                     status = "active",
+                                     title = (string)o["uniqueSectionCode"],
+                                     courseSourcedId = (string)o["courseOfferingReference"]["id"],
+                                     classCode = (string)o["uniqueSectionCode"],
+                                     classType = "scheduled",
+                                     schoolSourcedId = (string)o["schoolReference"]["id"],
+                                     termSourcedId = (string)o["sessionReference"]["id"],
+                                     subjects = (string)o["academicSubjectDescriptior"]
                                  }).ToList();
             return listOfObjects;
         }
 
         public static async Task<List<CsvEnrollments>> GetCsvEnrollments()
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
+            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvEnrollments);
             var listOfObjects = (from o in responseArray
                                  select new CsvEnrollments
                                  {
-                                     sourcedId = (string)o["id"],
+                                     //TODO: each enrollment may have many students and/or staff.  Should I "flatten" this?  Each record contains classId and schoolId which is the same many times, then one row for each person?
+                                     //sourcedId = (string)o["id"],  //doesnt exist in API yet
+                                     classSourcedId = (string)o["id"], 
+                                     schoolSourcedId = (string)o["schoolReference"]["id"],
+                                     userSourcedId = (string)o["id"], //studentsId or staffId
+                                     role = (string)o["id"], //"student" or "teacher"
+                                     status = "active"
                                  }).ToList();
             return listOfObjects;
         }
 
         public static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions()
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
+            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
             var listOfObjects = (from o in responseArray
                                  select new CsvAcademicSessions
                                  {
-                                     sourcedId = (string)o["id"],
+                                     sourcedId = (string)o["sessionReference"]["id"],
+                                     status = "active",
+                                     title = (string)o["sessionReference"]["schoolYear"] + " " + (string)o["sessionReference"]["termDescriptor"],
+                                     //type = (string)o["id"], //TODO: Not sure what this one is
+                                     startDate = (string)o["sessionReference"]["beginDate"],
+                                     endDate = (string)o["sessionReference"]["endDate"]
                                  }).ToList();
             return listOfObjects;
         }
