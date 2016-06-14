@@ -171,7 +171,7 @@ namespace ED2OR.Utils
                                {
                                    sourcedId = (string)o["id"],
                                    status = "active",
-                                   orgSourcedIds = "",
+                                   orgSourcedIds = orgIds,
                                    role = "teacher",
                                    username = (string)o["loginId"], //TODO: doesnt exist in API yet
                                    userId = (string)o["staffUniqueId"],
@@ -193,7 +193,7 @@ namespace ED2OR.Utils
                                  {
                                      sourcedId = (string)o["courseOfferingReference"]["id"],
                                      status = "active",
-                                     //schoolYearId = (string)o["id"],//TODO: dont understand the mapping
+                                     schoolYearId = (string)o["sessionReference"]["id"],
                                      title = (string)o["courseOfferingReference"]["localCourseCode"],
                                      courseCode = (string)o["courseOfferingReference"]["localCourseCode"],
                                      orgSourcedId = (string)o["schoolReference"]["id"],
@@ -224,18 +224,45 @@ namespace ED2OR.Utils
         public static async Task<List<CsvEnrollments>> GetCsvEnrollments()
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvEnrollments);
-            var listOfObjects = (from o in responseArray
+            var enrollmentsList = (from o in responseArray
+                                   let studentIds = o["students"].Children().Select(x => (string)x["id"])
+                                   let staffIds = o["staff"].Children().Select(x => (string)x["id"])
                                  select new CsvEnrollments
                                  {
-                                     //TODO: each enrollment may have many students and/or staff.  Should I "flatten" this?  Each record contains classId and schoolId which is the same many times, then one row for each person?
                                      //sourcedId = (string)o["id"],  //doesnt exist in API yet
                                      classSourcedId = (string)o["id"], 
                                      schoolSourcedId = (string)o["schoolReference"]["id"],
-                                     userSourcedId = (string)o["id"], //studentsId or staffId
-                                     role = (string)o["id"], //"student" or "teacher"
-                                     status = "active"
-                                 }).ToList();
-            return listOfObjects;
+                                     studentIds = studentIds,
+                                     staffIds = staffIds
+                                 });
+
+            var studentInfo = (from e in enrollmentsList
+                      from s in e.studentIds
+                      select new CsvEnrollments
+                      {
+                          //sourcedId = (string)o["id"],  //doesnt exist in API yet
+                          classSourcedId = e.classSourcedId,
+                          schoolSourcedId = e.schoolSourcedId,
+                          userSourcedId = s,
+                          role = "student",
+                          status = "active"
+                      });
+
+            var staffInfo = (from e in enrollmentsList
+                             from s in e.staffIds
+                             select new CsvEnrollments
+                             {
+                                 //sourcedId = (string)o["id"],  //doesnt exist in API yet
+                                 classSourcedId = e.classSourcedId,
+                                 schoolSourcedId = e.schoolSourcedId,
+                                 userSourcedId = s,
+                                 role = "teacher",
+                                 status = "active"
+                             });
+
+            var allEnrollments = studentInfo.Concat(staffInfo).ToList();
+
+            return allEnrollments;
         }
 
         public static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions()

@@ -52,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -175,6 +176,7 @@
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
+    <Compile Include="Enums\OrgIdentifierSettings.cs" />
     <Compile Include="Enums\ActionTypes.cs" />
     <Compile Include="Enums\ApiEndPoints.cs" />
     <Compile Include="Global.asax.cs">
@@ -200,6 +202,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\AuditLog.cs" />
+    <Compile Include="Models\MappingSetting.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -283,6 +286,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CsvFiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
