@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Exports";
+    var schoolsCriteriaSection = Model.CriteriaSections.FirstOrDefault(x => x.SectionName == "Schools");
+    var subjectsCriteriaSection = Model.CriteriaSections.FirstOrDefault(x => x.SectionName == "Subjects");
 }
 
 <style>
@@ -16,11 +18,23 @@
 
 @using (Html.BeginForm())
 {
-    <div id="criteriaContainer">
+    @*<div id="criteriaContainer">
         @Html.EditorFor(x => x.CriteriaSections)
         <input type="submit" value="OK" />
+    </div>*@
+    <div id="criteriaContainer">
+        @Html.Partial("_CriteriaSection", schoolsCriteriaSection)
+        <div id="SubjectsContainer">@Html.Partial("_CriteriaSection", subjectsCriteriaSection)</div>       
+         @*<div id="SubjectsContainer">@Html.Partial("_CriteriaSection", subjectsCriteriaSection, new ViewDataDictionary()
+                               {
+                                   TemplateInfo = new TemplateInfo()
+                                   { HtmlFieldPrefix = "Subjects" }
+                               })</div>*@
+
+       
+
+        <input type="submit" value="OK" />
     </div>
-    
 
     @*<div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#schools">
         Schools
@@ -59,41 +73,109 @@
 
 @section scripts{
         <script>
+
+
             function deselectAll(divId) {
                 $("#" + divId).find("input:checkbox").removeAttr("checked");
                 $("#numSelected_" + divId).text("(0 selected)");
-                checkboxRecount(divId);
+                if (divId == "Schools") {
+                    schoolsChanged();
+                }
+                //checkboxRecount(divId);
             }
-            
+
             function checkboxRecount(divId) {
                 var numCheckedBoxes = $("#" + divId).find("input:checkbox:checked").length;
                 var numTotalBoxes = $("#" + divId).find("input:checkbox").length;
 
-                var txt = numCheckedBoxes == numTotalBoxes ? "(all selected)" : "(" + numCheckedBoxes + " selected)"
+                var txt = (numCheckedBoxes == numTotalBoxes && numTotalBoxes != 0) ? "(all selected)" : "(" + numCheckedBoxes + " selected)"
                 $("#numSelected_" + divId).text(txt);
             }
 
-            $('#criteriaContainer :checkbox').change(function () {
-                var parentDivId = $(this).closest("div").attr("id");
+            function getSchoolIds() {
+                var divId = "Schools";
+                var checkedBoxes = $("#" + divId).find("input:checkbox:checked");
 
-                //if parentdiv == schools
-                //get selected schoolIds
-                //get container.checkboxes where custompropertyschoolid not in schoolIds
-                //uncheck them
-                //hide them
-                //get container.checkboxes where custompropertyschoolid in schoolIds
-                //show them
-                //checkboxrecount
+                var arr = [];
+                checkedBoxes.each(function () {
+                    var $this = $(this);
+                    arr.push($this.data('schoolid'));
+                });
+                return arr;
+            }
 
-                checkboxRecount(parentDivId);
+            function getBoxesAlreadyChecked(divId) {
+                var checkedBoxes = $("#" + divId).find("input:checkbox:checked");
+
+                var arr = [];
+                checkedBoxes.each(function () {
+                    var $this = $(this);
+                    var labelText = $('label[for=' + $this.attr('id') + ']').html();
+                    arr.push(labelText);
+                });
+                return arr;
+            }
+
+            //function redrawCheckboxes(divId, stringArray) {
+            //    var existingCheckBoxes = $("#" + divId).find("input:checkbox");
+
+            //    existingCheckBoxes.each(function () {
+            //        var $this = $(this);
+            //        var labelText = $('label[for=' + $this.attr('id') + ']').html();
+            //        //var labelText = label.html();
+            //        if ($.inArray(labelText, stringArray) == -1) {
+            //            $this.closest("span").remove();
+            //            //label.remove();
+            //            //$this.remove();
+            //        }
+            //        else { //http://stackoverflow.com/questions/866239/creating-the-checkbox-dynamically-using-javascript
+            //        }
+            //    });
+            //}
+
+            function schoolsChanged() {
+                var schoolIds = getSchoolIds();
+                var boxesAlreadyChecked = getBoxesAlreadyChecked("Subjects");
+              
+                //need to add callback function here because "load" is async
+                $("#SubjectsContainer").load("@Url.Action("GetSubjectsPartial")", { schoolIds: schoolIds, boxesAlreadyChecked: boxesAlreadyChecked }, function () {
+                    assignEvents();
+                });
 
 
-                //if ($(this).is(':checked')) {
-                //    console.log($(this).val() + ' is now checked');
-                //} else {
-                //    console.log($(this).val() + ' is now unchecked');
-                //}
-            });
+                @*var postData = { schoolIds: schoolIds };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetSubjectsCheckboxes")',
+                    data: postData,
+                    success: function (result) {
+                        redrawCheckboxes("Subjects", result);
+                    },
+                    //error: function (err) {
+                    //    alert('problem');
+                    //},
+                    dataType: "json",
+                    traditional: true
+                });*@
+            }
+
+            function assignEvents() {
+                $('#criteriaContainer :checkbox').change(function () {
+                    var parentDivId = $(this).parent("div").attr("id");
+                    if (parentDivId == "Schools") {
+                        schoolsChanged();
+                    }
+                    checkboxRecount(parentDivId);
+
+                    //if ($(this).is(':checked')) {
+                    //    console.log($(this).val() + ' is now checked');
+                    //} else {
+                    //    console.log($(this).val() + ' is now unchecked');
+                    //}
+                });
+            }
+            
+            assignEvents();
 
         </script>
     }

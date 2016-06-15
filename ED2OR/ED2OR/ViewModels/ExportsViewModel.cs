@@ -13,6 +13,7 @@ namespace ED2OR.ViewModels
         //public List<ExportsCheckbox> SectionsCheckboxes { get; set; }
         //public List<ExportsCheckbox> TeachersCheckboxes { get; set; }
         public List<ApiCriteriaSection> CriteriaSections { get; set; }
+        //public ApiCriteriaSection SubjectsCriteriaSection { get; set; }
     }
 
     public class ApiCriteriaSection

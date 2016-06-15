@@ -218,7 +218,7 @@
     <Compile Include="ViewModels\TokenViewModel.cs" />
     <Compile Include="ViewModels\CsvOrgs.cs" />
     <Compile Include="ViewModels\ExportsViewModel.cs" />
-    <Compile Include="ViewModels\SchoolViewModel.cs" />
+    <Compile Include="ViewModels\CriteriaViewModels.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
@@ -283,6 +283,7 @@
     <Content Include="Views\Exports\Index.cshtml" />
     <Content Include="Views\Exports\EditorTemplates\ExportsCheckbox.cshtml" />
     <Content Include="Views\Exports\EditorTemplates\ApiCriteriaSection.cshtml" />
+    <Content Include="Views\Exports\_CriteriaSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
