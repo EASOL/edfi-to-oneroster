@@ -140,6 +140,11 @@ namespace ED2OR.Utils
 
                 HttpContext.Current.Session["AllSubjects"] = subjects;
             }
+            else
+            {
+                var subjects = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
+                subjects.ForEach(c => c.Selected = false);
+            }
 
             return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
             //select new SubjectsViewModel

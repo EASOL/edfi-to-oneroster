@@ -283,6 +283,7 @@
     <Content Include="Views\Exports\Index.cshtml" />
     <Content Include="Views\Exports\EditorTemplates\ExportsCheckbox.cshtml" />
     <Content Include="Views\Exports\EditorTemplates\ApiCriteriaSection.cshtml" />
+    <Content Include="Views\Exports\_CriteriaSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

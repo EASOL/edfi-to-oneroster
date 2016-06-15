@@ -22,23 +22,7 @@ namespace ED2OR.Controllers
         {
             var model = new ExportsViewModel();
             var schools = await ApiCalls.GetSchools();
-            var subjects = await ApiCalls.GetSubjects();
-
-            
-
-            //if (schools != null)
-            //{
-
-            //}
-            //var schoolsCbs = (from s in schools
-            //                select new ExportsCheckbox
-            //                {
-            //                    Id = s.id,
-            //                    SchoolId = s.schoolId,
-            //                    Text = s.nameOfInstitution,
-            //                    Visible = true
-            //                }).ToList();
-
+            var subjects = await ApiCalls.GetSubjects(); //this is never used here, but it's good to call it so it's loaded into the session
 
             model.CriteriaSections = new List<ApiCriteriaSection>
             {
@@ -46,29 +30,26 @@ namespace ED2OR.Controllers
                 {
                     FilterCheckboxes = schools,
                     SectionName = "Schools",
+                    IsExpanded = true,
                     Level = 1
                 },
                 new ApiCriteriaSection
                 {
-                    FilterCheckboxes = subjects,
                     SectionName = "Subjects",
                     Level = 2
                 },
                 new ApiCriteriaSection
                 {
-                    FilterCheckboxes = GenerateCbList(),
                     SectionName = "Courses",
                     Level = 3
                 },
                 new ApiCriteriaSection
                 {
-                    FilterCheckboxes = GenerateCbList(),
                     SectionName = "Sections",
                     Level = 3
                 }
                 ,new ApiCriteriaSection
                 {
-                    FilterCheckboxes = GenerateCbList(),
                     SectionName = "Teachers",
                     Level = 3
                 }
@@ -91,18 +72,47 @@ namespace ED2OR.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<JsonResult> GetSubjectsCheckboxes(List<string> schoolIds)
-        {
-            var subjects = await ApiCalls.GetSubjects();
-            var filteredSubjects = subjects.Where(x => schoolIds.Contains(x.SchoolId)).Select(x => new ExportsCheckbox
-            {
-                Id = x.Id,
-                Text = x.Text,
-                SchoolId = x.SchoolId
-            }).ToList();
+        //[HttpPost]
+        //public async Task<JsonResult> GetSubjectsCheckboxes(List<string> schoolIds)
+        //{
+        //    if (schoolIds == null || schoolIds.Count() == 0)
+        //    {
+        //        return Json(new List<string>(), JsonRequestBehavior.AllowGet);
+        //    }
 
-            return Json(filteredSubjects, JsonRequestBehavior.AllowGet);
+        //    var subjects = await ApiCalls.GetSubjects();
+        //    var filteredSubjects = subjects.Where(x => schoolIds.Contains(x.SchoolId)).GroupBy(x => x.Text).Select(group => group.First());
+        //    return Json(filteredSubjects.Select(x => x.Text).ToList(), JsonRequestBehavior.AllowGet);
+        //}
+
+        public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds, List<string> boxesAlreadyChecked)
+        {
+            ViewData.TemplateInfo.HtmlFieldPrefix = "Subjects";
+
+            var model = new ApiCriteriaSection
+            {
+                SectionName = "Subjects",
+                Level = 2,
+                IsExpanded = true
+            };
+
+            if (schoolIds == null || schoolIds.Count() == 0)
+            {
+                return PartialView("_CriteriaSection", model);
+            }
+
+            var subjects = await ApiCalls.GetSubjects();
+            var filteredSubjects = subjects.Where(x => schoolIds.Contains(x.SchoolId)).GroupBy(x => x.Text).Select(group => group.First()).ToList();
+
+            if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
+            {
+                var boxesToCheck = filteredSubjects.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                boxesToCheck.ForEach(c => c.Selected = true);
+            }
+
+            model.FilterCheckboxes = filteredSubjects;
+            
+            return PartialView("_CriteriaSection", model);
         }
 
         //private void FilterSubjects(List<ExportsCheckbox> schools, List<ExportsCheckbox> subjects)
@@ -110,31 +120,7 @@ namespace ED2OR.Controllers
         //    var selectedSchools = schools.Where(x => x.Selected).Select(x => x.SchoolId).ToList();
         //    subjects.RemoveAll(x => selectedSchools.Contains(x.SchoolId) == false);
         //}
-
-        public List<ExportsCheckbox> GenerateCbList()
-        {
-            return new List<ExportsCheckbox>
-                {
-                    new ExportsCheckbox
-                    {
-                        Id = "a",
-                        Selected = true,
-                        Text = "abc"
-                    },
-                     new ExportsCheckbox
-                    {
-                        Id = "b",
-                        Selected = false,
-                        Text = "def"
-                    },
-                      new ExportsCheckbox
-                    {
-                        Id = "c",
-                        Selected = true,
-                        Text = "ghi"
-                    }
-                };
-        }
+        
 
         public async Task<FileResult> GetZipFile()
         {
@@ -146,18 +132,18 @@ namespace ED2OR.Controllers
             var tempDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(tempDirectory);
 
             Directory.CreateDirectory(tempDirectoryFullName);
-            WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "ORGS.CSV");
-            WriteObjectToCsv(await ApiCalls.GetCsvUsers(), tempDirectoryFullName, "USERS.CSV");
-            WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "COURSES.CSV");
-            WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "CLASSES.CSV");
-            WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "ENROLLMENTS.CSV");
-            WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "ACADEMICSESSIONS.CSV");
+            WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "orgs.csv");
+            WriteObjectToCsv(await ApiCalls.GetCsvUsers(), tempDirectoryFullName, "users.csv");
+            WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "courses.csv");
+            WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "classes.csv");
+            WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "enrollments.csv");
+            WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicsessions.csv");
 
             var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
             ZipFile.CreateFromDirectory(tempDirectoryFullName, zipPath, CompressionLevel.Fastest, true);
 
 
-            var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
+            var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
             Directory.Delete(tempDirectoryFullName, true);
             System.IO.File.Delete(zipPath);
             return File(bytes, "application/zip");
