@@ -73,6 +73,35 @@
                 $("#numSelected_" + divId).text(txt);
             }
 
+            function getSchoolIds() {
+                var divId = "Schools";
+                var checkedBoxes = $("#" + divId).find("input:checkbox:checked");
+
+                var array = checkedBoxes.map(function () {
+                    return [$.map($(this).data(schoolId), function (v) {
+                        return v;
+                    })];
+                }).get();
+
+                return array;
+
+
+                //var array = $("#my_select > option").map(function () {
+                //    return [$.map($(this).data(), function (v) {
+                //        return v;
+                //    })];
+                //}).get();
+
+                //.data( "foo" )
+                //$( "input[id][name$='man']" ).val( "only this one" );
+
+                //var arr = [];
+                //$('#my_select option').each(function () {
+                //    var $this = $(this);
+                //    arr.push([$this.data('my_id'), $this.data('my_parent'), $this.data('my_name')]);
+                //});
+            }
+
             $('#criteriaContainer :checkbox').change(function () {
                 var parentDivId = $(this).closest("div").attr("id");
 
@@ -86,6 +115,25 @@
                 //checkboxrecount
 
                 checkboxRecount(parentDivId);
+
+                //var stringArray = new Array();
+                //stringArray[0] = "item1";
+                //stringArray[1] = "item2";
+                //stringArray[2] = "item3";
+                var schoolIdsArray = getSchoolIds();
+                var postData = { schoolIds: schoolIdsArray };
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetSubjectsCheckboxes")',
+                    data: postData,
+                    success: function(data){
+                        alert(data.Result);
+                    },
+                    dataType: "json",
+                    traditional: true
+                });
 
 
                 //if ($(this).is(':checked')) {

@@ -22,32 +22,35 @@ namespace ED2OR.Controllers
         {
             var model = new ExportsViewModel();
             var schools = await ApiCalls.GetSchools();
+            var subjects = await ApiCalls.GetSubjects();
+
             
+
             //if (schools != null)
             //{
 
             //}
-            var schoolsCbs = (from s in schools
-                            select new ExportsCheckbox
-                            {
-                                Id = s.id,
-                                SchoolId = s.schoolId,
-                                Text = s.nameOfInstitution,
-                                Visible = true
-                            }).ToList();
+            //var schoolsCbs = (from s in schools
+            //                select new ExportsCheckbox
+            //                {
+            //                    Id = s.id,
+            //                    SchoolId = s.schoolId,
+            //                    Text = s.nameOfInstitution,
+            //                    Visible = true
+            //                }).ToList();
 
 
             model.CriteriaSections = new List<ApiCriteriaSection>
             {
                 new ApiCriteriaSection
                 {
-                    FilterCheckboxes = schoolsCbs,
+                    FilterCheckboxes = schools,
                     SectionName = "Schools",
                     Level = 1
                 },
                 new ApiCriteriaSection
                 {
-                    FilterCheckboxes = GenerateCbList(),
+                    FilterCheckboxes = subjects,
                     SectionName = "Subjects",
                     Level = 2
                 },
@@ -73,6 +76,40 @@ namespace ED2OR.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Index(ExportsViewModel model)
+        {
+            var schoolsSection = model.CriteriaSections.Where(x => x.SectionName == "Schools").FirstOrDefault();
+            var selectedSchools = schoolsSection.FilterCheckboxes.Where(x => x.Selected).Select(x => x.SchoolId).ToList();
+
+            var subjects = await ApiCalls.GetSubjects();
+            subjects.RemoveAll(x => selectedSchools.Contains(x.SchoolId) == false);
+            var subjectsSection = model.CriteriaSections.Where(x => x.SectionName == "Subjects").FirstOrDefault();
+            subjectsSection.FilterCheckboxes = subjects;
+            //var selectedSchools = schools.Where(x => x.Selected).Select(x => x.SchoolId).ToList();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetSubjectsCheckboxes(List<string> schoolIds)
+        {
+            var subjects = await ApiCalls.GetSubjects();
+            var filteredSubjects = subjects.Where(x => schoolIds.Contains(x.SchoolId)).Select(x => new ExportsCheckbox
+            {
+                Id = x.Id,
+                Text = x.Text,
+                SchoolId = x.SchoolId
+            }).ToList();
+
+            return Json(filteredSubjects, JsonRequestBehavior.AllowGet);
+        }
+
+        //private void FilterSubjects(List<ExportsCheckbox> schools, List<ExportsCheckbox> subjects)
+        //{
+        //    var selectedSchools = schools.Where(x => x.Selected).Select(x => x.SchoolId).ToList();
+        //    subjects.RemoveAll(x => selectedSchools.Contains(x.SchoolId) == false);
+        //}
 
         public List<ExportsCheckbox> GenerateCbList()
         {
@@ -167,10 +204,6 @@ namespace ED2OR.Controllers
             return File(new UTF8Encoding().GetBytes(csv.ToString()), "text/csv", fileName);
         }
 
-        [HttpPost]
-        public ActionResult Index(ExportsViewModel model)
-        {
-            return View(model);
-        }
+       
     }
 }

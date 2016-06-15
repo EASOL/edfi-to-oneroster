@@ -96,17 +96,59 @@ namespace ED2OR.Utils
             }
         }
 
-        public static async Task<List<SchoolViewModel>> GetSchools()
+        public static async Task<List<ExportsCheckbox>> GetSchools()
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.Schools);
-            var schools = (from s in responseArray
-                           select new SchoolViewModel
-                            {
-                                id = (string)s["id"],
-                                schoolId = (string)s["schoolId"],
-                                nameOfInstitution = (string)s["nameOfInstitution"]
-                            }).ToList();
-            return schools;
+            if (HttpContext.Current.Session["AllSchools"] == null)
+            {
+                var responseArray = await GetApiResponseArray(ApiEndPoints.Schools);
+                var schools = (from s in responseArray
+                               select new ExportsCheckbox
+                               {
+                                   Id = (string)s["id"],
+                                   SchoolId = (string)s["id"],
+                                   Text = (string)s["nameOfInstitution"],
+                                   Visible = true
+                               }).ToList();
+
+                HttpContext.Current.Session["AllSchools"] = schools;
+            }
+
+            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchools"];
+            //select new SchoolViewModel
+            //                {
+            //                    id = (string)s["id"],
+            //                    schoolId = (string)s["schoolId"],
+            //                    nameOfInstitution = (string)s["nameOfInstitution"]
+            //                }).ToList();
+            //return schools;
+        }
+
+        public static async Task<List<ExportsCheckbox>> GetSubjects()
+        {
+            if (HttpContext.Current.Session["AllSubjects"] == null)
+            {
+                var responseArray = await GetApiResponseArray(ApiEndPoints.Subjects);
+                var subjects = (from s in responseArray
+                                select new ExportsCheckbox
+                                {
+                                    Id = (string)s["id"],
+                                    SchoolId = (string)s["schoolReference"]["id"],
+                                    Text = (string)s["academicSubjectDescriptor"],
+                                    Visible = true
+                                }).ToList();
+
+
+                HttpContext.Current.Session["AllSubjects"] = subjects;
+            }
+
+            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
+            //select new SubjectsViewModel
+            //{
+            //    id = (string)s["id"],
+            //    schoolId = (string)s["schoolReference"]["id"],
+            //    acedemicSubjectDescriptor = (string)s["academicSubjectDescriptor"]
+            //}).ToList();
+            //return subjects;
         }
 
         public static async Task<List<CsvOrgs>> GetCsvOrgs()
@@ -294,6 +336,9 @@ namespace ED2OR.Utils
 
         private static async Task<ApiResponse> GetApiResponse(string apiEndpoint)
         {
+            var maxRecordLimit = 100;
+            var fullUrl = ApiEndPoints.ApiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
+
             var tokenModel = GetToken();
             if (!tokenModel.IsSuccessful)
             {
@@ -303,29 +348,46 @@ namespace ED2OR.Utils
             var token = tokenModel.Token;
             var apiBaseUrl = db.Users.FirstOrDefault(x => x.Id == UserId).ApiBaseUrl;
 
+            var finalResponse = new JArray();
             using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
             {
                 client.DefaultRequestHeaders.Authorization =
                        new AuthenticationHeaderValue("Bearer", token);
 
-                var apiResponse = await client.GetAsync(ApiEndPoints.ApiPrefix + apiEndpoint);
-
-                if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
+                var offset = 0;
+                bool getMoreRecords = true;
+                while (getMoreRecords)
                 {
-                    return new ApiResponse
-                    {
-                        TokenExpired = true,
-                        ResponseArray = null
-                    };
-                }
+                    var apiResponse = await client.GetAsync(fullUrl + "&offset=" + offset);
 
-                var responseJson = await apiResponse.Content.ReadAsStringAsync();
-                var responseArray = JArray.Parse(responseJson);
+                    if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
+                    {
+                        return new ApiResponse
+                        {
+                            TokenExpired = true,
+                            ResponseArray = null
+                        };
+                    }
+
+                    var responseJson = await apiResponse.Content.ReadAsStringAsync();
+                    var responseArray = JArray.Parse(responseJson);
+
+                    if (responseArray != null && responseArray.Count() > 0)
+                    {
+                        finalResponse = new JArray(finalResponse.Union(responseArray));
+                        offset += maxRecordLimit;
+                    }
+
+                    if (responseArray.Count() != maxRecordLimit)
+                    {
+                        getMoreRecords = false;
+                    }
+                }
 
                 return new ApiResponse
                 {
                     TokenExpired = false,
-                    ResponseArray = responseArray
+                    ResponseArray = finalResponse
                 };
             }
         }

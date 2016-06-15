@@ -218,7 +218,7 @@
     <Compile Include="ViewModels\TokenViewModel.cs" />
     <Compile Include="ViewModels\CsvOrgs.cs" />
     <Compile Include="ViewModels\ExportsViewModel.cs" />
-    <Compile Include="ViewModels\SchoolViewModel.cs" />
+    <Compile Include="ViewModels\CriteriaViewModels.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TemplateViewModel.cs" />
   </ItemGroup>

@@ -1,5 +1,5 @@
 ﻿@model ED2OR.ViewModels.ExportsCheckbox
-@Html.CheckBoxFor(x => x.Selected)
+@Html.CheckBoxFor(x => x.Selected, new { data_schoolId = Model.SchoolId })
 @Html.LabelFor(x => x.Selected, Model.Text)
 @Html.HiddenFor(x => x.Text)
 @Html.HiddenFor(x => x.Id)
