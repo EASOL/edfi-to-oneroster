@@ -31,50 +31,43 @@
                                    { HtmlFieldPrefix = "Subjects" }
                                })</div>*@
 
-       
-
-        <input type="submit" value="OK" />
+        <br />
+        @if (Model.DataPreviewSections != null)
+        {
+            foreach (var previewSection in Model.DataPreviewSections)
+            {
+                <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#preview_@previewSection.SectionName">
+                    @previewSection.SectionName
+                </div>
+                <div class="collapse" id="preview_@previewSection.SectionName">
+                    @*<div class="table-responsive">
+                        or put table-responsive in table class*@
+                    <table id="table_@previewSection.SectionName" class="table table-striped table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                @foreach (var col in previewSection.ColumnNames)
+                                {
+                                    <th data-field="@col">@col</th>
+                                }
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            }
+        }
+        
+        <br />
+        <br />
+        <button type="submit" class="btn btn-primary" id="btnPreview" name="Command" value="Preview">Preview Data</button>
+        <button type="submit" class="btn btn-primary" id="btnDownload" name="Command" value="Download">Download CSV Package</button>
+        <button type="submit" class="btn btn-primary" id="btnSaveTemplate" name="Command" value="SaveTemplate">Save Template</button> 
     </div>
-
-    @*<div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#schools">
-        Schools
-    </div>
-    <div class="collapse.in" id="schools">
-        <a href="javascript:deselectAll('schools');">(deselect all)</a><br />
-        @Html.EditorFor(x => x.SchoolsCheckboxes)
-    </div>
-    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#subjects">
-        Subjects
-    </div>
-    <div class="collapse" id="subjects">
-        @Html.EditorFor(x => x.SubjectsCheckboxes)
-    </div>
-    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#courses">
-        Courses
-    </div>
-    <div class="collapse" id="courses">
-        @Html.EditorFor(x => x.CoursesCheckboxes)
-    </div>
-    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#sections">
-        Sections
-    </div>
-    <div class="collapse" id="sections">
-        @Html.EditorFor(x => x.SectionsCheckboxes)
-    </div>
-    <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#teachers">
-        Teachers
-    </div>
-    <div class="collapse" id="teachers">
-        @Html.EditorFor(x => x.TeachersCheckboxes)
-    </div>*@
 }
 
 
 
 @section scripts{
         <script>
-
-
             function deselectAll(divId) {
                 $("#" + divId).find("input:checkbox").removeAttr("checked");
                 $("#numSelected_" + divId).text("(0 selected)");
@@ -136,7 +129,7 @@
             function schoolsChanged() {
                 var schoolIds = getSchoolIds();
                 var boxesAlreadyChecked = getBoxesAlreadyChecked("Subjects");
-              
+
                 //need to add callback function here because "load" is async
                 $("#SubjectsContainer").load("@Url.Action("GetSubjectsPartial")", { schoolIds: schoolIds, boxesAlreadyChecked: boxesAlreadyChecked }, function () {
                     assignEvents();
@@ -174,8 +167,27 @@
                     //}
                 });
             }
-            
-            assignEvents();
 
+            assignEvents();
         </script>
+
+    @if (Model.DataPreviewSections != null)
+    {
+        <script>
+            $(function () {
+                var orgsData = @Html.Raw(Json.Encode(Model.OrgsResult));
+                $('#table_orgs').bootstrapTable({
+                    data: orgsData
+                });
+
+                var usersData = @Html.Raw(Json.Encode(Model.OrgsResult));
+                $('#table_users').bootstrapTable({
+                    data: usersData
+                });
+            });
+        </script>
+    }
+
+            
+
     }

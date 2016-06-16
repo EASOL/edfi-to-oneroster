@@ -341,7 +341,7 @@ namespace ED2OR.Utils
 
         private static async Task<ApiResponse> GetApiResponse(string apiEndpoint)
         {
-            var maxRecordLimit = 100;
+            var maxRecordLimit = 25;
             var fullUrl = ApiEndPoints.ApiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
 
             var tokenModel = GetToken();
@@ -372,6 +372,11 @@ namespace ED2OR.Utils
                             TokenExpired = true,
                             ResponseArray = null
                         };
+                    }
+
+                    if (apiResponse.IsSuccessStatusCode == false)
+                    {
+                        throw new Exception(apiResponse.ReasonPhrase);
                     }
 
                     var responseJson = await apiResponse.Content.ReadAsStringAsync();
