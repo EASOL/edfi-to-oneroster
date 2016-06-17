@@ -25,7 +25,6 @@ namespace ED2OR.Controllers
             return View(model);
         }
 
-        
 
         [HttpPost]
         public async Task<ActionResult> Index(ExportsViewModel model, string Command)
@@ -34,12 +33,7 @@ namespace ED2OR.Controllers
             {
                 await InitializeModel(model);
 
-                model.OrgsResult = await ApiCalls.GetCsvOrgs();
-                model.UsersResult = await ApiCalls.GetCsvUsers();
-                //model.CoursesResult = await ApiCalls.GetCsvCourses();
-                //model.ClassesResult = await ApiCalls.GetCsvClasses();
-                //model.EnrollmentsResult = await ApiCalls.GetCsvEnrollments();
-                //model.AcedemicSessionsResult = await ApiCalls.GetCsvAcademicSessions();
+                model.JsonPreviews = await ApiCalls.GetJsonPreviews();
 
                 var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
                 var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
@@ -157,7 +151,7 @@ namespace ED2OR.Controllers
         private async Task InitializeModel(ExportsViewModel model)
         {
             var schools = await ApiCalls.GetSchools();
-            var subjects = await ApiCalls.GetSubjects(); //this is never used here, but it's good to call it so it's loaded into the session
+            //var subjects = await ApiCalls.GetSubjects(); //this is never used here, but it's good to call it so it's loaded into the session
             model.CriteriaSections = new List<ApiCriteriaSection>
             {
                 new ApiCriteriaSection

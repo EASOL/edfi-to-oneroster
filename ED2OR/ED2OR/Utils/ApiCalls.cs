@@ -10,12 +10,14 @@ using Newtonsoft.Json.Linq;
 using ED2OR.Enums;
 using ED2OR.Models;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 
 namespace ED2OR.Utils
 {
     public class ApiCalls
     {
         private static readonly ApplicationDbContext db = new ApplicationDbContext();
+        private static Dictionary<string, JArray> ExistingResponses = new Dictionary<string, JArray>();
 
         private static string UserId
         {
@@ -140,11 +142,11 @@ namespace ED2OR.Utils
 
                 HttpContext.Current.Session["AllSubjects"] = subjects;
             }
-            else
-            {
-                var subjects = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
-                subjects.ForEach(c => c.Selected = false);
-            }
+            //else
+            //{
+            //    var subjects = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
+            //    subjects.ForEach(c => c.Selected = false);
+            //}
 
             return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
             //select new SubjectsViewModel
@@ -154,6 +156,20 @@ namespace ED2OR.Utils
             //    acedemicSubjectDescriptor = (string)s["academicSubjectDescriptor"]
             //}).ToList();
             //return subjects;
+        }
+
+        public static async Task<PreveiwJsonResults> GetJsonPreviews()
+        {
+            var previewModel = new PreveiwJsonResults();
+
+            previewModel.Orgs = JsonConvert.SerializeObject(await GetCsvOrgs());
+            previewModel.Users = JsonConvert.SerializeObject(await GetCsvUsers());
+            previewModel.Courses = JsonConvert.SerializeObject(await GetCsvCourses());
+            previewModel.Classes = JsonConvert.SerializeObject(await GetCsvClasses());
+            previewModel.Enrollments = JsonConvert.SerializeObject(await GetCsvEnrollments());
+            previewModel.AcademicSessions = JsonConvert.SerializeObject(await GetCsvAcademicSessions());
+
+            return previewModel;
         }
 
         public static async Task<List<CsvOrgs>> GetCsvOrgs()
@@ -274,7 +290,7 @@ namespace ED2OR.Utils
             var enrollmentsList = (from o in responseArray
                                    let studentIds = o["students"].Children().Select(x => (string)x["id"])
                                    let staffIds = o["staff"].Children().Select(x => (string)x["id"])
-                                 select new CsvEnrollments
+                                 select new
                                  {
                                      //sourcedId = (string)o["id"],  //doesnt exist in API yet
                                      classSourcedId = (string)o["id"], 
@@ -330,18 +346,27 @@ namespace ED2OR.Utils
 
         private static async Task<JArray> GetApiResponseArray(string apiEndpoint)
         {
+            if (ExistingResponses.ContainsKey(apiEndpoint))
+            {
+                return ExistingResponses[apiEndpoint];
+            }
+
             var response = await GetApiResponse(apiEndpoint);
             if (response.TokenExpired)
             {
                 GetToken(true);
                 response = await GetApiResponse(apiEndpoint);
             }
+
+            ExistingResponses.Add(apiEndpoint, response.ResponseArray);
+
             return response.ResponseArray;
         }
 
         private static async Task<ApiResponse> GetApiResponse(string apiEndpoint)
         {
-            var maxRecordLimit = 25;
+            var stopFetchingRecordsAt = 500;
+            var maxRecordLimit = 50;
             var fullUrl = ApiEndPoints.ApiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
 
             var tokenModel = GetToken();
@@ -388,7 +413,7 @@ namespace ED2OR.Utils
                         offset += maxRecordLimit;
                     }
 
-                    if (responseArray.Count() != maxRecordLimit)
+                    if (responseArray.Count() != maxRecordLimit  || finalResponse.Count() >= stopFetchingRecordsAt)
                     {
                         getMoreRecords = false;
                     }

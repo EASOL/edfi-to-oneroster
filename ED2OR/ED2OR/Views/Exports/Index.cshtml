@@ -9,7 +9,14 @@
 <style>
     .accordionHeader {
         width:100%;
+        text-align: left;
     }
+
+    .table td {
+        white-space:nowrap;
+    }
+
+    
 </style>
 
 <h3>@ViewBag.Title</h3>
@@ -42,7 +49,7 @@
                 <div class="collapse" id="preview_@previewSection.SectionName">
                     @*<div class="table-responsive">
                         or put table-responsive in table class*@
-                    <table id="table_@previewSection.SectionName" class="table table-striped table-bordered table-condensed">
+                    <table id="table_@previewSection.SectionName" data-pagination="true" class="table table-striped table-bordered table-condensed">
                         <thead>
                             <tr>
                                 @foreach (var col in previewSection.ColumnNames)
@@ -175,14 +182,34 @@
     {
         <script>
             $(function () {
-                var orgsData = @Html.Raw(Json.Encode(Model.OrgsResult));
+                var orgsData = @Html.Raw(Model.JsonPreviews.Orgs);
                 $('#table_orgs').bootstrapTable({
                     data: orgsData
                 });
 
-                var usersData = @Html.Raw(Json.Encode(Model.OrgsResult));
+                var usersData = @Html.Raw(Model.JsonPreviews.Users);
                 $('#table_users').bootstrapTable({
                     data: usersData
+                });
+
+                var coursesData = @Html.Raw(Model.JsonPreviews.Courses);
+                $('#table_courses').bootstrapTable({
+                    data: coursesData
+                });
+
+                var classesData = @Html.Raw(Model.JsonPreviews.Classes);
+                $('#table_classes').bootstrapTable({
+                    data: classesData
+                });
+
+                var enrollmentsData = @Html.Raw(Model.JsonPreviews.Enrollments);
+                $('#table_enrollments').bootstrapTable({
+                    data: enrollmentsData
+                });
+
+                var academicsessions = @Html.Raw(Model.JsonPreviews.AcademicSessions);
+                $('#table_academicsessions').bootstrapTable({
+                    data: academicsessions
                 });
             });
         </script>
