@@ -14,12 +14,24 @@ namespace ED2OR.ViewModels
         //public List<ExportsCheckbox> TeachersCheckboxes { get; set; }
         public List<ApiCriteriaSection> CriteriaSections { get; set; }
         public List<DataPreviewSection> DataPreviewSections { get; set; }
-        public List<CsvOrgs> OrgsResult { get; set; }
-        public List<CsvUsers> UsersResult { get; set; }
-        public List<CsvCourses> CoursesResult { get; set; }
-        public List<CsvClasses> ClassesResult { get; set; }
-        public List<CsvEnrollments> EnrollmentsResult { get; set; }
-        public List<CsvAcademicSessions> AcedemicSessionsResult { get; set; }
+        public PreveiwJsonResults JsonPreviews { get; set; }
+
+    }
+
+    public class PreveiwJsonResults
+    {
+        //public List<CsvOrgs> OrgsResult { get; set; }
+        public string Orgs { get; set; }
+        //public List<CsvUsers> UsersResult { get; set; }
+        public string Users { get; set; }
+        //public List<CsvCourses> CoursesResult { get; set; }
+        public string Courses { get; set; }
+        //public List<CsvClasses> ClassesResult { get; set; }
+        public string Classes { get; set; }
+        //public List<CsvEnrollments> EnrollmentsResult { get; set; }
+        public string Enrollments { get; set; }
+        //public List<CsvAcademicSessions> AcedemicSessionsResult { get; set; }
+        public string AcademicSessions { get; set; }
         //public ApiCriteriaSection SubjectsCriteriaSection { get; set; }
     }
 
