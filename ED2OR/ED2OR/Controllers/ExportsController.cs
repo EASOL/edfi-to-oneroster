@@ -31,7 +31,7 @@ namespace ED2OR.Controllers
         {
             if (Command == "Preview")
             {
-                await InitializeModel(model);
+                await InitializeModel(model, true);
 
                 model.JsonPreviews = await ApiCalls.GetJsonPreviews();
 
@@ -148,7 +148,7 @@ namespace ED2OR.Controllers
         //    subjects.RemoveAll(x => selectedSchools.Contains(x.SchoolId) == false);
         //}
 
-        private async Task InitializeModel(ExportsViewModel model)
+        private async Task InitializeModel(ExportsViewModel model, bool collapseAll = false)
         {
             var schools = await ApiCalls.GetSchools();
             //var subjects = await ApiCalls.GetSubjects(); //this is never used here, but it's good to call it so it's loaded into the session
@@ -158,7 +158,7 @@ namespace ED2OR.Controllers
                 {
                     FilterCheckboxes = schools,
                     SectionName = "Schools",
-                    IsExpanded = true,
+                    IsExpanded = collapseAll ? false : true,
                     Level = 1
                 },
                 new ApiCriteriaSection
@@ -202,12 +202,21 @@ namespace ED2OR.Controllers
             WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicsessions.csv");
 
             var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
-            ZipFile.CreateFromDirectory(tempDirectoryFullName, zipPath, CompressionLevel.Fastest, true);
+
+            var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create);
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\orgs.csv", "orgs.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\users.csv", "users.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\courses.csv", "courses.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicsessions.csv", "academicsessions.csv");
+            zip.Dispose();
 
             var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
             Directory.Delete(tempDirectoryFullName, true);
             System.IO.File.Delete(zipPath);
-            return File(bytes, "application/zip");
+            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now);
+            return File(bytes, "application/zip", downloadFileName);
         }
 
         private void WriteObjectToCsv<T>(List<T> inputList, string directoryPath, string fileName)

@@ -16,8 +16,8 @@ apiKey = "1BW3WaqcFv8f";
 apiSecret = "1QZiYjEkUK8VhOxbVvwwnsAt";
 
 apiBaseUrl = "http://api.ef2or.learningtapestry.com/";
-apiKey = "5AecoikxPt93";
-apiSecret = "x0ufijMP3g1LsuRjwZ7n2fS9";
+apiKey = "vVUf2k2aZ5Ey";
+apiSecret = "8wNOMIJKXYpzKHWUga692iIT";
 
 
 
