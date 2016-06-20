@@ -11,6 +11,7 @@ namespace ED2OR.Controllers
 {
     public class TemplatesController : BaseController
     {
+        public const int NUMBER_OF_DOWNLOADS = 3;
         public ActionResult Index()
         {
             var model = (from t in db.Templates
@@ -21,7 +22,7 @@ namespace ED2OR.Controllers
                             VendorName = t.VendorName,
                             AccessUrl = t.AccessUrl,
                             AccessToken = t.AccessToken,
-                            NumberOfDownloads = 3,
+                            NumberOfDownloads = NUMBER_OF_DOWNLOADS,
                             LastAccess = DateTime.Now
                         }).ToList();
             return View(model);
