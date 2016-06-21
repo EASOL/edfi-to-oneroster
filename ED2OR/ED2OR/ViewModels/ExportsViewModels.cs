@@ -54,5 +54,8 @@ namespace ED2OR.ViewModels
         public string SchoolId { get; set; }
         public string SchoolYear { get; set; }
         public string Term { get; set; }
+        public string Subject { get; set; }
+        public string Course { get; set; }
+        public string Teacher { get; set; }
     }
 }

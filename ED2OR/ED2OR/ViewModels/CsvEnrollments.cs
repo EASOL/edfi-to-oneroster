@@ -10,5 +10,6 @@ namespace ED2OR.ViewModels
         public string userSourcedId { get; set; }
         public string role { get; set; }
         public string status { get; set; }
+        public string dateLastModified { get; set; }
     }
 }

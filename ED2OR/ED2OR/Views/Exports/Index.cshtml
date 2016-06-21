@@ -189,10 +189,16 @@
                     boxesAlreadyChecked: subjectsAlreadyChecked });
 
                 $("#CoursesContainer").load("@Url.Action("GetCoursesPartial")", { 
-                schoolIds: schoolIds,
-                schoolYears: schoolYears,
-                terms: terms,
-                boxesAlreadyChecked: coursesAlreadyChecked });
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    boxesAlreadyChecked: coursesAlreadyChecked });
+
+                $("#TeachersContainer").load("@Url.Action("GetTeachersPartial")", { 
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    boxesAlreadyChecked: teachersAlreadyChecked });
 
                 @*var postData = { schoolIds: schoolIds };
                 $.ajax({

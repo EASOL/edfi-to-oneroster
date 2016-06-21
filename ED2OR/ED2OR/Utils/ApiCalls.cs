@@ -204,7 +204,7 @@ namespace ED2OR.Utils
                 var subjects = (from s in responseArray
                                 select new ExportsCheckbox
                                 {
-                                    Id = (string)s["id"],
+                                    Id = (string)s["academicSubjectDescriptor"],
                                     SchoolId = (string)s["schoolReference"]["id"],
                                     SchoolYear = (string)s["sessionReference"]["schoolYear"],
                                     Term = (string)s["sessionReference"]["termDescriptor"],
@@ -231,6 +231,7 @@ namespace ED2OR.Utils
                                     SchoolYear = (string)s["sessionReference"]["schoolYear"],
                                     Term = (string)s["sessionReference"]["termDescriptor"],
                                     Text = (string)s["courseOfferingReference"]["localCourseCode"],
+                                    Subject = (string)s["academicSubjectDescriptor"],
                                     Visible = true
                                 }).ToList();
 
@@ -238,6 +239,69 @@ namespace ED2OR.Utils
             }
             return (List<ExportsCheckbox>)HttpContext.Current.Session["AllCourses"];
         }
+
+        public static async Task<List<ExportsCheckbox>> GetTeachers()
+        {
+            if (HttpContext.Current.Session["AllTeachers"] == null)
+            {
+                var responseArray = await GetApiResponseArray(ApiEndPoints.Teachers);
+                var enrollmentsList = (from o in responseArray
+                                       let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
+                                       select new
+                                       {
+                                           SchoolId = (string)o["schoolReference"]["id"],
+                                           SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                           Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                           Subject = (string)o["academicSubjectDescriptor"],
+                                           Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                           staffs = staffs
+                                       });
+
+                var teachers = (from e in enrollmentsList
+                                from s in e.staffs
+                                select new ExportsCheckbox
+                                {
+                                    SchoolId = e.SchoolId,
+                                    SchoolYear = e.SchoolYear,
+                                    Term = e.Term,
+                                    Subject = e.Subject,
+                                    Course = e.Course,
+                                    Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
+                                    Id = (string)s["id"]
+                                }).ToList();
+
+                HttpContext.Current.Session["AllTeachers"] = teachers;
+            }
+            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllTeachers"];
+        }
+
+        //public static async Task<List<ExportsCheckbox>> GetSections()
+        //{
+        //    if (HttpContext.Current.Session["AllSections"] == null)
+        //    {
+        ////public const string Sections = "enrollment/sections"; //uniqueSectionCode
+        //        var responseArray = await GetApiResponseArray(ApiEndPoints.Courses);
+        //        var sections = (from s in responseArray
+        //                       select new ExportsCheckbox
+        //                       {
+        //                           Id = (string)s["id"],
+        //                           Course = (string)s["courseOfferingReference"]["localCourseCode"],
+        //                           SchoolId = (string)s["schoolReference"]["id"],
+        //                           SchoolYear = (string)s["sessionReference"]["schoolYear"],
+        //                           Term = (string)s["sessionReference"]["termDescriptor"],
+        //                           Text = (string)s["uniqueSectionCode"],
+        //                           Subject = (string)s["academicSubjectDescriptor"],
+        //                           Visible = true
+        //                       }).ToList();
+
+        //        HttpContext.Current.Session["AllSections"] = sections;
+        //    }
+        //    return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSections"];
+        //}
+
+
+
+
         #endregion
 
         #region ResultsMethods
@@ -262,11 +326,10 @@ namespace ED2OR.Utils
                                  select new CsvOrgs
                                  {
                                      sourcedId = (string)o["id"],
-                                     status = "active",
                                      name = (string)o["nameOfInstitution"],
                                      type = "school",
-                                     identifier = ""
-                                     //parentSourcedId = (string)o["localEducationAgencyReference"]["id"]  //TODO: doesnt exist in API yet
+                                     identifier = "",
+                                     parentSourcedId = (string)o["localEducationAgencyReference"]["id"]
                                  }).ToList();
             return listOfObjects;
         }
@@ -280,18 +343,18 @@ namespace ED2OR.Utils
                                   let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                                   let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
                                   let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                                  let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
+                                  //let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
                                   let orgIds = schoolAssociationsIds == null ? "" :
                                       (
-                                       schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
+                                       schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
+                                       //schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
                                       )
                                   select new CsvUsers
                                   {
                                       sourcedId = (string)o["id"],
-                                      status = "active",
                                       orgSourcedIds = orgIds,
                                       role = "student",
-                                      username = (string)o["loginId"], //TODO: doesnt exist in API yet
+                                      username = (string)o["loginId"],
                                       userId = (string)o["studentUniqueId"],
                                       givenName = (string)o["firstName"],
                                       familyName = (string)o["lastSurname"],
@@ -308,18 +371,18 @@ namespace ED2OR.Utils
                                let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                                let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
                                let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                               let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
+                               //let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
                                let orgIds = schoolAssociationsIds == null ? "" :
                                    (
-                                    schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
+                                    schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
+                                    //schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
                                    )
                                select new CsvUsers
                                {
                                    sourcedId = (string)o["id"],
-                                   status = "active",
                                    orgSourcedIds = orgIds,
                                    role = "teacher",
-                                   username = (string)o["loginId"], //TODO: doesnt exist in API yet
+                                   username = (string)o["loginId"],
                                    userId = (string)o["staffUniqueId"],
                                    givenName = (string)o["firstName"],
                                    familyName = (string)o["lastSurname"],
@@ -338,7 +401,6 @@ namespace ED2OR.Utils
                                  select new CsvCourses
                                  {
                                      sourcedId = (string)o["courseOfferingReference"]["id"],
-                                     status = "active",
                                      schoolYearId = (string)o["sessionReference"]["id"],
                                      title = (string)o["courseOfferingReference"]["localCourseCode"],
                                      courseCode = (string)o["courseOfferingReference"]["localCourseCode"],
@@ -355,7 +417,6 @@ namespace ED2OR.Utils
                                  select new CsvClasses
                                  {
                                      sourcedId = (string)o["id"],
-                                     status = "active",
                                      title = (string)o["uniqueSectionCode"],
                                      courseSourcedId = (string)o["courseOfferingReference"]["id"],
                                      classCode = (string)o["uniqueSectionCode"],
@@ -371,39 +432,36 @@ namespace ED2OR.Utils
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvEnrollments);
             var enrollmentsList = (from o in responseArray
-                                   let studentIds = o["students"].Children().Select(x => (string)x["id"])
-                                   let staffIds = o["staff"].Children().Select(x => (string)x["id"])
+                                   let students = o["students"].Children()
+                                   let staffs = o["staff"].Children()
                                    select new
                                    {
-                                       //sourcedId = (string)o["id"],  //doesnt exist in API yet
                                        classSourcedId = (string)o["id"],
                                        schoolSourcedId = (string)o["schoolReference"]["id"],
-                                       studentIds = studentIds,
-                                       staffIds = staffIds
+                                       students = students,
+                                       staffs = staffs
                                    });
 
             var studentInfo = (from e in enrollmentsList
-                               from s in e.studentIds
+                               from s in e.students
                                select new CsvEnrollments
                                {
-                                   //sourcedId = (string)o["id"],  //doesnt exist in API yet
+                                   sourcedId = (string)s["studentSectionAssociation_id"],
                                    classSourcedId = e.classSourcedId,
                                    schoolSourcedId = e.schoolSourcedId,
-                                   userSourcedId = s,
-                                   role = "student",
-                                   status = "active"
+                                   userSourcedId = (string)s["id"],
+                                   role = "student"
                                });
 
             var staffInfo = (from e in enrollmentsList
-                             from s in e.staffIds
+                             from s in e.staffs
                              select new CsvEnrollments
                              {
-                                 //sourcedId = (string)o["id"],  //doesnt exist in API yet
+                                 sourcedId = (string)s["staffSectionAssociation_id"],
                                  classSourcedId = e.classSourcedId,
                                  schoolSourcedId = e.schoolSourcedId,
-                                 userSourcedId = s,
-                                 role = "teacher",
-                                 status = "active"
+                                 userSourcedId = (string)s["id"],
+                                 role = "teacher"
                              });
 
             var allEnrollments = studentInfo.Concat(staffInfo).ToList();
@@ -418,7 +476,6 @@ namespace ED2OR.Utils
                                  select new CsvAcademicSessions
                                  {
                                      sourcedId = (string)o["sessionReference"]["id"],
-                                     status = "active",
                                      title = (string)o["sessionReference"]["schoolYear"] + " " + (string)o["sessionReference"]["termDescriptor"],
                                      //type = (string)o["id"], //TODO: Not sure what this one is
                                      startDate = (string)o["sessionReference"]["beginDate"],
@@ -450,7 +507,7 @@ namespace ED2OR.Utils
 
         private static async Task<ApiResponse> GetApiResponse(string apiEndpoint)
         {
-            var stopFetchingRecordsAt = 500;
+            var stopFetchingRecordsAt = 250;
             var maxRecordLimit = 50;
             var fullUrl = ApiEndPoints.ApiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
 

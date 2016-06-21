@@ -125,27 +125,41 @@ namespace ED2OR.Controllers
                 IsExpanded = true
             };
 
-            if (schoolIds == null || schoolYears == null || terms == null || schoolIds.Count() == 0 || schoolYears.Count() == 0 || terms.Count() == 0)
+            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            bool allTerms = terms == null || terms.Count() == 0;
+        
+            var subjects = await ApiCalls.GetSubjects();
+            var filteredSubjects = new List<ExportsCheckbox>();
+            filteredSubjects.AddRange(subjects);
+
+            if (!allSchools)
             {
-                return PartialView("_CriteriaSection", model);
+                filteredSubjects = filteredSubjects.Where(x =>
+                schoolIds.Contains(x.SchoolId)).ToList();
             }
 
-            var subjects = await ApiCalls.GetSubjects();
-            var filteredSubjects = subjects.Where(x =>
-                schoolIds.Contains(x.SchoolId) &&
-                schoolYears.Contains(x.SchoolYear) &&
-                terms.Contains(x.Term)).GroupBy(x => x.Text).Select(group => group.First());
+            if (!allSchoolYears)
+            {
+                filteredSubjects = filteredSubjects.Where(x =>
+                schoolYears.Contains(x.SchoolYear)).ToList();
+            }
 
-            var subjectsListNewInstance = new List<ExportsCheckbox>(); //you need to make a new instance because when you check the boxes, it affects the session var
-            subjectsListNewInstance.AddRange(filteredSubjects);
+            if (!allTerms)
+            {
+                filteredSubjects = filteredSubjects.Where(x =>
+                terms.Contains(x.Term)).ToList();
+            }
+
+            filteredSubjects = filteredSubjects.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
-                var boxesToCheck = subjectsListNewInstance.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                var boxesToCheck = filteredSubjects.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
                 boxesToCheck.ForEach(c => c.Selected = true);
             }
 
-            model.FilterCheckboxes = subjectsListNewInstance;
+            model.FilterCheckboxes = filteredSubjects;
             
             return PartialView("_CriteriaSection", model);
         }
@@ -163,51 +177,99 @@ namespace ED2OR.Controllers
                 IsExpanded = true
             };
 
-            if (schoolIds == null || schoolYears == null || terms == null || schoolIds.Count() == 0 || schoolYears.Count() == 0 || terms.Count() == 0)
-            {
-                return PartialView("_CriteriaSection", model);
-            }
+            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            bool allTerms = terms == null || terms.Count() == 0;
 
             var courses = await ApiCalls.GetCourses();
-            var filteredCourses = courses.Where(x =>
-                schoolIds.Contains(x.SchoolId) &&
-                schoolYears.Contains(x.SchoolYear) &&
-                terms.Contains(x.Term)).GroupBy(x => x.Text).Select(group => group.First());
+            var filteredCourses = new List<ExportsCheckbox>();
+            filteredCourses.AddRange(courses);
 
-            var coursesListNewInstance = new List<ExportsCheckbox>(); //you need to make a new instance because when you check the boxes, it affects the session var
-            coursesListNewInstance.AddRange(filteredCourses);
+            if (!allSchools)
+            {
+                filteredCourses = filteredCourses.Where(x =>
+                schoolIds.Contains(x.SchoolId)).ToList();
+            }
+
+            if (!allSchoolYears)
+            {
+                filteredCourses = filteredCourses.Where(x =>
+                schoolYears.Contains(x.SchoolYear)).ToList();
+            }
+
+            if (!allTerms)
+            {
+                filteredCourses = filteredCourses.Where(x =>
+                terms.Contains(x.Term)).ToList();
+            }
+
+            filteredCourses = filteredCourses.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
-                var boxesToCheck = coursesListNewInstance.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                var boxesToCheck = filteredCourses.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
                 boxesToCheck.ForEach(c => c.Selected = true);
             }
 
-            model.FilterCheckboxes = coursesListNewInstance;
+            model.FilterCheckboxes = filteredCourses;
 
             return PartialView("_CriteriaSection", model);
         }
 
-        //private void FilterSubjects(List<ExportsCheckbox> schools, List<ExportsCheckbox> subjects)
-        //{
-        //    var selectedSchools = schools.Where(x => x.Selected).Select(x => x.SchoolId).ToList();
-        //    subjects.RemoveAll(x => selectedSchools.Contains(x.SchoolId) == false);
-        //}
+        public async Task<ActionResult> GetTeachersPartial(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> boxesAlreadyChecked)
+        {
+            ViewData.TemplateInfo.HtmlFieldPrefix = "Teachers";
+
+            var model = new ApiCriteriaSection
+            {
+                SectionName = "Teachers",
+                IsExpanded = true
+            };
+
+            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            bool allTerms = terms == null || terms.Count() == 0;
+
+            var teachers = await ApiCalls.GetTeachers();
+            var filteredTeachers = new List<ExportsCheckbox>();
+            filteredTeachers.AddRange(teachers);
+
+            if (!allSchools)
+            {
+                filteredTeachers = filteredTeachers.Where(x =>
+                schoolIds.Contains(x.SchoolId)).ToList();
+            }
+
+            if (!allSchoolYears)
+            {
+                filteredTeachers = filteredTeachers.Where(x =>
+                schoolYears.Contains(x.SchoolYear)).ToList();
+            }
+
+            if (!allTerms)
+            {
+                filteredTeachers = filteredTeachers.Where(x =>
+                terms.Contains(x.Term)).ToList();
+            }
+
+            filteredTeachers = filteredTeachers.GroupBy(x => x.Text).Select(group => group.First()).ToList();
+
+            if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
+            {
+                var boxesToCheck = filteredTeachers.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                boxesToCheck.ForEach(c => c.Selected = true);
+            }
+
+            model.FilterCheckboxes = filteredTeachers;
+
+            return PartialView("_CriteriaSection", model);
+        }
 
         private async Task InitializeModel(ExportsViewModel model, bool collapseAll = false)
         {
-
-            /*
-            First Step - user has just opened the filter screen.
-Second Step - user has selected one of the facets from the first step.
-“Subjects” - /enrollment/sections endpoint. (acedemicSubjectDescriptor)
-“Course” - /enrollment/sections endpoint  (courseOfferingReference.localCourseCode)
-“Teachers” - /enrollment/sectionEnrollments (staff.firstName + staff.lastSurname)
-
-Third Step - user has selected one of the facets from the second step.
-Sections” - /enrollment/sections endpoint (uniqueSectionCode).
-*/
-
             await ApiCalls.PopulateFilterSection1(model, collapseAll);
 
             model.SubjectsCriteriaSection = new ApiCriteriaSection
@@ -281,7 +343,8 @@ Sections” - /enrollment/sections endpoint (uniqueSectionCode).
                     var newLine = new List<string>();
                     foreach (string prop in columnNames)
                     {
-                        newLine.Add(rec.GetType().GetProperty(prop).GetValue(rec, null)?.ToString() ?? "");
+                        var stringVal = rec.GetType().GetProperty(prop).GetValue(rec, null)?.ToString() ?? "";
+                        newLine.Add("\"" + stringVal + "\"");
                     }
                     sw.WriteLine(string.Join(",", newLine));
                 }

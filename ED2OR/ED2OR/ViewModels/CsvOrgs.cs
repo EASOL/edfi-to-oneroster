@@ -4,6 +4,7 @@
     {
         public string sourcedId { get; set; }
         public string status { get; set; }
+        public string dateLastModified { get; set; }
         public string name { get; set; }
         public string type { get; set; }
         public string identifier { get; set; }

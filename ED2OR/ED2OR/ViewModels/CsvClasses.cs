@@ -4,6 +4,7 @@
     {
         public string sourcedId { get; set; }
         public string status { get; set; }
+        public string dateLastModified { get; set; }
         public string title { get; set; }
         public string courseSourcedId { get; set; }
         public string classCode { get; set; }
