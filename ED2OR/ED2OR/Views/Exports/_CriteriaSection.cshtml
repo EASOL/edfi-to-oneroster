@@ -5,14 +5,15 @@
     var numSelected = Model.FilterCheckboxes == null ? 0 : Model.FilterCheckboxes.Where(x => x.Selected).Count();
     var numSelectedText = (numCheckboxes == numSelected && numCheckboxes != 0) ? "all" : numSelected.ToString();
     var collapseClass = Model.IsExpanded ? "collapse in" : "collapse";
+    var sectionName = Model.SectionName.Replace(" ", "_");
 }
 
 @Html.HiddenFor(x => x.SectionName)
 
-<div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#@Model.SectionName">
-    @Model.SectionName <span id="numSelected_@Model.SectionName">(@numSelectedText selected)</span>
+<div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#@sectionName">
+    @Model.SectionName <span id="numSelected_@sectionName">(@numSelectedText selected)</span>
 </div>
-<div class="@collapseClass" id="@Model.SectionName">
-    <a href="javascript:deselectAll('@Model.SectionName');">(deselect all)</a><br />
+<div class="@collapseClass" id="@sectionName">
+    <a href="javascript:deselectAll('@sectionName');">(deselect all)</a><br />
     @Html.EditorFor(x => x.FilterCheckboxes)
 </div>

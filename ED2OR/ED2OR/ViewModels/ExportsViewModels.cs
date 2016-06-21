@@ -7,32 +7,26 @@ namespace ED2OR.ViewModels
 {
     public class ExportsViewModel
     {
-        //public List<ExportsCheckbox> SchoolsCheckboxes { get; set; }
-        //public List<ExportsCheckbox> SubjectsCheckboxes { get; set; }
-        //public List<ExportsCheckbox> CoursesCheckboxes { get; set; }
-        //public List<ExportsCheckbox> SectionsCheckboxes { get; set; }
-        //public List<ExportsCheckbox> TeachersCheckboxes { get; set; }
-        public List<ApiCriteriaSection> CriteriaSections { get; set; }
+        //public List<ApiCriteriaSection> CriteriaSections { get; set; }
+        public ApiCriteriaSection SchoolsCriteriaSection { get; set; }
+        public ApiCriteriaSection SchoolYearsCriteriaSection { get; set; }
+        public ApiCriteriaSection TermsCriteriaSection { get; set; }
+        public ApiCriteriaSection SubjectsCriteriaSection { get; set; }
+        public ApiCriteriaSection CoursesCriteriaSection { get; set; }
+        public ApiCriteriaSection TeachersCriteriaSection { get; set; }
+        public ApiCriteriaSection SectionsCriteriaSection { get; set; }
         public List<DataPreviewSection> DataPreviewSections { get; set; }
         public PreveiwJsonResults JsonPreviews { get; set; }
-
     }
 
     public class PreveiwJsonResults
     {
-        //public List<CsvOrgs> OrgsResult { get; set; }
         public string Orgs { get; set; }
-        //public List<CsvUsers> UsersResult { get; set; }
         public string Users { get; set; }
-        //public List<CsvCourses> CoursesResult { get; set; }
         public string Courses { get; set; }
-        //public List<CsvClasses> ClassesResult { get; set; }
         public string Classes { get; set; }
-        //public List<CsvEnrollments> EnrollmentsResult { get; set; }
         public string Enrollments { get; set; }
-        //public List<CsvAcademicSessions> AcedemicSessionsResult { get; set; }
         public string AcademicSessions { get; set; }
-        //public ApiCriteriaSection SubjectsCriteriaSection { get; set; }
     }
 
     public class DataPreviewSection
@@ -45,8 +39,8 @@ namespace ED2OR.ViewModels
     {
         public List<ExportsCheckbox> FilterCheckboxes { get; set; }
         public string SectionName { get; set; }
-        public bool IsFilled { get; set; }
-        public int Level { get; set; }
+        //public bool IsFilled { get; set; }
+        //public int Level { get; set; }
         public bool IsExpanded { get; set; }
 
     }
@@ -54,9 +48,11 @@ namespace ED2OR.ViewModels
     public class ExportsCheckbox
     {
         public string Id { get; set; }
-        public string SchoolId { get; set; }
         public string Text { get; set; }
         public bool Selected { get; set; }
         public bool Visible { get; set; }
+        public string SchoolId { get; set; }
+        public string SchoolYear { get; set; }
+        public string Term { get; set; }
     }
 }
