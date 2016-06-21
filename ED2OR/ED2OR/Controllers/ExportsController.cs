@@ -112,33 +112,79 @@ namespace ED2OR.Controllers
         //    return Json(filteredSubjects.Select(x => x.Text).ToList(), JsonRequestBehavior.AllowGet);
         //}
 
-        public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds, List<string> boxesAlreadyChecked)
+        public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> boxesAlreadyChecked)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Subjects";
 
             var model = new ApiCriteriaSection
             {
                 SectionName = "Subjects",
-                Level = 2,
                 IsExpanded = true
             };
 
-            if (schoolIds == null || schoolIds.Count() == 0)
+            if (schoolIds == null || schoolYears == null || terms == null || schoolIds.Count() == 0 || schoolYears.Count() == 0 || terms.Count() == 0)
             {
                 return PartialView("_CriteriaSection", model);
             }
 
             var subjects = await ApiCalls.GetSubjects();
-            var filteredSubjects = subjects.Where(x => schoolIds.Contains(x.SchoolId)).GroupBy(x => x.Text).Select(group => group.First()).ToList();
+            var filteredSubjects = subjects.Where(x =>
+                schoolIds.Contains(x.SchoolId) &&
+                schoolYears.Contains(x.SchoolYear) &&
+                terms.Contains(x.Term)).GroupBy(x => x.Text).Select(group => group.First());
+
+            var subjectsListNewInstance = new List<ExportsCheckbox>(); //you need to make a new instance because when you check the boxes, it affects the session var
+            subjectsListNewInstance.AddRange(filteredSubjects);
 
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
-                var boxesToCheck = filteredSubjects.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                var boxesToCheck = subjectsListNewInstance.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
                 boxesToCheck.ForEach(c => c.Selected = true);
             }
 
-            model.FilterCheckboxes = filteredSubjects;
+            model.FilterCheckboxes = subjectsListNewInstance;
             
+            return PartialView("_CriteriaSection", model);
+        }
+
+        public async Task<ActionResult> GetCoursesPartial(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> boxesAlreadyChecked)
+        {
+            ViewData.TemplateInfo.HtmlFieldPrefix = "Courses";
+
+            var model = new ApiCriteriaSection
+            {
+                SectionName = "Courses",
+                IsExpanded = true
+            };
+
+            if (schoolIds == null || schoolYears == null || terms == null || schoolIds.Count() == 0 || schoolYears.Count() == 0 || terms.Count() == 0)
+            {
+                return PartialView("_CriteriaSection", model);
+            }
+
+            var courses = await ApiCalls.GetCourses();
+            var filteredCourses = courses.Where(x =>
+                schoolIds.Contains(x.SchoolId) &&
+                schoolYears.Contains(x.SchoolYear) &&
+                terms.Contains(x.Term)).GroupBy(x => x.Text).Select(group => group.First());
+
+            var coursesListNewInstance = new List<ExportsCheckbox>(); //you need to make a new instance because when you check the boxes, it affects the session var
+            coursesListNewInstance.AddRange(filteredCourses);
+
+            if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
+            {
+                var boxesToCheck = coursesListNewInstance.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                boxesToCheck.ForEach(c => c.Selected = true);
+            }
+
+            model.FilterCheckboxes = coursesListNewInstance;
+
             return PartialView("_CriteriaSection", model);
         }
 
@@ -150,37 +196,38 @@ namespace ED2OR.Controllers
 
         private async Task InitializeModel(ExportsViewModel model, bool collapseAll = false)
         {
-            var schools = await ApiCalls.GetSchools();
-            //var subjects = await ApiCalls.GetSubjects(); //this is never used here, but it's good to call it so it's loaded into the session
-            model.CriteriaSections = new List<ApiCriteriaSection>
+
+            /*
+            First Step - user has just opened the filter screen.
+Second Step - user has selected one of the facets from the first step.
+“Subjects” - /enrollment/sections endpoint. (acedemicSubjectDescriptor)
+“Course” - /enrollment/sections endpoint  (courseOfferingReference.localCourseCode)
+“Teachers” - /enrollment/sectionEnrollments (staff.firstName + staff.lastSurname)
+
+Third Step - user has selected one of the facets from the second step.
+Sections” - /enrollment/sections endpoint (uniqueSectionCode).
+*/
+
+            await ApiCalls.PopulateFilterSection1(model, collapseAll);
+
+            model.SubjectsCriteriaSection = new ApiCriteriaSection
             {
-                new ApiCriteriaSection
-                {
-                    FilterCheckboxes = schools,
-                    SectionName = "Schools",
-                    IsExpanded = collapseAll ? false : true,
-                    Level = 1
-                },
-                new ApiCriteriaSection
-                {
-                    SectionName = "Subjects",
-                    Level = 2
-                },
-                new ApiCriteriaSection
-                {
-                    SectionName = "Courses",
-                    Level = 3
-                },
-                new ApiCriteriaSection
-                {
-                    SectionName = "Sections",
-                    Level = 3
-                }
-                ,new ApiCriteriaSection
-                {
-                    SectionName = "Teachers",
-                    Level = 3
-                }
+                SectionName = "Subjects"
+            };
+
+            model.CoursesCriteriaSection = new ApiCriteriaSection
+            {
+                SectionName = "Courses"
+            };
+
+            model.TeachersCriteriaSection = new ApiCriteriaSection
+            {
+                SectionName = "Teachers"
+            };
+
+            model.SectionsCriteriaSection = new ApiCriteriaSection
+            {
+                SectionName = "Sections"
             };
         }
 
@@ -215,7 +262,7 @@ namespace ED2OR.Controllers
             var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
             Directory.Delete(tempDirectoryFullName, true);
             System.IO.File.Delete(zipPath);
-            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now);
+            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
             return File(bytes, "application/zip", downloadFileName);
         }
 
