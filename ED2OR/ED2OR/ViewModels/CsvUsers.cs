@@ -4,6 +4,7 @@
     {
         public string sourcedId { get; set; }
         public string status { get; set; }
+        public string dateLastModified { get; set; }
         public string orgSourcedIds { get; set; }
         public string role { get; set; }
         public string username { get; set; }
