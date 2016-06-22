@@ -112,24 +112,46 @@ namespace ED2OR.Controllers
         //    return Json(filteredSubjects.Select(x => x.Text).ToList(), JsonRequestBehavior.AllowGet);
         //}
 
-        public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds, List<string> boxesAlreadyChecked)
+        public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> boxesAlreadyChecked)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Subjects";
 
             var model = new ApiCriteriaSection
             {
                 SectionName = "Subjects",
-                Level = 2,
                 IsExpanded = true
             };
 
-            if (schoolIds == null || schoolIds.Count() == 0)
+            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            bool allTerms = terms == null || terms.Count() == 0;
+        
+            var subjects = await ApiCalls.GetSubjects();
+            var filteredSubjects = new List<ExportsCheckbox>();
+            filteredSubjects.AddRange(subjects);
+
+            if (!allSchools)
             {
-                return PartialView("_CriteriaSection", model);
+                filteredSubjects = filteredSubjects.Where(x =>
+                schoolIds.Contains(x.SchoolId)).ToList();
             }
 
-            var subjects = await ApiCalls.GetSubjects();
-            var filteredSubjects = subjects.Where(x => schoolIds.Contains(x.SchoolId)).GroupBy(x => x.Text).Select(group => group.First()).ToList();
+            if (!allSchoolYears)
+            {
+                filteredSubjects = filteredSubjects.Where(x =>
+                schoolYears.Contains(x.SchoolYear)).ToList();
+            }
+
+            if (!allTerms)
+            {
+                filteredSubjects = filteredSubjects.Where(x =>
+                terms.Contains(x.Term)).ToList();
+            }
+
+            filteredSubjects = filteredSubjects.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
@@ -142,45 +164,132 @@ namespace ED2OR.Controllers
             return PartialView("_CriteriaSection", model);
         }
 
-        //private void FilterSubjects(List<ExportsCheckbox> schools, List<ExportsCheckbox> subjects)
-        //{
-        //    var selectedSchools = schools.Where(x => x.Selected).Select(x => x.SchoolId).ToList();
-        //    subjects.RemoveAll(x => selectedSchools.Contains(x.SchoolId) == false);
-        //}
+        public async Task<ActionResult> GetCoursesPartial(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> boxesAlreadyChecked)
+        {
+            ViewData.TemplateInfo.HtmlFieldPrefix = "Courses";
+
+            var model = new ApiCriteriaSection
+            {
+                SectionName = "Courses",
+                IsExpanded = true
+            };
+
+            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            bool allTerms = terms == null || terms.Count() == 0;
+
+            var courses = await ApiCalls.GetCourses();
+            var filteredCourses = new List<ExportsCheckbox>();
+            filteredCourses.AddRange(courses);
+
+            if (!allSchools)
+            {
+                filteredCourses = filteredCourses.Where(x =>
+                schoolIds.Contains(x.SchoolId)).ToList();
+            }
+
+            if (!allSchoolYears)
+            {
+                filteredCourses = filteredCourses.Where(x =>
+                schoolYears.Contains(x.SchoolYear)).ToList();
+            }
+
+            if (!allTerms)
+            {
+                filteredCourses = filteredCourses.Where(x =>
+                terms.Contains(x.Term)).ToList();
+            }
+
+            filteredCourses = filteredCourses.GroupBy(x => x.Text).Select(group => group.First()).ToList();
+
+            if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
+            {
+                var boxesToCheck = filteredCourses.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                boxesToCheck.ForEach(c => c.Selected = true);
+            }
+
+            model.FilterCheckboxes = filteredCourses;
+
+            return PartialView("_CriteriaSection", model);
+        }
+
+        public async Task<ActionResult> GetTeachersPartial(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> boxesAlreadyChecked)
+        {
+            ViewData.TemplateInfo.HtmlFieldPrefix = "Teachers";
+
+            var model = new ApiCriteriaSection
+            {
+                SectionName = "Teachers",
+                IsExpanded = true
+            };
+
+            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            bool allTerms = terms == null || terms.Count() == 0;
+
+            var teachers = await ApiCalls.GetTeachers();
+            var filteredTeachers = new List<ExportsCheckbox>();
+            filteredTeachers.AddRange(teachers);
+
+            if (!allSchools)
+            {
+                filteredTeachers = filteredTeachers.Where(x =>
+                schoolIds.Contains(x.SchoolId)).ToList();
+            }
+
+            if (!allSchoolYears)
+            {
+                filteredTeachers = filteredTeachers.Where(x =>
+                schoolYears.Contains(x.SchoolYear)).ToList();
+            }
+
+            if (!allTerms)
+            {
+                filteredTeachers = filteredTeachers.Where(x =>
+                terms.Contains(x.Term)).ToList();
+            }
+
+            filteredTeachers = filteredTeachers.GroupBy(x => x.Text).Select(group => group.First()).ToList();
+
+            if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
+            {
+                var boxesToCheck = filteredTeachers.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                boxesToCheck.ForEach(c => c.Selected = true);
+            }
+
+            model.FilterCheckboxes = filteredTeachers;
+
+            return PartialView("_CriteriaSection", model);
+        }
 
         private async Task InitializeModel(ExportsViewModel model, bool collapseAll = false)
         {
-            var schools = await ApiCalls.GetSchools();
-            //var subjects = await ApiCalls.GetSubjects(); //this is never used here, but it's good to call it so it's loaded into the session
-            model.CriteriaSections = new List<ApiCriteriaSection>
+            await ApiCalls.PopulateFilterSection1(model, collapseAll);
+
+            model.SubjectsCriteriaSection = new ApiCriteriaSection
             {
-                new ApiCriteriaSection
-                {
-                    FilterCheckboxes = schools,
-                    SectionName = "Schools",
-                    IsExpanded = collapseAll ? false : true,
-                    Level = 1
-                },
-                new ApiCriteriaSection
-                {
-                    SectionName = "Subjects",
-                    Level = 2
-                },
-                new ApiCriteriaSection
-                {
-                    SectionName = "Courses",
-                    Level = 3
-                },
-                new ApiCriteriaSection
-                {
-                    SectionName = "Sections",
-                    Level = 3
-                }
-                ,new ApiCriteriaSection
-                {
-                    SectionName = "Teachers",
-                    Level = 3
-                }
+                SectionName = "Subjects"
+            };
+
+            model.CoursesCriteriaSection = new ApiCriteriaSection
+            {
+                SectionName = "Courses"
+            };
+
+            model.TeachersCriteriaSection = new ApiCriteriaSection
+            {
+                SectionName = "Teachers"
+            };
+
+            model.SectionsCriteriaSection = new ApiCriteriaSection
+            {
+                SectionName = "Sections"
             };
         }
 
@@ -215,7 +324,7 @@ namespace ED2OR.Controllers
             var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
             Directory.Delete(tempDirectoryFullName, true);
             System.IO.File.Delete(zipPath);
-            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now);
+            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
             return File(bytes, "application/zip", downloadFileName);
         }
 
@@ -234,7 +343,8 @@ namespace ED2OR.Controllers
                     var newLine = new List<string>();
                     foreach (string prop in columnNames)
                     {
-                        newLine.Add(rec.GetType().GetProperty(prop).GetValue(rec, null)?.ToString() ?? "");
+                        var stringVal = rec.GetType().GetProperty(prop).GetValue(rec, null)?.ToString() ?? "";
+                        newLine.Add("\"" + stringVal + "\"");
                     }
                     sw.WriteLine(string.Join(",", newLine));
                 }
