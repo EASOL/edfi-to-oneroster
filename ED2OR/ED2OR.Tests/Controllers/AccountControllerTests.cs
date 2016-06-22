@@ -13,6 +13,7 @@ using Moq;
 using ED2OR.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ED2OR.Controllers.Tests
 {
@@ -21,17 +22,18 @@ namespace ED2OR.Controllers.Tests
     {
         private const string TESTUSER_USERNAME = "testuser@learningtapestry.com";
         private const string TESTUSER_ORIGINALPASSWORD = "Admin@2016";
+        private static ApplicationDbContext db = null;
         [ClassInitialize()]
         public static void InitializeClass(TestContext context)
         {
-            ApplicationDbContext db = new ApplicationDbContext();
+            db = new ApplicationDbContext();
             var testUser = db.Users.Where(p => p.UserName == TESTUSER_USERNAME).FirstOrDefault();
             if (testUser != null)
             {
                 db.Users.Remove(testUser);
                 db.SaveChanges();
             }
-    }
+        }
 
         [TestMethod()]
         public void LoginTest()
@@ -48,11 +50,7 @@ namespace ED2OR.Controllers.Tests
         [TestMethod()]
         public async Task Register()
         {
-            Mock<ApplicationUserManager> userManager;
-            Mock<ApplicationSignInManager> signInManager;
-            PrepareAuthentication(out userManager, out signInManager);
-
-            var accountController = new AccountController(userManager.Object, signInManager.Object);
+            var accountController = new AccountController();
             //var accountController = new AccountController(userManager.Object, signInManager.Object, authenticationManager.Object);
 
             // Act
@@ -66,23 +64,53 @@ namespace ED2OR.Controllers.Tests
             else
             {
                 ViewResult viewResult = result as ViewResult;
-                Assert.Inconclusive("accountController.Register is failing tests, possibly because of using Mocks or OWIN. Validating if using Microsoft's Fakes Assembly work");
-                var createUserResult = await accountController.Register(model: new ViewModels.RegisterViewModel()
+                //Assert.Inconclusive("accountController.Register is failing tests, possibly because of using Mocks or OWIN. Validating if using Microsoft's Fakes Assembly work");
+                using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
                 {
-                    Email= TESTUSER_USERNAME,
-                    Password = TESTUSER_ORIGINALPASSWORD,
-                    ConfirmPassword = TESTUSER_ORIGINALPASSWORD
+                    ED2OR.Controllers.Fakes.ShimAccountController.AllInstances.UserManagerGet = (a) =>
+                    {
+                        var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+                        return manager;
+                    };
+                    Microsoft.AspNet.Identity.Fakes.ShimUserManager<ApplicationUser, string>.AllInstances.CreateAsyncT0 = (userManager, userInfo) => 
+                     {
+                         try
+                         {
+                             db.Users.Add(userInfo);
+                             db.SaveChanges();
+                             return Task.FromResult(IdentityResult.Success);
+                         }
+                         catch ( System.Data.Entity.Validation.DbEntityValidationException dbValEx)
+                         {
+                             System.Text.StringBuilder errorsList = new StringBuilder();
+                             foreach (var valError in dbValEx.EntityValidationErrors)
+                             {
+                                 foreach (var singleError in valError.ValidationErrors)
+                                 {
+                                     errorsList.AppendLine(string.Format("Property: {0} - Message:{1}", singleError.PropertyName, singleError.ErrorMessage));
+                                 }
+                             }
+                             throw dbValEx;
+                         }
+                     };
+                    var createUserResult = 
+                        await accountController.Register(model: new ViewModels.RegisterViewModel()
+                    {
+                        Email = TESTUSER_USERNAME,
+                        Password = TESTUSER_ORIGINALPASSWORD,
+                        ConfirmPassword = TESTUSER_ORIGINALPASSWORD
 
-                });
-                if (createUserResult is RedirectToRouteResult)
-                {
-                    RedirectToRouteResult createUserRedirectResult = createUserResult as RedirectToRouteResult;
-                    Assert.IsTrue(createUserRedirectResult.RouteValues["action"].ToString() == "Index" && 
-                        createUserRedirectResult.RouteValues["controller"].ToString()=="Home", "Unexpected Redirect");
-                }
-                else
-                {
-                    Assert.Inconclusive("Need to validate if there are errors");
+                    });
+                    if (createUserResult is RedirectToRouteResult)
+                    {
+                        RedirectToRouteResult createUserRedirectResult = createUserResult as RedirectToRouteResult;
+                        Assert.IsTrue(createUserRedirectResult.RouteValues["action"].ToString() == "Index" &&
+                            createUserRedirectResult.RouteValues["controller"].ToString() == "Home", "Unexpected Redirect");
+                    }
+                    else
+                    {
+                        Assert.Inconclusive("Need to validate if there are errors");
+                    }
                 }
             }
 
