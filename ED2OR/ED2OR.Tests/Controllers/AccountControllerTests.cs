@@ -50,8 +50,10 @@ namespace ED2OR.Controllers.Tests
         [TestMethod()]
         public async Task Register()
         {
-            var accountController = new AccountController();
-            //var accountController = new AccountController(userManager.Object, signInManager.Object, authenticationManager.Object);
+            ApplicationUserManager objUserManager = null;
+            ApplicationSignInManager objSignInManager = null;
+            PrepareAuthentication(out objUserManager, out objSignInManager);
+            var accountController = new AccountController(objUserManager, objSignInManager);
 
             // Act
             var result = accountController.Register();
@@ -72,7 +74,7 @@ namespace ED2OR.Controllers.Tests
                         var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
                         return manager;
                     };
-                    Microsoft.AspNet.Identity.Fakes.ShimUserManager<ApplicationUser, string>.AllInstances.CreateAsyncT0 = (userManager, userInfo) => 
+                    Microsoft.AspNet.Identity.Fakes.ShimUserManager<ApplicationUser, string>.AllInstances.CreateAsyncT0 = (userManager, userInfo) =>
                      {
                          try
                          {
@@ -80,7 +82,7 @@ namespace ED2OR.Controllers.Tests
                              db.SaveChanges();
                              return Task.FromResult(IdentityResult.Success);
                          }
-                         catch ( System.Data.Entity.Validation.DbEntityValidationException dbValEx)
+                         catch (System.Data.Entity.Validation.DbEntityValidationException dbValEx)
                          {
                              System.Text.StringBuilder errorsList = new StringBuilder();
                              foreach (var valError in dbValEx.EntityValidationErrors)
@@ -93,14 +95,27 @@ namespace ED2OR.Controllers.Tests
                              throw dbValEx;
                          }
                      };
-                    var createUserResult = 
-                        await accountController.Register(model: new ViewModels.RegisterViewModel()
+                    ED2OR.Models.Fakes.ShimApplicationUser.AllInstances.GenerateUserIdentityAsyncUserManagerOfApplicationUser = (fakeApplicationUser, fakeUserManager) =>
                     {
-                        Email = TESTUSER_USERNAME,
-                        Password = TESTUSER_ORIGINALPASSWORD,
-                        ConfirmPassword = TESTUSER_ORIGINALPASSWORD
+                        UserStore<ApplicationUser> userStore = new UserStore<ApplicationUser>(db);
+                        fakeUserManager = new UserManager<ApplicationUser>(userStore);
+                        return fakeUserManager.CreateIdentityAsync(fakeApplicationUser, DefaultAuthenticationTypes.ApplicationCookie);
+                    };
+                    Microsoft.AspNet.Identity.Owin.Fakes.ShimSignInManager<ApplicationUser, string>.AllInstances.UserManagerGet =
+                        (fakeSignInManager) =>
+                        {
+                            UserStore<ApplicationUser> userStore = new UserStore<ApplicationUser>(db);
+                            ApplicationUserManager userManager = new ApplicationUserManager(userStore);
+                            return userManager;
+                        };
+                    var createUserResult =
+                        await accountController.Register(model: new ViewModels.RegisterViewModel()
+                        {
+                            Email = TESTUSER_USERNAME,
+                            Password = TESTUSER_ORIGINALPASSWORD,
+                            ConfirmPassword = TESTUSER_ORIGINALPASSWORD
 
-                    });
+                        });
                     if (createUserResult is RedirectToRouteResult)
                     {
                         RedirectToRouteResult createUserRedirectResult = createUserResult as RedirectToRouteResult;
@@ -116,13 +131,33 @@ namespace ED2OR.Controllers.Tests
 
         }
 
-        private static void PrepareAuthentication(out Mock<ApplicationUserManager> userManager, out Mock<ApplicationSignInManager> signInManager)
+        private static void PrepareAuthentication(out ApplicationUserManager userManager, out ApplicationSignInManager signInManager)
         {
-            HttpContext.Current = CreateHttpContext(userLoggedIn: false);
-            var userStore = new Mock<IUserStore<ApplicationUser>>();
-            userManager = new Mock<ApplicationUserManager>(userStore.Object);
-            var authenticationManager = new Mock<IAuthenticationManager>();
-            signInManager = new Mock<ApplicationSignInManager>(userManager.Object, authenticationManager.Object);
+            using (var server = Microsoft.Owin.Testing.TestServer.Create<Startup>())
+            {
+                HttpContext.Current = CreateHttpContext(false);
+                var response = server.HttpClient.GetAsync("/");
+                response.Wait();
+                Microsoft.Owin.OwinContext ctx = new Microsoft.Owin.OwinContext(new System.Collections.Generic.Dictionary<string, object>());
+                UserStore<ApplicationUser> userStore = new UserStore<ApplicationUser>(db);
+                userManager = new ApplicationUserManager(userStore);
+                using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
+                {
+                    ED2OR.Fakes.ShimApplicationSignInManager.ConstructorApplicationUserManagerIAuthenticationManager = (fakeSignInManager, fakeUserManager, fakeAuthenticationManager) =>
+                    {
+                        fakeUserManager = new ApplicationUserManager(userStore);
+                        Microsoft.AspNet.Identity.Owin.SignInManager<ApplicationUser, string> a = new Microsoft.AspNet.Identity.Owin.SignInManager<ApplicationUser, string>(
+                            fakeUserManager, fakeAuthenticationManager);
+                    };
+                    signInManager = ApplicationSignInManager.Create(
+                        options: new Microsoft.AspNet.Identity.Owin.IdentityFactoryOptions<ApplicationSignInManager>()
+                        {
+                            DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider(),
+                            Provider = new Microsoft.AspNet.Identity.Owin.IdentityFactoryProvider<ApplicationSignInManager>()
+                        },
+                        context: ctx);
+                }
+            }
         }
 
         /// <summary>
