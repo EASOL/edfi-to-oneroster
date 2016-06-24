@@ -147,7 +147,7 @@ namespace ED2OR.Controllers.Tests
         {
             using (var server = Microsoft.Owin.Testing.TestServer.Create<Startup>())
             {
-                HttpContext.Current = CreateHttpContext(false);
+                HttpContext.Current = AuthenticationHelper.CreateHttpContext(false);
                 var response = server.HttpClient.GetAsync("/");
                 response.Wait();
                 Microsoft.Owin.OwinContext ctx = new Microsoft.Owin.OwinContext(new System.Collections.Generic.Dictionary<string, object>());
@@ -172,24 +172,5 @@ namespace ED2OR.Controllers.Tests
             }
         }
 
-        /// <summary>
-        /// Check http://stackoverflow.com/questions/28405966/how-to-mock-applicationusermanager-from-accountcontroller-in-mvc5
-        /// </summary>
-        /// <param name="userLoggedIn"></param>
-        /// <returns></returns>
-        private static HttpContext CreateHttpContext(bool userLoggedIn)
-        {
-            var httpContext = new HttpContext(
-                new HttpRequest(string.Empty, "http://sample.com", string.Empty),
-                new HttpResponse(new StringWriter())
-            )
-            {
-                User = userLoggedIn
-                    ? new GenericPrincipal(new GenericIdentity("userName"), new string[0])
-                    : new GenericPrincipal(new GenericIdentity(string.Empty), new string[0])
-            };
-
-            return httpContext;
-        }
     }
 }

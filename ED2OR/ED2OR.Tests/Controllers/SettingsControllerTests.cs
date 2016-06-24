@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ED2OR.Tests.Utils;
 using System.Web.Mvc;
+using ED2OR.ViewModels;
 
 namespace ED2OR.Controllers.Tests
 {
@@ -33,7 +34,29 @@ namespace ED2OR.Controllers.Tests
                 var result = controller.Index() as ViewResult;
                 Assert.IsNotNull(result, "Invalid Result");
                 Assert.IsNotNull(result.Model, "Null Model");
+                ED2OR.ViewModels.SettingsViewModel settingsVM = new ViewModels.SettingsViewModel();
+                settingsVM.ApiBaseUrl = AuthenticationHelper.TESTAPI_BASEURL;
+                settingsVM.ApiKey = AuthenticationHelper.TESTAPI_APIKEY;
+                settingsVM.ApiSecret = AuthenticationHelper.TESTAPI_APISECRET;
+                var postResult = controller.Index(settingsVM);
+                Assert.IsTrue(controller.ModelState.IsValid, "Invalid model");
+                Assert.IsNotNull(postResult, "Invalid Result");
             }
+        }
+
+        [TestMethod()]
+        public void SettingsController_TestConnectionTest()
+        {
+            SettingsController settingsController = new SettingsController();
+            JsonResult result =
+                settingsController.TestConnection(AuthenticationHelper.TESTAPI_BASEURL, AuthenticationHelper.TESTAPI_APIKEY,
+                AuthenticationHelper.TESTAPI_APISECRET) as JsonResult;
+            Assert.IsNotNull(result, "Invalid JsonResult");
+            TokenViewModel tokenViewModel = result.Data as TokenViewModel;
+            Assert.IsNotNull(tokenViewModel, "Unable to get TokenViewModel");
+            Assert.IsTrue(tokenViewModel.IsSuccessful, string.Format("Error Testing Connection: {0}", tokenViewModel.ErrorMessage));
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(tokenViewModel.Token), "Invalid Token");
+
         }
     }
 }
