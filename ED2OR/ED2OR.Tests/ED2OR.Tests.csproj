@@ -168,10 +168,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTests.cs" />
+    <Compile Include="Controllers\HomeControllerTests.cs" />
+    <Compile Include="Controllers\SettingsControllerTests.cs" />
     <Compile Include="Controllers\TemplatesControllerTests.cs" />
     <Compile Include="OwinApplicationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\AuthenticationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ED2OR\ED2OR.csproj">
