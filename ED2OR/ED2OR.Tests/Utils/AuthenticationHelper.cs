@@ -78,9 +78,9 @@ namespace ED2OR.Tests.Utils
                 {
                     UserName = TESTUSER_USERNAME,
                     Email = TESTUSER_USERNAME,
-                    ApiBaseUrl = string.Empty,
-                    ApiKey = string.Empty,
-                    ApiSecret = string.Empty
+                    ApiBaseUrl = TESTAPI_BASEURL,
+                    ApiKey = TESTAPI_APIKEY,
+                    ApiSecret = TESTAPI_APISECRET
                 };
                 var result = await AppUserManager.CreateAsync(user, TESTUSER_ORIGINALPASSWORD);
             };
