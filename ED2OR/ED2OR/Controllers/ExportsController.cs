@@ -13,6 +13,7 @@ using ED2OR.Utils;
 using System.Text;
 using System.IO;
 using System.IO.Compression;
+using System.Dynamic;
 
 namespace ED2OR.Controllers
 {
@@ -47,20 +48,20 @@ namespace ED2OR.Controllers
             };
 
             model.JsonPreviews = await ApiCalls.GetJsonPreviews(inputs);
-                //schoolIds,
-                //schoolYears,
-                //terms,
-                //subjects,
-                //courses,
-                //teachers,
-                //sections);
 
-            var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
-            var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
-            var coursesColumnNames = typeof(CsvCourses).GetProperties().Select(x => x.Name);
-            var classesColumnNames = typeof(CsvClasses).GetProperties().Select(x => x.Name);
-            var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Select(x => x.Name);
-            var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Select(x => x.Name);
+            var orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
+            var usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
+            var coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
+            var classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
+            var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
+            var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
+
+            //var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
+            //var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
+            //var coursesColumnNames = typeof(CsvCourses).GetProperties().Select(x => x.Name);
+            //var classesColumnNames = typeof(CsvClasses).GetProperties().Select(x => x.Name);
+            //var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Select(x => x.Name);
+            //var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Select(x => x.Name);
 
             model.DataPreviewSections = new List<DataPreviewSection>
                 {
@@ -238,8 +239,6 @@ namespace ED2OR.Controllers
             //}
         }
 
-
-
         //[HttpPost]
         //public async Task<JsonResult> GetSubjectsCheckboxes(List<string> schoolIds)
         //{
@@ -409,6 +408,58 @@ namespace ED2OR.Controllers
             return PartialView("_CriteriaSection", model);
         }
 
+        public async Task<ActionResult> GetSectionsPartial(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> boxesAlreadyChecked)
+        {
+            ViewData.TemplateInfo.HtmlFieldPrefix = "Sections";
+
+            var model = new ApiCriteriaSection
+            {
+                SectionName = "Sections",
+                IsExpanded = true
+            };
+
+            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            bool allTerms = terms == null || terms.Count() == 0;
+
+            var sections = await ApiCalls.GetSections();
+            var filteredSections = new List<ExportsCheckbox>();
+            filteredSections.AddRange(sections);
+
+            if (!allSchools)
+            {
+                filteredSections = filteredSections.Where(x =>
+                schoolIds.Contains(x.SchoolId)).ToList();
+            }
+
+            if (!allSchoolYears)
+            {
+                filteredSections = filteredSections.Where(x =>
+                schoolYears.Contains(x.SchoolYear)).ToList();
+            }
+
+            if (!allTerms)
+            {
+                filteredSections = filteredSections.Where(x =>
+                terms.Contains(x.Term)).ToList();
+            }
+
+            filteredSections = filteredSections.GroupBy(x => x.Text).Select(group => group.First()).ToList();
+
+            if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
+            {
+                var boxesToCheck = filteredSections.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
+                boxesToCheck.ForEach(c => c.Selected = true);
+            }
+
+            model.FilterCheckboxes = filteredSections;
+
+            return PartialView("_CriteriaSection", model);
+        }
+
         private async Task InitializeModel(ExportsViewModel model, bool collapseAll = false)
         {
             await ApiCalls.PopulateFilterSection1(model, collapseAll);
@@ -475,7 +526,7 @@ namespace ED2OR.Controllers
 
             using (StreamWriter sw = new StreamWriter(filePath))
             {
-                var columnNames = typeof(T).GetProperties().Select(x => x.Name);
+                var columnNames = typeof(T).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
                 var headerLine = string.Join(",", columnNames);
                 sw.WriteLine(headerLine);
 

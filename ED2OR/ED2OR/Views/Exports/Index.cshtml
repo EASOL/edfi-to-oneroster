@@ -146,6 +146,7 @@
                 var subjectsAlreadyChecked = getBoxesAlreadyChecked("Subjects");
                 var coursesAlreadyChecked = getBoxesAlreadyChecked("Courses");
                 var teachersAlreadyChecked = getBoxesAlreadyChecked("Teachers");
+                var sectionsAlreadyChecked = getBoxesAlreadyChecked("Sections");
 
                 $("#SubjectsContainer").load("@Url.Action("GetSubjectsPartial")", {
                     schoolIds: schoolIds,
@@ -163,7 +164,15 @@
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
-                    boxesAlreadyChecked: teachersAlreadyChecked });
+                    boxesAlreadyChecked: teachersAlreadyChecked
+                });
+
+                $("#SectionsContainer").load("@Url.Action("GetSectionsPartial")", {
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    boxesAlreadyChecked: sectionsAlreadyChecked
+                });
 
                 @*var postData = { schoolIds: schoolIds };
                 $.ajax({
@@ -182,7 +191,7 @@
             }
 
             function checkboxChanged(that) {
-                var parentDivId = $(that).parent("div").attr("id");
+                var parentDivId = $(that).parent().parent("div").attr("id");
                 if (parentDivId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
                     topGroupChanged();
                 }
