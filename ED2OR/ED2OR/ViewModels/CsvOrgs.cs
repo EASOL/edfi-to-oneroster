@@ -9,5 +9,8 @@
         public string type { get; set; }
         public string identifier { get; set; }
         public string parentSourcedId { get; set; }
+
+        [CsvIgnoreField]
+        public string SchoolId { get; set; }
     }
 }

@@ -221,6 +221,7 @@
     <Compile Include="ViewModels\CsvEnrollments.cs" />
     <Compile Include="ViewModels\CsvAcademicSessions.cs" />
     <Compile Include="ViewModels\CsvCourses.cs" />
+    <Compile Include="ViewModels\CsvIgnoreFieldAttribute.cs" />
     <Compile Include="ViewModels\CsvUsers.cs" />
     <Compile Include="ViewModels\TokenViewModel.cs" />
     <Compile Include="ViewModels\CsvOrgs.cs" />

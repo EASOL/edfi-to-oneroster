@@ -9,5 +9,18 @@
         public string type { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
+
+        [CsvIgnoreField]
+        public string SchoolId { get; set; }
+        [CsvIgnoreField]
+        public string SchoolYear { get; set; }
+        [CsvIgnoreField]
+        public string Term { get; set; }
+        [CsvIgnoreField]
+        public string Subject { get; set; }
+        [CsvIgnoreField]
+        public string Course { get; set; }
+        [CsvIgnoreField]
+        public string Section { get; set; }
     }
 }

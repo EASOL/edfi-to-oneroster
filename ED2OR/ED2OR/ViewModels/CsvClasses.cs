@@ -12,5 +12,19 @@
         public string schoolSourcedId { get; set; }
         public string termSourcedId { get; set; }
         public string subjects { get; set; }
+
+
+        [CsvIgnoreField]
+        public string SchoolId { get; set; }
+        [CsvIgnoreField]
+        public string SchoolYear { get; set; }
+        [CsvIgnoreField]
+        public string Term { get; set; }
+        [CsvIgnoreField]
+        public string Subject { get; set; }
+        [CsvIgnoreField]
+        public string Course { get; set; }
+        [CsvIgnoreField]
+        public string Section { get; set; }
     }
 }
