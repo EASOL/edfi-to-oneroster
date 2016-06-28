@@ -25,24 +25,44 @@ namespace ED2OR.Controllers
             return View(model);
         }
 
-
         [HttpPost]
-        public async Task<ActionResult> Index(ExportsViewModel model, string Command)
+        public async Task<ActionResult> Preview(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> subjects,
+            List<string> courses,
+            List<string> teachers,
+            List<string> sections)
         {
-            if (Command == "Preview")
+            var model = new ExportsViewModel();
+            var inputs = new FilterInputs
             {
-                await InitializeModel(model, true);
+                Schools = schoolIds,
+                SchoolYears = schoolYears,
+                Terms = terms,
+                Subjects = subjects,
+                Courses = courses,
+                Teachers = teachers,
+                Sections = sections
+            };
 
-                model.JsonPreviews = await ApiCalls.GetJsonPreviews();
+            model.JsonPreviews = await ApiCalls.GetJsonPreviews(inputs);
+                //schoolIds,
+                //schoolYears,
+                //terms,
+                //subjects,
+                //courses,
+                //teachers,
+                //sections);
 
-                var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
-                var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
-                var coursesColumnNames = typeof(CsvCourses).GetProperties().Select(x => x.Name);
-                var classesColumnNames = typeof(CsvClasses).GetProperties().Select(x => x.Name);
-                var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Select(x => x.Name);
-                var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Select(x => x.Name);
+            var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
+            var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
+            var coursesColumnNames = typeof(CsvCourses).GetProperties().Select(x => x.Name);
+            var classesColumnNames = typeof(CsvClasses).GetProperties().Select(x => x.Name);
+            var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Select(x => x.Name);
+            var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Select(x => x.Name);
 
-                model.DataPreviewSections = new List<DataPreviewSection>
+            model.DataPreviewSections = new List<DataPreviewSection>
                 {
                     new DataPreviewSection
                     {
@@ -76,28 +96,149 @@ namespace ED2OR.Controllers
                     }
                 };
 
-                return View(model);
-            }
-            else if (Command == "Download")
-            {
-                return await GetZipFile();
-            }
-            else //"Save Template"
-            {
-                return View();
-            }
-
-
-
-
-            //var schoolsSection = model.CriteriaSections.Where(x => x.SectionName == "Schools").FirstOrDefault();
-            //var selectedSchools = schoolsSection.FilterCheckboxes.Where(x => x.Selected).Select(x => x.SchoolId).ToList();
-
-            //var subjects = await ApiCalls.GetSubjects();
-            //subjects.RemoveAll(x => selectedSchools.Contains(x.SchoolId) == false);
-            //var subjectsSection = model.CriteriaSections.Where(x => x.SectionName == "Subjects").FirstOrDefault();
-            //subjectsSection.FilterCheckboxes = subjects;
+            return PartialView("_DataPreview", model);
         }
+
+        [HttpPost]
+        public async Task<FileResult> DownloadCsv(List<string> schoolIds,
+            List<string> schoolYears,
+            List<string> terms,
+            List<string> subjects,
+            List<string> courses,
+            List<string> teachers,
+            List<string> sections)
+        {
+            var model = new DataResults();
+            var inputs = new FilterInputs
+            {
+                Schools = schoolIds,
+                SchoolYears = schoolYears,
+                Terms = terms,
+                Subjects = subjects,
+                Courses = courses,
+                Teachers = teachers,
+                Sections = sections
+            };
+            model = await ApiCalls.GetDataResults(inputs);
+                //schoolIds,
+                //schoolYears,
+                //terms,
+                //subjects,
+                //courses,
+                //teachers,
+                //sections);
+
+            var csvFilesDirectory = "~/CsvFiles";
+            var csvDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(csvFilesDirectory);
+
+            var directoryGuid = Guid.NewGuid().ToString();
+            var tempDirectory = csvFilesDirectory + "/" + directoryGuid;
+            var tempDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(tempDirectory);
+
+            Directory.CreateDirectory(tempDirectoryFullName);
+            WriteObjectToCsv(model.Orgs, tempDirectoryFullName, "orgs.csv");
+            WriteObjectToCsv(model.Users, tempDirectoryFullName, "users.csv");
+            WriteObjectToCsv(model.Courses, tempDirectoryFullName, "courses.csv");
+            WriteObjectToCsv(model.Classes, tempDirectoryFullName, "classes.csv");
+            WriteObjectToCsv(model.Enrollments, tempDirectoryFullName, "enrollments.csv");
+            WriteObjectToCsv(model.AcademicSessions, tempDirectoryFullName, "academicsessions.csv");
+            //WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "orgs.csv");
+            //WriteObjectToCsv(await ApiCalls.GetCsvUsers(), tempDirectoryFullName, "users.csv");
+            //WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "courses.csv");
+            //WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "classes.csv");
+            //WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "enrollments.csv");
+            //WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicsessions.csv");
+
+            var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
+
+            var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create);
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\orgs.csv", "orgs.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\users.csv", "users.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\courses.csv", "courses.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicsessions.csv", "academicsessions.csv");
+            zip.Dispose();
+
+            var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
+            Directory.Delete(tempDirectoryFullName, true);
+            System.IO.File.Delete(zipPath);
+            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
+            return File(bytes, "application/zip", downloadFileName);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Index(ExportsViewModel model, string Command)
+        {
+            //if (Command == "Preview")
+            //{
+            //    await InitializeModel(model, true);
+
+            //    model.JsonPreviews = await ApiCalls.GetJsonPreviews();
+
+            //    var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
+            //    var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
+            //    var coursesColumnNames = typeof(CsvCourses).GetProperties().Select(x => x.Name);
+            //    var classesColumnNames = typeof(CsvClasses).GetProperties().Select(x => x.Name);
+            //    var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Select(x => x.Name);
+            //    var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Select(x => x.Name);
+
+            //    model.DataPreviewSections = new List<DataPreviewSection>
+            //    {
+            //        new DataPreviewSection
+            //        {
+            //            SectionName = "orgs",
+            //            ColumnNames = orgColumnNames
+            //        },
+            //        new DataPreviewSection
+            //        {
+            //            SectionName = "users",
+            //            ColumnNames = usersColumnNames
+            //        },
+            //        new DataPreviewSection
+            //        {
+            //            SectionName = "courses",
+            //            ColumnNames = coursesColumnNames
+            //        },
+            //        new DataPreviewSection
+            //        {
+            //            SectionName = "classes",
+            //            ColumnNames = classesColumnNames
+            //        },
+            //        new DataPreviewSection
+            //        {
+            //            SectionName = "enrollments",
+            //            ColumnNames = enrollmentsColumnNames
+            //        },
+            //        new DataPreviewSection
+            //        {
+            //            SectionName = "academicsessions",
+            //            ColumnNames = academicsessionsColumnNames
+            //        }
+            //    };
+
+            //    return View(model);
+            //}
+            //if (Command == "Download")
+            //{
+            var schools = model.SelectedSchools?.Split(',').ToList();
+            var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
+            var terms = model.SelectedTerms?.Split(',').ToList();
+            var subjects = model.SelectedSubjects?.Split(',').ToList();
+            var courses = model.SelectedCourses?.Split(',').ToList();
+            var teachers = model.SelectedTeachers?.Split(',').ToList();
+            var sections = model.SelectedSections?.Split(',').ToList();
+
+            return await DownloadCsv(schools, schoolYears, terms, subjects, courses, teachers, sections);
+            //return await GetZipFile();
+            //}
+            //else //"Save Template"
+            //{
+            //    return View();
+            //}
+        }
+
+
 
         //[HttpPost]
         //public async Task<JsonResult> GetSubjectsCheckboxes(List<string> schoolIds)
@@ -293,40 +434,40 @@ namespace ED2OR.Controllers
             };
         }
 
-        private async Task<FileResult> GetZipFile()
-        {
-            var csvFilesDirectory = "~/CsvFiles";
-            var csvDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(csvFilesDirectory);
+        //private async Task<FileResult> GetZipFile()
+        //{
+        //    var csvFilesDirectory = "~/CsvFiles";
+        //    var csvDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(csvFilesDirectory);
 
-            var directoryGuid = Guid.NewGuid().ToString();
-            var tempDirectory = csvFilesDirectory + "/" + directoryGuid;
-            var tempDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(tempDirectory);
+        //    var directoryGuid = Guid.NewGuid().ToString();
+        //    var tempDirectory = csvFilesDirectory + "/" + directoryGuid;
+        //    var tempDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(tempDirectory);
 
-            Directory.CreateDirectory(tempDirectoryFullName);
-            WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "orgs.csv");
-            WriteObjectToCsv(await ApiCalls.GetCsvUsers(), tempDirectoryFullName, "users.csv");
-            WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "courses.csv");
-            WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "classes.csv");
-            WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "enrollments.csv");
-            WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicsessions.csv");
+        //    Directory.CreateDirectory(tempDirectoryFullName);
+        //    WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "orgs.csv");
+        //    WriteObjectToCsv(await ApiCalls.GetCsvUsers(), tempDirectoryFullName, "users.csv");
+        //    WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "courses.csv");
+        //    WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "classes.csv");
+        //    WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "enrollments.csv");
+        //    WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicsessions.csv");
 
-            var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
+        //    var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
 
-            var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create);
-            zip.CreateEntryFromFile(tempDirectoryFullName + "\\orgs.csv", "orgs.csv");
-            zip.CreateEntryFromFile(tempDirectoryFullName + "\\users.csv", "users.csv");
-            zip.CreateEntryFromFile(tempDirectoryFullName + "\\courses.csv", "courses.csv");
-            zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
-            zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
-            zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicsessions.csv", "academicsessions.csv");
-            zip.Dispose();
+        //    var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create);
+        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\orgs.csv", "orgs.csv");
+        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\users.csv", "users.csv");
+        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\courses.csv", "courses.csv");
+        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
+        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
+        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicsessions.csv", "academicsessions.csv");
+        //    zip.Dispose();
 
-            var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
-            Directory.Delete(tempDirectoryFullName, true);
-            System.IO.File.Delete(zipPath);
-            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
-            return File(bytes, "application/zip", downloadFileName);
-        }
+        //    var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
+        //    Directory.Delete(tempDirectoryFullName, true);
+        //    System.IO.File.Delete(zipPath);
+        //    var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
+        //    return File(bytes, "application/zip", downloadFileName);
+        //}
 
         private void WriteObjectToCsv<T>(List<T> inputList, string directoryPath, string fileName)
         {

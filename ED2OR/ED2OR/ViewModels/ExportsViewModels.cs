@@ -7,7 +7,6 @@ namespace ED2OR.ViewModels
 {
     public class ExportsViewModel
     {
-        //public List<ApiCriteriaSection> CriteriaSections { get; set; }
         public ApiCriteriaSection SchoolsCriteriaSection { get; set; }
         public ApiCriteriaSection SchoolYearsCriteriaSection { get; set; }
         public ApiCriteriaSection TermsCriteriaSection { get; set; }
@@ -17,6 +16,13 @@ namespace ED2OR.ViewModels
         public ApiCriteriaSection SectionsCriteriaSection { get; set; }
         public List<DataPreviewSection> DataPreviewSections { get; set; }
         public PreveiwJsonResults JsonPreviews { get; set; }
+        public string SelectedSchools { get; set; }
+        public string SelectedSchoolYears { get; set; }
+        public string SelectedTerms { get; set; }
+        public string SelectedSubjects { get; set; }
+        public string SelectedCourses { get; set; }
+        public string SelectedTeachers { get; set; }
+        public string SelectedSections { get; set; }
     }
 
     public class PreveiwJsonResults
@@ -33,6 +39,27 @@ namespace ED2OR.ViewModels
     {
         public string SectionName { get; set; }
         public IEnumerable<string> ColumnNames { get; set; }
+    }
+
+    public class DataResults
+    {
+        public List<CsvOrgs> Orgs { get; set; }
+        public List<CsvUsers> Users { get; set; }
+        public List<CsvCourses> Courses { get; set; }
+        public List<CsvClasses> Classes { get; set; }
+        public List<CsvEnrollments> Enrollments { get; set; }
+        public List<CsvAcademicSessions> AcademicSessions { get; set; }
+    }
+
+    public class FilterInputs
+    {
+        public List<string> Schools { get; set; }
+        public List<string> SchoolYears { get; set; }
+        public List<string> Terms { get; set; }
+        public List<string> Subjects { get; set; }
+        public List<string> Courses { get; set; }
+        public List<string> Teachers { get; set; }
+        public List<string> Sections { get; set; }
     }
 
     public class ApiCriteriaSection
