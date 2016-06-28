@@ -13,7 +13,7 @@ namespace ED2OR.Controllers.Tests
     public class TemplatesControllerTests
     {
         [TestMethod()]
-        public void IndexTest()
+        public void TemplatesController_IndexTest()
         {
             TemplatesController controller = new TemplatesController();
             ViewResult result = controller.Index() as ViewResult;

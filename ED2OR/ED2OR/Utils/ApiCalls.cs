@@ -275,51 +275,60 @@ namespace ED2OR.Utils
             return (List<ExportsCheckbox>)HttpContext.Current.Session["AllTeachers"];
         }
 
-        //public static async Task<List<ExportsCheckbox>> GetSections()
-        //{
-        //    if (HttpContext.Current.Session["AllSections"] == null)
-        //    {
-        ////public const string Sections = "enrollment/sections"; //uniqueSectionCode
-        //        var responseArray = await GetApiResponseArray(ApiEndPoints.Courses);
-        //        var sections = (from s in responseArray
-        //                       select new ExportsCheckbox
-        //                       {
-        //                           Id = (string)s["id"],
-        //                           Course = (string)s["courseOfferingReference"]["localCourseCode"],
-        //                           SchoolId = (string)s["schoolReference"]["id"],
-        //                           SchoolYear = (string)s["sessionReference"]["schoolYear"],
-        //                           Term = (string)s["sessionReference"]["termDescriptor"],
-        //                           Text = (string)s["uniqueSectionCode"],
-        //                           Subject = (string)s["academicSubjectDescriptor"],
-        //                           Visible = true
-        //                       }).ToList();
+        public static async Task<List<ExportsCheckbox>> GetSections()
+        {
+            if (HttpContext.Current.Session["AllSections"] == null)
+            {
+                var responseArray = await GetApiResponseArray(ApiEndPoints.Sections);
+                var sections = (from s in responseArray
+                                select new ExportsCheckbox
+                                {
+                                    Id = (string)s["uniqueSectionCode"], //or is it ["id"]??
+                                    Course = (string)s["courseOfferingReference"]["localCourseCode"],
+                                    SchoolId = (string)s["schoolReference"]["id"],
+                                    SchoolYear = (string)s["sessionReference"]["schoolYear"],
+                                    Term = (string)s["sessionReference"]["termDescriptor"],
+                                    Text = (string)s["uniqueSectionCode"],
+                                    Subject = (string)s["academicSubjectDescriptor"],
+                                    Visible = true
+                                }).ToList();
 
-        //        HttpContext.Current.Session["AllSections"] = sections;
-        //    }
-        //    return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSections"];
-        //}
-
-
-
+                HttpContext.Current.Session["AllSections"] = sections;
+            }
+            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSections"];
+        }
 
         #endregion
 
         #region ResultsMethods
-        public static async Task<PreveiwJsonResults> GetJsonPreviews()
+        public static async Task<PreveiwJsonResults> GetJsonPreviews(FilterInputs inputs)
         {
-            var previewModel = new PreveiwJsonResults();
+            var dataResults = await GetDataResults(inputs);
 
-            previewModel.Orgs = JsonConvert.SerializeObject(await GetCsvOrgs());
-            previewModel.Users = JsonConvert.SerializeObject(await GetCsvUsers());
-            previewModel.Courses = JsonConvert.SerializeObject(await GetCsvCourses());
-            previewModel.Classes = JsonConvert.SerializeObject(await GetCsvClasses());
-            previewModel.Enrollments = JsonConvert.SerializeObject(await GetCsvEnrollments());
-            previewModel.AcademicSessions = JsonConvert.SerializeObject(await GetCsvAcademicSessions());
+            var previewModel = new PreveiwJsonResults();
+            previewModel.Orgs = JsonConvert.SerializeObject(dataResults.Orgs);
+            previewModel.Users = JsonConvert.SerializeObject(dataResults.Users);
+            previewModel.Courses = JsonConvert.SerializeObject(dataResults.Courses);
+            previewModel.Classes = JsonConvert.SerializeObject(dataResults.Classes);
+            previewModel.Enrollments = JsonConvert.SerializeObject(dataResults.Enrollments);
+            previewModel.AcademicSessions = JsonConvert.SerializeObject(dataResults.AcademicSessions);
 
             return previewModel;
         }
 
-        public static async Task<List<CsvOrgs>> GetCsvOrgs()
+        public static async Task<DataResults> GetDataResults(FilterInputs inputs)
+        {
+            var dataResults = new DataResults();
+            dataResults.Orgs = await GetCsvOrgs(inputs);
+            dataResults.Users = await GetCsvUsers(inputs);
+            dataResults.Courses = await GetCsvCourses(inputs);
+            dataResults.Classes = await GetCsvClasses(inputs);
+            dataResults.Enrollments = await GetCsvEnrollments(inputs);
+            dataResults.AcademicSessions = await GetCsvAcademicSessions(inputs);
+            return dataResults;
+        }
+
+        public static async Task<List<CsvOrgs>> GetCsvOrgs(FilterInputs inputs)
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
             var listOfObjects = (from o in responseArray
@@ -329,25 +338,143 @@ namespace ED2OR.Utils
                                      name = (string)o["nameOfInstitution"],
                                      type = "school",
                                      identifier = "",
-                                     parentSourcedId = (string)o["localEducationAgencyReference"]["id"]
-                                 }).ToList();
-            return listOfObjects;
+                                     parentSourcedId = (string)o["localEducationAgencyReference"]["id"],
+                                     SchoolId = (string)o["id"]
+                                 });
+
+            if (inputs != null && inputs.Schools != null)
+            {
+                listOfObjects = listOfObjects.Where(x => inputs.Schools.Contains(x.SchoolId));
+            }
+            return listOfObjects.ToList();
         }
 
-        public static async Task<List<CsvUsers>> GetCsvUsers()
+        public static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
         {
+            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvUsers);
+
+            var enrollmentsList = (from o in responseArray
+                                   let students = o["students"].Children()
+                                   let staffs = o["staff"].Children()
+                                   select new
+                                   {
+                                       students = students,
+                                       staffs = staffs,
+                                       SchoolId = (string)o["schoolReference"]["id"],
+                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                       Subject = (string)o["academicSubjectDescriptor"],
+                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                       Section = (string)o["uniqueSectionCode"]
+                                   });
+
+
+            if (inputs != null)
+            {
+                if (inputs.Schools != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                if (inputs.SchoolYears != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+
+                if (inputs.Terms != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+
+                if (inputs.Subjects != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+
+                if (inputs.Courses != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+
+                if (inputs.Sections != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+            }
+
+            var studentInfo = (from e in enrollmentsList
+                               from s in e.students
+                               let mainTelephone = s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
+                               let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
+                               let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
+                               let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
+                               let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+                               let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
+                               let orgIds = schoolAssociationsIds == null ? "" :
+                                   (
+                                    schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
+                                   )
+                               select new CsvUsers
+                               {
+                                   sourcedId = (string)s["id"],
+                                   orgSourcedIds = orgIds,
+                                   role = "student",
+                                   username = (string)s["loginId"],
+                                   userId = (string)s["studentUniqueId"],
+                                   givenName = (string)s["firstName"],
+                                   familyName = (string)s["lastSurname"],
+                                   identifier = (string)s["studentUniqueId"],
+                                   email = emailAddress,
+                                   sms = mobileNumber,
+                                   phone = mainTelephoneNumber//,
+                                   //SchoolId = e.SchoolId,
+                                   //SchoolYear = e.SchoolYear,
+                                   //Term = e.Term,
+                                   //Subject = e.Subject,
+                                   //Course = e.Course
+                                   //section
+                               });
+
+
+            var staffInfo = (from e in enrollmentsList
+                             from s in e.staffs
+                             let mainTelephone = s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
+                             let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
+                             let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
+                             let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
+                             let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+                             let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
+                             let orgIds = schoolAssociationsIds == null ? "" :
+                                 (
+                                  schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
+                                 )
+                             select new CsvUsers
+                             {
+                                 sourcedId = (string)s["id"],
+                                 orgSourcedIds = orgIds,
+                                 role = "teacher",
+                                 username = (string)s["loginId"],
+                                 userId = (string)s["staffUniqueId"],
+                                 givenName = (string)s["firstName"],
+                                 familyName = (string)s["lastSurname"],
+                                 identifier = (string)s["staffUniqueId"],
+                                 email = emailAddress,
+                                 sms = mobileNumber,
+                                 phone = mainTelephoneNumber//,
+                                 //SchoolId = e.SchoolId,
+                                 //SchoolYear = e.SchoolYear,
+                                 //Term = e.Term,
+                                 //Subject = e.Subject,
+                                 //Course = e.Course
+                                 //section
+                             });
+
+            var distinctStudents = studentInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
+            var distinctStaff = staffInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
+            var studentsAndStaff = distinctStudents.Concat(distinctStaff);
+
+            return studentsAndStaff.ToList();
+            /*
+            This section was with the old Endpoints no longer used
             var responseArrayStudents = await GetApiResponseArray(ApiEndPoints.CsvUsersStudents);
             var listOfStudents = (from o in responseArrayStudents
-                                  let telephone = o["telephones"].Children().Count() > 0 ? (string)o["telephones"][0]["telephoneNumber"] : "" //TODO: just pick 0?.  or get based on type field?
+                                  let mainTelephone = o["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
+                                  let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
                                   let emailAddress = o["electronicMails"].Children().Count() > 0 ? (string)o["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
                                   let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                                   let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
                                   let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                                  //let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
                                   let orgIds = schoolAssociationsIds == null ? "" :
                                       (
                                        schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                                       //schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
                                       )
                                   select new CsvUsers
                                   {
@@ -361,21 +488,20 @@ namespace ED2OR.Utils
                                       identifier = (string)o["studentUniqueId"],
                                       email = emailAddress,
                                       sms = mobileNumber,
-                                      phone = telephone
+                                      phone = mainTelephoneNumber
                                   });
 
             var responseArrayStaff = await GetApiResponseArray(ApiEndPoints.CsvUsersStaff);
             var listOfStaff = (from o in responseArrayStaff
-                               let telephone = o["telephones"].Children().Count() > 0 ? (string)o["telephones"][0]["telephoneNumber"] : "" //TODO: just pick 0?.  or get based on type field?
+                               let mainTelephone = o["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
+                               let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
                                let emailAddress = o["electronicMails"].Children().Count() > 0 ? (string)o["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
                                let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                                let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
                                let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                               //let schoolAssociationsIdsWithQuotes = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => "\"" + (string)x["id"] + "\"") : null
                                let orgIds = schoolAssociationsIds == null ? "" :
                                    (
                                     schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                                    //schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIdsWithQuotes) : schoolAssociationsIds.FirstOrDefault()
                                    )
                                select new CsvUsers
                                {
@@ -389,46 +515,104 @@ namespace ED2OR.Utils
                                    identifier = (string)o["staffUniqueId"],
                                    email = emailAddress,
                                    sms = mobileNumber,
-                                   phone = telephone
+                                   phone = mainTelephoneNumber
                                });
-            return listOfStudents.Concat(listOfStaff).ToList();
+            return listOfStudents.Concat(listOfStaff).ToList();*/
         }
 
-        public static async Task<List<CsvCourses>> GetCsvCourses()
+        public static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvCourses);
-            var listOfObjects = (from o in responseArray
-                                 select new CsvCourses
-                                 {
-                                     sourcedId = (string)o["courseOfferingReference"]["id"],
-                                     schoolYearId = (string)o["sessionReference"]["id"],
-                                     title = (string)o["courseOfferingReference"]["localCourseCode"],
-                                     courseCode = (string)o["courseOfferingReference"]["localCourseCode"],
-                                     orgSourcedId = (string)o["schoolReference"]["id"],
-                                     subjects = (string)o["academicSubjectDescriptor"]
-                                 }).ToList();
-            return listOfObjects;
+            var enrollmentsList = (from o in responseArray
+                                   select new CsvCourses
+                                   {
+                                       sourcedId = (string)o["courseOfferingReference"]["id"],
+                                       schoolYearId = (string)o["sessionReference"]["id"],
+                                       title = (string)o["courseOfferingReference"]["localCourseCode"],
+                                       courseCode = (string)o["courseOfferingReference"]["localCourseCode"],
+                                       orgSourcedId = (string)o["schoolReference"]["id"],
+                                       subjects = (string)o["academicSubjectDescriptor"],
+                                       SchoolId = (string)o["schoolReference"]["id"],
+                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                       Subject = (string)o["academicSubjectDescriptor"],
+                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                       Section = (string)o["uniqueSectionCode"]
+                                   });
+
+            if (inputs != null)
+            {
+                if (inputs.Schools != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                if (inputs.SchoolYears != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+
+                if (inputs.Terms != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+
+                if (inputs.Subjects != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+
+                if (inputs.Courses != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+
+                if (inputs.Sections != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+            }
+
+            enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
+
+            return enrollmentsList.ToList();
         }
 
-        public static async Task<List<CsvClasses>> GetCsvClasses()
+        public static async Task<List<CsvClasses>> GetCsvClasses(FilterInputs inputs)
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvClasses);
-            var listOfObjects = (from o in responseArray
-                                 select new CsvClasses
-                                 {
-                                     sourcedId = (string)o["id"],
-                                     title = (string)o["uniqueSectionCode"],
-                                     courseSourcedId = (string)o["courseOfferingReference"]["id"],
-                                     classCode = (string)o["uniqueSectionCode"],
-                                     classType = "scheduled",
-                                     schoolSourcedId = (string)o["schoolReference"]["id"],
-                                     termSourcedId = (string)o["sessionReference"]["id"],
-                                     subjects = (string)o["academicSubjectDescriptior"]
-                                 }).ToList();
-            return listOfObjects;
+            var enrollmentsList = (from o in responseArray
+                                   select new CsvClasses
+                                   {
+                                       sourcedId = (string)o["id"],
+                                       title = (string)o["uniqueSectionCode"],
+                                       courseSourcedId = (string)o["courseOfferingReference"]["id"],
+                                       classCode = (string)o["uniqueSectionCode"],
+                                       classType = "scheduled",
+                                       schoolSourcedId = (string)o["schoolReference"]["id"],
+                                       termSourcedId = (string)o["sessionReference"]["id"],
+                                       subjects = (string)o["academicSubjectDescriptior"],
+                                       SchoolId = (string)o["schoolReference"]["id"],
+                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                       Subject = (string)o["academicSubjectDescriptor"],
+                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                       Section = (string)o["uniqueSectionCode"]
+                                   });
+
+            if (inputs != null)
+            {
+                if (inputs.Schools != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                if (inputs.SchoolYears != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+
+                if (inputs.Terms != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+
+                if (inputs.Subjects != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+
+                if (inputs.Courses != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+
+                if (inputs.Sections != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+            }
+
+            return enrollmentsList.ToList();
         }
 
-        public static async Task<List<CsvEnrollments>> GetCsvEnrollments()
+        public static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvEnrollments);
             var enrollmentsList = (from o in responseArray
@@ -439,8 +623,35 @@ namespace ED2OR.Utils
                                        classSourcedId = (string)o["id"],
                                        schoolSourcedId = (string)o["schoolReference"]["id"],
                                        students = students,
-                                       staffs = staffs
+                                       staffs = staffs,
+                                       SchoolId = (string)o["schoolReference"]["id"],
+                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                       Subject = (string)o["academicSubjectDescriptor"],
+                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                       Section = (string)o["uniqueSectionCode"]
                                    });
+
+            if (inputs != null)
+            {
+                if (inputs.Schools != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                if (inputs.SchoolYears != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+
+                if (inputs.Terms != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+
+                if (inputs.Subjects != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+
+                if (inputs.Courses != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+
+                if (inputs.Sections != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+            }
 
             var studentInfo = (from e in enrollmentsList
                                from s in e.students
@@ -469,19 +680,49 @@ namespace ED2OR.Utils
             return allEnrollments;
         }
 
-        public static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions()
+        public static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
-            var listOfObjects = (from o in responseArray
-                                 select new CsvAcademicSessions
-                                 {
-                                     sourcedId = (string)o["sessionReference"]["id"],
-                                     title = (string)o["sessionReference"]["schoolYear"] + " " + (string)o["sessionReference"]["termDescriptor"],
-                                     //type = (string)o["id"], //TODO: Not sure what this one is
-                                     startDate = (string)o["sessionReference"]["beginDate"],
-                                     endDate = (string)o["sessionReference"]["endDate"]
-                                 }).ToList();
-            return listOfObjects;
+            var enrollmentsList = (from o in responseArray
+                                   select new CsvAcademicSessions
+                                   {
+                                       sourcedId = (string)o["sessionReference"]["id"],
+                                       title = (string)o["sessionReference"]["schoolYear"] + " " + (string)o["sessionReference"]["termDescriptor"],
+                                       //type = (string)o["id"], //TODO: Not sure what this one is
+                                       startDate = (string)o["sessionReference"]["beginDate"],
+                                       endDate = (string)o["sessionReference"]["endDate"],
+                                       SchoolId = (string)o["schoolReference"]["id"],
+                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                       Subject = (string)o["academicSubjectDescriptor"],
+                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                       Section = (string)o["uniqueSectionCode"]
+                                   });
+
+            if (inputs != null)
+            {
+                if (inputs.Schools != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                if (inputs.SchoolYears != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+
+                if (inputs.Terms != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+
+                if (inputs.Subjects != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+
+                if (inputs.Courses != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+
+                if (inputs.Sections != null)
+                    enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+            }
+
+            enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
+
+            return enrollmentsList.ToList();
         }
         #endregion
 

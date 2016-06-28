@@ -13,16 +13,23 @@
     .table td {
         white-space:nowrap;
     }
-
-    
 </style>
 
 <h3>Data Selection</h3>
 
 @*http://v4-alpha.getbootstrap.com/components/collapse/*@
 
-@using (Html.BeginForm())
+@*@using (Html.BeginForm())*@
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "exportsForm" }))
 {
+    @Html.HiddenFor(x => x.SelectedSchools)
+    @Html.HiddenFor(x => x.SelectedSchoolYears)
+    @Html.HiddenFor(x => x.SelectedTerms)
+    @Html.HiddenFor(x => x.SelectedSubjects)
+    @Html.HiddenFor(x => x.SelectedCourses)
+    @Html.HiddenFor(x => x.SelectedTeachers)
+    @Html.HiddenFor(x => x.SelectedSections)
+
     @*<div id="criteriaContainer">
         @Html.EditorFor(x => x.CriteriaSections)
         <input type="submit" value="OK" />
@@ -78,40 +85,15 @@
     </div>
 
     <br />
-    if (Model.DataPreviewSections != null)
-    {
-        <br />
-        <h3>Data Preview</h3>
-
-        foreach (var previewSection in Model.DataPreviewSections)
-        {
-            <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#preview_@previewSection.SectionName">
-                @previewSection.SectionName
-            </div>
-            <div class="collapse" id="preview_@previewSection.SectionName">
-                @*<div class="table-responsive">
-                    or put table-responsive in table class*@
-                <table id="table_@previewSection.SectionName" data-pagination="true" class="table table-striped table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            @foreach (var col in previewSection.ColumnNames)
-                            {
-                                <th data-field="@col">@col</th>
-                            }
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        }
-    }
-        
+    <div id="DataPreview"></div>
     <br />
     <br />
-    <button type="submit" class="btn btn-primary" id="btnPreview" name="Command" value="Preview">Preview Data</button>
-    <button type="submit" class="btn btn-primary" id="btnDownload" name="Command" value="Download">Download CSV Package</button>
-    <button type="submit" class="btn btn-primary" id="btnSaveTemplate" name="Command" value="SaveTemplate">Save Template</button> 
+    <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
+    @*<button type="submit" class="btn btn-primary" id="btnPreview" name="Command" value="Preview">Preview Data</button>*@
+    <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
+    @*<button type="submit" class="btn btn-primary" id="btnDownload" name="Command" value="Download">Download CSV Package</button>*@
+    <button type="submit" class="btn btn-primary" id="btnSaveTemplate" disabled name="Command" value="SaveTemplate">Save Template</button> 
 }
-
 
 
 @section scripts{
@@ -156,23 +138,6 @@
                 return arr;
             }
 
-            //function redrawCheckboxes(divId, stringArray) {
-            //    var existingCheckBoxes = $("#" + divId).find("input:checkbox");
-
-            //    existingCheckBoxes.each(function () {
-            //        var $this = $(this);
-            //        var labelText = $('label[for=' + $this.attr('id') + ']').html();
-            //        //var labelText = label.html();
-            //        if ($.inArray(labelText, stringArray) == -1) {
-            //            $this.closest("span").remove();
-            //            //label.remove();
-            //            //$this.remove();
-            //        }
-            //        else { //http://stackoverflow.com/questions/866239/creating-the-checkbox-dynamically-using-javascript
-            //        }
-            //    });
-            //}
-
             function topGroupChanged() {
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
@@ -181,24 +146,33 @@
                 var subjectsAlreadyChecked = getBoxesAlreadyChecked("Subjects");
                 var coursesAlreadyChecked = getBoxesAlreadyChecked("Courses");
                 var teachersAlreadyChecked = getBoxesAlreadyChecked("Teachers");
+                var sectionsAlreadyChecked = getBoxesAlreadyChecked("Sections");
 
-                $("#SubjectsContainer").load("@Url.Action("GetSubjectsPartial")", { 
+                $("#SubjectsContainer").load("@Url.Action("GetSubjectsPartial")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
                     boxesAlreadyChecked: subjectsAlreadyChecked });
 
-                $("#CoursesContainer").load("@Url.Action("GetCoursesPartial")", { 
+                $("#CoursesContainer").load("@Url.Action("GetCoursesPartial")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
                     boxesAlreadyChecked: coursesAlreadyChecked });
 
-                $("#TeachersContainer").load("@Url.Action("GetTeachersPartial")", { 
+                $("#TeachersContainer").load("@Url.Action("GetTeachersPartial")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
-                    boxesAlreadyChecked: teachersAlreadyChecked });
+                    boxesAlreadyChecked: teachersAlreadyChecked
+                });
+
+                $("#SectionsContainer").load("@Url.Action("GetSectionsPartial")", {
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    boxesAlreadyChecked: sectionsAlreadyChecked
+                });
 
                 @*var postData = { schoolIds: schoolIds };
                 $.ajax({
@@ -217,7 +191,7 @@
             }
 
             function checkboxChanged(that) {
-                var parentDivId = $(that).parent("div").attr("id");
+                var parentDivId = $(that).parent().parent("div").attr("id");
                 if (parentDivId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
                     topGroupChanged();
                 }
@@ -229,45 +203,60 @@
                 //    console.log($(this).val() + ' is now unchecked');
                 //}
             }
-        </script>
 
-    @if (Model.DataPreviewSections != null)
-    {
-        <script>
-            $(function () {
-                var orgsData = @Html.Raw(Model.JsonPreviews.Orgs);
-                $('#table_orgs').bootstrapTable({
-                    data: orgsData
-                });
+            function dataPreview() {
+                //need to make sure all collapsables are initialized.  Then trigger collapse/hide all
+                //$('.accordionHeader').collapse({
+                //    toggle: false
+                //});
+                //$('.collapse').collapse('hide');
+                //$('.collapse').collapse('hide');
 
-                var usersData = @Html.Raw(Model.JsonPreviews.Users);
-                $('#table_users').bootstrapTable({
-                    data: usersData
-                });
+                //var isExpanded = !$(".accordionHeader").hasClass("expanded");
+                //$(".accordionHeader").toggleClass("expanded", isExpanded);
+                //if ($("div.inbox").hasClass("in")) {
+                //    $("div.inbox").collapse('hide');
+                //}
 
-                var coursesData = @Html.Raw(Model.JsonPreviews.Courses);
-                $('#table_courses').bootstrapTable({
-                    data: coursesData
-                });
+                var schoolIds = getCheckedIds("Schools");
+                var schoolYears = getCheckedIds("School_Years");
+                var terms = getCheckedIds("Terms");
+                var subjects = getCheckedIds("Subjects");
+                var courses = getCheckedIds("Courses");
+                var teachers = getCheckedIds("Teachers");
+                var sections = getCheckedIds("Sections");
 
-                var classesData = @Html.Raw(Model.JsonPreviews.Classes);
-                $('#table_classes').bootstrapTable({
-                    data: classesData
+                $("#DataPreview").load("@Url.Action("Preview")", {
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    subjects: subjects,
+                    courses: courses,
+                    teachers: teachers,
+                    sections: sections,
                 });
+            }
 
-                var enrollmentsData = @Html.Raw(Model.JsonPreviews.Enrollments);
-                $('#table_enrollments').bootstrapTable({
-                    data: enrollmentsData
-                });
+            function downloadCsv() {
+                var schoolIds = getCheckedIds("Schools");
+                var schoolYears = getCheckedIds("School_Years");
+                var terms = getCheckedIds("Terms");
+                var subjects = getCheckedIds("Subjects");
+                var courses = getCheckedIds("Courses");
+                var teachers = getCheckedIds("Teachers");
+                var sections = getCheckedIds("Sections");
 
-                var academicsessions = @Html.Raw(Model.JsonPreviews.AcademicSessions);
-                $('#table_academicsessions').bootstrapTable({
-                    data: academicsessions
-                });
-            });
+                $("#@Html.IdFor(x => x.SelectedSchools)").val(schoolIds);
+                $("#@Html.IdFor(x => x.SelectedSchoolYears)").val(schoolYears);
+                $("#@Html.IdFor(x => x.SelectedTerms)").val(terms);
+                $("#@Html.IdFor(x => x.SelectedSubjects)").val(subjects);
+                $("#@Html.IdFor(x => x.SelectedCourses)").val(courses);
+                $("#@Html.IdFor(x => x.SelectedTeachers)").val(teachers);
+                $("#@Html.IdFor(x => x.SelectedSections)").val(sections);
+
+                document.getElementById('exportsForm').submit();
+            }
         </script>
     }
 
-            
-
-    }
+  

@@ -16,8 +16,9 @@
         public const string Terms = "enrollment/sections"; //sessionReference.termDescriptor
 
         public const string CsvOrgs = "enrollment/schools";
-        public const string CsvUsersStudents = "enrollment/students";
-        public const string CsvUsersStaff = "enrollment/staffs";
+        //public const string CsvUsersStudents = "enrollment/students";
+        //public const string CsvUsersStaff = "enrollment/staffs";
+        public const string CsvUsers = "enrollment/sectionEnrollments";
         public const string CsvCourses = "enrollment/sectionEnrollments";
         public const string CsvClasses = "enrollment/sectionEnrollments";
         public const string CsvEnrollments = "enrollment/sectionEnrollments";
