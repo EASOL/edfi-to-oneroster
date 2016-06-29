@@ -183,6 +183,7 @@
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
+    <Compile Include="Enums\MappingSettingNames.cs" />
     <Compile Include="Enums\OrgIdentifierSettings.cs" />
     <Compile Include="Enums\ActionTypes.cs" />
     <Compile Include="Enums\ApiEndPoints.cs" />
@@ -204,6 +205,10 @@
     <Compile Include="Migrations\201606062111586_AuditLogs.cs" />
     <Compile Include="Migrations\201606062111586_AuditLogs.Designer.cs">
       <DependentUpon>201606062111586_AuditLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606291433527_MappingSettings.cs" />
+    <Compile Include="Migrations\201606291433527_MappingSettings.Designer.cs">
+      <DependentUpon>201606291433527_MappingSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -240,6 +245,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Migrations\SQL\201606291433527_MappingSettings.sql" />
     <Content Include="Migrations\SQL\201606062111586_AuditLogs.sql" />
     <Content Include="Migrations\SQL\201606011916297_Templates.sql" />
     <Content Include="Migrations\SQL\201605301855140_ExtendUserWithApiInfo.sql" />
@@ -323,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606062111586_AuditLogs.resx">
       <DependentUpon>201606062111586_AuditLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606291433527_MappingSettings.resx">
+      <DependentUpon>201606291433527_MappingSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

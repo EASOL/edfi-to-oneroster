@@ -1,4 +1,6 @@
-﻿namespace ED2OR.ViewModels
+﻿using System.Collections.Generic;
+
+namespace ED2OR.ViewModels
 {
     public class CsvUsers
     {
@@ -28,5 +30,7 @@
         public string Course { get; set; }
         [CsvIgnoreField]
         public string Section { get; set; }
+        [CsvIgnoreField]
+        public IEnumerable<string> Teachers { get; set; }
     }
 }

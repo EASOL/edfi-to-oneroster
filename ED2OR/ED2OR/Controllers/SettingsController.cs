@@ -5,6 +5,8 @@ using ED2OR.ViewModels;
 using ED2OR.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using ED2OR.Enums;
+using ED2OR.Models;
 
 namespace ED2OR.Controllers
 {
@@ -36,12 +38,16 @@ namespace ED2OR.Controllers
         public ActionResult Index()
         {
             var user = UserManager.FindById(UserId);
+            var apiPrefix = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix)?.SettingValue;
+            var orgsIdentifier = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.OrgsIdentifier)?.SettingValue;
 
             var model = new SettingsViewModel
             {
                 ApiBaseUrl = user.ApiBaseUrl,
                 ApiKey = user.ApiKey,
-                ApiSecret = user.ApiSecret
+                ApiSecret = user.ApiSecret,
+                OrgsIdentifier = orgsIdentifier,
+                ApiPrefix = apiPrefix
             };
 
             return View(model);
@@ -81,6 +87,39 @@ namespace ED2OR.Controllers
             user.ApiBaseUrl = model.ApiBaseUrl;
             user.ApiKey = model.ApiKey;
             user.ApiSecret = model.ApiSecret;
+
+            var apiPrefixSetting = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix);
+            var orgsIdentifierSetting = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.OrgsIdentifier);
+
+            if (apiPrefixSetting == null)
+            {
+                var newSetting = new MappingSetting
+                {
+                    SettingName = MappingSettingNames.ApiPrefix,
+                    SettingValue = model.ApiPrefix
+                };
+                db.MappingSettings.Add(newSetting);
+            }
+            else
+            {
+                apiPrefixSetting.SettingValue = model.ApiPrefix;
+            }
+
+            if (orgsIdentifierSetting == null)
+            {
+                var newSetting = new MappingSetting
+                {
+                    SettingName = MappingSettingNames.OrgsIdentifier,
+                    SettingValue = model.OrgsIdentifier
+                };
+                db.MappingSettings.Add(newSetting);
+            }
+            else
+            {
+                orgsIdentifierSetting.SettingValue = model.OrgsIdentifier;
+            }
+
+
             db.SaveChanges();
 
             model.OldPassword = "";
