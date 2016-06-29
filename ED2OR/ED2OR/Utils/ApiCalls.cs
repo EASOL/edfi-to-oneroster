@@ -27,6 +27,9 @@ namespace ED2OR.Utils
                 return context.User.Identity.GetUserId();
             }
         }
+
+        private static string apiPrefix = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix)?.SettingValue;
+
         #endregion
 
         #region TokenMethods
@@ -331,13 +334,19 @@ namespace ED2OR.Utils
         public static async Task<List<CsvOrgs>> GetCsvOrgs(FilterInputs inputs)
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
+
+            var context = new ApplicationDbContext();
+            var identifierSetting = context.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.OrgsIdentifier)?.SettingValue;
+            bool blankIdentifier = identifierSetting == null || identifierSetting == OrgIdentifierSettings.blank;
+            context.Dispose();
+
             var listOfObjects = (from o in responseArray
                                  select new CsvOrgs
                                  {
                                      sourcedId = (string)o["id"],
                                      name = (string)o["nameOfInstitution"],
                                      type = "school",
-                                     identifier = "",
+                                     identifier = blankIdentifier ? "" : (string)o["stateOrganizationId"],
                                      parentSourcedId = (string)o["localEducationAgencyReference"]["id"],
                                      SchoolId = (string)o["id"]
                                  });
@@ -356,6 +365,7 @@ namespace ED2OR.Utils
             var enrollmentsList = (from o in responseArray
                                    let students = o["students"].Children()
                                    let staffs = o["staff"].Children()
+                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new
                                    {
                                        students = students,
@@ -365,7 +375,8 @@ namespace ED2OR.Utils
                                        Term = (string)o["courseOfferingReference"]["termDescriptor"],
                                        Subject = (string)o["academicSubjectDescriptor"],
                                        Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"]
+                                       Section = (string)o["uniqueSectionCode"],
+                                       Teachers = teachers
                                    });
 
 
@@ -388,6 +399,9 @@ namespace ED2OR.Utils
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                if (inputs.Teachers != null)
+                    enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
             }
 
             var studentInfo = (from e in enrollmentsList
@@ -414,13 +428,7 @@ namespace ED2OR.Utils
                                    identifier = (string)s["studentUniqueId"],
                                    email = emailAddress,
                                    sms = mobileNumber,
-                                   phone = mainTelephoneNumber//,
-                                   //SchoolId = e.SchoolId,
-                                   //SchoolYear = e.SchoolYear,
-                                   //Term = e.Term,
-                                   //Subject = e.Subject,
-                                   //Course = e.Course
-                                   //section
+                                   phone = mainTelephoneNumber
                                });
 
 
@@ -448,13 +456,7 @@ namespace ED2OR.Utils
                                  identifier = (string)s["staffUniqueId"],
                                  email = emailAddress,
                                  sms = mobileNumber,
-                                 phone = mainTelephoneNumber//,
-                                 //SchoolId = e.SchoolId,
-                                 //SchoolYear = e.SchoolYear,
-                                 //Term = e.Term,
-                                 //Subject = e.Subject,
-                                 //Course = e.Course
-                                 //section
+                                 phone = mainTelephoneNumber
                              });
 
             var distinctStudents = studentInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
@@ -524,6 +526,7 @@ namespace ED2OR.Utils
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvCourses);
             var enrollmentsList = (from o in responseArray
+                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new CsvCourses
                                    {
                                        sourcedId = (string)o["courseOfferingReference"]["id"],
@@ -537,7 +540,8 @@ namespace ED2OR.Utils
                                        Term = (string)o["courseOfferingReference"]["termDescriptor"],
                                        Subject = (string)o["academicSubjectDescriptor"],
                                        Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"]
+                                       Section = (string)o["uniqueSectionCode"],
+                                       Teachers = teachers
                                    });
 
             if (inputs != null)
@@ -559,6 +563,9 @@ namespace ED2OR.Utils
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                if (inputs.Teachers != null)
+                    enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
             }
 
             enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
@@ -570,6 +577,7 @@ namespace ED2OR.Utils
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvClasses);
             var enrollmentsList = (from o in responseArray
+                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new CsvClasses
                                    {
                                        sourcedId = (string)o["id"],
@@ -579,13 +587,14 @@ namespace ED2OR.Utils
                                        classType = "scheduled",
                                        schoolSourcedId = (string)o["schoolReference"]["id"],
                                        termSourcedId = (string)o["sessionReference"]["id"],
-                                       subjects = (string)o["academicSubjectDescriptior"],
+                                       subjects = (string)o["academicSubjectDescriptor"],
                                        SchoolId = (string)o["schoolReference"]["id"],
                                        SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
                                        Term = (string)o["courseOfferingReference"]["termDescriptor"],
                                        Subject = (string)o["academicSubjectDescriptor"],
                                        Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"]
+                                       Section = (string)o["uniqueSectionCode"],
+                                       Teachers = teachers
                                    });
 
             if (inputs != null)
@@ -607,6 +616,9 @@ namespace ED2OR.Utils
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                if (inputs.Teachers != null)
+                    enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
             }
 
             return enrollmentsList.ToList();
@@ -618,6 +630,7 @@ namespace ED2OR.Utils
             var enrollmentsList = (from o in responseArray
                                    let students = o["students"].Children()
                                    let staffs = o["staff"].Children()
+                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new
                                    {
                                        classSourcedId = (string)o["id"],
@@ -629,7 +642,8 @@ namespace ED2OR.Utils
                                        Term = (string)o["courseOfferingReference"]["termDescriptor"],
                                        Subject = (string)o["academicSubjectDescriptor"],
                                        Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"]
+                                       Section = (string)o["uniqueSectionCode"],
+                                       Teachers = teachers
                                    });
 
             if (inputs != null)
@@ -651,6 +665,9 @@ namespace ED2OR.Utils
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                if (inputs.Teachers != null)
+                    enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
             }
 
             var studentInfo = (from e in enrollmentsList
@@ -684,6 +701,7 @@ namespace ED2OR.Utils
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
             var enrollmentsList = (from o in responseArray
+                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new CsvAcademicSessions
                                    {
                                        sourcedId = (string)o["sessionReference"]["id"],
@@ -696,7 +714,8 @@ namespace ED2OR.Utils
                                        Term = (string)o["courseOfferingReference"]["termDescriptor"],
                                        Subject = (string)o["academicSubjectDescriptor"],
                                        Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"]
+                                       Section = (string)o["uniqueSectionCode"],
+                                       Teachers = teachers
                                    });
 
             if (inputs != null)
@@ -718,6 +737,9 @@ namespace ED2OR.Utils
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                if (inputs.Teachers != null)
+                    enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
             }
 
             enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
@@ -750,7 +772,7 @@ namespace ED2OR.Utils
         {
             var stopFetchingRecordsAt = 250;
             var maxRecordLimit = 50;
-            var fullUrl = ApiEndPoints.ApiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
+            var fullUrl = apiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
 
             var tokenModel = GetToken();
             if (!tokenModel.IsSuccessful)

@@ -1,8 +1,8 @@
-﻿//namespace ED2OR.Enums
-//{
-//    public enum OrgIdentifierSettings
-//    {
-//        stateOrganizationId,
-//        blank
-//    }
-//}
+﻿namespace ED2OR.Enums
+{
+    public class OrgIdentifierSettings
+    {
+        public const string stateOrganizationId = "stateOrganizationId";
+        public const string blank = "blank";
+    }
+}

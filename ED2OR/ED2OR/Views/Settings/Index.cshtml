@@ -1,4 +1,5 @@
-﻿@model ED2OR.ViewModels.SettingsViewModel
+﻿@using ED2OR.Enums
+@model ED2OR.ViewModels.SettingsViewModel
 
 @{
     ViewBag.Title = "Settings";
@@ -70,13 +71,30 @@
             <span id="testConnectionResult"></span>
         </div>
     </div>
-    @*<div class="form-group">
+    <div class="form-group">
                 <div class="col-md-2 control-label">
-        @Html.LabelFor(m => m.ApiSecret) <i>eg: api/v2/2016/</i>
+        @Html.LabelFor(m => m.ApiPrefix) <i>(eg: api/v2/2016/)</i>
         </div>
         <div class="col-md-10">
+            @Html.TextBoxFor(m => m.ApiPrefix, new { @class = "form-control" })
         </div>
-    </div>*@
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2 control-label">
+            <label>Orgs Identifier</label> <i>(This determines the "identifier" field in the "orgs" result.  It will either map to the "stateOrganizationId" field, or return blank)</i>
+        </div>
+        <div class="col-md-10">
+            <label>@Html.RadioButtonFor(model => model.OrgsIdentifier, OrgIdentifierSettings.stateOrganizationId)stateOrganizationId</label>
+            <br />
+            <label>@Html.RadioButtonFor(model => model.OrgsIdentifier, OrgIdentifierSettings.blank)blank</label>
+        </div>
+    </div>
+
+
+
+
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />
