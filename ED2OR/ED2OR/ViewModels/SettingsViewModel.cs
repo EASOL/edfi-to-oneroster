@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ED2OR.ViewModels
 {
@@ -28,5 +29,16 @@ namespace ED2OR.ViewModels
 
         public string ApiPrefix { get; set; }
         public string OrgsIdentifier { get; set; }
+
+        public List<AcademicSessionTypeViewModel> AcademicSessionTypes { get; set; }
+        public bool IsError { get; set; }
+        public string ErrorMessage { get; set; }
+    }
+
+    public class AcademicSessionTypeViewModel
+    {
+        public int Id { get; set; }
+        public string TermDescriptor { get; set; }
+        public string Type { get; set; }
     }
 }

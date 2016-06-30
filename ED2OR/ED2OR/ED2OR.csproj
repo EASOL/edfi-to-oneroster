@@ -49,9 +49,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -210,7 +207,12 @@
     <Compile Include="Migrations\201606291433527_MappingSettings.Designer.cs">
       <DependentUpon>201606291433527_MappingSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606301252391_AcademicSessionTypes.cs" />
+    <Compile Include="Migrations\201606301252391_AcademicSessionTypes.Designer.cs">
+      <DependentUpon>201606301252391_AcademicSessionTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AcademicSessionType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\AuditLog.cs" />
@@ -245,6 +247,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Migrations\SQL\201606301252391_AcademicSessionTypes.sql" />
     <Content Include="Migrations\SQL\201606291433527_MappingSettings.sql" />
     <Content Include="Migrations\SQL\201606062111586_AuditLogs.sql" />
     <Content Include="Migrations\SQL\201606011916297_Templates.sql" />
@@ -304,6 +307,7 @@
     <Content Include="Views\Exports\EditorTemplates\ApiCriteriaSection.cshtml" />
     <Content Include="Views\Exports\_CriteriaSection.cshtml" />
     <Content Include="Views\Exports\_DataPreview.cshtml" />
+    <Content Include="Views\Settings\EditorTemplates\AcademicSessionTypeViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -332,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606291433527_MappingSettings.resx">
       <DependentUpon>201606291433527_MappingSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606301252391_AcademicSessionTypes.resx">
+      <DependentUpon>201606301252391_AcademicSessionTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
