@@ -25,5 +25,8 @@ namespace ED2OR.ViewModels
 
         [Display(Name = "Ed-Fi API Secret")]
         public string ApiSecret { get; set; }
+
+        public string ApiPrefix { get; set; }
+        public string OrgsIdentifier { get; set; }
     }
 }

@@ -2,8 +2,6 @@
 {
     public class ApiEndPoints
     {
-        public const string ApiPrefix = "api/v2.0/2016/";
-
         public const string OauthAuthorize = "oauth/authorize";
         public const string OauthGetToken = "oauth/token";
         public const string Schools = "enrollment/schools";

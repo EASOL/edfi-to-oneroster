@@ -24,5 +24,7 @@ namespace ED2OR.ViewModels
         public string Course { get; set; }
         [CsvIgnoreField]
         public string Section { get; set; }
+        [CsvIgnoreField]
+        public IEnumerable<string> Teachers { get; set; }
     }
 }
