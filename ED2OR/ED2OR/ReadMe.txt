@@ -11,10 +11,6 @@ Update-Database -Script -SourceMigration: migration1 -TargetMigration: migration
 =============================================================================================
 cURL Commands
 =============================================================================================
-apiBaseUrl = "http://api21b.easol.betaspaces.com/";
-apiKey = "1BW3WaqcFv8f";
-apiSecret = "1QZiYjEkUK8VhOxbVvwwnsAt";
-
 apiBaseUrl = "http://api.ef2or.learningtapestry.com/";
 apiKey = "vVUf2k2aZ5Ey";
 apiSecret = "8wNOMIJKXYpzKHWUga692iIT";

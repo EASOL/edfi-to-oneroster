@@ -13,7 +13,7 @@ namespace ED2OR
         {
             ConfigureAuth(app);
             //The following code will force Entity Framework Migrations on Application Start
-            //ConfigureMigrations(app);
+            ConfigureMigrations(app);
         }
 
         private void ConfigureMigrations(IAppBuilder app)

@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using ED2OR.Enums;
 using ED2OR.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ED2OR.Controllers
 {
@@ -35,8 +37,39 @@ namespace ED2OR.Controllers
             }
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            var isError = false;
+            var errorMessage = "";
+
+            var academicSessionTypes = db.AcademicSessionTypes.Select(x => new AcademicSessionTypeViewModel
+            {
+                Id = x.AcademicSessionTypeId,
+                TermDescriptor = x.TermDescriptor,
+                Type = x.Type
+            }).ToList();
+
+            try
+            {
+                var apiTermDescriptors = await ApiCalls.GetTermDescriptors(true);
+                var exsitingTermDescirptors = db.AcademicSessionTypes.Select(x => x.TermDescriptor).ToList();
+                var newTermDescriptors = apiTermDescriptors.Where(x => !exsitingTermDescirptors.Contains(x)).ToList();
+
+                foreach (var term in newTermDescriptors)
+                {
+                    academicSessionTypes.Add(
+                        new AcademicSessionTypeViewModel
+                        {
+                            TermDescriptor = term
+                        });
+                }
+            }
+            catch
+            {
+                isError = true;
+                errorMessage = "There was an error in getting the latest Term Descriptors.  Make sure the API Key and Secret are correct and test properly.  Also, the prefix must be correctly entered.";
+            }
+
             var user = UserManager.FindById(UserId);
             var apiPrefix = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix)?.SettingValue;
             var orgsIdentifier = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.OrgsIdentifier)?.SettingValue;
@@ -47,10 +80,42 @@ namespace ED2OR.Controllers
                 ApiKey = user.ApiKey,
                 ApiSecret = user.ApiSecret,
                 OrgsIdentifier = orgsIdentifier,
-                ApiPrefix = apiPrefix
+                ApiPrefix = apiPrefix,
+                AcademicSessionTypes = academicSessionTypes,
+                IsError = isError,
+                ErrorMessage = errorMessage
             };
 
+            LoadDropdownValues();
+
             return View(model);
+        }
+
+        private void LoadDropdownValues()
+        {
+            ViewBag.AcademicSessionTypes = new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "term",
+                        Value = "term"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "gradingPeriod",
+                        Value = "gradingPeriod"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "schoolYear",
+                        Value = "schoolYear"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "semester",
+                        Value = "semester"
+                    }
+                };
         }
 
         [HttpPost]
@@ -120,13 +185,31 @@ namespace ED2OR.Controllers
             }
 
 
+            if (model.AcademicSessionTypes != null)
+            {
+                foreach (var t in model.AcademicSessionTypes)
+                {
+                    var dbEntry = db.AcademicSessionTypes.FirstOrDefault(x => x.AcademicSessionTypeId == t.Id);
+                    if (dbEntry == null)
+                    {
+                        db.AcademicSessionTypes.Add(
+                            new AcademicSessionType
+                            {
+                                TermDescriptor = t.TermDescriptor,
+                                Type = t.Type
+                            });
+                    }
+                    else
+                    {
+                        dbEntry.TermDescriptor = t.TermDescriptor;
+                        dbEntry.Type = t.Type;
+                    }
+                }
+            }
+
             db.SaveChanges();
 
-            model.OldPassword = "";
-            model.NewPassword = "";
-            model.ConfirmPassword = "";
-
-            return View(model);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

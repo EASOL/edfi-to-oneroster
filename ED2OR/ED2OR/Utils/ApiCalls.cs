@@ -36,10 +36,12 @@ namespace ED2OR.Utils
         //public async Task<ApiCallViewModel> GetToken()
         public static TokenViewModel GetToken(bool forceNewToken = false)
         {
-            if (forceNewToken || HttpContext.Current.Session["token"] == null)
+            if (forceNewToken || HttpContext.Current.Session["token"] == null || ((TokenViewModel)HttpContext.Current.Session["token"]).IsSuccessful == false)
             {
-                var user = db.Users.FirstOrDefault(x => x.Id == UserId);
+                var context = new ApplicationDbContext();
+                var user = context.Users.FirstOrDefault(x => x.Id == UserId);
                 HttpContext.Current.Session["token"] = GetToken(user.ApiBaseUrl, user.ApiKey, user.ApiSecret);
+                context.Dispose();
             }
 
             return (TokenViewModel)HttpContext.Current.Session["token"];
@@ -304,6 +306,13 @@ namespace ED2OR.Utils
         #endregion
 
         #region ResultsMethods
+        public static async Task<List<string>> GetTermDescriptors(bool forceNew = false)
+        {
+            var responseArray = await GetApiResponseArray(ApiEndPoints.Terms, forceNew);
+            var terms = responseArray.Select(x => (string)x["sessionReference"]["termDescriptor"]).Distinct();
+            return terms.ToList();
+        }
+
         public static async Task<PreveiwJsonResults> GetJsonPreviews(FilterInputs inputs)
         {
             var dataResults = await GetDataResults(inputs);
@@ -700,13 +709,18 @@ namespace ED2OR.Utils
         public static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
+
+            var typeDictionary = db.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
+
             var enrollmentsList = (from o in responseArray
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
+                                   let termDescriptor = (string)o["sessionReference"]["termDescriptor"]
+                                   let type = typeDictionary.ContainsKey(termDescriptor) ? typeDictionary[termDescriptor] : ""
                                    select new CsvAcademicSessions
                                    {
                                        sourcedId = (string)o["sessionReference"]["id"],
-                                       title = (string)o["sessionReference"]["schoolYear"] + " " + (string)o["sessionReference"]["termDescriptor"],
-                                       //type = (string)o["id"], //TODO: Not sure what this one is
+                                       title = (string)o["sessionReference"]["schoolYear"] + " " + termDescriptor,
+                                       type = type,
                                        startDate = (string)o["sessionReference"]["beginDate"],
                                        endDate = (string)o["sessionReference"]["endDate"],
                                        SchoolId = (string)o["schoolReference"]["id"],
@@ -749,9 +763,9 @@ namespace ED2OR.Utils
         #endregion
 
         #region PrivateMethods
-        private static async Task<JArray> GetApiResponseArray(string apiEndpoint)
+        private static async Task<JArray> GetApiResponseArray(string apiEndpoint, bool forceNew = false)
         {
-            if (ExistingResponses.ContainsKey(apiEndpoint))
+            if (ExistingResponses.ContainsKey(apiEndpoint) && !forceNew)
             {
                 return ExistingResponses[apiEndpoint];
             }
@@ -763,6 +777,11 @@ namespace ED2OR.Utils
                 response = await GetApiResponse(apiEndpoint);
             }
 
+            if (ExistingResponses.ContainsKey(apiEndpoint))
+            {
+                ExistingResponses.Remove(apiEndpoint);
+            }
+
             ExistingResponses.Add(apiEndpoint, response.ResponseArray);
 
             return response.ResponseArray;
@@ -770,6 +789,7 @@ namespace ED2OR.Utils
 
         private static async Task<ApiResponse> GetApiResponse(string apiEndpoint)
         {
+            var context = new ApplicationDbContext();
             var stopFetchingRecordsAt = 250;
             var maxRecordLimit = 50;
             var fullUrl = apiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
@@ -781,7 +801,8 @@ namespace ED2OR.Utils
             }
 
             var token = tokenModel.Token;
-            var apiBaseUrl = db.Users.FirstOrDefault(x => x.Id == UserId).ApiBaseUrl;
+
+            var apiBaseUrl = context.Users.FirstOrDefault(x => x.Id == UserId).ApiBaseUrl;
 
             var finalResponse = new JArray();
             using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })

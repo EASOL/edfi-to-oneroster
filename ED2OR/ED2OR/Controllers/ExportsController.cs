@@ -171,55 +171,6 @@ namespace ED2OR.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(ExportsViewModel model, string Command)
         {
-            //if (Command == "Preview")
-            //{
-            //    await InitializeModel(model, true);
-
-            //    model.JsonPreviews = await ApiCalls.GetJsonPreviews();
-
-            //    var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
-            //    var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
-            //    var coursesColumnNames = typeof(CsvCourses).GetProperties().Select(x => x.Name);
-            //    var classesColumnNames = typeof(CsvClasses).GetProperties().Select(x => x.Name);
-            //    var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Select(x => x.Name);
-            //    var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Select(x => x.Name);
-
-            //    model.DataPreviewSections = new List<DataPreviewSection>
-            //    {
-            //        new DataPreviewSection
-            //        {
-            //            SectionName = "orgs",
-            //            ColumnNames = orgColumnNames
-            //        },
-            //        new DataPreviewSection
-            //        {
-            //            SectionName = "users",
-            //            ColumnNames = usersColumnNames
-            //        },
-            //        new DataPreviewSection
-            //        {
-            //            SectionName = "courses",
-            //            ColumnNames = coursesColumnNames
-            //        },
-            //        new DataPreviewSection
-            //        {
-            //            SectionName = "classes",
-            //            ColumnNames = classesColumnNames
-            //        },
-            //        new DataPreviewSection
-            //        {
-            //            SectionName = "enrollments",
-            //            ColumnNames = enrollmentsColumnNames
-            //        },
-            //        new DataPreviewSection
-            //        {
-            //            SectionName = "academicsessions",
-            //            ColumnNames = academicsessionsColumnNames
-            //        }
-            //    };
-
-            //    return View(model);
-            //}
             //if (Command == "Download")
             //{
             var schools = model.SelectedSchools?.Split(',').ToList();
@@ -238,19 +189,6 @@ namespace ED2OR.Controllers
             //    return View();
             //}
         }
-
-        //[HttpPost]
-        //public async Task<JsonResult> GetSubjectsCheckboxes(List<string> schoolIds)
-        //{
-        //    if (schoolIds == null || schoolIds.Count() == 0)
-        //    {
-        //        return Json(new List<string>(), JsonRequestBehavior.AllowGet);
-        //    }
-
-        //    var subjects = await ApiCalls.GetSubjects();
-        //    var filteredSubjects = subjects.Where(x => schoolIds.Contains(x.SchoolId)).GroupBy(x => x.Text).Select(group => group.First());
-        //    return Json(filteredSubjects.Select(x => x.Text).ToList(), JsonRequestBehavior.AllowGet);
-        //}
 
         public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds,
             List<string> schoolYears,

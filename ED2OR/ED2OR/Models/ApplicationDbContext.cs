@@ -21,6 +21,7 @@ namespace ED2OR.Models
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<MappingSetting> MappingSettings { get; set; }
+        public DbSet<AcademicSessionType> AcademicSessionTypes { get; set; }
 
         public static ApplicationDbContext Create()
         {
