@@ -14,6 +14,7 @@ using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Dynamic;
+using Newtonsoft.Json;
 
 namespace ED2OR.Controllers
 {
@@ -101,7 +102,7 @@ namespace ED2OR.Controllers
         }
 
         [HttpPost]
-        public async Task<FileResult> DownloadCsv(List<string> schoolIds,
+        public async Task<FileResult> GetZipFile(List<string> schoolIds,
             List<string> schoolYears,
             List<string> terms,
             List<string> subjects,
@@ -169,10 +170,8 @@ namespace ED2OR.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(ExportsViewModel model, string Command)
+        public async Task<ActionResult> DownloadCsv(ExportsViewModel model)
         {
-            //if (Command == "Download")
-            //{
             var schools = model.SelectedSchools?.Split(',').ToList();
             var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
             var terms = model.SelectedTerms?.Split(',').ToList();
@@ -181,13 +180,34 @@ namespace ED2OR.Controllers
             var teachers = model.SelectedTeachers?.Split(',').ToList();
             var sections = model.SelectedSections?.Split(',').ToList();
 
-            return await DownloadCsv(schools, schoolYears, terms, subjects, courses, teachers, sections);
-            //return await GetZipFile();
-            //}
-            //else //"Save Template"
-            //{
-            //    return View();
-            //}
+            return await GetZipFile(schools, schoolYears, terms, subjects, courses, teachers, sections);
+        }
+
+        [HttpPost]
+        public ActionResult SaveTemplate(ExportsViewModel model)
+        {
+            var schoolIds = model.SelectedSchools?.Split(',').ToList();
+            var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
+            var terms = model.SelectedTerms?.Split(',').ToList();
+            var subjects = model.SelectedSubjects?.Split(',').ToList();
+            var courses = model.SelectedCourses?.Split(',').ToList();
+            var teachers = model.SelectedTeachers?.Split(',').ToList();
+            var sections = model.SelectedSections?.Split(',').ToList();
+
+            var inputs = new FilterInputs
+            {
+                Schools = schoolIds,
+                SchoolYears = schoolYears,
+                Terms = terms,
+                Subjects = subjects,
+                Courses = courses,
+                Teachers = teachers,
+                Sections = sections
+            };
+
+            var inputsJson = JsonConvert.SerializeObject(inputs);
+            
+            return RedirectToAction("Index", "Templates");
         }
 
         public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds,
@@ -231,6 +251,7 @@ namespace ED2OR.Controllers
 
             filteredSubjects = filteredSubjects.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
+            filteredSubjects.ForEach(c => c.Selected = false); // make sure all are unchecked first
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
                 var boxesToCheck = filteredSubjects.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
@@ -283,6 +304,7 @@ namespace ED2OR.Controllers
 
             filteredCourses = filteredCourses.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
+            filteredCourses.ForEach(c => c.Selected = false); // make sure all are unchecked first
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
                 var boxesToCheck = filteredCourses.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
@@ -335,6 +357,7 @@ namespace ED2OR.Controllers
 
             filteredTeachers = filteredTeachers.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
+            filteredTeachers.ForEach(c => c.Selected = false); // make sure all are unchecked first
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
                 var boxesToCheck = filteredTeachers.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
@@ -387,6 +410,7 @@ namespace ED2OR.Controllers
 
             filteredSections = filteredSections.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
+            filteredSections.ForEach(c => c.Selected = false); // make sure all are unchecked first
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
                 var boxesToCheck = filteredSections.Where(x => boxesAlreadyChecked.Contains(x.Text)).ToList();
