@@ -20,82 +20,84 @@
 @*http://v4-alpha.getbootstrap.com/components/collapse/*@
 
 @*@using (Html.BeginForm())*@
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "exportsForm" }))
+@using (Html.BeginForm("DownloadCsv", "Exports", FormMethod.Post, new { id = "exportsForm" }))
 {
-    @Html.HiddenFor(x => x.SelectedSchools)
-    @Html.HiddenFor(x => x.SelectedSchoolYears)
-    @Html.HiddenFor(x => x.SelectedTerms)
-    @Html.HiddenFor(x => x.SelectedSubjects)
-    @Html.HiddenFor(x => x.SelectedCourses)
-    @Html.HiddenFor(x => x.SelectedTeachers)
-    @Html.HiddenFor(x => x.SelectedSections)
+ <div style="padding-bottom:75px;">
+     @Html.HiddenFor(x => x.SelectedSchools)
+     @Html.HiddenFor(x => x.SelectedSchoolYears)
+     @Html.HiddenFor(x => x.SelectedTerms)
+     @Html.HiddenFor(x => x.SelectedSubjects)
+     @Html.HiddenFor(x => x.SelectedCourses)
+     @Html.HiddenFor(x => x.SelectedTeachers)
+     @Html.HiddenFor(x => x.SelectedSections)
 
-    @*<div id="criteriaContainer">
-        @Html.EditorFor(x => x.CriteriaSections)
-        <input type="submit" value="OK" />
-    </div>*@
-    @Html.Partial("_CriteriaSection", Model.SchoolsCriteriaSection, new ViewDataDictionary()
-        {
-            TemplateInfo = new TemplateInfo()
-            { HtmlFieldPrefix = "Schools" }
-        })
+     @*<div id="criteriaContainer">
+            @Html.EditorFor(x => x.CriteriaSections)
+            <input type="submit" value="OK" />
+        </div>*@
+     @Html.Partial("_CriteriaSection", Model.SchoolsCriteriaSection, new ViewDataDictionary()
+{
+    TemplateInfo = new TemplateInfo()
+    { HtmlFieldPrefix = "Schools" }
+})
 
-    @Html.Partial("_CriteriaSection", Model.SchoolYearsCriteriaSection, new ViewDataDictionary()
-        {
-            TemplateInfo = new TemplateInfo()
-            { HtmlFieldPrefix = "School_Years" }
-        })
+     @Html.Partial("_CriteriaSection", Model.SchoolYearsCriteriaSection, new ViewDataDictionary()
+{
+    TemplateInfo = new TemplateInfo()
+    { HtmlFieldPrefix = "School_Years" }
+})
 
-    @Html.Partial("_CriteriaSection", Model.TermsCriteriaSection, new ViewDataDictionary()
-    {
-        TemplateInfo = new TemplateInfo()
-        { HtmlFieldPrefix = "Terms" }
-    })
+     @Html.Partial("_CriteriaSection", Model.TermsCriteriaSection, new ViewDataDictionary()
+{
+    TemplateInfo = new TemplateInfo()
+    { HtmlFieldPrefix = "Terms" }
+})
 
-    <div id="SubjectsContainer">
-        @Html.Partial("_CriteriaSection", Model.SubjectsCriteriaSection, new ViewDataDictionary()
-            {
-                TemplateInfo = new TemplateInfo()
-                { HtmlFieldPrefix = "Subjects" }
-            })
-    </div>
+     <div id="SubjectsContainer">
+         @Html.Partial("_CriteriaSection", Model.SubjectsCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Subjects" }
+   })
+     </div>
 
-    <div id="CoursesContainer">
-        @Html.Partial("_CriteriaSection", Model.CoursesCriteriaSection, new ViewDataDictionary()
-            {
-                TemplateInfo = new TemplateInfo()
-                { HtmlFieldPrefix = "Courses" }
-            })
-    </div>
+     <div id="CoursesContainer">
+         @Html.Partial("_CriteriaSection", Model.CoursesCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Courses" }
+   })
+     </div>
 
-    <div id="TeachersContainer">
-        @Html.Partial("_CriteriaSection", Model.TeachersCriteriaSection, new ViewDataDictionary()
-            {
-                TemplateInfo = new TemplateInfo()
-                { HtmlFieldPrefix = "Teachers" }
-            })
-    </div>
+     <div id="TeachersContainer">
+         @Html.Partial("_CriteriaSection", Model.TeachersCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Teachers" }
+   })
+     </div>
 
-    <div id="SectionsContainer">
-        @Html.Partial("_CriteriaSection", Model.SectionsCriteriaSection, new ViewDataDictionary()
-            {
-                TemplateInfo = new TemplateInfo()
-                { HtmlFieldPrefix = "Sections" }
-            })
-    </div>
+     <div id="SectionsContainer">
+         @Html.Partial("_CriteriaSection", Model.SectionsCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Sections" }
+   })
+     </div>
 
-    <br />
-    <div id="DataPreview"></div>
-    <br />
-    <br />
+     <br />
+     <div id="DataPreview"></div>
+ </div>
+}
+
+<div style="position:fixed; bottom:0px; padding-bottom:22px; background-color: white; width:100%; padding-top:15px;">
     <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
     @*<button type="submit" class="btn btn-primary" id="btnPreview" name="Command" value="Preview">Preview Data</button>*@
     <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
     @*<button type="submit" class="btn btn-primary" id="btnDownload" name="Command" value="Download">Download CSV Package</button>*@
-    <button type="submit" class="btn btn-primary" id="btnSaveTemplate" disabled name="Command" value="SaveTemplate">Save Template</button> 
-}
-
-
+    <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="saveTemplate()">Save Template</button> 
+</div>
+saveTemplate
 @section scripts{
         <script>
             function deselectAll(divId) {
@@ -247,7 +249,7 @@
                 });
             }
 
-            function downloadCsv() {
+            function setHiddens() {
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
                 var terms = getCheckedIds("Terms");
@@ -263,7 +265,19 @@
                 $("#@Html.IdFor(x => x.SelectedCourses)").val(courses);
                 $("#@Html.IdFor(x => x.SelectedTeachers)").val(teachers);
                 $("#@Html.IdFor(x => x.SelectedSections)").val(sections);
+            }
 
+            function saveTemplate() {
+                setHiddens();
+                var frm = document.getElementById('exportsForm') || null;
+                if (frm) {
+                    frm.action = '@Url.Action("SaveTemplate")';
+                }
+                document.getElementById('exportsForm').submit();
+            }
+
+            function downloadCsv() {
+                setHiddens();
                 document.getElementById('exportsForm').submit();
             }
         </script>

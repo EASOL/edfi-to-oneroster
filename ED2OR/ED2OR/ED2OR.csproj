@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201606301252391_AcademicSessionTypes.Designer.cs">
       <DependentUpon>201606301252391_AcademicSessionTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607012242549_TemplateFilters.cs" />
+    <Compile Include="Migrations\201607012242549_TemplateFilters.Designer.cs">
+      <DependentUpon>201607012242549_TemplateFilters.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicSessionType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -339,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606301252391_AcademicSessionTypes.resx">
       <DependentUpon>201606301252391_AcademicSessionTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607012242549_TemplateFilters.resx">
+      <DependentUpon>201607012242549_TemplateFilters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

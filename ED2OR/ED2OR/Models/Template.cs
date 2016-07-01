@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ED2OR.Models
 {
@@ -14,7 +10,6 @@ namespace ED2OR.Models
         public string VendorName { get; set; }
         public string AccessUrl { get; set; }
         public string AccessToken { get; set; }
-        //public DateTime CreatedTimeStamp { get; set; }
-        //public DateTime LastUpdatedTimeStamp { get; set; }
+        public string Filters { get; set; }
     }
 }

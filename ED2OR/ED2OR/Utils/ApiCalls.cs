@@ -420,15 +420,16 @@ namespace ED2OR.Utils
                                let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
                                let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                                let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                               let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                               let orgIds = schoolAssociationsIds == null ? "" :
-                                   (
-                                    schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                                   )
+                               //let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
+                               //let orgIds = schoolAssociationsIds == null ? "" :
+                               //    (
+                               //     schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
+                               //    )
                                select new CsvUsers
                                {
                                    sourcedId = (string)s["id"],
-                                   orgSourcedIds = orgIds,
+                                   //orgSourcedIds = orgIds,
+                                   orgSourcedIds = e.SchoolId,
                                    role = "student",
                                    username = (string)s["loginId"],
                                    userId = (string)s["studentUniqueId"],
@@ -448,15 +449,16 @@ namespace ED2OR.Utils
                              let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
                              let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                              let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                             let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                             let orgIds = schoolAssociationsIds == null ? "" :
-                                 (
-                                  schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                                 )
+                             //let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
+                             //let orgIds = schoolAssociationsIds == null ? "" :
+                             //    (
+                             //     schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
+                             //    )
                              select new CsvUsers
                              {
                                  sourcedId = (string)s["id"],
-                                 orgSourcedIds = orgIds,
+                                 //orgSourcedIds = orgIds,
+                                 orgSourcedIds = e.SchoolId,
                                  role = "teacher",
                                  username = (string)s["loginId"],
                                  userId = (string)s["staffUniqueId"],
