@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace ED2OR.ViewModels
 {
@@ -66,10 +63,7 @@ namespace ED2OR.ViewModels
     {
         public List<ExportsCheckbox> FilterCheckboxes { get; set; }
         public string SectionName { get; set; }
-        //public bool IsFilled { get; set; }
-        //public int Level { get; set; }
         public bool IsExpanded { get; set; }
-
     }
 
     public class ExportsCheckbox
