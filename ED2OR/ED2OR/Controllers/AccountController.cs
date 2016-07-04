@@ -23,7 +23,7 @@ namespace ED2OR.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -35,9 +35,9 @@ namespace ED2OR.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -55,6 +55,7 @@ namespace ED2OR.Controllers
 
         //
         // GET: /Account/Login
+        [PreConfiguration]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -115,7 +116,8 @@ namespace ED2OR.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {
+                var user = new ApplicationUser
+                {
                     UserName = model.Email,
                     Email = model.Email,
                     ApiBaseUrl = model.ApiBaseUrl,
@@ -125,8 +127,8 @@ namespace ED2OR.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

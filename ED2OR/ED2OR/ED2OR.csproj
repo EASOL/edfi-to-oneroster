@@ -54,6 +54,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.4.0.0.0.Fakes">
       <HintPath>FakesAssemblies\System.Web.4.0.0.0.Fakes.dll</HintPath>
     </Reference>
@@ -173,6 +175,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\ExportsController.cs" />
@@ -213,6 +216,27 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicSessionType.cs" />
+    <Compile Include="Models\AdminDBModels\AdminDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdminDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdminDBModels\AdminDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdminDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdminDBModels\AdminDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AdminDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdminDBModels\AdminUser.cs">
+      <DependentUpon>AdminDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdminDBModels\ConfigurationInfo.cs">
+      <DependentUpon>AdminDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\AuditLog.cs" />
@@ -220,6 +244,7 @@
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\PreConfigurationHelper.cs" />
     <Compile Include="Utils\ApiCalls.cs" />
     <Compile Include="Utils\CsvMethods.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
@@ -230,6 +255,7 @@
     <Compile Include="ViewModels\CsvCourses.cs" />
     <Compile Include="ViewModels\CsvIgnoreFieldAttribute.cs" />
     <Compile Include="ViewModels\CsvUsers.cs" />
+    <Compile Include="ViewModels\InitialSetup.cs" />
     <Compile Include="ViewModels\TokenViewModel.cs" />
     <Compile Include="ViewModels\CsvOrgs.cs" />
     <Compile Include="ViewModels\ExportsViewModels.cs" />
@@ -238,6 +264,10 @@
     <Compile Include="ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\AdminDB.mdf" />
+    <Content Include="App_Data\AdminDB_log.ldf">
+      <DependentUpon>AdminDB.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap-table.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -253,12 +283,29 @@
     <Content Include="Migrations\SQL\201606011916297_Templates.sql" />
     <Content Include="Migrations\SQL\201605301855140_ExtendUserWithApiInfo.sql" />
     <Content Include="Migrations\SQL\201605301521119_InitialUserTables.sql" />
+    <Content Include="Models\AdminDBModels\AdminDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AdminDB.edmx</DependentUpon>
+      <LastGenOutput>AdminDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\AdminDBModels\AdminDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AdminDB.edmx</DependentUpon>
+      <LastGenOutput>AdminDB.cs</LastGenOutput>
+    </Content>
     <Content Include="ReadMe.txt" />
     <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap-table.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Fakes Include="Fakes\System.Web.fakes" />
+    <EntityDeploy Include="Models\AdminDBModels\AdminDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AdminDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\AdminDBModels\AdminDB.edmx.diagram">
+      <DependentUpon>AdminDB.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -308,9 +355,10 @@
     <Content Include="Views\Exports\_CriteriaSection.cshtml" />
     <Content Include="Views\Exports\_DataPreview.cshtml" />
     <Content Include="Views\Settings\EditorTemplates\AcademicSessionTypeViewModel.cshtml" />
+    <Content Include="Views\Admin\InitialSetup.cshtml" />
+    <Content Include="Views\Shared\InitialSetup.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="CsvFiles\" />
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +388,9 @@
     <EmbeddedResource Include="Migrations\201606301252391_AcademicSessionTypes.resx">
       <DependentUpon>201606301252391_AcademicSessionTypes.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
