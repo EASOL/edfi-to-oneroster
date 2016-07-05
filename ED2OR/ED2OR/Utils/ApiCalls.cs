@@ -712,7 +712,8 @@ namespace ED2OR.Utils
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
 
-            var typeDictionary = db.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
+            var context = new ApplicationDbContext();
+            var typeDictionary = context.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
 
             var enrollmentsList = (from o in responseArray
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
@@ -760,6 +761,7 @@ namespace ED2OR.Utils
 
             enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
 
+            context.Dispose();
             return enrollmentsList.ToList();
         }
         #endregion
