@@ -46,6 +46,47 @@ namespace ED2OR.Controllers.Tests
             controller.Url = new UrlHelper(new RequestContext(HttpContextBaseMock.Object, new RouteData()), routes);
         }
 
+        [TestMethod]
+        public async Task ExportsController_PreviewTest()
+        {
+            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
+            {
+                AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
+                System.Web.Fakes.ShimHttpContext.CurrentGet = () =>
+                {
+                    return AuthenticationHelper.HttpContext;
+                };
+                ExportsController exportsController = new ExportsController();
+                SetupController(exportsController);
+                ED2OR.Utils.Fakes.ShimApiCalls.UserIdGet = () =>
+                {
+                    return AuthenticationHelper.TestUser.Id;
+                };
+                System.Web.Fakes.ShimHttpServerUtility.AllInstances.MapPathString = (server, path) =>
+                {
+                    return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
+                };
+                ExportsViewModel defaultExportsViewModel = await GetDefaultExportsViewModel();
+                var previewResult = await exportsController.Preview(
+                    schoolIds: defaultExportsViewModel.SelectedSchools.Split(',').ToList(),
+                    schoolYears: null,
+                    terms: null,
+                    subjects: null,
+                    courses: defaultExportsViewModel.SelectedCourses.Split(',').ToList(),
+                    teachers: null,
+                    sections: null
+                    );
+                Assert.IsNotNull(previewResult, "Invalid result");
+                Assert.IsInstanceOfType(previewResult, typeof(PartialViewResult), "Invalid result type");
+                PartialViewResult partialViewResult = previewResult as PartialViewResult;
+                Assert.IsNotNull(partialViewResult.Model, "Invalid model");
+                Assert.IsInstanceOfType(partialViewResult.Model, typeof(ExportsViewModel), "Unexpected type for model");
+                ExportsViewModel partialResultModel = partialViewResult.Model as ExportsViewModel;
+                Assert.IsTrue(partialResultModel.DataPreviewSections.Count > 0, "No Data Preview Sections");
+                Assert.IsTrue(partialResultModel.JsonPreviews.Orgs.Count() > 0, "No Orgs for JsonPreview");
+            }
+        }
+
         [TestMethod()]
         public async Task ExportsController_IndexTest()
         {
@@ -68,11 +109,17 @@ namespace ED2OR.Controllers.Tests
                 };
 
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
-                var downloadResult = await controller.Index(defaultExportViewModel, "Download");
-                Assert.IsNotNull(downloadResult, "Invalid Download reuslt");
-                Assert.IsInstanceOfType(downloadResult, typeof(FileContentResult), "Invalid File Result");
-                FileContentResult fileResult = downloadResult as FileContentResult;
-                Assert.IsTrue(fileResult.FileContents != null && fileResult.FileContents.Length > 0, "Invalid File Contents");
+                var defaultResult = await controller.Index();
+                Assert.IsNotNull(defaultResult, "invalid result");
+                Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
+                ViewResult defaultViewResult = defaultResult as ViewResult;
+                Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
+                Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
+                ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
+                Assert.IsTrue(modelResult.SchoolsCriteriaSection.FilterCheckboxes != null &&
+                    modelResult.SchoolsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
+                Assert.IsTrue(modelResult.SchoolYearsCriteriaSection.FilterCheckboxes != null &&
+                    modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
             }
         }
 

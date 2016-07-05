@@ -31,7 +31,7 @@ namespace ED2OR.Controllers.Tests
                     return AuthenticationHelper.TestUser.Id;
                 };
                 SettingsController controller = new SettingsController(AuthenticationHelper.AppUserManager);
-                var result = controller.Index() as ViewResult;
+                var result = await controller.Index() as ViewResult;
                 Assert.IsNotNull(result, "Invalid Result");
                 Assert.IsNotNull(result.Model, "Null Model");
                 ED2OR.ViewModels.SettingsViewModel settingsVM = new ViewModels.SettingsViewModel();

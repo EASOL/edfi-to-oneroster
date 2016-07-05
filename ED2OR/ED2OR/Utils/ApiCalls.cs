@@ -28,7 +28,13 @@ namespace ED2OR.Utils
             }
         }
 
-        private static string apiPrefix = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix)?.SettingValue;
+        private static string GetApiPrefix()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+               return context.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix)?.SettingValue;
+            }
+        }
 
         #endregion
 
@@ -712,7 +718,8 @@ namespace ED2OR.Utils
         {
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
 
-            var typeDictionary = db.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
+            var context = new ApplicationDbContext();
+            var typeDictionary = context.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
 
             var enrollmentsList = (from o in responseArray
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
@@ -760,6 +767,7 @@ namespace ED2OR.Utils
 
             enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
 
+            context.Dispose();
             return enrollmentsList.ToList();
         }
         #endregion
@@ -794,7 +802,7 @@ namespace ED2OR.Utils
             var context = new ApplicationDbContext();
             var stopFetchingRecordsAt = 250;
             var maxRecordLimit = 50;
-            var fullUrl = apiPrefix + apiEndpoint + "?limit=" + maxRecordLimit;
+            var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
 
             var tokenModel = GetToken();
             if (!tokenModel.IsSuccessful)
