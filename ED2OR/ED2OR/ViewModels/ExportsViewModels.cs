@@ -20,6 +20,8 @@ namespace ED2OR.ViewModels
         public string SelectedCourses { get; set; }
         public string SelectedTeachers { get; set; }
         public string SelectedSections { get; set; }
+        public string NewTemplateName { get; set; }
+        public string NewTemplateVendorName { get; set; }
     }
 
     public class PreveiwJsonResults
