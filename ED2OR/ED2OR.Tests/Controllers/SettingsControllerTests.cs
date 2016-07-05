@@ -38,6 +38,7 @@ namespace ED2OR.Controllers.Tests
                 settingsVM.ApiBaseUrl = AuthenticationHelper.TESTAPI_BASEURL;
                 settingsVM.ApiKey = AuthenticationHelper.TESTAPI_APIKEY;
                 settingsVM.ApiSecret = AuthenticationHelper.TESTAPI_APISECRET;
+                settingsVM.ApiPrefix = AuthenticationHelper.TESTAPI_APIPREFIX; 
                 var postResult = controller.Index(settingsVM);
                 Assert.IsTrue(controller.ModelState.IsValid, "Invalid model");
                 Assert.IsNotNull(postResult, "Invalid Result");

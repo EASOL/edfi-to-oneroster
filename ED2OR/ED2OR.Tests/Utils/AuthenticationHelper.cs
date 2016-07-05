@@ -80,7 +80,7 @@ namespace ED2OR.Tests.Utils
                     Email = TESTUSER_USERNAME,
                     ApiBaseUrl = TESTAPI_BASEURL,
                     ApiKey = TESTAPI_APIKEY,
-                    ApiSecret = TESTAPI_APISECRET
+                    ApiSecret = TESTAPI_APISECRET,
                 };
                 var result = await AppUserManager.CreateAsync(user, TESTUSER_ORIGINALPASSWORD);
             };
@@ -116,6 +116,7 @@ namespace ED2OR.Tests.Utils
         {
             get;set;
         }
+        public static string TESTAPI_APIPREFIX { get; internal set; } = ConfigurationManager.AppSettings["TestApi_ApiPrefix"];
 
         /// <summary>
         /// Check http://stackoverflow.com/questions/28405966/how-to-mock-applicationusermanager-from-accountcontroller-in-mvc5
