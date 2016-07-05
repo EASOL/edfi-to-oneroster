@@ -18,9 +18,16 @@ namespace ED2OR
 
         private void ConfigureMigrations(IAppBuilder app)
         {
-            var configuration = new Configuration();
-            var migrator = new DbMigrator(configuration);
-            migrator.Update();
+            try
+            {
+                var configuration = new Configuration();
+                var migrator = new DbMigrator(configuration);
+                migrator.Update();
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

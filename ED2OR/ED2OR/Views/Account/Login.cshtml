@@ -2,6 +2,12 @@
 @model LoginViewModel
 @{
     ViewBag.Title = "Login";
+    bool isInitialSetup = false;
+    if (ViewBag.IsInitialSetup != null)
+    {
+        isInitialSetup = ViewBag.IsInitialSetup;
+    }
+    string adminGeneratedPassword = ViewBag.AdminGeneratedPassword;
 }
 
 <h3>@ViewBag.Title</h3>
@@ -13,6 +19,13 @@
                 @Html.AntiForgeryToken()
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                if (isInitialSetup)
+                {
+                    <label class="col-md-2 control-label">
+                        Initial Setup, please login with user admin and password:@adminGeneratedPassword.<br />
+                        Please keep the password in a safe please since this is the only time it will be shown
+                    </label>
+                }
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
@@ -42,8 +55,8 @@
                     </div>
                 </div>
                 @*<p>
-                    @Html.ActionLink("Register as a new user", "Register")
-                </p>*@
+                        @Html.ActionLink("Register as a new user", "Register")
+                    </p>*@
             }
         </section>
     </div>
