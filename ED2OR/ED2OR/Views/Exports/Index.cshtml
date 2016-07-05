@@ -14,6 +14,7 @@
         white-space:nowrap;
     }
 </style>
+<link href="~/Content/jquery.modal.min.css" rel="stylesheet" />
 
 <h3>Data Selection</h3>
 
@@ -30,6 +31,8 @@
      @Html.HiddenFor(x => x.SelectedCourses)
      @Html.HiddenFor(x => x.SelectedTeachers)
      @Html.HiddenFor(x => x.SelectedSections)
+     @Html.HiddenFor(x => x.NewTemplateName)
+     @Html.HiddenFor(x => x.NewTemplateVendorName)
 
      @*<div id="criteriaContainer">
             @Html.EditorFor(x => x.CriteriaSections)
@@ -88,17 +91,41 @@
      <br />
      <div id="DataPreview"></div>
  </div>
+
+<div id="editWindow" style="display:none;">
+    <h4 align="center">Save New Template</h4>
+
+    <div class="form-group">
+        <label class="col-md-6 control-label">Template Name:</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="newTemplateName" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        <label class="col-md-6 control-label">Vendor Name:</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="newTemplateVendorName" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div style="text-align:center;">
+        <button type="button" class="btn btn-primary" id="editSave" onclick="saveTemplate()">Save</button>
+        <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
+    </div>
+</div>
 }
 
 <div style="position:fixed; bottom:0px; padding-bottom:22px; background-color: white; width:100%; padding-top:15px;">
     <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
-    @*<button type="submit" class="btn btn-primary" id="btnPreview" name="Command" value="Preview">Preview Data</button>*@
     <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
-    @*<button type="submit" class="btn btn-primary" id="btnDownload" name="Command" value="Download">Download CSV Package</button>*@
-    <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="saveTemplate()">Save Template</button> 
+    <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button> 
 </div>
 saveTemplate
 @section scripts{
+<script src="~/Scripts/jquery.modal.min.js"></script>
         <script>
             function deselectAll(divId) {
                 $("#" + divId).find("input:checkbox").prop("checked", false);
@@ -185,21 +212,6 @@ saveTemplate
                     terms: terms,
                     boxesAlreadyChecked: sectionsAlreadyChecked
                 });
-
-                @*var postData = { schoolIds: schoolIds };
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("GetSubjectsCheckboxes")',
-                    data: postData,
-                    success: function (result) {
-                        redrawCheckboxes("Subjects", result);
-                    },
-                    //error: function (err) {
-                    //    alert('problem');
-                    //},
-                    dataType: "json",
-                    traditional: true
-                });*@
             }
 
             function checkboxChanged(that) {
@@ -269,11 +281,22 @@ saveTemplate
 
             function saveTemplate() {
                 setHiddens();
+                var newTemplateName = $("#newTemplateName").val();
+                var newTemplateVendorName = $("#newTemplateVendorName").val();
+                $("#@Html.IdFor(x => x.NewTemplateName)").val(newTemplateName);
+                $("#@Html.IdFor(x => x.NewTemplateVendorName)").val(newTemplateVendorName);
+
                 var frm = document.getElementById('exportsForm') || null;
                 if (frm) {
                     frm.action = '@Url.Action("SaveTemplate")';
                 }
                 document.getElementById('exportsForm').submit();
+            }
+
+            function openSaveTemplateWindow() {
+                $("#editWindow").modal({
+                    showClose: false
+                });
             }
 
             function downloadCsv() {

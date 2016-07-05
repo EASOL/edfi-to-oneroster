@@ -6,6 +6,9 @@ using System.Web.Mvc;
 using ED2OR.ViewModels;
 using ED2OR.Models;
 using ED2OR.Enums;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using ED2OR.Utils;
 
 namespace ED2OR.Controllers
 {
@@ -72,7 +75,24 @@ namespace ED2OR.Controllers
 
             return RedirectToAction("Index");
         }
+      
+        public async Task<FileResult> Download(int templateId)
+        {
+            var filtersJson = db.Templates.First(x => x.TemplateId == templateId).Filters;
+            var filters = JsonConvert.DeserializeObject<FilterInputs>(filtersJson);
 
+            var csvUtils = new CsvMethods();
+            var bytes = await csvUtils.GetZipFile(
+                filters.Schools,
+                filters.SchoolYears,
+                filters.Terms,
+                filters.Subjects,
+                filters.Courses,
+                filters.Teachers,
+                filters.Sections);
 
+            var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
+            return File(bytes, "application/zip", downloadFileName);
+        }
     }
 }
