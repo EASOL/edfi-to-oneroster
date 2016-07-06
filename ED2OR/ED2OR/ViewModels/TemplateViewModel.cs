@@ -13,6 +13,6 @@ namespace ED2OR.ViewModels
         public string AccessUrl { get; set; }
         public string AccessToken { get; set; }
         public int NumberOfDownloads { get; set; }
-        public DateTime LastAccess { get; set; }
+        public string LastAccess { get; set; }
     }
 }

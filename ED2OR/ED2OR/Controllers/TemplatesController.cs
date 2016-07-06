@@ -14,20 +14,23 @@ namespace ED2OR.Controllers
 {
     public class TemplatesController : BaseController
     {
-        public const int NUMBER_OF_DOWNLOADS = 3;
         public ActionResult Index()
         {
+            var downloadTypes = new List<string> { ActionTypes.DownloadCsvAdmin, ActionTypes.DownloasCsvVendor };
             var model = (from t in db.Templates
-                        select new TemplateViewModel
+                         let downloads = db.AuditLogs.Where(x => x.TemplateId == t.TemplateId && downloadTypes.Contains(x.Type))
+                         let numDownloads = downloads.Count()
+                         let lastAccess = numDownloads == 0 ? "" : downloads.Max(x => x.DateTimeStamp).ToString()
+                         select new TemplateViewModel
                         {
                             TemplateId = t.TemplateId,
                             TemplateName = t.TemplateName,
                             VendorName = t.VendorName,
                             AccessUrl = t.AccessUrl,
                             AccessToken = t.AccessToken,
-                            NumberOfDownloads = NUMBER_OF_DOWNLOADS,
-                            LastAccess = DateTime.Now
-                        }).ToList();
+                            NumberOfDownloads = numDownloads,
+                            LastAccess = lastAccess
+                         }).ToList();
             return View(model);
         }
 
@@ -78,8 +81,8 @@ namespace ED2OR.Controllers
       
         public async Task<FileResult> Download(int templateId)
         {
-            var filtersJson = db.Templates.First(x => x.TemplateId == templateId).Filters;
-            var filters = JsonConvert.DeserializeObject<FilterInputs>(filtersJson);
+            var template = db.Templates.First(x => x.TemplateId == templateId);
+            var filters = JsonConvert.DeserializeObject<FilterInputs>(template.Filters);
 
             var csvUtils = new CsvMethods();
             var bytes = await csvUtils.GetZipFile(
@@ -90,6 +93,10 @@ namespace ED2OR.Controllers
                 filters.Courses,
                 filters.Teachers,
                 filters.Sections);
+
+            var logUtils = new LoggingMethods();
+            string ip = Request.UserHostAddress;
+            logUtils.LogAdminDownload(template, UserName, ip);
 
             var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
             return File(bytes, "application/zip", downloadFileName);

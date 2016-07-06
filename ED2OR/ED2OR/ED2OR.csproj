@@ -248,6 +248,7 @@
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\LoggingMethods.cs" />
     <Compile Include="Utils\PreConfigurationHelper.cs" />
     <Compile Include="Utils\ApiCalls.cs" />
     <Compile Include="Utils\CsvMethods.cs" />
