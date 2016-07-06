@@ -8,16 +8,33 @@ using System.Threading.Tasks;
 using ED2OR.Tests.Utils;
 using System.Web.Mvc;
 using ED2OR.ViewModels;
+using System.Web;
+using Moq;
 
 namespace ED2OR.Controllers.Tests
 {
     [TestClass()]
     public class SettingsControllerTests
     {
+        public Mock<HttpContextBase> HttpContextBaseMock { get; private set; }
+        public Mock<HttpRequestBase> HttpRequestMock { get; private set; }
+        public Mock<HttpResponseBase> HttpResponseMock { get; private set; }
+
         [ClassInitialize()]
         public static void InitializeClass(TestContext context)
         {
             AuthenticationHelper.Initialize();
+        }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            HttpContextBaseMock = new Mock<HttpContextBase>();
+            HttpRequestMock = new Mock<HttpRequestBase>();
+            HttpResponseMock = new Mock<HttpResponseBase>();
+            HttpContextBaseMock.SetupGet(x => x.Request).Returns(HttpRequestMock.Object);
+            HttpContextBaseMock.SetupGet(x => x.Response).Returns(HttpResponseMock.Object);
+            SessionHelper.Initialize();
         }
 
         [TestMethod()]
@@ -25,6 +42,7 @@ namespace ED2OR.Controllers.Tests
         {
             using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
             {
+                ED2OR.Tests.Utils.FakesHelper.SetupFakes();
                 var userIdentity = await AuthenticationHelper.TestUser.GenerateUserIdentityAsync(AuthenticationHelper.AppUserManager);
                 ED2OR.Controllers.Fakes.ShimBaseController.AllInstances.UserIdGet = (baseController) =>
                 {

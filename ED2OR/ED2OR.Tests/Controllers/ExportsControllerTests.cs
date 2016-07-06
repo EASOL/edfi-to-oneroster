@@ -195,7 +195,7 @@ namespace ED2OR.Controllers.Tests
         {
             using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
             {
-                SetupFakes();
+                ED2OR.Tests.Utils.FakesHelper.SetupFakes();
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -220,29 +220,12 @@ namespace ED2OR.Controllers.Tests
             }
         }
 
-        private static void SetupFakes()
-        {
-            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
-            System.Web.Fakes.ShimHttpContext.CurrentGet = () =>
-            {
-                return AuthenticationHelper.HttpContext;
-            };
-            ED2OR.Utils.Fakes.ShimApiCalls.UserIdGet = () =>
-            {
-                return AuthenticationHelper.TestUser.Id;
-            };
-            System.Web.Fakes.ShimHttpServerUtility.AllInstances.MapPathString = (server, path) =>
-            {
-                return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
-            };
-        }
-
         [TestMethod()]
         public async Task ExportsController_GetSectionsPartialTest()
         {
             using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
             {
-                SetupFakes();
+                ED2OR.Tests.Utils.FakesHelper.SetupFakes();
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -272,7 +255,7 @@ namespace ED2OR.Controllers.Tests
         {
             using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
             {
-                SetupFakes();
+                ED2OR.Tests.Utils.FakesHelper.SetupFakes();
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -302,7 +285,7 @@ namespace ED2OR.Controllers.Tests
         {
             using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
             {
-                SetupFakes();
+                ED2OR.Tests.Utils.FakesHelper.SetupFakes();
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
