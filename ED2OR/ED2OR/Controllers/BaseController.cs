@@ -23,6 +23,13 @@ namespace ED2OR.Controllers
             }
         }
 
+        protected string UserName
+        {
+            get
+            {
+                return User.Identity.Name;
+            }
+        }
 
         protected bool RequiresValidConnectionString()
         {
