@@ -361,7 +361,7 @@
     <Content Include="Views\Exports\_DataPreview.cshtml" />
     <Content Include="Views\Settings\EditorTemplates\AcademicSessionTypeViewModel.cshtml" />
     <Content Include="Views\Admin\InitialSetup.cshtml" />
-    <Content Include="Views\Shared\InitialSetup.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DatabaseSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CsvFiles\" />

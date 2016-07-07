@@ -38,37 +38,14 @@ namespace ED2OR.Controllers
                     {
                         if (adminUser.Password == model.ApplicationAdminPassword)
                         {
-                            System.Data.SqlClient.SqlConnectionStringBuilder strCSB = new System.Data.SqlClient.SqlConnectionStringBuilder();
-                            strCSB.DataSource = model.DatabaseServer;
-                            strCSB.InitialCatalog = model.DatabaseName;
-                            if (!model.IntegratedSecuritySSPI)
+                            string errors = string.Empty;
+                            if (SaveConnectionString(model, out errors))
                             {
-                                strCSB.IntegratedSecurity = false;
-                                strCSB.UserID = model.DatabaseUserId;
-                                strCSB.Password = model.DatabaseUserPassword;
+                                return RedirectToAction(actionName: "Index", controllerName: "Home");
                             }
                             else
                             {
-                                strCSB.IntegratedSecurity = true;
-                            }
-                            strCSB.ApplicationName = model.DatabaseApplicationName;
-                            try
-                            {
-                                using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection(strCSB.ConnectionString))
-                                {
-                                    con.Open();
-                                    con.Close();
-                                    var configuration = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/");
-                                    configuration.ConnectionStrings.ConnectionStrings.Remove("DefaultConnection");
-                                    configuration.ConnectionStrings.ConnectionStrings.Add(
-                                        new System.Configuration.ConnectionStringSettings("DefaultConnection", strCSB.ConnectionString, "System.Data.SqlClient"));
-                                    configuration.Save(System.Configuration.ConfigurationSaveMode.Modified);
-                                }
-                                return RedirectToAction(actionName: "Index", controllerName: "Home");
-                            }
-                            catch (Exception ex)
-                            {
-                                ViewBag.Error = "Unable to setup database configuration. Error: " + ex.ToString();
+                                ViewBag.Error = errors;
                                 return View(model);
                             }
                         }
@@ -86,6 +63,8 @@ namespace ED2OR.Controllers
                 }
             }
         }
+
+
         [HttpGet]
         [AllowAnonymous]
         // GET: Admin
