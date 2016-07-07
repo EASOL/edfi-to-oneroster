@@ -85,6 +85,19 @@ namespace ED2OR.Controllers
                 IsError = isError,
                 ErrorMessage = errorMessage
             };
+            var connectionString =
+                System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            System.Data.SqlClient.SqlConnectionStringBuilder conStringBuilder =
+                new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
+            model.DatabaseSettings = new InitialSetup()
+            {
+                DatabaseApplicationName = conStringBuilder.ApplicationName,
+                DatabaseServer = conStringBuilder.DataSource,
+                DatabaseName = conStringBuilder.InitialCatalog,
+                DatabaseUserPassword = conStringBuilder.Password,
+                DatabaseUserId = conStringBuilder.UserID,
+                IntegratedSecuritySSPI = conStringBuilder.IntegratedSecurity
+            };
 
             LoadDropdownValues();
 
@@ -208,7 +221,31 @@ namespace ED2OR.Controllers
             }
 
             db.SaveChanges();
-
+            var connectionString =
+                System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            System.Data.SqlClient.SqlConnectionStringBuilder conStringBuilder =
+                new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
+            if (
+                (conStringBuilder.ApplicationName != model.DatabaseSettings.DatabaseApplicationName ||
+                conStringBuilder.DataSource != model.DatabaseSettings.DatabaseServer ||
+                conStringBuilder.InitialCatalog != model.DatabaseSettings.DatabaseName ||
+                conStringBuilder.UserID != model.DatabaseSettings.DatabaseUserId ||
+                conStringBuilder.Password != model.DatabaseSettings.DatabaseUserPassword ||
+                conStringBuilder.IntegratedSecurity != model.DatabaseSettings.IntegratedSecuritySSPI) &&
+                (
+                !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseServer) &&
+                !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseName)))
+            {
+                string errors = string.Empty;
+                bool succeedSaveConnectionString = SaveConnectionString(model.DatabaseSettings, out errors);
+                if (succeedSaveConnectionString)
+                    return RedirectToAction(actionName: "Index", controllerName: "Home");
+                else
+                {
+                    ViewBag.Error = errors;
+                    return View(model);
+                }
+            }
             return RedirectToAction("Index");
         }
 
