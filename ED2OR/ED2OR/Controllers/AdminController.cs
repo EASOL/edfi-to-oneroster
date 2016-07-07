@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ED2OR.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace ED2OR.Controllers
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Utils.PreConfigurationHelper.IsInitialSetup())
+            if (Utils.PreConfigurationHelper.IsInitialSetup(filterContext.HttpContext))
             {
                 filterContext.Result = new RedirectResult("/Admin/InitialSetup");
             }
@@ -31,35 +32,32 @@ namespace ED2OR.Controllers
             }
             else
             {
-                using (Models.AdminDBModels.AdminDBEntities ctx = new Models.AdminDBModels.AdminDBEntities())
+                var adminUser = PreConfigurationHelper.GetLocalAdminInfo(HttpContext);
+                if (adminUser != null)
                 {
-                    var adminUser = ctx.AdminUsers.Where(p => p.Username == "admin").FirstOrDefault();
-                    if (adminUser != null)
+                    if (adminUser.Password == model.ApplicationAdminPassword)
                     {
-                        if (adminUser.Password == model.ApplicationAdminPassword)
+                        string errors = string.Empty;
+                        if (SaveConnectionString(model, out errors))
                         {
-                            string errors = string.Empty;
-                            if (SaveConnectionString(model, out errors))
-                            {
-                                return RedirectToAction(actionName: "Index", controllerName: "Home");
-                            }
-                            else
-                            {
-                                ViewBag.Error = errors;
-                                return View(model);
-                            }
+                            return RedirectToAction(actionName: "Index", controllerName: "Home");
                         }
                         else
                         {
-                            ViewBag.Error = "Invalid password for Admin User";
+                            ViewBag.Error = errors;
                             return View(model);
                         }
                     }
                     else
                     {
-                        ViewBag.Error = "There is no admin user in the local database, please create it";
+                        ViewBag.Error = "Invalid password for Admin User";
                         return View(model);
                     }
+                }
+                else
+                {
+                    ViewBag.Error = "There is no admin user in the local database, please create it";
+                    return View(model);
                 }
             }
         }
@@ -70,22 +68,20 @@ namespace ED2OR.Controllers
         // GET: Admin
         public ActionResult InitialSetup()
         {
-            if (Utils.PreConfigurationHelper.IsInitialSetup())
+            if (Utils.PreConfigurationHelper.IsInitialSetup(HttpContext))
             {
                 StringBuilder strMessage = new StringBuilder();
                 strMessage.AppendLine("Please set the initial configuration to access the database");
                 string adminUserPassword = Guid.NewGuid().ToString();
-                using (Models.AdminDBModels.AdminDBEntities ctx = new Models.AdminDBModels.AdminDBEntities())
+                var adminUser = PreConfigurationHelper.GetLocalAdminInfo(HttpContext);
                 {
-                    Models.AdminDBModels.AdminUser adminUser = ctx.AdminUsers.Where(p => p.Username == "admin").FirstOrDefault();
                     if (adminUser == null)
                     {
-                        adminUser = new Models.AdminDBModels.AdminUser();
+                        adminUser = new LocalAdminInfo();
                         adminUser.Username = "admin";
-                        ctx.AdminUsers.Add(adminUser);
                     }
                     adminUser.Password = adminUserPassword;
-                    ctx.SaveChanges();
+                    PreConfigurationHelper.SaveAdminUser(adminUser, HttpContext);
                 }
                 strMessage.AppendLine("Following is the password for the user 'admin' please keep it in a safe place, since it will not be shown again");
                 strMessage.AppendLine(adminUserPassword);

@@ -31,20 +31,6 @@ namespace ED2OR.Controllers
             }
         }
 
-        protected bool RequiresValidConnectionString()
-        {
-            bool requiresInitialSetup = false;
-            using (Models.AdminDBModels.AdminDBEntities ctx = new Models.AdminDBModels.AdminDBEntities())
-            {
-                var configRow = ctx.ConfigurationInfoes.FirstOrDefault();
-                if (configRow != null)
-                {
-                    requiresInitialSetup = configRow.RequiresInitialConnectionStringSetup;
-                }
-            }
-            return requiresInitialSetup;
-        }
-
         private static bool IsValidConnectionString(string connectionString, out string errors)
         {
             bool isValid = false;
