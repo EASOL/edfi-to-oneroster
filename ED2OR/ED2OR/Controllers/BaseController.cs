@@ -31,6 +31,14 @@ namespace ED2OR.Controllers
             }
         }
 
+        protected string IpAddress
+        {
+            get
+            {
+                return Request.UserHostAddress;
+            }
+        }
+
         protected bool RequiresValidConnectionString()
         {
             bool requiresInitialSetup = false;

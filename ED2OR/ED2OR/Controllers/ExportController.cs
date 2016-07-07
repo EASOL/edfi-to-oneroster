@@ -13,24 +13,25 @@ namespace ED2OR.Controllers
     public class ExportController : BaseController
     {
         [AllowAnonymous]
-        public async Task<FileResult> Index(string id)  //Careful when changing this method definition.  There is a custom route for it in the RouteConfig.
+        public async Task<ActionResult> Index(string id)  //Careful when changing this method definition.  There is a custom route for it in the RouteConfig.
         {
-            string ip = Request.UserHostAddress;
             var logUtils = new LoggingMethods();
             var template = db.Templates.First(x => x.AccessUrl.Contains(id));
 
             if (Request.Headers["token"] == null) //http://forums.asp.net/t/1991328.aspx?Reading+HTTP+Header+in+MVC+5
             {
-                logUtils.LogUserDownload(template, ip, false, "No Security Token Received");
-                return null;
+                var errorMsg = "No Security Token Received";
+                logUtils.LogUserDownload(template, IpAddress, false, errorMsg);
+                return Json(new { ErrorMessage = errorMsg }, JsonRequestBehavior.AllowGet);
             }
 
             string token = Request.Headers["token"];
 
             if (template == null || template.AccessToken != token)
             {
-                logUtils.LogUserDownload(template, ip, false, "Url not found and/or token doesnt match");
-                return null;
+                var errorMsg = "Url not found and/or token doesnt match";
+                logUtils.LogUserDownload(template, IpAddress, false, errorMsg);
+                return Json(new { ErrorMessage = errorMsg }, JsonRequestBehavior.AllowGet);
             }
 
             var filters = JsonConvert.DeserializeObject<FilterInputs>(template.Filters);
@@ -44,7 +45,7 @@ namespace ED2OR.Controllers
                 filters.Teachers,
                 filters.Sections);
 
-            logUtils.LogUserDownload(template, ip, true, null);
+            logUtils.LogUserDownload(template, IpAddress, true, null);
 
             var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
             return File(bytes, "application/zip", downloadFileName);

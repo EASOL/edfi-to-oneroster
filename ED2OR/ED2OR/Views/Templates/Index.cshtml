@@ -18,81 +18,86 @@
 <h3>@ViewBag.Title</h3>
 <link href="~/Content/jquery.modal.min.css" rel="stylesheet" />
 
-<table class="table table-striped">
-    <tr>
-        <th>Template Name</th>
-        <th>Vendor</th>
-        <th>Access URL</th>
-        <th>Access Token</th>
-        <th># of Downloads</th>
-        <th>Last Access</th>
-        <th>Actions</th>
-    </tr>
-    @foreach (var template in Model)
-    {
-        var tokenText = string.IsNullOrEmpty(template.AccessToken) ? "Assign Token" : "Revoke Token";
+<div style="padding-bottom:75px;">
+    <table class="table table-striped">
         <tr>
-            <td>@template.TemplateName</td>
-            <td>@template.VendorName</td>
-            <td>@(string.IsNullOrEmpty(template.AccessUrl) ? "" : exportActionUrl + template.AccessUrl)</td>
-            <td>@template.AccessToken</td>
-            <td>@template.NumberOfDownloads</td>
-            <td>@template.LastAccess</td>
-            <td>
-                <a href="javascript:dataPreview(@template.TemplateId);">Preview</a> |
-                <a href="javascript:dataDownload(@template.TemplateId);">Download</a> |
-                View Log | 
-                <a href="javascript:openCloneWindow(@template.TemplateId);">Clone</a> |
-                <a href="javascript:openEditWindow(@template.TemplateId);">Edit</a> |
-                <a href="javascript:deleteTemplate(@template.TemplateId);">Delete</a> | 
-                @Html.ActionLink(tokenText, "AssignToken", new { templateId = template.TemplateId })
-            </td>
+            <th>Template Name</th>
+            <th>Vendor</th>
+            <th>Access URL</th>
+            <th>Access Token</th>
+            <th># of Downloads</th>
+            <th>Last Access</th>
+            <th>Actions</th>
         </tr>
-    }
-</table>
+        @foreach (var template in Model)
+        {
+            var tokenText = string.IsNullOrEmpty(template.AccessToken) ? "Assign Token" : "Generate New Token";
+            <tr>
+                <td>@template.TemplateName</td>
+                <td>@template.VendorName</td>
+                <td>@(string.IsNullOrEmpty(template.AccessUrl) ? "" : exportActionUrl + template.AccessUrl)</td>
+                <td>@template.AccessToken</td>
+                <td>@template.NumberOfDownloads</td>
+                <td>@template.LastAccess</td>
+                <td>
+                    <a href="javascript:dataPreview(@template.TemplateId);">Preview</a> |
+                    <a href="javascript:dataDownload(@template.TemplateId);">Download</a> |
+                    View Log |
+                    <a href="javascript:openCloneWindow(@template.TemplateId);">Clone</a> |
+                    <a href="javascript:openEditWindow(@template.TemplateId, '@template.TemplateName', '@template.VendorName');">Edit</a> |
+                    <a href="javascript:deleteTemplate(@template.TemplateId);">Delete</a> |
+                    @Html.ActionLink(tokenText, "AssignToken", new { templateId = template.TemplateId })
+                </td>
+            </tr>
+        }
+    </table>
 
-<div id="DataPreview"></div>
+    <div id="DataPreview"></div>
+</div>
 
 
-<a href="@Url.Action("Index", "Exports")" class="btn btn-primary">Create New Template</a>
 
 
-@*@using (Html.BeginForm("Edit", "Index", FormMethod.Post))
-{*@
-    <div id="editWindow" style="display:none;">
-        <input type="hidden" id="editTemplateId" />
+<div style="position:fixed; bottom:0px; padding-bottom:22px; background-color: white; width:100%; padding-top:15px;">
+    <a href="@Url.Action("Index", "Exports")" class="btn btn-primary">Create New Template</a>
+</div>
 
-        <h4 align="center" id="modalHeader"></h4>
 
-        <div class="form-group">
-            <label class="col-md-6 control-label">Template Name:</label>
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="editTemplateName" />
-            </div>
-        </div>
-        <br />
-        <br />
-        <div class="form-group">
-            <label class="col-md-6 control-label">Vendor Name:</label>
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="editTemplateVendorName" />
-            </div>
-        </div>
-        <br />
-        <br />
-        <div style="text-align:center;">
-            <button type="button" class="btn btn-primary" id="cloneSave" onclick="cloneTemplate()">Save</button>
-            <button type="button" class="btn btn-primary" id="editSave" onclick="editTemplate()">Save</button>
-            <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
+<div id="editWindow" style="display:none;">
+    <input type="hidden" id="editTemplateId" />
+
+    <h4 align="center" id="modalHeader"></h4>
+
+    <div class="form-group">
+        <label class="col-md-6 control-label">Template Name:</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="editTemplateName" />
         </div>
     </div>
-@* } *@
+    <br />
+    <br />
+    <div class="form-group">
+        <label class="col-md-6 control-label">Vendor Name:</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="editTemplateVendorName" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div style="text-align:center;">
+        <button type="button" class="btn btn-primary" id="cloneSave" onclick="cloneTemplate()">Save</button>
+        <button type="button" class="btn btn-primary" id="editSave" onclick="editTemplate()">Save</button>
+        <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
+    </div>
+</div>
 
 
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
   <script>
       function dataPreview(templateId) {
+          $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+
           $("#DataPreview").load("@Url.Action("PreviewFromTemplate", "Exports")", {
               templateId: templateId
           });
@@ -102,12 +107,13 @@
           window.location = "@Url.Action("Download")?templateId=" + templateId;
       }
 
-      function openEditWindow(templateId) {
+      function openEditWindow(templateId, templateName, vendorName) {
           $("#editTemplateId").val(templateId);
+          $("#editTemplateName").val(templateName);
+          $("#editTemplateVendorName").val(vendorName);
           $("#cloneSave").hide();
           $("#editSave").show();
           $("#modalHeader").text("Edit Template");
-
 
           $("#editWindow").modal({
               showClose: false
@@ -116,6 +122,8 @@
 
       function openCloneWindow(templateId) {
           $("#editTemplateId").val(templateId);
+          $("#editTemplateName").val("");
+          $("#editTemplateVendorName").val("");
           $("#editSave").hide();
           $("#cloneSave").show();
           $("#modalHeader").text("Clone Template");

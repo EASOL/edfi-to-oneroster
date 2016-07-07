@@ -28,105 +28,115 @@ namespace ED2OR.Models
             return new ApplicationDbContext();
         }
 
-
-
-/*
-        public int SaveChanges(string actionType)
+        private void CreateAuditLog(string userName, string ipAddress, IEnumerable<DbEntityEntry> entities)
         {
-            // Get all Added/Deleted/Modified entities (not Unmodified or Detached)
+            
+        }
+
+
+        public int SaveChanges(string userName, string ipAddress)
+        {
+            //var changedEntities = ChangeTracker.Entries().Where(p => p.State == EntityState.Deleted || p.State == EntityState.Modified);
             var changedEntities = ChangeTracker.Entries().Where(p => p.State == EntityState.Deleted || p.State == EntityState.Modified || p.State == EntityState.Added);
-            if (actionType == ActionTypes.TemplateCreated)
+
+            foreach (var entry in changedEntities)
             {
-                foreach (var dbEntry in changedEntities)
+                var entityType = entry.Entity.GetType();
+                var entityTypeString = GetEntityType(entry);
+                var actionType = "";
+                switch (entry.State)
                 {
-                    //dynamic originals = new ExpandoObject();
-                    dynamic current = new ExpandoObject();
-                    var entityType = dbEntry.Entity.GetType();
+                    case EntityState.Added:
+                        switch (entityTypeString)
+                        {
+                            case "Template":
+                                actionType = ActionTypes.TemplateCreated;
+                                break;
+                        }
+                        break;
+                    case EntityState.Modified:
+                        switch (entityTypeString)
+                        {
+                            case "Template":
+                                actionType = ActionTypes.TemplateModified;
+                                break;
+                            case "ApplicationUser":
+                                actionType = ActionTypes.SettingsModified;
+                                break;
+                        }
+                        break;
+                    case EntityState.Deleted:
+                        switch (entityTypeString)
+                        {
+                            case "Template":
+                                actionType = ActionTypes.TemplateDeleted;
+                                break;
+                        }
+                        break;
+                }
 
-                    //http://stackoverflow.com/questions/17904631/how-can-i-log-all-entities-change-during-savechanges-using-ef-code-first
-                    //https://jmdority.wordpress.com/2011/07/20/using-entity-framework-4-1-dbcontext-change-tracking-for-audit-logging/
-                    //string primaryKeyName = dbEntry.GetAuditRecordKeyName();
-                    //int primaryKeyId = 0;
-                    //object primaryKeyValue;
-                    //primaryKeyValue = dbEntry.GetPropertyValue(primaryKeyName, true);
-                    //if (primaryKeyValue != null)
-                    //{
-                    //    Int32.TryParse(primaryKeyValue.ToString(), out primaryKeyId);
-                    //}
+                //http://stackoverflow.com/questions/17904631/how-can-i-log-all-entities-change-during-savechanges-using-ef-code-first
+                //https://jmdority.wordpress.com/2011/07/20/using-entity-framework-4-1-dbcontext-change-tracking-for-audit-logging/
+                //string primaryKeyName = dbEntry.GetAuditRecordKeyName();
+                //int primaryKeyId = 0;
+                //object primaryKeyValue;
+                //primaryKeyValue = dbEntry.GetPropertyValue(primaryKeyName, true);
+                //if (primaryKeyValue != null)
+                //{
+                //    Int32.TryParse(primaryKeyValue.ToString(), out primaryKeyId);
+                //}
 
+                dynamic originals = new ExpandoObject();
+                dynamic current = new ExpandoObject();
 
+                string jsonOriginalValues = "";
+                string jsonCurrentValues = "";
 
-
-                    foreach (string propertyName in dbEntry.CurrentValues.PropertyNames)
+                if (entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
+                {
+                    foreach (string propertyName in entry.OriginalValues.PropertyNames)
                     {
                         var prop = entityType.GetProperty(propertyName);
                         if (prop != null)// && Attribute.IsDefined(prop, typeof(ForceFieldForAuditAttribute)))
                         {
                             //columns.Add(propertyName);
+                            var originalValue = entry.OriginalValues.GetValue<object>(propertyName) == null
+                               ? string.Empty
+                               : entry.OriginalValues.GetValue<object>(propertyName).ToString();
+                            ((IDictionary<String, Object>)originals).Add(propertyName, originalValue);
+                        }
+                    }
+                    jsonOriginalValues = JsonConvert.SerializeObject(originals);
+                }
 
-                            var currentValue = dbEntry.CurrentValues.GetValue<object>(propertyName) == null
-                                ? string.Empty
-                                : dbEntry.CurrentValues.GetValue<object>(propertyName).ToString();
-
-                            //((IDictionary<String, Object>)originals).Add(propertyName, null);
+                if (entry.State == EntityState.Modified || entry.State == EntityState.Added)
+                {
+                    foreach (string propertyName in entry.CurrentValues.PropertyNames)
+                    {
+                        var prop = entityType.GetProperty(propertyName);
+                        if (prop != null)// && Attribute.IsDefined(prop, typeof(ForceFieldForAuditAttribute)))
+                        {
+                            var currentValue = entry.CurrentValues.GetValue<object>(propertyName) == null
+                            ? string.Empty
+                            : entry.CurrentValues.GetValue<object>(propertyName).ToString();
                             ((IDictionary<String, Object>)current).Add(propertyName, currentValue);
                         }
                     }
-                        //string jsonOriginalValues = JsonConvert.SerializeObject(originals);
-                    string jsonCurrentValues = JsonConvert.SerializeObject(current);
-
-                    var auditLog = new AuditLog
-                    {
-                        IpAddress = "123",
-                        Type = actionType,
-                        DateTimeStamp = System.DateTime.Now,
-                        //OldValues = jsonOriginalValues,
-                        NewValues = jsonCurrentValues
-                    };
-                    AuditLogs.Add(auditLog);
-
-                }
-            }
-            return base.SaveChanges();
-        }*/
-
-        /*
-        public override int SaveChanges()
-        {
-         
-
-            //var addedEntities = ChangeTracker.Entries().Where(p => p.State == EntityState.Added).ToList();
-            var changedEntities = ChangeTracker.Entries().Where(p => p.State == EntityState.Deleted || p.State == EntityState.Modified);
-
-            foreach (var entry in changedEntities)
-            {
-                var entityType = GetEntityType(entry);
-
-                var actionType = "";
-                switch(entityType)
-                {
-                    case "Template":
-                        actionType = ActionTypes.TemplateModified;
-                        break;
-                    case "ApplicationUser":
-                        actionType = ActionTypes.SettingsModified;
-                        break;
+                    jsonCurrentValues = JsonConvert.SerializeObject(current);
                 }
 
                 var auditLog = new AuditLog
                 {
-                    IpAddress = "123",
-                    DateTimeStamp = System.DateTime.Now
+                    User = userName,
+                    IpAddress = ipAddress,
+                    Success = true,
+                    DateTimeStamp = DateTime.Now,
+                    Type = actionType,
+                    OldValues = jsonOriginalValues,
+                    NewValues = jsonCurrentValues
                 };
                 AuditLogs.Add(auditLog);
-
-
-
             }
-
-
-
-
             return base.SaveChanges();
         }
 
@@ -156,7 +166,7 @@ namespace ED2OR.Models
         //    tableName = tableAttr != null ? tableAttr.Name : entityTypeName;
         //    return entityType;
         //}
-        */
+        
 
     }
 }

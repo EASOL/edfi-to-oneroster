@@ -52,20 +52,22 @@ namespace ED2OR.Controllers
             var template = db.Templates.FirstOrDefault(x => x.TemplateId == templateId);
             template.TemplateName = templateName;
             template.VendorName = vendorName;
-            db.SaveChanges();
+            db.SaveChanges(UserName, IpAddress);
 
             return RedirectToAction("Index");
         }
 
         public ActionResult Clone(int templateId, string templateName, string vendorName)
         {
-            var template = new Template
+            var existingTemplate = db.Templates.First(x => x.TemplateId == templateId);
+            var newTemplate = new Template
             {
                 TemplateName = templateName,
-                VendorName = vendorName
+                VendorName = vendorName,
+                Filters = existingTemplate.Filters
             };
-            db.Templates.Add(template);
-            db.SaveChanges();
+            db.Templates.Add(newTemplate);
+            db.SaveChanges(UserName, IpAddress);
 
             return RedirectToAction("Index");
         }
@@ -74,7 +76,7 @@ namespace ED2OR.Controllers
         {
             var template = db.Templates.FirstOrDefault(x => x.TemplateId == templateId);
             db.Templates.Remove(template);
-            db.SaveChanges();
+            db.SaveChanges(UserName, IpAddress);
 
             return RedirectToAction("Index");
         }
