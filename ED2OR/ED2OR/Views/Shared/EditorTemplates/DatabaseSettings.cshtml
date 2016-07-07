@@ -1,0 +1,38 @@
+﻿@model ED2OR.ViewModels.InitialSetup
+<div class="form-group">
+    <p><strong>Note: Modifying the Database Settings will restart your application</strong></p>
+    @Html.LabelFor(m => m.DatabaseServer, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DatabaseServer, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.DatabaseName, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DatabaseName, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.IntegratedSecuritySSPI, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.CheckBoxFor(m => m.IntegratedSecuritySSPI, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.DatabaseUserId, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DatabaseUserId, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.DatabaseUserPassword, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.PasswordFor(m => m.DatabaseUserPassword, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.DatabaseApplicationName, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DatabaseApplicationName, new { @class = "form-control" })
+    </div>
+</div>

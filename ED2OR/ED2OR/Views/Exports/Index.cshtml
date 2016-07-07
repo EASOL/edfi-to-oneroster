@@ -123,7 +123,6 @@
     <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
     <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button> 
 </div>
-saveTemplate
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
         <script>
@@ -241,6 +240,8 @@ saveTemplate
                 //if ($("div.inbox").hasClass("in")) {
                 //    $("div.inbox").collapse('hide');
                 //}
+
+                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
