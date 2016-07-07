@@ -225,12 +225,16 @@ namespace ED2OR.Controllers
                 System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             System.Data.SqlClient.SqlConnectionStringBuilder conStringBuilder =
                 new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
-            if (conStringBuilder.ApplicationName != model.DatabaseSettings.DatabaseApplicationName ||
+            if (
+                (conStringBuilder.ApplicationName != model.DatabaseSettings.DatabaseApplicationName ||
                 conStringBuilder.DataSource != model.DatabaseSettings.DatabaseServer ||
                 conStringBuilder.InitialCatalog != model.DatabaseSettings.DatabaseName ||
                 conStringBuilder.UserID != model.DatabaseSettings.DatabaseUserId ||
                 conStringBuilder.Password != model.DatabaseSettings.DatabaseUserPassword ||
-                conStringBuilder.IntegratedSecurity != model.DatabaseSettings.IntegratedSecuritySSPI)
+                conStringBuilder.IntegratedSecurity != model.DatabaseSettings.IntegratedSecuritySSPI) &&
+                (
+                !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseServer) &&
+                !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseName)))
             {
                 string errors = string.Empty;
                 bool succeedSaveConnectionString = SaveConnectionString(model.DatabaseSettings, out errors);
