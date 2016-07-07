@@ -31,6 +31,14 @@ namespace ED2OR.Controllers
             }
         }
 
+        protected string IpAddress
+        {
+            get
+            {
+                return Request.UserHostAddress;
+            }
+        }
+
         private static bool IsValidConnectionString(string connectionString, out string errors)
         {
             bool isValid = false;
