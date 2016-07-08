@@ -39,7 +39,7 @@ namespace ED2OR.Controllers
             }
         }
 
-        private static bool IsValidConnectionString(string connectionString, out string errors)
+        internal static bool IsValidConnectionString(string connectionString, out string errors)
         {
             bool isValid = false;
             using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection(connectionString))
@@ -64,20 +64,7 @@ namespace ED2OR.Controllers
         {
             bool succeeded = false;
             errors = string.Empty;
-            System.Data.SqlClient.SqlConnectionStringBuilder strCSB = new System.Data.SqlClient.SqlConnectionStringBuilder();
-            strCSB.DataSource = model.DatabaseServer;
-            strCSB.InitialCatalog = model.DatabaseName;
-            if (!model.IntegratedSecuritySSPI)
-            {
-                strCSB.IntegratedSecurity = false;
-                strCSB.UserID = model.DatabaseUserId;
-                strCSB.Password = model.DatabaseUserPassword;
-            }
-            else
-            {
-                strCSB.IntegratedSecurity = true;
-            }
-            strCSB.ApplicationName = model.DatabaseApplicationName;
+            System.Data.SqlClient.SqlConnectionStringBuilder strCSB = BuildConnectionStringBuilder(model);
             try
             {
                 bool isValidConnectionString = IsValidConnectionString(strCSB.ConnectionString, out errors);
@@ -105,5 +92,24 @@ namespace ED2OR.Controllers
             return succeeded;
         }
 
+        internal static System.Data.SqlClient.SqlConnectionStringBuilder BuildConnectionStringBuilder(InitialSetup model)
+        {
+            System.Data.SqlClient.SqlConnectionStringBuilder strCSB = new System.Data.SqlClient.SqlConnectionStringBuilder();
+            strCSB.DataSource = model.DatabaseServer;
+            strCSB.InitialCatalog = model.DatabaseName;
+            if (!model.IntegratedSecuritySSPI)
+            {
+                strCSB.IntegratedSecurity = false;
+                strCSB.UserID = model.DatabaseUserId;
+                strCSB.Password = model.DatabaseUserPassword;
+            }
+            else
+            {
+                strCSB.IntegratedSecurity = true;
+            }
+            if (!string.IsNullOrWhiteSpace(model.DatabaseApplicationName))
+                strCSB.ApplicationName = model.DatabaseApplicationName;
+            return strCSB;
+        }
     }
 }
