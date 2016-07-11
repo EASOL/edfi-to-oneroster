@@ -132,6 +132,18 @@ namespace ED2OR.Controllers
         }
 
         [HttpPost]
+        public ActionResult TestDatabaseConnection(ViewModels.InitialSetup DatabaseSettings)
+        {
+            var connectionStrigBuilder = BaseController.BuildConnectionStringBuilder(DatabaseSettings);
+            string errors = string.Empty;
+            bool isValidConnection = IsValidConnectionString(connectionStrigBuilder.ConnectionString, out errors);
+            if (isValidConnection)
+                return Json(new { IsSuccessful = true });
+            else
+                return Json(new { IsSuccessful = false, ErrorMessage = errors });
+        }
+
+        [HttpPost]
         public ActionResult TestConnection(string apiBaseUrl, string apiKey, string apiSecret)
         {
             var tokenResult = ApiCalls.GetToken(apiBaseUrl, apiKey, apiSecret);
