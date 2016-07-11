@@ -42,7 +42,7 @@
                 <td>
                     <a href="javascript:dataPreview(@template.TemplateId);">Preview</a> |
                     <a href="javascript:dataDownload(@template.TemplateId);">Download</a> |
-                    View Log |
+                    <a href="@Url.Action("Index", "Logs", new { templateId = template.TemplateId })">View Log</a> |
                     <a href="javascript:openCloneWindow(@template.TemplateId);">Clone</a> |
                     <a href="javascript:openEditWindow(@template.TemplateId, '@template.TemplateName', '@template.VendorName');">Edit</a> |
                     <a href="javascript:deleteTemplate(@template.TemplateId);">Delete</a> |

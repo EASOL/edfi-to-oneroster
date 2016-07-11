@@ -240,6 +240,7 @@
     <Compile Include="ViewModels\CsvIgnoreFieldAttribute.cs" />
     <Compile Include="ViewModels\CsvUsers.cs" />
     <Compile Include="ViewModels\InitialSetup.cs" />
+    <Compile Include="ViewModels\LogsViewModel.cs" />
     <Compile Include="ViewModels\TokenViewModel.cs" />
     <Compile Include="ViewModels\CsvOrgs.cs" />
     <Compile Include="ViewModels\ExportsViewModels.cs" />
