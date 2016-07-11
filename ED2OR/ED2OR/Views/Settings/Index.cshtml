@@ -80,9 +80,6 @@
             @Html.TextBoxFor(m => m.ApiPrefix, new { @class = "form-control" })
         </div>
     </div>
-    ViewDataDictionary databaseSettingsViewData = new ViewDataDictionary(Model.DatabaseSettings);
-    databaseSettingsViewData.Add("FieldsPrefix", "DatabaseSettings");
-    @Html.EditorFor(p => p.DatabaseSettings, templateName: "DatabaseSettings")
     <div class="form-group">
         <div class="col-md-3 control-label">
             <label>Orgs Identifier</label> <i>(This determines the "identifier" field in the "orgs" result.  It will either map to the "stateOrganizationId" field, or return blank)</i>
@@ -122,6 +119,18 @@
         </div>
     </div>
 }
+<h3>Database Settings</h3>
+@using (Html.BeginForm(actionName: "SaveDatabaseSettiings", controllerName: "Settings", method: FormMethod.Post))
+{
+    ViewDataDictionary databaseSettingsViewData = new ViewDataDictionary(Model.DatabaseSettings);
+    databaseSettingsViewData.Add("FieldsPrefix", "DatabaseSettings");
+    @Html.EditorFor(p => p.DatabaseSettings, templateName: "DatabaseSettings")
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/PreConfiguration/PreConfiguration.js"></script>
@@ -151,7 +160,6 @@
                 }
             });
         }
-
         function testDatabaseConnection() {
             DatabaseSettings.TestDatabaseConnection('@Url.Action("TestDatabaseConnection")', '.TestDatabaseConnectionResult');
         }
