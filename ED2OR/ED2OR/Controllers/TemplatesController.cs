@@ -42,7 +42,7 @@ namespace ED2OR.Controllers
                 template.AccessUrl = Guid.NewGuid().ToString();
             }
             template.AccessToken = Guid.NewGuid().ToString();
-            db.SaveChanges();
+            db.SaveChanges(UserName, IpAddress);
 
             return RedirectToAction("Index");
         }

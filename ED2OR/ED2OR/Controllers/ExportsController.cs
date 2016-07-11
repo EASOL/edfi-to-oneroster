@@ -167,8 +167,8 @@ namespace ED2OR.Controllers
             };
 
             db.Templates.Add(template);
-            db.SaveChanges();
-            
+            db.SaveChanges(UserName, IpAddress);
+
             return RedirectToAction("Index", "Templates");
         }
 

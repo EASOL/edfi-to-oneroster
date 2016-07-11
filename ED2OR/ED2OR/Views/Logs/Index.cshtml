@@ -1,7 +1,29 @@
-﻿
+﻿@model ED2OR.ViewModels.LogsViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Logs";
 }
 
-<h2>Index</h2>
+<h3>@ViewBag.Title</h3>
+
+
+<table id="maintable" data-pagination="true" class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th data-field="TemplateName">Template Name</th>
+            <th data-field="VendorName">Vendor Name</th>
+            <th data-field="Action">Action</th>
+            <th data-field="Description">Description</th>
+            <th data-field="DateString">Date</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+    <script>
+        var logsJson = @Html.Raw(Model.LogsJson);
+        $('#maintable').bootstrapTable({
+            data: logsJson
+        });
+    </script>
+    }
 
