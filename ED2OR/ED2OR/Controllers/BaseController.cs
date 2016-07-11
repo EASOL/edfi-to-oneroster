@@ -101,7 +101,10 @@ namespace ED2OR.Controllers
             {
                 strCSB.IntegratedSecurity = false;
                 strCSB.UserID = model.DatabaseUserId;
-                strCSB.Password = model.DatabaseUserPassword;
+                if (!string.IsNullOrWhiteSpace(model.DatabaseUserPassword))
+                {
+                    strCSB.Password = model.DatabaseUserPassword;
+                }
             }
             else
             {

@@ -9,6 +9,7 @@ using ED2OR.Enums;
 using ED2OR.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace ED2OR.Controllers
 {
@@ -134,13 +135,29 @@ namespace ED2OR.Controllers
         [HttpPost]
         public ActionResult TestDatabaseConnection(ViewModels.InitialSetup DatabaseSettings)
         {
-            var connectionStrigBuilder = BaseController.BuildConnectionStringBuilder(DatabaseSettings);
-            string errors = string.Empty;
-            bool isValidConnection = IsValidConnectionString(connectionStrigBuilder.ConnectionString, out errors);
-            if (isValidConnection)
-                return Json(new { IsSuccessful = true });
-            else
-                return Json(new { IsSuccessful = false, ErrorMessage = errors });
+            try
+            {
+                var errorsList = PreValidateDatabaseSettings(DatabaseSettings);
+                if (errorsList.Count > 0)
+                {
+                    return Json(new
+                    {
+                        IsSuccessful = false,
+                        ErrorMessage = String.Join("\r\n", errorsList.ToArray())
+                    });
+                }
+                var connectionStrigBuilder = BaseController.BuildConnectionStringBuilder(DatabaseSettings);
+                string errors = string.Empty;
+                bool isValidConnection = IsValidConnectionString(connectionStrigBuilder.ConnectionString, out errors);
+                if (isValidConnection)
+                    return Json(new { IsSuccessful = true });
+                else
+                    return Json(new { IsSuccessful = false, ErrorMessage = errors });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccessful = false, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -233,32 +250,82 @@ namespace ED2OR.Controllers
             }
 
             db.SaveChanges();
-            var connectionString =
-                System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            System.Data.SqlClient.SqlConnectionStringBuilder conStringBuilder =
-                new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
-            if (
-                (conStringBuilder.ApplicationName != model.DatabaseSettings.DatabaseApplicationName ||
-                conStringBuilder.DataSource != model.DatabaseSettings.DatabaseServer ||
-                conStringBuilder.InitialCatalog != model.DatabaseSettings.DatabaseName ||
-                conStringBuilder.UserID != model.DatabaseSettings.DatabaseUserId ||
-                conStringBuilder.Password != model.DatabaseSettings.DatabaseUserPassword ||
-                conStringBuilder.IntegratedSecurity != model.DatabaseSettings.IntegratedSecuritySSPI) &&
-                (
-                !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseServer) &&
-                !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseName)))
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult SaveDatabaseSettiings(SettingsViewModel model)
+        {
+            try
             {
-                string errors = string.Empty;
-                bool succeedSaveConnectionString = SaveConnectionString(model.DatabaseSettings, out errors);
-                if (succeedSaveConnectionString)
-                    return RedirectToAction(actionName: "Index", controllerName: "Home");
+                var errorsList = PreValidateDatabaseSettings(model.DatabaseSettings);
+                if (errorsList.Count > 0)
+                {
+                    ViewBag.Error = String.Join("\r\n", errorsList.ToArray());
+                    return View("Index", model);
+                }
+                var connectionString =
+                    System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                System.Data.SqlClient.SqlConnectionStringBuilder conStringBuilder =
+                    new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
+                if (
+                    (conStringBuilder.ApplicationName != model.DatabaseSettings.DatabaseApplicationName ||
+                    conStringBuilder.DataSource != model.DatabaseSettings.DatabaseServer ||
+                    conStringBuilder.InitialCatalog != model.DatabaseSettings.DatabaseName ||
+                    conStringBuilder.UserID != model.DatabaseSettings.DatabaseUserId ||
+                    conStringBuilder.Password != model.DatabaseSettings.DatabaseUserPassword ||
+                    conStringBuilder.IntegratedSecurity != model.DatabaseSettings.IntegratedSecuritySSPI) &&
+                    (
+                    !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseServer) &&
+                    !string.IsNullOrWhiteSpace(model.DatabaseSettings.DatabaseName)))
+                {
+                    string errors = string.Empty;
+                    bool succeedSaveConnectionString = SaveConnectionString(model.DatabaseSettings, out errors);
+                    if (succeedSaveConnectionString)
+                        return RedirectToAction(actionName: "Index", controllerName: "Home");
+                    else
+                    {
+                        ViewBag.Error = errors;
+                        return View("Index", model);
+                    }
+                }
                 else
                 {
-                    ViewBag.Error = errors;
-                    return View(model);
+                    ViewBag.Error = "Please verify database fields are correct and required fields are not empty";
+                    return View("Index", model);
                 }
             }
-            return RedirectToAction("Index");
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View("Index", model);
+            }
+        }
+
+        private List<string> PreValidateDatabaseSettings(InitialSetup model)
+        {
+            List<string> errors = new List<string>();
+            if (model == null)
+            {
+                errors.Add("Database Settings cannot be empty");
+
+            }
+            if (string.IsNullOrWhiteSpace(model.DatabaseServer))
+            {
+                errors.Add("You must set a Database Server");
+            }
+            if (string.IsNullOrWhiteSpace(model.DatabaseName))
+            {
+                errors.Add("You must set a Database Name");
+            }
+            if (
+                model.IntegratedSecuritySSPI == false && (
+                string.IsNullOrWhiteSpace(model.DatabaseUserId) ||
+                string.IsNullOrWhiteSpace(model.DatabaseUserPassword)))
+            {
+                errors.Add("You must set UserId and Password when not using Integrated Security");
+            }
+            return errors;
         }
 
         protected override void Dispose(bool disposing)
