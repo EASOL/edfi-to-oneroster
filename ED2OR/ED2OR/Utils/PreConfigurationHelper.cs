@@ -11,7 +11,7 @@ namespace ED2OR.Utils
     public class LocalAdminInfo
     {
         public string Username { get; set; }
-        public string Password { get; set; }
+        public bool InitialDatabaseConfigured { get; set; } = false;
     }
     public class PreConfigurationHelper
     {
@@ -40,7 +40,7 @@ namespace ED2OR.Utils
         {
             bool isInitialSetup = false;
             var adminUser = PreConfigurationHelper.GetLocalAdminInfo(context);
-            isInitialSetup = (adminUser == null);
+            isInitialSetup = (adminUser == null) || (adminUser != null && adminUser.InitialDatabaseConfigured==false);
             return isInitialSetup;
         }
 

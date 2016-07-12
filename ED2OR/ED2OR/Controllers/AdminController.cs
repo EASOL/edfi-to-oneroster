@@ -35,22 +35,17 @@ namespace ED2OR.Controllers
                 var adminUser = PreConfigurationHelper.GetLocalAdminInfo(HttpContext);
                 if (adminUser != null)
                 {
-                    if (adminUser.Password == model.ApplicationAdminPassword)
+
+                    string errors = string.Empty;
+                    if (SaveConnectionString(model, out errors))
                     {
-                        string errors = string.Empty;
-                        if (SaveConnectionString(model, out errors))
-                        {
-                            return RedirectToAction(actionName: "Index", controllerName: "Home");
-                        }
-                        else
-                        {
-                            ViewBag.Error = errors;
-                            return View(model);
-                        }
+                        adminUser.InitialDatabaseConfigured = true;
+                        PreConfigurationHelper.SaveAdminUser(adminUser, HttpContext);
+                        return RedirectToAction(actionName: "Index", controllerName: "Home");
                     }
                     else
                     {
-                        ViewBag.Error = "Invalid password for Admin User";
+                        ViewBag.Error = errors;
                         return View(model);
                     }
                 }
@@ -72,7 +67,6 @@ namespace ED2OR.Controllers
             {
                 StringBuilder strMessage = new StringBuilder();
                 strMessage.AppendLine("Please set the initial configuration to access the database");
-                string adminUserPassword = Guid.NewGuid().ToString();
                 var adminUser = PreConfigurationHelper.GetLocalAdminInfo(HttpContext);
                 {
                     if (adminUser == null)
@@ -80,14 +74,20 @@ namespace ED2OR.Controllers
                         adminUser = new LocalAdminInfo();
                         adminUser.Username = "admin";
                     }
-                    adminUser.Password = adminUserPassword;
                     PreConfigurationHelper.SaveAdminUser(adminUser, HttpContext);
                 }
-                strMessage.AppendLine("Following is the password for the user 'admin' please keep it in a safe place, since it will not be shown again");
-                strMessage.AppendLine(adminUserPassword);
                 ViewBag.Message = strMessage.ToString();
             }
+            else
+            {
+                if (!HttpContext.User.Identity
+                    .IsAuthenticated)
+                {
+                    return RedirectToAction(controllerName: "Account", actionName: "Login", routeValues: new { ReturnUrl = "/Admin/InitialSetup" });
+                }
+            }
             ViewModels.InitialSetup model = new ViewModels.InitialSetup();
+            model.IntegratedSecuritySSPI = true;
             return View(model);
         }
     }

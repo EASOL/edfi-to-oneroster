@@ -19,8 +19,8 @@ namespace ED2OR.ViewModels
         public string DatabaseUserPassword { get; set; }
         [Display(Name = "Application Name", Description = "Name that will used to identity your application into the Database Engine")]
         public string DatabaseApplicationName { get; set; }
-        [Display(Name = "Application Admin Password", Description = "Admin Password generated first time application was run")]
-        public string ApplicationAdminPassword { get; set; }
+        //[Display(Name = "Application Admin Password", Description = "Admin Password generated first time application was run")]
+        //public string ApplicationAdminPassword { get; set; }
         [Display(Name = "Use Integrated Security", Description = "Whether or not Integrated Security will be used")]
         public bool IntegratedSecuritySSPI { get; set; }
     }
