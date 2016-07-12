@@ -1,4 +1,6 @@
 ﻿var DatabaseSettings = new function () {
+    //$("#chkIntegratedSecurity").prop("checked", true);
+    $(".databaseCredentials").hide();
     this.TestDatabaseConnection = function (postActionUrl, resultElementClassSelector) {
         $(resultElementClassSelector).hide();
         var formData = $("form").serialize();
@@ -22,3 +24,13 @@
         });
     };
 }
+
+$("#chkIntegratedSecurity").change(function () {
+    if (this.checked == true) {
+        $(".databaseCredentials").hide();
+    }
+    else {
+        $(".databaseCredentials").show();
+    }
+
+});

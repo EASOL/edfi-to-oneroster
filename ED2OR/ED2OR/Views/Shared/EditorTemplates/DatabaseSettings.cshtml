@@ -15,19 +15,21 @@
 <div class="form-group">
     @Html.LabelFor(m => m.IntegratedSecuritySSPI, new { @class = "col-md-3 control-label" })
     <div class="col-md-9">
-        @Html.CheckBoxFor(m => m.IntegratedSecuritySSPI, new { @class = "form-control" })
+        @Html.CheckBoxFor(m => m.IntegratedSecuritySSPI, new { @class = "form-control", id = "chkIntegratedSecurity" })
     </div>
 </div>
-<div class="form-group">
-    @Html.LabelFor(m => m.DatabaseUserId, new { @class = "col-md-3 control-label" })
-    <div class="col-md-9">
-        @Html.TextBoxFor(m => m.DatabaseUserId, new { @class = "form-control" })
+<div class="databaseCredentials">
+    <div class="form-group">
+        @Html.LabelFor(m => m.DatabaseUserId, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.DatabaseUserId, new { @class = "form-control" })
+        </div>
     </div>
-</div>
-<div class="form-group">
-    @Html.LabelFor(m => m.DatabaseUserPassword, new { @class = "col-md-3 control-label" })
-    <div class="col-md-9">
-        @Html.PasswordFor(m => m.DatabaseUserPassword, new { @class = "form-control" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.DatabaseUserPassword, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.PasswordFor(m => m.DatabaseUserPassword, new { @class = "form-control" })
+        </div>
     </div>
 </div>
 <div class="form-group">

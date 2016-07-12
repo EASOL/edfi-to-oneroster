@@ -132,6 +132,7 @@ namespace ED2OR.Controllers
                 };
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult TestDatabaseConnection(ViewModels.InitialSetup DatabaseSettings)
         {
