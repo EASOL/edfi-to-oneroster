@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using ED2OR.Models;
 using ED2OR.ViewModels;
 using System.Net.Mail;
+using ED2OR.Enums;
 
 namespace ED2OR.Controllers
 {
@@ -104,7 +105,9 @@ namespace ED2OR.Controllers
             {
                 return RedirectToAction("Login");
             }
-            return View();
+            ViewModels.RegisterViewModel model = new RegisterViewModel();
+            model.ApiPrefix = "api/v2/2016/";
+            return View(model);
         }
 
         //
@@ -127,6 +130,19 @@ namespace ED2OR.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    try
+                    {
+                        var apiPrefix = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix);
+                        if (apiPrefix == null)
+                            apiPrefix = new MappingSetting();
+                        apiPrefix.SettingName = MappingSettingNames.ApiPrefix;
+                        apiPrefix.SettingValue = model.ApiPrefix;
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", ex);
+                    }
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
