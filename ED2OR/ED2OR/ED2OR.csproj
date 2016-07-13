@@ -252,8 +252,11 @@
     <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap-table.min.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\Images\easollogo.png" />
+    <Content Include="Content\Images\ed-fi-branding-logo.png" />
+    <Content Include="Content\Images\logo-revised.png" />
     <Content Include="Content\jquery.modal.min.css" />
-    <Content Include="Content\loading.gif" />
+    <Content Include="Content\Images\loading.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

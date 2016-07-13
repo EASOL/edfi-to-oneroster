@@ -158,7 +158,7 @@ namespace ED2OR.Utils
                                    SchoolId = (string)s["id"],
                                    Text = (string)s["nameOfInstitution"],
                                    Visible = true
-                               }).ToList();
+                               }).OrderBy(x => x.Text).ToList();
 
                 HttpContext.Current.Session["AllSchools"] = schools;
             }
@@ -181,7 +181,7 @@ namespace ED2OR.Utils
                                   Id = s,
                                   Text = s,
                                   Visible = true
-                              }).ToList();
+                              }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllSchoolYears"] = schoolYears;
             }
             return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchoolYears"];
@@ -201,7 +201,7 @@ namespace ED2OR.Utils
                                        Id = s,
                                        Text = s,
                                        Visible = true
-                                   }).ToList();
+                                   }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllTerms"] = terms;
             }
             return (List<ExportsCheckbox>)HttpContext.Current.Session["AllTerms"];
@@ -221,7 +221,7 @@ namespace ED2OR.Utils
                                     Term = (string)s["sessionReference"]["termDescriptor"],
                                     Text = (string)s["academicSubjectDescriptor"],
                                     Visible = true
-                                }).ToList();
+                                }).OrderBy(x => x.Text).ToList();
 
 
                 HttpContext.Current.Session["AllSubjects"] = subjects;
@@ -244,7 +244,7 @@ namespace ED2OR.Utils
                                     Text = (string)s["courseOfferingReference"]["localCourseCode"],
                                     Subject = (string)s["academicSubjectDescriptor"],
                                     Visible = true
-                                }).ToList();
+                                }).OrderBy(x => x.Text).ToList();
 
                 HttpContext.Current.Session["AllCourses"] = courses;
             }
@@ -279,7 +279,7 @@ namespace ED2OR.Utils
                                     Course = e.Course,
                                     Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
                                     Id = (string)s["id"]
-                                }).ToList();
+                                }).OrderBy(x => x.Text).ToList();
 
                 HttpContext.Current.Session["AllTeachers"] = teachers;
             }
@@ -302,7 +302,7 @@ namespace ED2OR.Utils
                                     Text = (string)s["uniqueSectionCode"],
                                     Subject = (string)s["academicSubjectDescriptor"],
                                     Visible = true
-                                }).ToList();
+                                }).OrderBy(x => x.Text).ToList();
 
                 HttpContext.Current.Session["AllSections"] = sections;
             }
