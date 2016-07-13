@@ -119,7 +119,7 @@
 }
 
 @section BodyOutsideOfContainer{
-    <div style="position:fixed; bottom:0px; padding-bottom:22px; padding-left: 10px; background-color: white; width:100%; padding-top:15px;">
+    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%;">
         <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
         <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
         <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button> 
@@ -244,7 +244,7 @@
                 //    $("div.inbox").collapse('hide');
                 //}
 
-                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
