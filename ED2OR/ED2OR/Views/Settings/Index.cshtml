@@ -24,6 +24,7 @@
     @Html.AntiForgeryToken()
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
+    <label class="label-success">@ViewBag.SuccessMessage</label>
     <div class="form-group">
         @Html.LabelFor(m => m.OldPassword, new { @class = "col-md-3 control-label" })
         <div class="col-md-9">
@@ -126,7 +127,7 @@
     databaseSettingsViewData.Add("FieldsPrefix", "DatabaseSettings");
     @Html.EditorFor(p => p.DatabaseSettings, templateName: "DatabaseSettings")
     <div class="form-group">
-        <div class="col-md-offset-3 col-md-9">
+        <div class="col-md-offset-3 col-md-9 div-Padding">
             <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>

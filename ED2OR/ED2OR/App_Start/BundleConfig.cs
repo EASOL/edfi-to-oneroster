@@ -27,7 +27,8 @@ namespace ED2OR
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-table.min.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/ED2OR.css"));
         }
     }
 }

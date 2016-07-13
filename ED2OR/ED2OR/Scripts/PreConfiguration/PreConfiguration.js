@@ -1,6 +1,6 @@
 ﻿var DatabaseSettings = new function () {
     //$("#chkIntegratedSecurity").prop("checked", true);
-    var integratedSecurityChecked = $("#chkIntegratedSecurity").checked;
+    var integratedSecurityChecked = $("#chkIntegratedSecurity").prop('checked');
     if (integratedSecurityChecked)
     {
         $(".databaseCredentials").hide();

@@ -169,7 +169,7 @@ namespace ED2OR.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(SettingsViewModel model)
+        public async Task<ActionResult> Index(SettingsViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -249,9 +249,18 @@ namespace ED2OR.Controllers
                     }
                 }
             }
-
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                db.SaveChanges();
+                ViewBag.SuccessMessage = "Settings successfully saved";
+                var result = await Index();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
+            }
         }
 
         [HttpPost]
