@@ -1,6 +1,14 @@
 ﻿var DatabaseSettings = new function () {
     //$("#chkIntegratedSecurity").prop("checked", true);
-    $(".databaseCredentials").hide();
+    var integratedSecurityChecked = $("#chkIntegratedSecurity").checked;
+    if (integratedSecurityChecked)
+    {
+        $(".databaseCredentials").hide();
+    }
+    else
+    {
+        $(".databaseCredentials").show();
+    }
     this.TestDatabaseConnection = function (postActionUrl, resultElementClassSelector) {
         $(resultElementClassSelector).hide();
         var formData = $("form").serialize();
