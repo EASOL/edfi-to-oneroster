@@ -15,8 +15,9 @@ namespace ED2OR.Controllers
         public ActionResult Index(int? templateId = null)
         {
             var logs = (from a in db.AuditLogs
-                       join t in db.Templates on a.TemplateId equals t.TemplateId
-                       where templateId == null || t.TemplateId == templateId
+                        from t in db.Templates.Where(x => x.TemplateId == a.TemplateId).DefaultIfEmpty()
+                        let mostRecentOldValues = db.AuditLogs.Where(x => x.TemplateId == a.TemplateId).OrderByDescending(x => x.DateTimeStamp).FirstOrDefault().OldValues
+                        where templateId == null || t.TemplateId == templateId
                        select new TemplateLogViewmodel
                        {
                            TemplateName = t.TemplateName,
@@ -27,12 +28,23 @@ namespace ED2OR.Controllers
                            OldValues = a.OldValues,
                            NewValues = a.NewValues,
                            Success = a.Success,
-                           FailureReason = a.FailureReason
+                           FailureReason = a.FailureReason,
+                           MostRecentOldValues = mostRecentOldValues
                        }).OrderByDescending(x => x.DateValue).ToList();
 
 
             foreach (var log in logs)
             {
+                if (string.IsNullOrEmpty(log.TemplateName))
+                {
+                    if (log.MostRecentOldValues != null)
+                    {
+                        var mostRecentOldValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(log.MostRecentOldValues);
+                        log.TemplateName = mostRecentOldValues["TemplateName"].ToString();
+                        log.VendorName = mostRecentOldValues["VendorName"].ToString();
+                    }
+                }
+
                 if (log.Action == ActionTypes.DownloadCsvAdmin || log.Action == ActionTypes.DownloasCsvVendor)
                 {
                     if (log.Success)
