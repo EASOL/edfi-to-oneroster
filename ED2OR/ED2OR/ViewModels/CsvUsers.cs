@@ -17,6 +17,7 @@ namespace ED2OR.ViewModels
         public string email { get; set; }
         public string sms { get; set; }
         public string phone { get; set; }
+        public string agents { get; set; }
 
         [CsvIgnoreField]
         public string SchoolId { get; set; }
