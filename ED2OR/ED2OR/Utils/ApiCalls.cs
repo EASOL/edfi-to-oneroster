@@ -725,13 +725,15 @@ namespace ED2OR.Utils
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    let termDescriptor = (string)o["sessionReference"]["termDescriptor"]
                                    let type = typeDictionary.ContainsKey(termDescriptor) ? typeDictionary[termDescriptor] : ""
+                                   let startDate = (DateTime)o["sessionReference"]["beginDate"]
+                                   let endDate = (DateTime)o["sessionReference"]["endDate"]
                                    select new CsvAcademicSessions
                                    {
                                        sourcedId = (string)o["sessionReference"]["id"],
                                        title = (string)o["sessionReference"]["schoolYear"] + " " + termDescriptor,
                                        type = type,
-                                       startDate = (string)o["sessionReference"]["beginDate"],
-                                       endDate = (string)o["sessionReference"]["endDate"],
+                                       startDate = startDate.ToString("yyyy-MM-dd"),
+                                       endDate = endDate.ToString("yyyy-MM-dd"),
                                        SchoolId = (string)o["schoolReference"]["id"],
                                        SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
                                        Term = (string)o["courseOfferingReference"]["termDescriptor"],

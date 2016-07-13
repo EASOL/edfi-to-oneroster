@@ -23,7 +23,7 @@
 @*@using (Html.BeginForm())*@
 @using (Html.BeginForm("DownloadCsv", "Exports", FormMethod.Post, new { id = "exportsForm" }))
 {
- <div style="padding-bottom:75px;">
+ <div>
      @Html.HiddenFor(x => x.SelectedSchools)
      @Html.HiddenFor(x => x.SelectedSchoolYears)
      @Html.HiddenFor(x => x.SelectedTerms)
@@ -118,11 +118,14 @@
 </div>
 }
 
-<div style="position:fixed; bottom:0px; padding-bottom:22px; background-color: white; width:100%; padding-top:15px;">
-    <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
-    <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
-    <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button> 
-</div>
+@section BodyOutsideOfContainer{
+    <div style="position:fixed; bottom:0px; padding-bottom:22px; padding-left: 10px; background-color: white; width:100%; padding-top:15px;">
+        <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
+        <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
+        <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button> 
+    </div>
+}
+
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
         <script>

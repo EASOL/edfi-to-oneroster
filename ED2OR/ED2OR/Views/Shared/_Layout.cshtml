@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Ed-fi To OneRoster Utility</title>
+    <title>@ViewBag.Title - EASOL Ed-Fi to OneRoster Utility</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+<body style="background-color:#44a657;">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#44a657;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -17,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Ed-Fi To OneRoster Utility", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("EASOL Ed-Fi to OneRoster Utility", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", style = "color:#FFFFFF;" })
             </div>
             <div class="navbar-collapse collapse">
                 @*<ul class="nav navbar-nav">
@@ -29,14 +30,20 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        <h2>OneRoster CSV Download</h2>
-        @RenderBody()
-        @*<hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>*@
+    <div style="background-color: #FFFFFF; width:100%;">
+        <div class="container body-content">
+            @RenderBody()
+            <br />
+            <br />
+        </div>
     </div>
+    
+    <footer style="position:relative; bottom:0px; padding:15px; background-color:#44a657; color:#FFFFFF; border-top: 1px solid #080808;">
+        <p>Github Repository - <a style="color:#FFFFFF" href="https://github.com/easol/edfi-to-oneroster">https://github.com/easol/edfi-to-oneroster</a></p>
+    </footer>
+
+    @RenderSection("BodyOutsideOfContainer", required: false)
+    
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

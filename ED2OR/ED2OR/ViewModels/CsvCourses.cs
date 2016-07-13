@@ -8,8 +8,10 @@ namespace ED2OR.ViewModels
         public string status { get; set; }
         public string dateLastModified { get; set; }
         public string schoolYearId { get; set; }
+        public string metadata__duration { get; set; } //double underscore replaced with a dot for the csv
         public string title { get; set; }
         public string courseCode { get; set; }
+        public string grade { get; set; }
         public string orgSourcedId { get; set; }
         public string subjects { get; set; }
 
