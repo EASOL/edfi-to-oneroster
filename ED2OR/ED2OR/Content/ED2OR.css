@@ -1,0 +1,14 @@
+﻿
+.connectionFailed {
+    font-weight: bold;
+    color: darkred;
+}
+
+.connectionSuccessful {
+    font-weight: bold;
+    color: darkgreen;
+}
+
+.div-Padding {
+    padding-top:10px !important;
+}
