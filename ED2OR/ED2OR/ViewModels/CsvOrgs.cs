@@ -8,6 +8,9 @@
         public string name { get; set; }
         public string type { get; set; }
         public string identifier { get; set; }
+        public string metadata__classification { get; set; } //double underscore replaced with dot for csv output
+        public string metadata__gender { get; set; } //double underscore replaced with dot for csv output
+        public string metadata__boarding { get; set; } //double underscore replaced with dot for csv output
         public string parentSourcedId { get; set; }
 
         [CsvIgnoreField]

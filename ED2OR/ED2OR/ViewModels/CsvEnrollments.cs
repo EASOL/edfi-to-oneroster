@@ -11,6 +11,7 @@ namespace ED2OR.ViewModels
         public string role { get; set; }
         public string status { get; set; }
         public string dateLastModified { get; set; }
+        public string primary { get; set; }
 
         [CsvIgnoreField]
         public string SchoolId { get; set; }

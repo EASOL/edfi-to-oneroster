@@ -66,19 +66,12 @@ namespace ED2OR.Controllers
 
             model.JsonPreviews = await ApiCalls.GetJsonPreviews(inputs);
 
-            var orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
-            var usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
-            var coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
-            var classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
-            var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
-            var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
-
-            //var orgColumnNames = typeof(CsvOrgs).GetProperties().Select(x => x.Name);
-            //var usersColumnNames = typeof(CsvUsers).GetProperties().Select(x => x.Name);
-            //var coursesColumnNames = typeof(CsvCourses).GetProperties().Select(x => x.Name);
-            //var classesColumnNames = typeof(CsvClasses).GetProperties().Select(x => x.Name);
-            //var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Select(x => x.Name);
-            //var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Select(x => x.Name);
+            var orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            var usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            var coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            var classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
 
             model.DataPreviewSections = new List<DataPreviewSection>
                 {

@@ -11,6 +11,7 @@ namespace ED2OR.ViewModels
         public string type { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
+        public string parentSourcedId { get; set; }
 
         [CsvIgnoreField]
         public string SchoolId { get; set; }

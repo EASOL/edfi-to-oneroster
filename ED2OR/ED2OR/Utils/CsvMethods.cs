@@ -54,13 +54,13 @@ namespace ED2OR.Utils
             WriteObjectToCsv(model.Courses, tempDirectoryFullName, "courses.csv");
             WriteObjectToCsv(model.Classes, tempDirectoryFullName, "classes.csv");
             WriteObjectToCsv(model.Enrollments, tempDirectoryFullName, "enrollments.csv");
-            WriteObjectToCsv(model.AcademicSessions, tempDirectoryFullName, "academicsessions.csv");
+            WriteObjectToCsv(model.AcademicSessions, tempDirectoryFullName, "academicSessions.csv");
             //WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "orgs.csv");
             //WriteObjectToCsv(await ApiCalls.GetCsvUsers(), tempDirectoryFullName, "users.csv");
             //WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "courses.csv");
             //WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "classes.csv");
             //WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "enrollments.csv");
-            //WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicsessions.csv");
+            //WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicSessions.csv");
 
             var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
 
@@ -70,7 +70,7 @@ namespace ED2OR.Utils
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\courses.csv", "courses.csv");
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
-            zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicsessions.csv", "academicsessions.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicSessions.csv", "academicSessions.csv");
             zip.Dispose();
 
             var bytes = File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
@@ -88,6 +88,7 @@ namespace ED2OR.Utils
             {
                 var columnNames = typeof(T).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
                 var headerLine = string.Join(",", columnNames);
+                headerLine = headerLine.Replace("__", ".");  //some column names have dots in them.  I put double underscores that should be replaced
                 sw.WriteLine(headerLine);
 
                 foreach (var rec in inputList)
@@ -119,7 +120,7 @@ namespace ED2OR.Utils
         //    WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "courses.csv");
         //    WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "classes.csv");
         //    WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "enrollments.csv");
-        //    WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicsessions.csv");
+        //    WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicSessions.csv");
 
         //    var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
 
@@ -129,7 +130,7 @@ namespace ED2OR.Utils
         //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\courses.csv", "courses.csv");
         //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
         //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
-        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicsessions.csv", "academicsessions.csv");
+        //    zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicSessions.csv", "academicSessions.csv");
         //    zip.Dispose();
 
         //    var bytes = System.IO.File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc

@@ -37,7 +37,7 @@ namespace ED2OR.Controllers
                 {
                     if (log.Success)
                     {
-                        log.Description = "Sucess";
+                        log.Description = "Success";
                     }
                     else
                     {
