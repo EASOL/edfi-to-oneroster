@@ -12,6 +12,7 @@ using Moq;
 using System.Web.Routing;
 using ED2OR.ViewModels;
 using ED2OR.Utils;
+using System.IO.Compression;
 
 namespace ED2OR.Controllers.Tests
 {
@@ -116,6 +117,75 @@ namespace ED2OR.Controllers.Tests
                 FileContentResult fileResult = defaultResult as FileContentResult;
                 Assert.IsTrue(!string.IsNullOrWhiteSpace(fileResult.FileDownloadName), "Invalid File Name");
                 Assert.IsTrue(fileResult.FileContents != null && fileResult.FileContents.Count() > 0, "Invalid File Contents");
+                List<string> lstInvalidFileNames = new List<string>();
+                using (System.IO.MemoryStream memStream = new System.IO.MemoryStream(fileResult.FileContents))
+                {
+                    System.IO.Compression.ZipArchive zipArchive = new ZipArchive(memStream);
+                    string[] validFileNames =
+                        { "orgs.csv", "users.csv", "courses.csv", "classes.csv", "enrollments.csv", "academicSessions.csv" };
+                    foreach (var singleEntry in zipArchive.Entries)
+                    {
+                        if (!validFileNames.Contains(singleEntry.Name))
+                        {
+                            lstInvalidFileNames.Add(singleEntry.Name);
+                        }
+                        ValidateFileContents(singleEntry);
+                    }
+                    memStream.Close();
+                }
+                if (lstInvalidFileNames.Count > 0)
+                {
+                    Assert.Fail("Invalid File Names: " +
+                        String.Join(",", lstInvalidFileNames.ToArray()));
+                }
+                //var zipFile = System.IO.Compression.ZipFile
+            }
+        }
+
+        private static void ValidateFileContents(ZipArchiveEntry singleEntry)
+        {
+            List<string> lstOrgFileMissingHeaders = new List<string>();
+            using (var singleFileStream = singleEntry.Open())
+            {
+                using (System.IO.StreamReader strReader = new System.IO.StreamReader(singleFileStream))
+                {
+                    using (CsvHelper.CsvReader csvreader = new CsvHelper.CsvReader(strReader))
+                    {
+                        switch (singleEntry.Name)
+                        {
+                            case "orgs.csv":
+                                if (csvreader.ReadHeader())
+                                {
+                                    if (!csvreader.FieldHeaders.Contains("sourcedId"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("sourcedId");
+                                    }
+                                    if (!csvreader.FieldHeaders.Contains("status"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("status");
+                                    }
+                                    if (!csvreader.FieldHeaders.Contains("dateLastModified"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("dateLastModified");
+                                    }
+                                    if (!csvreader.FieldHeaders.Contains("name"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("name");
+                                    }
+                                }
+                                while (csvreader.Read())
+                                {
+                                }
+                                break;
+                        }
+                    }
+                    strReader.Close();
+                }
+                singleFileStream.Close();
+            }
+            if (lstOrgFileMissingHeaders.Count > 0)
+            {
+                Assert.Fail("Missing headers for orgs.csv: " + String.Join(",", lstOrgFileMissingHeaders.ToArray()));
             }
         }
 

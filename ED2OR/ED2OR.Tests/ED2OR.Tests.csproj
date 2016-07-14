@@ -39,6 +39,10 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.2.16.0.0\lib\net45\CsvHelper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ED2OR.Fakes">
       <HintPath>FakesAssemblies\ED2OR.Fakes.dll</HintPath>
     </Reference>
@@ -119,6 +123,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.4.0.0.0.Fakes">
@@ -164,7 +170,6 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTests.cs" />
     <Compile Include="Controllers\ExportsControllerTests.cs" />
-    <Compile Include="Controllers\HomeControllerTests.cs" />
     <Compile Include="Controllers\SettingsControllerTests.cs" />
     <Compile Include="Controllers\TemplatesControllerTests.cs" />
     <Compile Include="OwinApplicationTests.cs" />
