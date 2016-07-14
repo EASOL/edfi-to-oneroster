@@ -802,8 +802,8 @@ namespace ED2OR.Utils
         private static async Task<ApiResponse> GetApiResponse(string apiEndpoint)
         {
             var context = new ApplicationDbContext();
-            var stopFetchingRecordsAt = 250;
-            var maxRecordLimit = 50;
+            var stopFetchingRecordsAt = 500;
+            var maxRecordLimit = 70;
             var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
 
             var tokenModel = GetToken();

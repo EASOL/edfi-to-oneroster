@@ -22,5 +22,6 @@ namespace ED2OR.ViewModels
         public string NewValues { get; set; }
         public bool Success { get; set; }
         public string FailureReason { get; set; }
+        public string MostRecentOldValues { get; set; }
     }
 }
