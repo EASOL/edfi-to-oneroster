@@ -337,12 +337,16 @@ namespace ED2OR.Utils
         public static async Task<DataResults> GetDataResults(FilterInputs inputs)
         {
             var dataResults = new DataResults();
+
             dataResults.Orgs = await GetCsvOrgs(inputs);
             dataResults.Users = await GetCsvUsers(inputs);
             dataResults.Courses = await GetCsvCourses(inputs);
             dataResults.Classes = await GetCsvClasses(inputs);
             dataResults.Enrollments = await GetCsvEnrollments(inputs);
             dataResults.AcademicSessions = await GetCsvAcademicSessions(inputs);
+
+            ExistingResponses.Clear(); //reset the global dictionary so next time we get fresh data.  Also so it doesn't sit in memory.
+
             return dataResults;
         }
 
@@ -375,9 +379,9 @@ namespace ED2OR.Utils
 
         public static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvUsers);
+            var enrollmentsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsers);
 
-            var enrollmentsList = (from o in responseArray
+            var enrollmentsList = (from o in enrollmentsResponse
                                    let students = o["students"].Children()
                                    let staffs = o["staff"].Children()
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
@@ -419,6 +423,22 @@ namespace ED2OR.Utils
                     enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
             }
 
+            var studentsLoginIdsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStudents, false, "id,loginId");
+            var studentLoginIds = (from l in studentsLoginIdsResponse
+                                   select new
+                      {
+                          id = (string)l["id"],
+                          loginId = (string)l["loginId"]
+                      });
+
+            var staffLoginIdsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStaff, false, "id,loginId");
+            var staffLoginIds = (from l in staffLoginIdsResponse
+                                   select new
+                                   {
+                                       id = (string)l["id"],
+                                       loginId = (string)l["loginId"]
+                                   });
+
             var studentInfo = (from e in enrollmentsList
                                from s in e.students
                                let mainTelephone = s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
@@ -426,18 +446,11 @@ namespace ED2OR.Utils
                                let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
                                let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                                let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                               //let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                               //let orgIds = schoolAssociationsIds == null ? "" :
-                               //    (
-                               //     schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                               //    )
                                select new CsvUsers
                                {
                                    sourcedId = (string)s["id"],
-                                   //orgSourcedIds = orgIds,
                                    orgSourcedIds = e.SchoolId,
                                    role = "student",
-                                   username = (string)s["loginId"],
                                    userId = (string)s["studentUniqueId"],
                                    givenName = (string)s["firstName"],
                                    familyName = (string)s["lastSurname"],
@@ -447,7 +460,6 @@ namespace ED2OR.Utils
                                    phone = mainTelephoneNumber
                                });
 
-
             var staffInfo = (from e in enrollmentsList
                              from s in e.staffs
                              let mainTelephone = s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
@@ -455,18 +467,11 @@ namespace ED2OR.Utils
                              let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
                              let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                              let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                             //let schoolAssociationsIds = s["schoolAssociations"] != null ? s["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                             //let orgIds = schoolAssociationsIds == null ? "" :
-                             //    (
-                             //     schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                             //    )
                              select new CsvUsers
                              {
                                  sourcedId = (string)s["id"],
-                                 //orgSourcedIds = orgIds,
                                  orgSourcedIds = e.SchoolId,
                                  role = "teacher",
-                                 username = (string)s["loginId"],
                                  userId = (string)s["staffUniqueId"],
                                  givenName = (string)s["firstName"],
                                  familyName = (string)s["lastSurname"],
@@ -478,8 +483,45 @@ namespace ED2OR.Utils
 
             var distinctStudents = studentInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
             var distinctStaff = staffInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
-            var studentsAndStaff = distinctStudents.Concat(distinctStaff);
 
+
+            var studentInfoWithLoginId = (from s in distinctStudents
+                                          from l in studentLoginIds.Where(x => x.id == s.sourcedId).DefaultIfEmpty()
+                                          let loginId = l == null ? "" : (l.loginId ?? "")
+                                          select new CsvUsers
+                                          {
+                                              sourcedId = s.sourcedId,
+                                              orgSourcedIds = s.orgSourcedIds,
+                                              role = s.role,
+                                              username = loginId,
+                                              userId = s.userId,
+                                              givenName = s.givenName,
+                                              familyName = s.familyName,
+                                              identifier = s.identifier,
+                                              email = s.email,
+                                              sms = s.sms,
+                                              phone = s.phone
+                                          });
+
+            var staffInfoWithLoginId = (from s in distinctStaff
+                                        from l in staffLoginIds.Where(x => x.id == s.sourcedId).DefaultIfEmpty()
+                                        let loginId = l == null ? "" : (l.loginId ?? "")
+                                        select new CsvUsers
+                                        {
+                                            sourcedId = s.sourcedId,
+                                            orgSourcedIds = s.orgSourcedIds,
+                                            role = s.role,
+                                            username = loginId,
+                                            userId = s.userId,
+                                            givenName = s.givenName,
+                                            familyName = s.familyName,
+                                            identifier = s.identifier,
+                                            email = s.email,
+                                            sms = s.sms,
+                                            phone = s.phone
+                                        });
+
+            var studentsAndStaff = studentInfoWithLoginId.Concat(staffInfoWithLoginId);
             return studentsAndStaff.ToList();
             /*
             This section was with the old Endpoints no longer used
@@ -775,18 +817,18 @@ namespace ED2OR.Utils
         #endregion
 
         #region PrivateMethods
-        private static async Task<JArray> GetApiResponseArray(string apiEndpoint, bool forceNew = false)
+        private static async Task<JArray> GetApiResponseArray(string apiEndpoint, bool forceNew = false, string fields = null)
         {
             if (ExistingResponses.ContainsKey(apiEndpoint) && !forceNew)
             {
                 return ExistingResponses[apiEndpoint];
             }
 
-            var response = await GetApiResponse(apiEndpoint);
+            var response = await GetApiResponse(apiEndpoint, fields);
             if (response.TokenExpired)
             {
                 GetToken(true);
-                response = await GetApiResponse(apiEndpoint);
+                response = await GetApiResponse(apiEndpoint, fields);
             }
 
             if (ExistingResponses.ContainsKey(apiEndpoint))
@@ -799,12 +841,17 @@ namespace ED2OR.Utils
             return response.ResponseArray;
         }
 
-        private static async Task<ApiResponse> GetApiResponse(string apiEndpoint)
+        private static async Task<ApiResponse> GetApiResponse(string apiEndpoint, string fields)
         {
             var context = new ApplicationDbContext();
-            var stopFetchingRecordsAt = 500;
+            //var stopFetchingRecordsAt = 500;
             var maxRecordLimit = 70;
             var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
+
+            if (!string.IsNullOrEmpty(fields))
+            {
+                fullUrl += "&fields=" + fields;
+            }
 
             var tokenModel = GetToken();
             if (!tokenModel.IsSuccessful)
@@ -850,8 +897,12 @@ namespace ED2OR.Utils
                         finalResponse = new JArray(finalResponse.Union(responseArray));
                         offset += maxRecordLimit;
                     }
+                    else
+                    {
+                        getMoreRecords = false;
+                    }
 
-                    if (responseArray.Count() != maxRecordLimit  || finalResponse.Count() >= stopFetchingRecordsAt)
+                    if (responseArray.Count() != maxRecordLimit)//  || finalResponse.Count() >= stopFetchingRecordsAt)
                     {
                         getMoreRecords = false;
                     }

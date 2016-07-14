@@ -3,8 +3,9 @@
 @{
     var numCheckboxes = Model.FilterCheckboxes == null ? 0 : Model.FilterCheckboxes.Count();
     var numSelected = Model.FilterCheckboxes == null ? 0 : Model.FilterCheckboxes.Where(x => x.Selected).Count();
-    var numSelectedText = numCheckboxes == numSelected ? "all selected" : numSelected.ToString() + " selected";
-    numSelectedText = numSelected == 0 ? "No Filters Applied" : numSelectedText;
+    var numSelectedText = numSelected.ToString() + " of " + numCheckboxes.ToString() + " selected";
+    var itemWord = numCheckboxes == 1 ? "item" : "items";
+    numSelectedText = numSelected == 0 ? numCheckboxes.ToString() + " " + itemWord + " - No Filters Applied" : numSelectedText;
     var collapseClass = Model.IsExpanded ? "collapse in" : "collapse";
     var sectionName = Model.SectionName.Replace(" ", "_");
 }
