@@ -129,6 +129,7 @@ namespace ED2OR.Controllers.Tests
                         {
                             lstInvalidFileNames.Add(singleEntry.Name);
                         }
+                        ValidateFileContents(singleEntry);
                     }
                     memStream.Close();
                 }
@@ -138,6 +139,53 @@ namespace ED2OR.Controllers.Tests
                         String.Join(",", lstInvalidFileNames.ToArray()));
                 }
                 //var zipFile = System.IO.Compression.ZipFile
+            }
+        }
+
+        private static void ValidateFileContents(ZipArchiveEntry singleEntry)
+        {
+            List<string> lstOrgFileMissingHeaders = new List<string>();
+            using (var singleFileStream = singleEntry.Open())
+            {
+                using (System.IO.StreamReader strReader = new System.IO.StreamReader(singleFileStream))
+                {
+                    using (CsvHelper.CsvReader csvreader = new CsvHelper.CsvReader(strReader))
+                    {
+                        switch (singleEntry.Name)
+                        {
+                            case "orgs.csv":
+                                if (csvreader.ReadHeader())
+                                {
+                                    if (!csvreader.FieldHeaders.Contains("sourcedId"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("sourcedId");
+                                    }
+                                    if (!csvreader.FieldHeaders.Contains("status"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("status");
+                                    }
+                                    if (!csvreader.FieldHeaders.Contains("dateLastModified"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("dateLastModified");
+                                    }
+                                    if (!csvreader.FieldHeaders.Contains("name"))
+                                    {
+                                        lstOrgFileMissingHeaders.Add("name");
+                                    }
+                                }
+                                while (csvreader.Read())
+                                {
+                                }
+                                break;
+                        }
+                    }
+                    strReader.Close();
+                }
+                singleFileStream.Close();
+            }
+            if (lstOrgFileMissingHeaders.Count > 0)
+            {
+                Assert.Fail("Missing headers for orgs.csv: " + String.Join(",", lstOrgFileMissingHeaders.ToArray()));
             }
         }
 
