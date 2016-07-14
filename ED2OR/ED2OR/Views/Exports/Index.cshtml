@@ -190,6 +190,11 @@
                 var teachersAlreadyChecked = getBoxesAlreadyChecked("Teachers");
                 var sectionsAlreadyChecked = getBoxesAlreadyChecked("Sections");
 
+                $("#numSelected_Subjects").text("(Loading...)");
+                $("#numSelected_Courses").text("(Loading...)");
+                $("#numSelected_Teachers").text("(Loading...)");
+                $("#numSelected_Sections").text("(Loading...)");
+
                 $("#SubjectsContainer").load("@Url.Action("GetSubjectsPartial")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
