@@ -166,7 +166,6 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTests.cs" />
     <Compile Include="Controllers\ExportsControllerTests.cs" />
-    <Compile Include="Controllers\HomeControllerTests.cs" />
     <Compile Include="Controllers\SettingsControllerTests.cs" />
     <Compile Include="Controllers\TemplatesControllerTests.cs" />
     <Compile Include="OwinApplicationTests.cs" />
