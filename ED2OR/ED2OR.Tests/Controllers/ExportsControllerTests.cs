@@ -12,6 +12,7 @@ using Moq;
 using System.Web.Routing;
 using ED2OR.ViewModels;
 using ED2OR.Utils;
+using System.IO.Compression;
 
 namespace ED2OR.Controllers.Tests
 {
@@ -116,6 +117,27 @@ namespace ED2OR.Controllers.Tests
                 FileContentResult fileResult = defaultResult as FileContentResult;
                 Assert.IsTrue(!string.IsNullOrWhiteSpace(fileResult.FileDownloadName), "Invalid File Name");
                 Assert.IsTrue(fileResult.FileContents != null && fileResult.FileContents.Count() > 0, "Invalid File Contents");
+                List<string> lstInvalidFileNames = new List<string>();
+                using (System.IO.MemoryStream memStream = new System.IO.MemoryStream(fileResult.FileContents))
+                {
+                    System.IO.Compression.ZipArchive zipArchive = new ZipArchive(memStream);
+                    string[] validFileNames =
+                        { "orgs.csv", "users.csv", "courses.csv", "classes.csv", "enrollments.csv", "academicSessions.csv" };
+                    foreach (var singleEntry in zipArchive.Entries)
+                    {
+                        if (!validFileNames.Contains(singleEntry.Name))
+                        {
+                            lstInvalidFileNames.Add(singleEntry.Name);
+                        }
+                    }
+                    memStream.Close();
+                }
+                if (lstInvalidFileNames.Count > 0)
+                {
+                    Assert.Fail("Invalid File Names: " +
+                        String.Join(",", lstInvalidFileNames.ToArray()));
+                }
+                //var zipFile = System.IO.Compression.ZipFile
             }
         }
 
