@@ -132,7 +132,7 @@
             function deselectAll(divId) {
                 $("#" + divId).find("input:checkbox").prop("checked", false);
                 //$("#" + divId).find("input:checkbox").removeAttr("checked");
-                $("#numSelected_" + divId).text("(No Filters Applied)");
+                checkboxRecount(divId);
                 if (divId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
                     topGroupChanged();
                 }
@@ -141,7 +141,7 @@
             function selectAll(divId) {
                 $("#" + divId).find("input:checkbox").prop("checked", true);
                 //$("#" + divId).find("input:checkbox").attr("checked", true);
-                $("#numSelected_" + divId).text("(all selected)");
+                checkboxRecount(divId);
                 if (divId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
                     topGroupChanged();
                 }
@@ -150,9 +150,10 @@
             function checkboxRecount(divId) {
                 var numCheckedBoxes = $("#" + divId).find("input:checkbox:checked").length;
                 var numTotalBoxes = $("#" + divId).find("input:checkbox").length;
+                var itemWord = numTotalBoxes == 1 ? "item" : "items";
 
-                var txt = numCheckedBoxes == numTotalBoxes ? "(all selected)" : "(" + numCheckedBoxes + " selected)"
-                txt = numCheckedBoxes == 0 ? "(No Filters Applied)" : txt;
+                var txt = "(" + numCheckedBoxes + " of " + numTotalBoxes + " selected)"
+                txt = numCheckedBoxes == 0 ? "(" + numTotalBoxes + " " + itemWord + " - No Filters Applied)" : txt;
                 $("#numSelected_" + divId).text(txt);
             }
 
