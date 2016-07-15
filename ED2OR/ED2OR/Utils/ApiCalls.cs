@@ -122,6 +122,8 @@ namespace ED2OR.Utils
             /////////////Load these two now because the API is already stored in the dictionary up top.  It'll be in the session for the user for later.  He'll get instant checkboxes
             await GetSubjects();
             await GetCourses();
+            await GetTeachers();
+            await GetSections();
             //////////////////////////////////////
 
             model.SchoolsCriteriaSection = new ApiCriteriaSection
@@ -255,9 +257,9 @@ namespace ED2OR.Utils
         {
             if (HttpContext.Current.Session["AllTeachers"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.Teachers);
-                var enrollmentsList = (from o in responseArray
-                                       let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
+                var sectionsResponse = await GetApiResponseArray(ApiEndPoints.Sections);
+                var sections = (from o in sectionsResponse
+                                let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
                                        select new
                                        {
                                            SchoolId = (string)o["schoolReference"]["id"],
@@ -268,20 +270,43 @@ namespace ED2OR.Utils
                                            staffs = staffs
                                        });
 
-                var teachers = (from e in enrollmentsList
-                                from s in e.staffs
+                var staffSections = from section in sections
+                                    from staff in section.staffs
+                                    select new
+                                    {
+                                        SchoolId = section.SchoolId,
+                                        SchoolYear = section.SchoolYear,
+                                        Term = section.Term,
+                                        Subject = section.Subject,
+                                        Course = section.Course,
+                                        StaffId = (string)staff["id"]
+                                    };
+
+                var distinctStaffSections = staffSections.GroupBy(x => x.StaffId).Select(group => group.First());
+
+                var staffResponse = await GetApiResponseArray(ApiEndPoints.Staff, false, "id,firstName,lastSurname");
+                var staffInfo = from s in staffResponse
+                                select new
+                                {
+                                    Id = (string)s["id"],
+                                    Name = (string)s["firstName"] + " " + (string)s["lastSurname"]
+                                };
+
+                var teachers = (from ss in distinctStaffSections
+                                from si in staffInfo.Where(x => x.Id == ss.StaffId).DefaultIfEmpty()
+                                let teacherName = si == null ? "" : (si.Name ?? "")
                                 select new ExportsCheckbox
                                 {
-                                    SchoolId = e.SchoolId,
-                                    SchoolYear = e.SchoolYear,
-                                    Term = e.Term,
-                                    Subject = e.Subject,
-                                    Course = e.Course,
-                                    Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
-                                    Id = (string)s["id"]
-                                }).OrderBy(x => x.Text).ToList();
+                                    SchoolId = ss.SchoolId,
+                                    SchoolYear = ss.SchoolYear,
+                                    Term = ss.Term,
+                                    Subject = ss.Subject,
+                                    Course = ss.Course,
+                                    Text = teacherName,
+                                    Id = ss.StaffId
+                                });
 
-                HttpContext.Current.Session["AllTeachers"] = teachers;
+                HttpContext.Current.Session["AllTeachers"] = teachers.OrderBy(x => x.Text).ToList();
             }
             return (List<ExportsCheckbox>)HttpContext.Current.Session["AllTeachers"];
         }
@@ -398,7 +423,6 @@ namespace ED2OR.Utils
                                        Teachers = teachers
                                    });
 
-
             if (inputs != null)
             {
                 if (inputs.Schools != null)
@@ -483,7 +507,6 @@ namespace ED2OR.Utils
 
             var distinctStudents = studentInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
             var distinctStaff = staffInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
-
 
             var studentInfoWithLoginId = (from s in distinctStudents
                                           from l in studentLoginIds.Where(x => x.id == s.sourcedId).DefaultIfEmpty()
