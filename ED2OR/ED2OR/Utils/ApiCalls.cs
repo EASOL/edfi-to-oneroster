@@ -407,8 +407,8 @@ namespace ED2OR.Utils
             var enrollmentsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsers);
 
             var enrollmentsList = (from o in enrollmentsResponse
-                                   let students = o["students"].Children()
-                                   let staffs = o["staff"].Children()
+                                   let students = o["students"].Children().Select(x => (string)x["id"])
+                                   let staffs = o["staff"].Children().Select(x => (string)x["id"])
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new
                                    {
@@ -447,161 +447,88 @@ namespace ED2OR.Utils
                     enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
             }
 
-            var studentsLoginIdsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStudents, false, "id,loginId");
-            var studentLoginIds = (from l in studentsLoginIdsResponse
-                                   select new
-                      {
-                          id = (string)l["id"],
-                          loginId = (string)l["loginId"]
-                      });
-
-            var staffLoginIdsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStaff, false, "id,loginId");
-            var staffLoginIds = (from l in staffLoginIdsResponse
-                                   select new
-                                   {
-                                       id = (string)l["id"],
-                                       loginId = (string)l["loginId"]
-                                   });
-
-            var studentInfo = (from e in enrollmentsList
-                               from s in e.students
+            var studentsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStudents);
+            var studentsResponseInfo = (from s in studentsResponse
                                let mainTelephone = s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
                                let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
                                let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
                                let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
                                let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                               select new CsvUsers
+                               select new
                                {
-                                   sourcedId = (string)s["id"],
-                                   orgSourcedIds = e.SchoolId,
-                                   role = "student",
+                                   id = (string)s["id"],
                                    userId = (string)s["studentUniqueId"],
                                    givenName = (string)s["firstName"],
                                    familyName = (string)s["lastSurname"],
                                    identifier = (string)s["studentUniqueId"],
                                    email = emailAddress,
                                    sms = mobileNumber,
-                                   phone = mainTelephoneNumber
-                               });
+                                   phone = mainTelephoneNumber,
+                                   username = (string)s["loginId"]
+                               }).ToList();
+
+
+            var staffResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStaff);
+            var staffResponseInfo = (from s in staffResponse
+                                        let mainTelephone = s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
+                                        let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
+                                        let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
+                                        let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
+                                        let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+                                        select new
+                                        {
+                                            id = (string)s["id"],
+                                            userId = (string)s["staffUniqueId"],
+                                            givenName = (string)s["firstName"],
+                                            familyName = (string)s["lastSurname"],
+                                            identifier = (string)s["staffUniqueId"],
+                                            email = emailAddress,
+                                            sms = mobileNumber,
+                                            phone = mainTelephoneNumber,
+                                            username = (string)s["loginId"]
+                                        }).ToList();
+
+            var studentInfo = (from e in enrollmentsList
+                               from s in e.students
+                               from si in studentsResponseInfo.Where(x => x.id == s)
+                               select new CsvUsers
+                               {
+                                   sourcedId = s,
+                                   orgSourcedIds = e.SchoolId,
+                                   role = "student",
+                                   userId = si.userId,
+                                   givenName = si.givenName,
+                                   familyName = si.familyName,
+                                   identifier = si.identifier,
+                                   email = si.email,
+                                   sms = si.sms,
+                                   phone = si.phone,
+                                   username = si.username
+                               }).ToList();
 
             var staffInfo = (from e in enrollmentsList
                              from s in e.staffs
-                             let mainTelephone = s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
-                             let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
-                             let emailAddress = s["electronicMails"].Children().Count() > 0 ? (string)s["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
-                             let mobile = s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
-                             let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+                             from si in staffResponseInfo.Where(x => x.id == s)
                              select new CsvUsers
                              {
-                                 sourcedId = (string)s["id"],
+                                 sourcedId = s,
                                  orgSourcedIds = e.SchoolId,
                                  role = "teacher",
-                                 userId = (string)s["staffUniqueId"],
-                                 givenName = (string)s["firstName"],
-                                 familyName = (string)s["lastSurname"],
-                                 identifier = (string)s["staffUniqueId"],
-                                 email = emailAddress,
-                                 sms = mobileNumber,
-                                 phone = mainTelephoneNumber
-                             });
+                                 userId = si.userId,
+                                 givenName = si.givenName,
+                                 familyName = si.familyName,
+                                 identifier = si.identifier,
+                                 email = si.email,
+                                 sms = si.sms,
+                                 phone = si.phone,
+                                 username = si.username
+                             }).ToList();
 
             var distinctStudents = studentInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
             var distinctStaff = staffInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
 
-            var studentInfoWithLoginId = (from s in distinctStudents
-                                          from l in studentLoginIds.Where(x => x.id == s.sourcedId).DefaultIfEmpty()
-                                          let loginId = l == null ? "" : (l.loginId ?? "")
-                                          select new CsvUsers
-                                          {
-                                              sourcedId = s.sourcedId,
-                                              orgSourcedIds = s.orgSourcedIds,
-                                              role = s.role,
-                                              username = loginId,
-                                              userId = s.userId,
-                                              givenName = s.givenName,
-                                              familyName = s.familyName,
-                                              identifier = s.identifier,
-                                              email = s.email,
-                                              sms = s.sms,
-                                              phone = s.phone
-                                          });
-
-            var staffInfoWithLoginId = (from s in distinctStaff
-                                        from l in staffLoginIds.Where(x => x.id == s.sourcedId).DefaultIfEmpty()
-                                        let loginId = l == null ? "" : (l.loginId ?? "")
-                                        select new CsvUsers
-                                        {
-                                            sourcedId = s.sourcedId,
-                                            orgSourcedIds = s.orgSourcedIds,
-                                            role = s.role,
-                                            username = loginId,
-                                            userId = s.userId,
-                                            givenName = s.givenName,
-                                            familyName = s.familyName,
-                                            identifier = s.identifier,
-                                            email = s.email,
-                                            sms = s.sms,
-                                            phone = s.phone
-                                        });
-
-            var studentsAndStaff = studentInfoWithLoginId.Concat(staffInfoWithLoginId);
+            var studentsAndStaff = distinctStudents.Concat(distinctStaff);
             return studentsAndStaff.ToList();
-            /*
-            This section was with the old Endpoints no longer used
-            var responseArrayStudents = await GetApiResponseArray(ApiEndPoints.CsvUsersStudents);
-            var listOfStudents = (from o in responseArrayStudents
-                                  let mainTelephone = o["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
-                                  let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
-                                  let emailAddress = o["electronicMails"].Children().Count() > 0 ? (string)o["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
-                                  let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
-                                  let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                                  let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                                  let orgIds = schoolAssociationsIds == null ? "" :
-                                      (
-                                       schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                                      )
-                                  select new CsvUsers
-                                  {
-                                      sourcedId = (string)o["id"],
-                                      orgSourcedIds = orgIds,
-                                      role = "student",
-                                      username = (string)o["loginId"],
-                                      userId = (string)o["studentUniqueId"],
-                                      givenName = (string)o["firstName"],
-                                      familyName = (string)o["lastSurname"],
-                                      identifier = (string)o["studentUniqueId"],
-                                      email = emailAddress,
-                                      sms = mobileNumber,
-                                      phone = mainTelephoneNumber
-                                  });
-
-            var responseArrayStaff = await GetApiResponseArray(ApiEndPoints.CsvUsersStaff);
-            var listOfStaff = (from o in responseArrayStaff
-                               let mainTelephone = o["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
-                               let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
-                               let emailAddress = o["electronicMails"].Children().Count() > 0 ? (string)o["electronicMails"][0]["electronicMailAddress"] : "" //TODO: just pick 0?.  or get based on electronicMailType field.
-                               let mobile = o["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
-                               let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                               let schoolAssociationsIds = o["schoolAssociations"] != null ? o["schoolAssociations"].Children().Select(x => (string)x["id"]) : null
-                               let orgIds = schoolAssociationsIds == null ? "" :
-                                   (
-                                    schoolAssociationsIds.Count() > 1 ? string.Join(", ", schoolAssociationsIds) : schoolAssociationsIds.FirstOrDefault()
-                                   )
-                               select new CsvUsers
-                               {
-                                   sourcedId = (string)o["id"],
-                                   orgSourcedIds = orgIds,
-                                   role = "teacher",
-                                   username = (string)o["loginId"],
-                                   userId = (string)o["staffUniqueId"],
-                                   givenName = (string)o["firstName"],
-                                   familyName = (string)o["lastSurname"],
-                                   identifier = (string)o["staffUniqueId"],
-                                   email = emailAddress,
-                                   sms = mobileNumber,
-                                   phone = mainTelephoneNumber
-                               });
-            return listOfStudents.Concat(listOfStaff).ToList();*/
         }
 
         public static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
@@ -868,7 +795,7 @@ namespace ED2OR.Utils
         {
             var context = new ApplicationDbContext();
             //var stopFetchingRecordsAt = 500;
-            var maxRecordLimit = 70;
+            var maxRecordLimit = 100;
             var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
 
             if (!string.IsNullOrEmpty(fields))
