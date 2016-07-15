@@ -129,6 +129,7 @@ namespace ED2OR.Controllers.Tests
                         {
                             lstInvalidFileNames.Add(singleEntry.Name);
                         }
+                        //For Validation rules check https://docs.google.com/spreadsheets/d/1X-gX06CaeDwDn5-Q-pqVAVahgJRtQqFOx5jj3FtIHKs/edit#gid=0
                         ValidateFileContents(singleEntry);
                     }
                     memStream.Close();
@@ -145,6 +146,7 @@ namespace ED2OR.Controllers.Tests
         private static void ValidateFileContents(ZipArchiveEntry singleEntry)
         {
             List<string> lstOrgFileMissingHeaders = new List<string>();
+            List<string> lstOrgFileInvalidInfo = new List<string>();
             using (var singleFileStream = singleEntry.Open())
             {
                 using (System.IO.StreamReader strReader = new System.IO.StreamReader(singleFileStream))
@@ -173,8 +175,88 @@ namespace ED2OR.Controllers.Tests
                                         lstOrgFileMissingHeaders.Add("name");
                                     }
                                 }
+                                int iRow = 1;
                                 while (csvreader.Read())
                                 {
+                                    string sourceId = string.Empty;
+                                    bool hasSourceId = csvreader.TryGetField<string>("sourcedId", out sourceId);
+                                    if (!hasSourceId)
+                                    {
+                                        lstOrgFileInvalidInfo.Add("Unable to get a valid sourceId for Row " + iRow);
+                                    }
+                                    string status = string.Empty;
+                                    bool hasStatus = csvreader.TryGetField<string>("status", out status);
+                                    if (!hasStatus)
+                                    {
+                                        lstOrgFileInvalidInfo.Add("Unable to get a valid status for Row " + iRow);
+                                    }
+                                    else
+                                    {
+                                        string[] validStatuses = { "active", "inactive", "tobedeleted" };
+                                        if (!validStatuses.Contains(status))
+                                        {
+                                            lstOrgFileInvalidInfo.Add("Invalid status for Row " + iRow + ": " + status);
+                                        }
+                                    }
+                                    string dateLastModified = string.Empty;
+                                    bool hasDateLastModified = csvreader.TryGetField<string>("dateLastModified", out dateLastModified);
+                                    if (String.IsNullOrWhiteSpace(dateLastModified))
+                                    {
+                                        lstOrgFileInvalidInfo.Add("Empty dateLastModified for Row: " + iRow + ". Format must be YYYY-MM-DD");
+                                    }
+                                    else
+                                    {
+                                        if (hasDateLastModified && dateLastModified.Length == 8)
+                                        {
+                                            DateTime resultDate;
+                                            bool validDate = DateTime.TryParseExact(dateLastModified, "YYYY-MM-DD", null, System.Globalization.DateTimeStyles.None,
+                                                out resultDate);
+                                            if (!validDate)
+                                            {
+                                                lstOrgFileInvalidInfo.Add("Invalid dateLastModified for Row: " + iRow + ". Format must be YYYY-MM-DD");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            lstOrgFileInvalidInfo.Add("Invalid format for date: " + dateLastModified);
+                                        }
+                                    }
+                                    string name = string.Empty;
+                                    bool hasName = csvreader.TryGetField<string>("name", out name);
+                                    if (!hasName)
+                                    {
+                                        lstOrgFileInvalidInfo.Add("No name for Row: " + iRow);
+                                    }
+                                    string type = string.Empty;
+                                    bool hasType = csvreader.TryGetField<string>("type", out type);
+                                    if (!hasType)
+                                    {
+                                        lstOrgFileInvalidInfo.Add("No type for Row: " + iRow);
+                                    }
+                                    else
+                                    {
+                                        string[] validTypes = { "school", "local", "state", "national" };
+                                        if (!validTypes.Contains(type))
+                                        {
+                                            lstOrgFileInvalidInfo.Add("Invalid type for Row: " + iRow);
+                                        }
+                                    }
+                                    string identifier = string.Empty;
+                                    bool hasIdentifier = csvreader.TryGetField<string>("identifier", out identifier);
+                                    if (!hasIdentifier)
+                                    {
+                                        lstOrgFileInvalidInfo.Add("Invalid identifier for Row: " + iRow);
+                                    }
+                                    string metadata_classification = string.Empty;
+                                    bool hasmetadata_classification = csvreader.TryGetField<string>("metadata.classification", out metadata_classification);
+                                    if (!hasmetadata_classification)
+                                    {
+                                        lstOrgFileInvalidInfo.Add("Invalid metadata.classification for Row: " + iRow);
+                                    }
+                                    else
+                                    {
+                                        string[] validMetadataClassification = { "charter", "private", "public" };
+                                    }
                                 }
                                 break;
                         }
@@ -183,9 +265,16 @@ namespace ED2OR.Controllers.Tests
                 }
                 singleFileStream.Close();
             }
-            if (lstOrgFileMissingHeaders.Count > 0)
+            if (lstOrgFileMissingHeaders.Count > 0 || lstOrgFileInvalidInfo.Count > 0)
             {
-                Assert.Fail("Missing headers for orgs.csv: " + String.Join(",", lstOrgFileMissingHeaders.ToArray()));
+                StringBuilder strErrors = new StringBuilder();
+                strErrors.AppendLine("Missing headers for orgs.csv: ");
+                if (lstOrgFileInvalidInfo.Count > 0)
+                    strErrors.AppendLine(string.Join(",", lstOrgFileInvalidInfo.ToArray()));
+                if (lstOrgFileMissingHeaders.Count > 0)
+                    strErrors.AppendLine(string.Join(",", lstOrgFileMissingHeaders.ToArray()));
+                string errorsText = strErrors.ToString();
+                Assert.Fail(errorsText);
             }
         }
 
