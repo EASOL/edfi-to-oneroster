@@ -41,7 +41,7 @@ namespace ED2OR.Controllers
                     {
                         adminUser.InitialDatabaseConfigured = true;
                         PreConfigurationHelper.SaveAdminUser(adminUser, HttpContext);
-                        return RedirectToAction(actionName: "Index", controllerName: "Home");
+                        return RedirectToAction(actionName: "Login", controllerName: "Account");
                     }
                     else
                     {
