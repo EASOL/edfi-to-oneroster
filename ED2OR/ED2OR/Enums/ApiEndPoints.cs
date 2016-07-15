@@ -7,9 +7,9 @@
         public const string Schools = "enrollment/schools";
         public const string Subjects = "enrollment/sections"; //acedemicSubjectDescriptor
         public const string Courses = "enrollment/sections"; //courseOfferingReference.localCourseCode
-        //public const string Sections = "enrollment/schools/{0}/sections"; //uniqueSectionCode
         public const string Sections = "enrollment/sections"; //uniqueSectionCode
-        public const string Teachers = "enrollment/sectionEnrollments"; //staff.firstName + staff.lastSurname
+        public const string Staff = "enrollment/staffs";
+        //public const string Teachers = "enrollment/sectionEnrollments"; //staff.firstName + staff.lastSurname
         public const string SchoolYears = "enrollment/sections"; //sessionReference.schoolYear
         public const string Terms = "enrollment/sections"; //sessionReference.termDescriptor
 
