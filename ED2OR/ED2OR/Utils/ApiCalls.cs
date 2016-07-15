@@ -120,10 +120,10 @@ namespace ED2OR.Utils
             var terms = await GetTerms();
 
             /////////////Load these two now because the API is already stored in the dictionary up top.  It'll be in the session for the user for later.  He'll get instant checkboxes
-            await GetSubjects();
-            await GetCourses();
-            await GetTeachers();
-            await GetSections();
+            //await GetSubjects();
+            //await GetCourses();
+            //await GetTeachers();
+            //await GetSections();
             //////////////////////////////////////
 
             model.SchoolsCriteriaSection = new ApiCriteriaSection
