@@ -15,6 +15,7 @@ namespace ED2OR.Utils
     }
     public class PreConfigurationHelper
     {
+        public string test;
         private static string path = "~/Config/preconfigurationInfo.dat";
         internal static LocalAdminInfo GetLocalAdminInfo(HttpContextBase context)
         {
