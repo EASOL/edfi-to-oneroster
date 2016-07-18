@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ED2OR.Models
 {
-    public class MappingSetting
+    public class ApplicationSetting
     {
         [Key]
-        public int MappingSettingId { get; set; }
+        public int ApplicationSettingsId { get; set; }
         public string SettingName { get; set; }
         public string SettingValue { get; set; }
     }
