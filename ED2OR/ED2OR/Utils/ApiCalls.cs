@@ -32,7 +32,7 @@ namespace ED2OR.Utils
         {
             using (var context = new ApplicationDbContext())
             {
-               return context.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix)?.SettingValue;
+               return context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiPrefix)?.SettingValue;
             }
         }
 
@@ -45,8 +45,10 @@ namespace ED2OR.Utils
             if (forceNewToken || HttpContext.Current.Session["token"] == null || ((TokenViewModel)HttpContext.Current.Session["token"]).IsSuccessful == false)
             {
                 var context = new ApplicationDbContext();
-                var user = context.Users.FirstOrDefault(x => x.Id == UserId);
-                HttpContext.Current.Session["token"] = GetToken(user.ApiBaseUrl, user.ApiKey, user.ApiSecret);
+                var apiBaseUrl = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
+                var apiKey = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiKey)?.SettingValue;
+                var apiSecret = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiSecret)?.SettingValue;
+                HttpContext.Current.Session["token"] = GetToken(apiBaseUrl, apiKey, apiSecret);
                 context.Dispose();
             }
 
@@ -385,7 +387,7 @@ namespace ED2OR.Utils
             var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
 
             var context = new ApplicationDbContext();
-            var identifierSetting = context.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.OrgsIdentifier)?.SettingValue;
+            var identifierSetting = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.OrgsIdentifier)?.SettingValue;
             bool blankIdentifier = identifierSetting == null || identifierSetting == OrgIdentifierSettings.blank;
             context.Dispose();
 
@@ -817,7 +819,7 @@ namespace ED2OR.Utils
 
             var token = tokenModel.Token;
 
-            var apiBaseUrl = context.Users.FirstOrDefault(x => x.Id == UserId).ApiBaseUrl;
+            var apiBaseUrl = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
 
             var finalResponse = new JArray();
             using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
