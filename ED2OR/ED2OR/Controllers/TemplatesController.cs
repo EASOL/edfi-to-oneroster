@@ -69,7 +69,7 @@ namespace ED2OR.Controllers
             db.Templates.Add(newTemplate);
             db.SaveChanges(UserName, IpAddress);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Exports");
         }
 
         public ActionResult Delete(int templateId)

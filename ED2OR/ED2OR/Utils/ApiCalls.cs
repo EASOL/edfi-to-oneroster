@@ -115,7 +115,7 @@ namespace ED2OR.Utils
         #endregion
 
         #region FilterMethods
-        public static async Task PopulateFilterSection1(ExportsViewModel model, bool collapseAll = false)
+        public static async Task PopulateFilterSection1(ExportsViewModel model)
         {
             var schools = await GetSchools();
             var schoolYears = await GetSchoolYears();
@@ -132,21 +132,21 @@ namespace ED2OR.Utils
             {
                 FilterCheckboxes = schools,
                 SectionName = "Schools",
-                IsExpanded = collapseAll ? false : true
+                IsExpanded = true
             };
 
             model.SchoolYearsCriteriaSection = new ApiCriteriaSection
             {
                 FilterCheckboxes = schoolYears,
                 SectionName = "School Years",
-                IsExpanded = collapseAll ? false : true
+                IsExpanded = true
             };
 
             model.TermsCriteriaSection = new ApiCriteriaSection
             {
                 FilterCheckboxes = terms,
                 SectionName = "Terms",
-                IsExpanded = collapseAll ? false : true
+                IsExpanded = true
             };
         }
 
@@ -167,7 +167,10 @@ namespace ED2OR.Utils
                 HttpContext.Current.Session["AllSchools"] = schools;
             }
 
-            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchools"];
+            var allSchools = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchools"];
+            allSchools.ForEach(c => c.Selected = false); // make sure all are unchecked first
+
+            return allSchools;
         }
 
         public static async Task<List<ExportsCheckbox>> GetSchoolYears()
@@ -188,7 +191,11 @@ namespace ED2OR.Utils
                               }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllSchoolYears"] = schoolYears;
             }
-            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchoolYears"];
+
+            var allSchoolYears = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchoolYears"];
+            allSchoolYears.ForEach(c => c.Selected = false); // make sure all are unchecked first
+
+            return allSchoolYears;
         }
 
         public static async Task<List<ExportsCheckbox>> GetTerms()
@@ -208,7 +215,11 @@ namespace ED2OR.Utils
                                    }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllTerms"] = terms;
             }
-            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllTerms"];
+
+            var allTerms = (List<ExportsCheckbox>)HttpContext.Current.Session["AllTerms"];
+            allTerms.ForEach(c => c.Selected = false); // make sure all are unchecked first
+
+            return allTerms;
         }
 
         public static async Task<List<ExportsCheckbox>> GetSubjects()
@@ -230,7 +241,11 @@ namespace ED2OR.Utils
 
                 HttpContext.Current.Session["AllSubjects"] = subjects;
             }
-            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
+
+            var allSubjects = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
+            allSubjects.ForEach(c => c.Selected = false); // make sure all are unchecked first
+
+            return allSubjects;
         }
 
         public static async Task<List<ExportsCheckbox>> GetCourses()
@@ -252,7 +267,11 @@ namespace ED2OR.Utils
 
                 HttpContext.Current.Session["AllCourses"] = courses;
             }
-            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllCourses"];
+
+            var allCourses = (List<ExportsCheckbox>)HttpContext.Current.Session["AllCourses"];
+            allCourses.ForEach(c => c.Selected = false); // make sure all are unchecked first
+
+            return allCourses;
         }
 
         public static async Task<List<ExportsCheckbox>> GetTeachers()
@@ -310,7 +329,11 @@ namespace ED2OR.Utils
 
                 HttpContext.Current.Session["AllTeachers"] = teachers.OrderBy(x => x.Text).ToList();
             }
-            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllTeachers"];
+
+            var allTeachers = (List<ExportsCheckbox>)HttpContext.Current.Session["AllTeachers"];
+            allTeachers.ForEach(c => c.Selected = false); // make sure all are unchecked first
+
+            return allTeachers;
         }
 
         public static async Task<List<ExportsCheckbox>> GetSections()
@@ -333,7 +356,11 @@ namespace ED2OR.Utils
 
                 HttpContext.Current.Session["AllSections"] = sections;
             }
-            return (List<ExportsCheckbox>)HttpContext.Current.Session["AllSections"];
+
+            var allSections = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSections"];
+            allSections.ForEach(c => c.Selected = false); // make sure all are unchecked first
+
+            return allSections;
         }
 
         #endregion
