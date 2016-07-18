@@ -182,7 +182,7 @@
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
-    <Compile Include="Enums\MappingSettingNames.cs" />
+    <Compile Include="Enums\ApplicationSettingTypes.cs" />
     <Compile Include="Enums\OrgIdentifierSettings.cs" />
     <Compile Include="Enums\ActionTypes.cs" />
     <Compile Include="Enums\ApiEndPoints.cs" />
@@ -217,12 +217,16 @@
     <Compile Include="Migrations\201607012242549_TemplateFilters.Designer.cs">
       <DependentUpon>201607012242549_TemplateFilters.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607181744585_ApplicationSettingsChanges.cs" />
+    <Compile Include="Migrations\201607181744585_ApplicationSettingsChanges.Designer.cs">
+      <DependentUpon>201607181744585_ApplicationSettingsChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicSessionType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\AuditLog.cs" />
-    <Compile Include="Models\MappingSetting.cs" />
+    <Compile Include="Models\ApplicationSetting.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -351,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607012242549_TemplateFilters.resx">
       <DependentUpon>201607012242549_TemplateFilters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607181744585_ApplicationSettingsChanges.resx">
+      <DependentUpon>201607181744585_ApplicationSettingsChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

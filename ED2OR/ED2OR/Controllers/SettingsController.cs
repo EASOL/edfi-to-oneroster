@@ -71,15 +71,17 @@ namespace ED2OR.Controllers
                 errorMessage = "There was an error in getting the latest Term Descriptors.  Make sure the API Key and Secret are correct and test properly.  Also, the prefix must be correctly entered.";
             }
 
-            var user = UserManager.FindById(UserId);
-            var apiPrefix = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix)?.SettingValue;
-            var orgsIdentifier = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.OrgsIdentifier)?.SettingValue;
+            var apiBaseUrl = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
+            var apiKey = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiKey)?.SettingValue;
+            var apiSecret = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiSecret)?.SettingValue;
+            var apiPrefix = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiPrefix)?.SettingValue;
+            var orgsIdentifier = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.OrgsIdentifier)?.SettingValue;
 
             var model = new SettingsViewModel
             {
-                ApiBaseUrl = user.ApiBaseUrl,
-                ApiKey = user.ApiKey,
-                ApiSecret = user.ApiSecret,
+                ApiBaseUrl = apiBaseUrl,
+                ApiKey = apiKey,
+                ApiSecret = apiSecret,
                 OrgsIdentifier = orgsIdentifier,
                 ApiPrefix = apiPrefix,
                 AcademicSessionTypes = academicSessionTypes,
@@ -191,42 +193,11 @@ namespace ED2OR.Controllers
                 }
             }
 
-            var user = db.Users.FirstOrDefault(x => x.Id == UserId);
-            user.ApiBaseUrl = model.ApiBaseUrl;
-            user.ApiKey = model.ApiKey;
-            user.ApiSecret = model.ApiSecret;
-
-            var apiPrefixSetting = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix);
-            var orgsIdentifierSetting = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.OrgsIdentifier);
-
-            if (apiPrefixSetting == null)
-            {
-                var newSetting = new MappingSetting
-                {
-                    SettingName = MappingSettingNames.ApiPrefix,
-                    SettingValue = model.ApiPrefix
-                };
-                db.MappingSettings.Add(newSetting);
-            }
-            else
-            {
-                apiPrefixSetting.SettingValue = model.ApiPrefix;
-            }
-
-            if (orgsIdentifierSetting == null)
-            {
-                var newSetting = new MappingSetting
-                {
-                    SettingName = MappingSettingNames.OrgsIdentifier,
-                    SettingValue = model.OrgsIdentifier
-                };
-                db.MappingSettings.Add(newSetting);
-            }
-            else
-            {
-                orgsIdentifierSetting.SettingValue = model.OrgsIdentifier;
-            }
-
+            InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiBaseUrl, model.ApiBaseUrl);
+            InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiKey, model.ApiKey);
+            InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiSecret, model.ApiSecret);
+            InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiPrefix, model.ApiPrefix);
+            InsertUpdateApplicationSetting(ApplicationSettingsTypes.OrgsIdentifier, model.OrgsIdentifier);
 
             if (model.AcademicSessionTypes != null)
             {
@@ -260,6 +231,25 @@ namespace ED2OR.Controllers
             {
                 ModelState.AddModelError("", ex.Message);
                 return View(model);
+            }
+        }
+
+        private void InsertUpdateApplicationSetting(string settingName, string settingValue)
+        {
+            var setting = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == settingName);
+
+            if (setting == null)
+            {
+                var newSetting = new ApplicationSetting
+                {
+                    SettingName = settingName,
+                    SettingValue = settingValue
+                };
+                db.ApplicationSettings.Add(newSetting);
+            }
+            else
+            {
+                setting.SettingValue = settingValue;
             }
         }
 

@@ -122,21 +122,17 @@ namespace ED2OR.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email,
-                    ApiBaseUrl = model.ApiBaseUrl,
-                    ApiKey = model.ApiKey,
-                    ApiSecret = model.ApiSecret
+                    Email = model.Email
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     try
                     {
-                        var apiPrefix = db.MappingSettings.FirstOrDefault(x => x.SettingName == MappingSettingNames.ApiPrefix);
-                        if (apiPrefix == null)
-                            apiPrefix = new MappingSetting();
-                        apiPrefix.SettingName = MappingSettingNames.ApiPrefix;
-                        apiPrefix.SettingValue = model.ApiPrefix;
+                        InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiBaseUrl, model.ApiBaseUrl);
+                        InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiKey, model.ApiKey);
+                        InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiSecret, model.ApiSecret);
+                        InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiPrefix, model.ApiPrefix);
                         db.SaveChanges();
                     }
                     catch (Exception ex)
@@ -158,6 +154,25 @@ namespace ED2OR.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private void InsertUpdateApplicationSetting(string settingName, string settingValue)
+        {
+            var setting = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == settingName);
+
+            if (setting == null)
+            {
+                var newSetting = new ApplicationSetting
+                {
+                    SettingName = settingName,
+                    SettingValue = settingValue
+                };
+                db.ApplicationSettings.Add(newSetting);
+            }
+            else
+            {
+                setting.SettingValue = settingValue;
+            }
         }
 
         //
