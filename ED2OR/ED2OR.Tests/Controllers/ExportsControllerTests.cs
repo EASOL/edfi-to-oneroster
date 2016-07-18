@@ -247,8 +247,8 @@ namespace ED2OR.Controllers.Tests
 
                 ValidateField("sourcedId", null, lstOrgFileInvalidInfo, iRow,
                     csvreader);
-                ValidateField("status", new string[] { "active", "inactive", "tobedeleted" }, lstOrgFileInvalidInfo, iRow,
-                    csvreader);
+                //ValidateField("status", new string[] { "active", "inactive", "tobedeleted" }, lstOrgFileInvalidInfo, iRow,
+                //    csvreader);
                 //string dateLastModified = string.Empty;
                 //bool hasDateLastModified = csvreader.TryGetField<string>("dateLastModified", out dateLastModified);
                 //if (String.IsNullOrWhiteSpace(dateLastModified))
@@ -313,17 +313,17 @@ namespace ED2OR.Controllers.Tests
                 {
                     lstFileMissingHeaders.Add("username");
                 }
-                if (!csvreader.FieldHeaders.Contains("userid"))
+                if (!csvreader.FieldHeaders.Contains("userId"))
                 {
-                    lstFileMissingHeaders.Add("userid");
+                    lstFileMissingHeaders.Add("userId");
                 }
-                if (!csvreader.FieldHeaders.Contains("givenname"))
+                if (!csvreader.FieldHeaders.Contains("givenName"))
                 {
-                    lstFileMissingHeaders.Add("givenname");
+                    lstFileMissingHeaders.Add("givenName");
                 }
-                if (!csvreader.FieldHeaders.Contains("familyname"))
+                if (!csvreader.FieldHeaders.Contains("familyName"))
                 {
-                    lstFileMissingHeaders.Add("familyname");
+                    lstFileMissingHeaders.Add("familyName");
                 }
                 if (!csvreader.FieldHeaders.Contains("identifier"))
                 {
