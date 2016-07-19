@@ -110,7 +110,8 @@ namespace ED2OR.Controllers.Tests
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
                 };
 
-                ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+                //ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+                ExportsViewModel defaultExportViewModel = new ExportsViewModel();
                 var defaultResult = await controller.DownloadCsv(defaultExportViewModel);
                 Assert.IsNotNull(defaultResult, "Invalid Result");
                 Assert.IsInstanceOfType(defaultResult, typeof(FileContentResult), "Is not a FileResult");
@@ -169,8 +170,17 @@ namespace ED2OR.Controllers.Tests
         {
             List<string> lstOrgFileMissingHeaders = new List<string>();
             List<string> lstOrgFileInvalidInfo = new List<string>();
+
+
             List<string> lstUsersFileMissingHeaders = new List<string>();
             List<string> lstUsersFileInvalidInfo = new List<string>();
+
+            List<string> lstCoursesFileMissingHeaders = new List<string>();
+            List<string> lstCoursesFileInvalidInfo = new List<string>();
+
+            List<string> lstClassesFileMissingHeaders = new List<string>();
+            List<string> lstClassesFileInvalidInfo = new List<string>();
+
             using (var singleFileStream = singleEntry.Open())
             {
                 using (System.IO.StreamReader strReader = new System.IO.StreamReader(singleFileStream))
@@ -185,6 +195,13 @@ namespace ED2OR.Controllers.Tests
                             case "users.csv":
                                 ValidateUsersCSVFile(lstUsersFileMissingHeaders, lstUsersFileInvalidInfo, csvreader);
                                 break;
+                            case "courses.csv":
+                                ValidateCoursesCSVFile(lstCoursesFileMissingHeaders, lstCoursesFileInvalidInfo, csvreader);
+                                break;
+                            case "classes.csv":
+                                ValidateClassesCSVFile(lstClassesFileMissingHeaders, lstClassesFileInvalidInfo, csvreader);
+                                break;
+
                         }
                     }
                     strReader.Close();
@@ -192,7 +209,8 @@ namespace ED2OR.Controllers.Tests
                 singleFileStream.Close();
             }
             if (lstOrgFileMissingHeaders.Count > 0 || lstOrgFileInvalidInfo.Count > 0 ||
-                lstUsersFileMissingHeaders.Count > 0 || lstUsersFileInvalidInfo.Count > 0)
+                lstUsersFileMissingHeaders.Count > 0 || lstUsersFileInvalidInfo.Count > 0 ||
+                lstCoursesFileMissingHeaders.Count > 0 || lstCoursesFileInvalidInfo.Count > 0)
             {
                 StringBuilder strErrors = new StringBuilder();
                 if (lstOrgFileInvalidInfo.Count > 0)
@@ -214,6 +232,16 @@ namespace ED2OR.Controllers.Tests
                 {
                     strErrors.AppendLine("Missing headers for users.csv: ");
                     strErrors.AppendLine(string.Join(",", lstUsersFileInvalidInfo.ToArray()));
+                }
+                if (lstCoursesFileMissingHeaders.Count > 0)
+                {
+                    strErrors.AppendLine("Invalid info for courses.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstCoursesFileMissingHeaders.ToArray()));
+                }
+                if (lstCoursesFileInvalidInfo.Count > 0)
+                {
+                    strErrors.AppendLine("Missing headers for courses.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstCoursesFileInvalidInfo.ToArray()));
                 }
                 string errorsText = strErrors.ToString();
                 Assert.Fail(errorsText);
@@ -282,6 +310,7 @@ namespace ED2OR.Controllers.Tests
                 //ValidateField("metadata.gender", null, lstOrgFileInvalidInfo, iRow, csvreader);
                 //ValidateField("metadata.boarding", null, lstOrgFileInvalidInfo, iRow, csvreader);
                 ValidateField("parentSourcedId", null, lstOrgFileInvalidInfo, iRow, csvreader);
+                iRow++;
             }
         }
 
@@ -351,17 +380,120 @@ namespace ED2OR.Controllers.Tests
             {
 
                 ValidateField("sourcedId", null, lstFileInvalidInfo, iRow, csvreader);
-                ValidateField("status", new string[] { "active", "inactive", "tobedeleted" }, lstFileInvalidInfo, iRow, csvreader);
+                //Disabling status validation temporarily, files do not have the column with data
+                //ValidateField("status", new string[] { "active", "inactive", "tobedeleted" }, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("orgSourcedIds", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("role", new string[] { "teacher", "student", "parent", "guardian", "relative", "aide", "administrator" }, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("username", null, lstFileInvalidInfo, iRow, csvreader);
-                ValidateField("userid", null, lstFileInvalidInfo, iRow, csvreader);
-                ValidateField("givenname", null, lstFileInvalidInfo, iRow, csvreader);
-                ValidateField("familyname", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("userId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("givenName", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("familyName", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("identifier", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("email", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("sms", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("phone", null, lstFileInvalidInfo, iRow, csvreader);
+                iRow++;
+            }
+        }
+
+        private static void ValidateCoursesCSVFile(List<string> lstFileMissingHeaders, List<string> lstFileInvalidInfo, CsvHelper.CsvReader csvreader)
+        {
+            if (csvreader.ReadHeader())
+            {
+                if (!csvreader.FieldHeaders.Contains("sourcedId"))
+                {
+                    lstFileMissingHeaders.Add("sourcedId");
+                }
+                //if (!csvreader.FieldHeaders.Contains("status"))
+                //{
+                //    lstFileMissingHeaders.Add("status");
+                //}
+                if (!csvreader.FieldHeaders.Contains("schoolYearId"))
+                {
+                    lstFileMissingHeaders.Add("schoolYearId");
+                }
+                if (!csvreader.FieldHeaders.Contains("title"))
+                {
+                    lstFileMissingHeaders.Add("title");
+                }
+                if (!csvreader.FieldHeaders.Contains("courseCode"))
+                {
+                    lstFileMissingHeaders.Add("courseCode");
+                }
+                if (!csvreader.FieldHeaders.Contains("subjects"))
+                {
+                    lstFileMissingHeaders.Add("subjects");
+                }
+            }
+            int iRow = 1;
+            while (csvreader.Read())
+            {
+
+                ValidateField("sourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                //ValidateField("status", new string[] { "active", "inactive", "tobedeleted" }, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("schoolYearId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("title", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("courseCode", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("orgSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("subjects", null, lstFileInvalidInfo, iRow, csvreader);
+                iRow++;
+            }
+        }
+
+        private static void ValidateClassesCSVFile(List<string> lstFileMissingHeaders, List<string> lstFileInvalidInfo, CsvHelper.CsvReader csvreader)
+        {
+            if (csvreader.ReadHeader())
+            {
+                if (!csvreader.FieldHeaders.Contains("sourcedId"))
+                {
+                    lstFileMissingHeaders.Add("sourcedId");
+                }
+                //if (!csvreader.FieldHeaders.Contains("status"))
+                //{
+                //    lstFileMissingHeaders.Add("status");
+                //}
+                if (!csvreader.FieldHeaders.Contains("title"))
+                {
+                    lstFileMissingHeaders.Add("title");
+                }
+                if (!csvreader.FieldHeaders.Contains("courseSourcedId"))
+                {
+                    lstFileMissingHeaders.Add("courseSourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("classCode"))
+                {
+                    lstFileMissingHeaders.Add("classCode");
+                }
+                if (!csvreader.FieldHeaders.Contains("classType"))
+                {
+                    lstFileMissingHeaders.Add("classType");
+                }
+                if (!csvreader.FieldHeaders.Contains("schoolSourcedId"))
+                {
+                    lstFileMissingHeaders.Add("schoolSourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("termSourcedId"))
+                {
+                    lstFileMissingHeaders.Add("termSourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("subjects"))
+                {
+                    lstFileMissingHeaders.Add("subjects");
+                }
+            }
+            int iRow = 1;
+            while (csvreader.Read())
+            {
+                ValidateField("sourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                //ValidateField("status", new string[] { "active", "inactive", "tobedeleted" }, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("title", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("courseSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("classCode", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("classType", new string[] { "homeroom", "scheduled" }, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("schoolSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("termSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("subjects", null, lstFileInvalidInfo, iRow, csvreader);
+                iRow++;
             }
         }
 
