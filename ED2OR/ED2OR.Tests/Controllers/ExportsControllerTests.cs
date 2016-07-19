@@ -181,6 +181,12 @@ namespace ED2OR.Controllers.Tests
             List<string> lstClassesFileMissingHeaders = new List<string>();
             List<string> lstClassesFileInvalidInfo = new List<string>();
 
+            List<string> lstEnrollmentsFileMissingHeaders = new List<string>();
+            List<string> lstEnrollmentsFileInvalidInfo = new List<string>();
+
+            List<string> lstAcademicSessionsFileMissingHeaders = new List<string>();
+            List<string> lstAcademicSessionsFileInvalidInfo = new List<string>();
+
             using (var singleFileStream = singleEntry.Open())
             {
                 using (System.IO.StreamReader strReader = new System.IO.StreamReader(singleFileStream))
@@ -201,7 +207,12 @@ namespace ED2OR.Controllers.Tests
                             case "classes.csv":
                                 ValidateClassesCSVFile(lstClassesFileMissingHeaders, lstClassesFileInvalidInfo, csvreader);
                                 break;
-
+                            case "enrollments.csv":
+                                ValidateEnrollmentsCSVFile(lstEnrollmentsFileMissingHeaders, lstEnrollmentsFileInvalidInfo, csvreader);
+                                break;
+                            case "academicSessions.csv":
+                                ValidateAcademicSessionsCSVFile(lstAcademicSessionsFileMissingHeaders, lstAcademicSessionsFileInvalidInfo, csvreader);
+                                break;
                         }
                     }
                     strReader.Close();
@@ -210,7 +221,10 @@ namespace ED2OR.Controllers.Tests
             }
             if (lstOrgFileMissingHeaders.Count > 0 || lstOrgFileInvalidInfo.Count > 0 ||
                 lstUsersFileMissingHeaders.Count > 0 || lstUsersFileInvalidInfo.Count > 0 ||
-                lstCoursesFileMissingHeaders.Count > 0 || lstCoursesFileInvalidInfo.Count > 0)
+                lstCoursesFileMissingHeaders.Count > 0 || lstCoursesFileInvalidInfo.Count > 0 ||
+                lstClassesFileMissingHeaders.Count > 0 || lstClassesFileInvalidInfo.Count > 0 ||
+                lstEnrollmentsFileMissingHeaders.Count > 0 || lstEnrollmentsFileInvalidInfo.Count > 0 ||
+                lstAcademicSessionsFileMissingHeaders.Count > 0 || lstAcademicSessionsFileInvalidInfo.Count > 0)
             {
                 StringBuilder strErrors = new StringBuilder();
                 if (lstOrgFileInvalidInfo.Count > 0)
@@ -223,26 +237,62 @@ namespace ED2OR.Controllers.Tests
                     strErrors.AppendLine("Missing headers for orgs.csv: ");
                     strErrors.AppendLine(string.Join(",", lstOrgFileMissingHeaders.ToArray()));
                 }
-                if (lstUsersFileMissingHeaders.Count > 0)
+
+                if (lstUsersFileInvalidInfo.Count > 0)
                 {
                     strErrors.AppendLine("Invalid info for users.csv: ");
                     strErrors.AppendLine(string.Join(",", lstUsersFileInvalidInfo.ToArray()));
                 }
-                if (lstUsersFileInvalidInfo.Count > 0)
+                if (lstUsersFileMissingHeaders.Count > 0)
                 {
                     strErrors.AppendLine("Missing headers for users.csv: ");
                     strErrors.AppendLine(string.Join(",", lstUsersFileInvalidInfo.ToArray()));
                 }
-                if (lstCoursesFileMissingHeaders.Count > 0)
-                {
-                    strErrors.AppendLine("Invalid info for courses.csv: ");
-                    strErrors.AppendLine(string.Join(",", lstCoursesFileMissingHeaders.ToArray()));
-                }
+
                 if (lstCoursesFileInvalidInfo.Count > 0)
                 {
-                    strErrors.AppendLine("Missing headers for courses.csv: ");
+                    strErrors.AppendLine("Invalid info for courses.csv: ");
                     strErrors.AppendLine(string.Join(",", lstCoursesFileInvalidInfo.ToArray()));
                 }
+                if (lstCoursesFileMissingHeaders.Count > 0)
+                {
+                    strErrors.AppendLine("Missing headers for courses.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstCoursesFileMissingHeaders.ToArray()));
+                }
+
+                if (lstClassesFileInvalidInfo.Count > 0)
+                {
+                    strErrors.AppendLine("Invalid info for classes.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstClassesFileInvalidInfo.ToArray()));
+                }
+                if (lstClassesFileMissingHeaders.Count > 0)
+                {
+                    strErrors.AppendLine("Missing headers for classes.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstClassesFileMissingHeaders.ToArray()));
+                }
+
+                if (lstEnrollmentsFileInvalidInfo.Count > 0)
+                {
+                    strErrors.AppendLine("Invalid info for enrollments.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstEnrollmentsFileInvalidInfo.ToArray()));
+                }
+                if (lstEnrollmentsFileMissingHeaders.Count > 0)
+                {
+                    strErrors.AppendLine("Missing headers for enrollments.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstEnrollmentsFileMissingHeaders.ToArray()));
+                }
+
+                if (lstAcademicSessionsFileInvalidInfo.Count > 0)
+                {
+                    strErrors.AppendLine("Invalid info for academicsessions.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstAcademicSessionsFileInvalidInfo.ToArray()));
+                }
+                if (lstAcademicSessionsFileMissingHeaders.Count > 0)
+                {
+                    strErrors.AppendLine("Missing headers for academicsessions.csv: ");
+                    strErrors.AppendLine(string.Join(",", lstAcademicSessionsFileMissingHeaders.ToArray()));
+                }
+
                 string errorsText = strErrors.ToString();
                 Assert.Fail(errorsText);
             }
@@ -493,6 +543,81 @@ namespace ED2OR.Controllers.Tests
                 ValidateField("schoolSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("termSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("subjects", null, lstFileInvalidInfo, iRow, csvreader);
+                iRow++;
+            }
+        }
+
+        private static void ValidateEnrollmentsCSVFile(List<string> lstFileMissingHeaders, List<string> lstFileInvalidInfo, CsvHelper.CsvReader csvreader)
+        {
+            if (csvreader.ReadHeader())
+            {
+                if (!csvreader.FieldHeaders.Contains("sourcedId"))
+                {
+                    lstFileMissingHeaders.Add("sourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("classSourcedId"))
+                {
+                    lstFileMissingHeaders.Add("classSourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("schoolSourcedId"))
+                {
+                    lstFileMissingHeaders.Add("schoolSourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("userSourcedId"))
+                {
+                    lstFileMissingHeaders.Add("userSourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("role"))
+                {
+                    lstFileMissingHeaders.Add("role");
+                }
+            }
+            int iRow = 1;
+            while (csvreader.Read())
+            {
+                ValidateField("sourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("classSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("schoolSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("userSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("role", new string[] { "student" , "teacher" , "parent" , "guardian" , "relative" , 
+                    "aide", "administrator" }, lstFileInvalidInfo, iRow, csvreader);
+                iRow++;
+            }
+        }
+
+        private static void ValidateAcademicSessionsCSVFile(List<string> lstFileMissingHeaders, List<string> lstFileInvalidInfo, CsvHelper.CsvReader csvreader)
+        {
+            if (csvreader.ReadHeader())
+            {
+                if (!csvreader.FieldHeaders.Contains("sourcedId"))
+                {
+                    lstFileMissingHeaders.Add("sourcedId");
+                }
+                if (!csvreader.FieldHeaders.Contains("title"))
+                {
+                    lstFileMissingHeaders.Add("title");
+                }
+                if (!csvreader.FieldHeaders.Contains("type"))
+                {
+                    lstFileMissingHeaders.Add("type");
+                }
+                if (!csvreader.FieldHeaders.Contains("startDate"))
+                {
+                    lstFileMissingHeaders.Add("startDate");
+                }
+                if (!csvreader.FieldHeaders.Contains("endDate"))
+                {
+                    lstFileMissingHeaders.Add("endDate");
+                }
+            }
+            int iRow = 1;
+            while (csvreader.Read())
+            {
+                ValidateField("sourcedId", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("title", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("type", new string[] {"term", "gradingPeriod", "schoolYear", "semester" }, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("startDate", null, lstFileInvalidInfo, iRow, csvreader);
+                ValidateField("endDate", null, lstFileInvalidInfo, iRow, csvreader);
                 iRow++;
             }
         }
