@@ -109,6 +109,7 @@ namespace ED2OR.Models
                             actionType = ActionTypes.TemplateModified;
                             break;
                         case "ApplicationSetting":
+                        case "AcademicSessionType":
                             actionType = ActionTypes.SettingsModified;
                             break;
                     }

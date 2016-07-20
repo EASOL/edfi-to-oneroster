@@ -20,13 +20,13 @@ namespace ED2OR.Controllers
                         where templateId == null || t.TemplateId == templateId
                        select new TemplateLogViewmodel
                        {
-                           TemplateName = t.TemplateName,
-                           VendorName = t.VendorName,
+                           TemplateName = t.TemplateName ?? "",
+                           VendorName = t.VendorName ?? "",
                            Action = a.Type,
                            DateValue = a.DateTimeStamp,
                            DateString = a.DateTimeStamp.ToString(),
-                           OldValues = a.OldValues,
-                           NewValues = a.NewValues,
+                           OldValues = a.OldValues ?? "",
+                           NewValues = a.NewValues ?? "",
                            Success = a.Success,
                            FailureReason = a.FailureReason,
                            IpAddress = a.IpAddress,
