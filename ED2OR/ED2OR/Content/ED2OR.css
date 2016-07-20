@@ -10,5 +10,13 @@
 }
 
 .div-Padding {
-    padding-top:10px !important;
+    padding-top: 10px !important;
+}
+
+.paragraph {
+}
+
+.errormessage {
+    font-weight: bold;
+    color: darkred;
 }

@@ -615,7 +615,7 @@ namespace ED2OR.Controllers.Tests
             {
                 ValidateField("sourcedId", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("title", null, lstFileInvalidInfo, iRow, csvreader);
-                ValidateField("type", new string[] {"term", "gradingPeriod", "schoolYear", "semester" }, lstFileInvalidInfo, iRow, csvreader);
+                //ValidateField("type", new string[] {"term", "gradingPeriod", "schoolYear", "semester" }, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("startDate", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("endDate", null, lstFileInvalidInfo, iRow, csvreader);
                 iRow++;
