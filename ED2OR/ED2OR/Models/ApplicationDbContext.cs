@@ -108,7 +108,8 @@ namespace ED2OR.Models
                         case "Template":
                             actionType = ActionTypes.TemplateModified;
                             break;
-                        case "ApplicationUser":
+                        case "ApplicationSetting":
+                        case "AcademicSessionType":
                             actionType = ActionTypes.SettingsModified;
                             break;
                     }
@@ -144,9 +145,9 @@ namespace ED2OR.Models
 
             if (entry.State == EntityState.Added)
             {
-                templateId = entry.CurrentValues.GetValue<object>("TemplateId") == null
-                        ? 0
-                        : (int)entry.CurrentValues.GetValue<object>("TemplateId");
+                templateId = entry.CurrentValues.PropertyNames.Contains("TemplateId")
+                        ? (int)entry.CurrentValues.GetValue<object>("TemplateId")
+                        : 0;
 
                 foreach (string propertyName in entry.CurrentValues.PropertyNames)
                 {
@@ -165,9 +166,9 @@ namespace ED2OR.Models
 
             if (entry.State == EntityState.Modified)
             {
-                templateId = entry.CurrentValues.GetValue<object>("TemplateId") == null
-                        ? 0
-                        : (int)entry.CurrentValues.GetValue<object>("TemplateId");
+                templateId = entry.CurrentValues.PropertyNames.Contains("TemplateId")
+                        ? (int)entry.CurrentValues.GetValue<object>("TemplateId")
+                        : 0;
 
                 foreach (string propertyName in entry.CurrentValues.PropertyNames)
                 {
@@ -194,9 +195,9 @@ namespace ED2OR.Models
 
             if (entry.State == EntityState.Deleted)
             {
-                templateId = entry.OriginalValues.GetValue<object>("TemplateId") == null
-                        ? 0
-                        : (int)entry.OriginalValues.GetValue<object>("TemplateId");
+                templateId = entry.CurrentValues.PropertyNames.Contains("TemplateId")
+                        ? (int)entry.CurrentValues.GetValue<object>("TemplateId")
+                        : 0;
 
                 foreach (string propertyName in entry.OriginalValues.PropertyNames)
                 {

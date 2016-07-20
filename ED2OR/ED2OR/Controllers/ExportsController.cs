@@ -136,6 +136,38 @@ namespace ED2OR.Controllers
         }
 
         [HttpPost]
+        public ActionResult UpdateTemplate(ExportsViewModel model)
+        {
+            var schoolIds = model.SelectedSchools?.Split(',').ToList();
+            var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
+            var terms = model.SelectedTerms?.Split(',').ToList();
+            var subjects = model.SelectedSubjects?.Split(',').ToList();
+            var courses = model.SelectedCourses?.Split(',').ToList();
+            var teachers = model.SelectedTeachers?.Split(',').ToList();
+            var sections = model.SelectedSections?.Split(',').ToList();
+
+            var inputs = new FilterInputs
+            {
+                Schools = schoolIds,
+                SchoolYears = schoolYears,
+                Terms = terms,
+                Subjects = subjects,
+                Courses = courses,
+                Teachers = teachers,
+                Sections = sections
+            };
+
+            var inputsJson = JsonConvert.SerializeObject(inputs);
+
+            var template = db.Templates.First(x => x.TemplateId == model.EditTemplateId);
+            template.Filters = inputsJson;
+
+            db.SaveChanges(UserName, IpAddress);
+
+            return RedirectToAction("Index", "Templates");
+        }
+
+        [HttpPost]
         public ActionResult SaveTemplate(ExportsViewModel model)
         {
             var schoolIds = model.SelectedSchools?.Split(',').ToList();
@@ -297,29 +329,41 @@ namespace ED2OR.Controllers
 
         private async Task InitializeModelForEdit(ExportsViewModel model, int templateId)
         {
-            var filtersJson = db.Templates.First(x => x.TemplateId == templateId).Filters;
-            var filters = JsonConvert.DeserializeObject<FilterInputs>(filtersJson);
+            var template = db.Templates.First(x => x.TemplateId == templateId);
+
+            model.EditTemplateId = templateId;
+            model.EditTemplateName = template.TemplateName;
+
+            var filters = JsonConvert.DeserializeObject<FilterInputs>(template.Filters);
 
             CheckSelectedBoxes(model.SchoolsCriteriaSection.FilterCheckboxes, filters.Schools);
+            model.SchoolsCriteriaSection.IsExpanded = filters.Schools != null;
+
             CheckSelectedBoxes(model.SchoolYearsCriteriaSection.FilterCheckboxes, filters.SchoolYears);
+            model.SchoolYearsCriteriaSection.IsExpanded = filters.SchoolYears != null;
+
             CheckSelectedBoxes(model.TermsCriteriaSection.FilterCheckboxes, filters.Terms);
+            model.TermsCriteriaSection.IsExpanded = filters.Terms != null;
 
             var allSubjects = await ApiCalls.GetSubjects();
             var subjects = GetFilteredCheckboxes(allSubjects, filters.Schools, filters.SchoolYears, filters.Terms, filters.Subjects);
+            model.SubjectsCriteriaSection.FilterCheckboxes = subjects;
+            model.SubjectsCriteriaSection.IsExpanded = filters.Subjects != null;
 
             var allCourses = await ApiCalls.GetCourses();
             var courses = GetFilteredCheckboxes(allCourses, filters.Schools, filters.SchoolYears, filters.Terms, filters.Courses);
+            model.CoursesCriteriaSection.FilterCheckboxes = courses;
+            model.CoursesCriteriaSection.IsExpanded = filters.Courses != null;
 
             var allTeachers = await ApiCalls.GetTeachers();
             var teachers = GetFilteredCheckboxes(allTeachers, filters.Schools, filters.SchoolYears, filters.Terms, filters.Teachers);
+            model.TeachersCriteriaSection.FilterCheckboxes = teachers;
+            model.TeachersCriteriaSection.IsExpanded = filters.Teachers != null;
 
             var allSections = await ApiCalls.GetSections();
             var sections = GetFilteredCheckboxes(allSections, filters.Schools, filters.SchoolYears, filters.Terms, filters.Sections);
-
-            model.SubjectsCriteriaSection.FilterCheckboxes = subjects;
-            model.CoursesCriteriaSection.FilterCheckboxes = courses;
-            model.TeachersCriteriaSection.FilterCheckboxes = teachers;
             model.SectionsCriteriaSection.FilterCheckboxes = sections;
+            model.SectionsCriteriaSection.IsExpanded = filters.Sections != null;
         }
 
         private async Task InitializeModel(ExportsViewModel model)

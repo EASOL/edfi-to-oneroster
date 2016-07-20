@@ -12,6 +12,7 @@ using ED2OR.Models;
 using ED2OR.ViewModels;
 using System.Net.Mail;
 using ED2OR.Enums;
+using ED2OR.Utils;
 
 namespace ED2OR.Controllers
 {
@@ -83,14 +84,20 @@ namespace ED2OR.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+            var logUtils = new LoggingMethods();
+
             switch (result)
             {
                 case SignInStatus.Success:
+                    logUtils.LogUserLogin(model.Email, IpAddress, true, null);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
+                    logUtils.LogUserLogin(model.Email, IpAddress, false, "Locked out");
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
+                    logUtils.LogUserLogin(model.Email, IpAddress, false, "Invalid login attempt");
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
@@ -147,7 +154,7 @@ namespace ED2OR.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Templates");
                 }
                 AddErrors(result);
             }
@@ -281,8 +288,10 @@ namespace ED2OR.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            var logUtils = new LoggingMethods();
+            logUtils.LogUserLogout(UserName, IpAddress);
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         protected override void Dispose(bool disposing)
@@ -349,7 +358,7 @@ namespace ED2OR.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Templates");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

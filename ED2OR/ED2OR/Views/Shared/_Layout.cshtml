@@ -20,7 +20,7 @@
                 </button>
 
                 <a style="float:left;" target="_blank" href="https://easol.org"><img style="height:45px; margin:3px;" src="~/Content/Images/easollogo.png" /></a>
-                @Html.ActionLink("EASOL Ed-Fi to OneRoster Utility", "Index", "Templates", new { area = "" }, new { @class = "navbar-brand", style = "color:#FFFFFF;" })
+                @Html.ActionLink("EASOL Ed-Fi to OneRoster Utility", "Index", "Templates", new { area = "" }, new { @class = "navbar-brand", style = "color:#FFFFFF; float:left; margin-left:10px;" })
                 <a style="float:left;" target="_blank" href="https://www.imsglobal.org"><img src="~/Content/Images/logo-revised.png" style="height:45px; margin:3px;" /></a>
                 <a style="float:left;" target="_blank" href="http://www.ed-fi.org"><img src="~/Content/Images/ed-fi-branding-logo.png" style="height:45px; margin:3px;" /></a>
             </div>
@@ -43,7 +43,12 @@
     </div>
 
     <footer style="position:fixed; bottom:0px; padding:10px; height:40px; background-color:#44a657; color:#FFFFFF; border-top: 1px solid #080808; width:100%">
-        <p>Github Repository - <a style="color:#FFFFFF" target="_blank" href="https://github.com/easol/edfi-to-oneroster">https://github.com/easol/edfi-to-oneroster</a></p>
+        <a href="https://github.com/easol/edfi-to-oneroster" target="_blank"><i class="fa fa-github" style="color:white;"></i></a>
+        &nbsp;&nbsp;
+        <a target="_blank" href="https://www.imsglobal.org"><img src="~/Content/Images/logo-revised.png" style="height:28px;" /></a>
+        &nbsp;&nbsp;
+        <a target="_blank" href="http://www.ed-fi.org"><img src="~/Content/Images/ed-fi-branding-logo.png" style="height:28px;" /></a>
+        <p style="float:right;">Developed by <a style="color:white;" href="https://learningtapestry.com/" target="_blank">Learning Tapestry</a></p>
     </footer>
 
     @RenderSection("BodyOutsideOfContainer", required: false)
@@ -51,6 +56,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://use.fontawesome.com/3f9dc1a524.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

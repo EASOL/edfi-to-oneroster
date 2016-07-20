@@ -20,15 +20,16 @@ namespace ED2OR.Controllers
                         where templateId == null || t.TemplateId == templateId
                        select new TemplateLogViewmodel
                        {
-                           TemplateName = t.TemplateName,
-                           VendorName = t.VendorName,
+                           TemplateName = t.TemplateName ?? "",
+                           VendorName = t.VendorName ?? "",
                            Action = a.Type,
                            DateValue = a.DateTimeStamp,
                            DateString = a.DateTimeStamp.ToString(),
-                           OldValues = a.OldValues,
-                           NewValues = a.NewValues,
+                           OldValues = a.OldValues ?? "",
+                           NewValues = a.NewValues ?? "",
                            Success = a.Success,
                            FailureReason = a.FailureReason,
+                           IpAddress = a.IpAddress,
                            MostRecentOldValues = mostRecentOldValues
                        }).OrderByDescending(x => x.DateValue).ToList();
 
@@ -40,8 +41,11 @@ namespace ED2OR.Controllers
                     if (log.MostRecentOldValues != null)
                     {
                         var mostRecentOldValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(log.MostRecentOldValues);
-                        log.TemplateName = mostRecentOldValues["TemplateName"].ToString();
-                        log.VendorName = mostRecentOldValues["VendorName"].ToString();
+                        if (mostRecentOldValues.ContainsKey("TemplateName"))
+                        {
+                            log.TemplateName = mostRecentOldValues["TemplateName"].ToString();
+                            log.VendorName = mostRecentOldValues["VendorName"].ToString();
+                        }
                     }
                 }
 
@@ -68,7 +72,7 @@ namespace ED2OR.Controllers
                     }
                     log.Description += "</ul>";
                 }
-                else if (log.Action == ActionTypes.TemplateModified)
+                else if (log.Action == ActionTypes.TemplateModified || log.Action == ActionTypes.SettingsModified)
                 {
                     string lineItemFormat = "<li><b>{0}</b> was changed from <b>{1}</b> to <b>{2}</b></li>";
                     var oldValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(log.OldValues);
@@ -94,6 +98,17 @@ namespace ED2OR.Controllers
                         log.Description += String.Format(lineItemFormat, entry.Key, oldValue);
                     }
                     log.Description += "</ul>";
+                }
+                else if (log.Action == ActionTypes.LogIn || log.Action == ActionTypes.LogOut)
+                {
+                    if (log.Success)
+                    {
+                        log.Description = "Success";
+                    }
+                    else
+                    {
+                        log.Description = "Failure: " + log.FailureReason;
+                    }
                 }
             }
 
