@@ -18,7 +18,7 @@ namespace ED2OR.Controllers
         {
             var downloadTypes = new List<string> { ActionTypes.DownloadCsvAdmin, ActionTypes.DownloasCsvVendor };
             var model = (from t in db.Templates
-                         let downloads = db.AuditLogs.Where(x => x.TemplateId == t.TemplateId && downloadTypes.Contains(x.Type))
+                         let downloads = db.AuditLogs.Where(x => x.TemplateId == t.TemplateId && downloadTypes.Contains(x.Type) && x.Success)
                          let numDownloads = downloads.Count()
                          let lastAccess = numDownloads == 0 ? "" : downloads.Max(x => x.DateTimeStamp).ToString()
                          select new TemplateViewModel
@@ -69,7 +69,7 @@ namespace ED2OR.Controllers
             db.Templates.Add(newTemplate);
             db.SaveChanges(UserName, IpAddress);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Exports", new { templateId = newTemplate.TemplateId });
         }
 
         public ActionResult Delete(int templateId)

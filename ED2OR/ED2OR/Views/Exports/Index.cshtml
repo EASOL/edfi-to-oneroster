@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Exports";
+    bool isEditTemplate = Model.EditTemplateId != 0;
 }
 
 <style>
@@ -16,6 +17,10 @@
 </style>
 <link href="~/Content/jquery.modal.min.css" rel="stylesheet" />
 
+@if (isEditTemplate)
+{
+    <h3>Edit Template - @Model.EditTemplateName</h3>
+}
 <h3>Data Selection</h3>
 
 @*http://v4-alpha.getbootstrap.com/components/collapse/*@
@@ -33,6 +38,7 @@
      @Html.HiddenFor(x => x.SelectedSections)
      @Html.HiddenFor(x => x.NewTemplateName)
      @Html.HiddenFor(x => x.NewTemplateVendorName)
+     @Html.HiddenFor(x => x.EditTemplateId)
 
      @*<div id="criteriaContainer">
             @Html.EditorFor(x => x.CriteriaSections)
@@ -122,7 +128,14 @@
     <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%;">
         <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
         <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
-        <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button> 
+        @if (isEditTemplate)
+        {
+            <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
+        }
     </div>
 }
 
@@ -131,7 +144,6 @@
         <script>
             function deselectAll(divId) {
                 $("#" + divId).find("input:checkbox").prop("checked", false);
-                //$("#" + divId).find("input:checkbox").removeAttr("checked");
                 checkboxRecount(divId);
                 if (divId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
                     topGroupChanged();
@@ -140,7 +152,6 @@
 
             function selectAll(divId) {
                 $("#" + divId).find("input:checkbox").prop("checked", true);
-                //$("#" + divId).find("input:checkbox").attr("checked", true);
                 checkboxRecount(divId);
                 if (divId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
                     topGroupChanged();
@@ -168,27 +179,15 @@
                 return arr;
             }
 
-            function getBoxesAlreadyChecked(divId) {
-                var checkedBoxes = $("#" + divId).find("input:checkbox:checked");
-
-                var arr = [];
-                checkedBoxes.each(function () {
-                    var $this = $(this);
-                    var labelText = $('label[for=' + $this.attr('id') + ']').html();
-                    arr.push(labelText);
-                });
-                return arr;
-            }
-
             function topGroupChanged() {
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
                 var terms = getCheckedIds("Terms");
 
-                var subjectsAlreadyChecked = getBoxesAlreadyChecked("Subjects");
-                var coursesAlreadyChecked = getBoxesAlreadyChecked("Courses");
-                var teachersAlreadyChecked = getBoxesAlreadyChecked("Teachers");
-                var sectionsAlreadyChecked = getBoxesAlreadyChecked("Sections");
+                var subjectsAlreadyChecked = getCheckedIds("Subjects");
+                var coursesAlreadyChecked = getCheckedIds("Courses");
+                var teachersAlreadyChecked = getCheckedIds("Teachers");
+                var sectionsAlreadyChecked = getCheckedIds("Sections");
 
                 $("#numSelected_Subjects").text("(Loading...)");
                 $("#numSelected_Courses").text("(Loading...)");
@@ -299,6 +298,16 @@
                 var frm = document.getElementById('exportsForm') || null;
                 if (frm) {
                     frm.action = '@Url.Action("SaveTemplate")';
+                }
+                document.getElementById('exportsForm').submit();
+            }
+
+            function updateTemplate() {
+                setHiddens();
+
+                var frm = document.getElementById('exportsForm') || null;
+                if (frm) {
+                    frm.action = '@Url.Action("UpdateTemplate")';
                 }
                 document.getElementById('exportsForm').submit();
             }

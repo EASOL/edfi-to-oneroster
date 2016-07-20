@@ -32,6 +32,43 @@ namespace ED2OR.Utils
             }
         }
 
+        public void LogUserLogin(string userId, string ipAddress, bool success, string reason)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var log = new AuditLog
+                {
+                    Type = ActionTypes.LogIn,
+                    Success = success,
+                    DateTimeStamp = DateTime.Now,
+                    User = userId,
+                    FailureReason = reason,
+                    IpAddress = ipAddress
+                };
+
+                db.AuditLogs.Add(log);
+                db.SaveChanges();
+            }
+        }
+
+        public void LogUserLogout(string userId, string ipAddress)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var log = new AuditLog
+                {
+                    Type = ActionTypes.LogOut,
+                    Success = true,
+                    DateTimeStamp = DateTime.Now,
+                    User = userId,
+                    IpAddress = ipAddress
+                };
+
+                db.AuditLogs.Add(log);
+                db.SaveChanges();
+            }
+        }
+
         public void LogUserDownload(Template template, string ipAddress, bool success, string reason)
         {
             using (var db = new ApplicationDbContext())

@@ -266,6 +266,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="ReadMe.txt" />
+    <Content Include="Scripts\bootstrap-table-filter-control.js" />
     <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap-table.min.js" />
     <Content Include="Scripts\bootstrap.js" />

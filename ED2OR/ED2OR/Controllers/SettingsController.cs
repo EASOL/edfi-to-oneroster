@@ -173,6 +173,8 @@ namespace ED2OR.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(SettingsViewModel model)
         {
+            LoadDropdownValues();
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -222,7 +224,7 @@ namespace ED2OR.Controllers
             }
             try
             {
-                db.SaveChanges();
+                db.SaveChanges(UserName, IpAddress);
                 ViewBag.SuccessMessage = "Settings successfully saved";
                 var result = await Index();
                 return result;
