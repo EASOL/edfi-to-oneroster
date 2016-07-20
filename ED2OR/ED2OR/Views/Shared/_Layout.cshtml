@@ -37,7 +37,11 @@
     <div class="container body-content" style="padding-bottom: 80px;">
         @if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Request.IsSecureConnection == false)
         {
-            <p class="paragraph errormessage">Website is not using HTTPS</p>
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                Website is not using HTTPS
+            </div>
         }
         @RenderBody()
     </div>
