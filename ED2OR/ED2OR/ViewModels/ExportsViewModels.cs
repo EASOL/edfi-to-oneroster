@@ -22,6 +22,9 @@ namespace ED2OR.ViewModels
         public string SelectedSections { get; set; }
         public string NewTemplateName { get; set; }
         public string NewTemplateVendorName { get; set; }
+
+        public int EditTemplateId { get; set; }
+        public string EditTemplateName { get; set; }
     }
 
     public class PreveiwJsonResults
