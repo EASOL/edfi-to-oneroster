@@ -180,7 +180,7 @@
     <Compile Include="Utils\SessionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ED2OR\EF2OR.csproj">
+    <ProjectReference Include="..\EF2OR\EF2OR.csproj">
       <Project>{704C8D23-F2B7-42FC-AB2B-E1050CABAAFC}</Project>
       <Name>EF2OR</Name>
     </ProjectReference>

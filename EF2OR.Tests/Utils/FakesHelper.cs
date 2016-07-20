@@ -23,6 +23,14 @@ namespace EF2OR.Tests.Utils
             {
                 return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
             };
+            EF2OR.Controllers.Fakes.ShimBaseController.AllInstances.UserNameGet = (controller) =>
+            {
+                return AuthenticationHelper.TESTUSER_USERNAME;
+            };
+            EF2OR.Controllers.Fakes.ShimBaseController.AllInstances.IpAddressGet = (controller) =>
+            {
+                return "-1";
+            };
         }
     }
 }
