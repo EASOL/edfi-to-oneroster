@@ -1,0 +1,42 @@
+﻿@model EF2OR.ViewModels.InitialSetup
+@{
+    ViewBag.Title = "Initial Setup";
+    string strMessage = string.Empty;
+    if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        strMessage = ViewBag.Message;
+    }
+    string strError = string.Empty;
+    if (!string.IsNullOrWhiteSpace(ViewBag.Error))
+    {
+        strMessage = ViewBag.Error;
+    }
+}
+
+<h3>@ViewBag.Title</h3>
+@using (Html.BeginForm(actionName: "InitialSetup", controllerName: "Admin", method: FormMethod.Post))
+{
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @if (!string.IsNullOrWhiteSpace(strMessage))
+        {
+            <p>@strMessage</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(strError))
+        {
+            <p>@strError</p>
+        }
+        <label class="has-error">@ViewBag.Error</label>
+        @Html.EditorForModel(templateName: "DatabaseSettings")
+        <button type="submit" class="btn btn-primary" id="btnSubmitInitialSetup">Submit</button>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/PreConfiguration/PreConfiguration.js"></script>
+    <script type="text/javascript">
+        function testDatabaseConnection() {
+            DatabaseSettings.TestDatabaseConnection('@Url.Action(actionName:"TestDatabaseConnection", controllerName:"Settings")', '.TestDatabaseConnectionResult');
+        }
+    </script>
+}

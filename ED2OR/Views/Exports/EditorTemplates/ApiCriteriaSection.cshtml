@@ -1,0 +1,17 @@
+﻿@*@model EF2OR.ViewModels.ApiCriteriaSection
+
+@{ 
+    var numCheckboxes = Model.FilterCheckboxes.Count();
+    var numSelected = Model.FilterCheckboxes.Where(x => x.Selected).Count();
+    var numSelectedText = numCheckboxes == numSelected ? "all" : numSelected.ToString();
+}
+
+@Html.HiddenFor(x => x.SectionName)
+
+<div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#@Model.SectionName">
+    @Model.SectionName <span id="numSelected_@Model.SectionName">(@numSelectedText selected)</span>
+</div>
+<div class="collapse" id="@Model.SectionName">
+    <a href="javascript:deselectAll('@Model.SectionName');">(deselect all)</a><br />
+    @Html.EditorFor(x => x.FilterCheckboxes)
+</div>*@
