@@ -57,6 +57,7 @@
     </table>
 
     <div id="DataPreview"></div>
+    <div id="placeHolder"></div>
 </div>
 
 
@@ -102,6 +103,9 @@
   <script>
       function dataPreview(templateId) {
           $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+
+          var element_to_scroll_to = document.getElementById('placeHolder');
+          element_to_scroll_to.scrollIntoView();
 
           $("#DataPreview").load("@Url.Action("PreviewFromTemplate", "Exports")", {
               templateId: templateId
