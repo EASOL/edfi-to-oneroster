@@ -260,7 +260,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\EF2OR.css" />
     <Content Include="Content\Images\easollogo.png" />
+    <Content Include="Content\Images\EdFi-logo-Powered-RGB-TM.png" />
     <Content Include="Content\Images\EdFi-logo-RGB.PNG" />
+    <Content Include="Content\Images\learning_tapestry.png" />
     <Content Include="Content\Images\logo-revised.png" />
     <Content Include="Content\jquery.modal.min.css" />
     <Content Include="Content\Images\loading.gif" />

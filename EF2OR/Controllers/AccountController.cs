@@ -83,7 +83,7 @@ namespace EF2OR.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
 
             var logUtils = new LoggingMethods();
 
@@ -94,7 +94,8 @@ namespace EF2OR.Controllers
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     logUtils.LogUserLogin(model.Email, IpAddress, false, "Locked out");
-                    return View("Lockout");
+                    ModelState.AddModelError("", "This account has been locked out.  Please try again in 1 hour.  Or modify the [LockoutEndDateUtc] field in the [AspNetUsers] table.");
+                    return View(model);
                 case SignInStatus.Failure:
                 default:
                     logUtils.LogUserLogin(model.Email, IpAddress, false, "Invalid login attempt");
