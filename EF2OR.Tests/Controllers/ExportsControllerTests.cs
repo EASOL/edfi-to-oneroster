@@ -13,6 +13,9 @@ using System.Web.Routing;
 using EF2OR.ViewModels;
 using EF2OR.Utils;
 using System.IO.Compression;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace EF2OR.Controllers.Tests
 {
@@ -108,6 +111,43 @@ namespace EF2OR.Controllers.Tests
                 System.Web.Fakes.ShimHttpServerUtility.AllInstances.MapPathString = (server, path) =>
                 {
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
+                };
+                //EF2OR.Utils.Fakes.ShimApiCalls.GetApiResponseStringString = (apiEndpoint, fields) =>
+                //{
+                //    return null;
+                //};
+                EF2OR.Utils.Fakes.ShimApiCalls.GetApiResponseArrayStringBooleanString =
+                    async (apiEndpoint, forceNew, fields) =>
+                {
+                    JArray result = null;
+                    JArray apiResponse = null;
+                    switch (apiEndpoint)
+                    {
+                        case "enrollment/schools":
+                            apiResponse =
+                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        case "enrollment/staffs":
+                            apiResponse =
+                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        case "enrollment/students":
+                            apiResponse =
+                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Students);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        case "enrollment/sections":
+                            apiResponse =
+                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        default:
+                            Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
+                            break;
+                    }
+                    return result;
                 };
 
                 //ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -579,7 +619,7 @@ namespace EF2OR.Controllers.Tests
                 ValidateField("classSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("schoolSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("userSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
-                ValidateField("role", new string[] { "student" , "teacher" , "parent" , "guardian" , "relative" , 
+                ValidateField("role", new string[] { "student" , "teacher" , "parent" , "guardian" , "relative" ,
                     "aide", "administrator" }, lstFileInvalidInfo, iRow, csvreader);
                 iRow++;
             }

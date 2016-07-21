@@ -1,0 +1,4952 @@
+﻿[
+  {
+    "id": "d6d5c0e25a9547498ba4dd838d720c97",
+    "uniqueSectionCode": "25590100101Trad120ENG112011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "56ea812c1fe745d88dc0c1d725340181",
+        "id": "6ea7521383c14ee699b2dfb03d78b278",
+        "staffUniqueId": "207268"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "7fa206f8bac946d2a97b883bd6a291f9",
+        "id": "91ae7529879c49fcb2e9c8cfc043856e",
+        "studentUniqueId": "605042"
+      },
+      {
+        "studentSectionAssociation_id": "bc69c80751c7480f8ba6a0586fb5faea",
+        "id": "0169e51efb0c4db49e9e13bdb9e286f5",
+        "studentUniqueId": "604822"
+      },
+      {
+        "studentSectionAssociation_id": "120c11ea777648d691723e02dc547ef2",
+        "id": "5164231ca1ed42e489f0453556624807",
+        "studentUniqueId": "605043"
+      },
+      {
+        "studentSectionAssociation_id": "2e9578b5d88f4ecd820c8b1891263dff",
+        "id": "1a1de17ffe9f48c0a4871cd740ffe204",
+        "studentUniqueId": "605047"
+      },
+      {
+        "studentSectionAssociation_id": "a93e17b52963453a9afaa7217542faa4",
+        "id": "0bb4815bab2846649f343475c8987dbb",
+        "studentUniqueId": "604940"
+      },
+      {
+        "studentSectionAssociation_id": "87bac469229b4eb880b3e507cb10546b",
+        "id": "189900bd49554c14b4bfc0df4a8ac04d",
+        "studentUniqueId": "604918"
+      },
+      {
+        "studentSectionAssociation_id": "7cfbee880bac49fb86b328e7e09a96f9",
+        "id": "d8bd64ca0e1b43e4bc8f52a5f10ba1e5",
+        "studentUniqueId": "604969"
+      },
+      {
+        "studentSectionAssociation_id": "5371df86fbd8424db3daccd9b46e1571",
+        "id": "902e3cf3419f42de8955588b3d7dd870",
+        "studentUniqueId": "604927"
+      },
+      {
+        "studentSectionAssociation_id": "3fe64ceb45a2496f9029731a555190f6",
+        "id": "b0960b88216d4d42bedb1e1310f7a33f",
+        "studentUniqueId": "605134"
+      },
+      {
+        "studentSectionAssociation_id": "faed4da97bd14572bc638604ea224582",
+        "id": "0bed20c7c8534eebba21c9398150dc2f",
+        "studentUniqueId": "604847"
+      },
+      {
+        "studentSectionAssociation_id": "49877c3489924b678f864db2b520ea7b",
+        "id": "f3267fb9f88a4b10b6ae7d54039f4dc0",
+        "studentUniqueId": "605124"
+      },
+      {
+        "studentSectionAssociation_id": "9ad943289a35421c8451a90326c53af1",
+        "id": "232101262d2e4ad7a31c64b3ddb8acc8",
+        "studentUniqueId": "604905"
+      },
+      {
+        "studentSectionAssociation_id": "707cdb7e36714ec08062e1443a85ee87",
+        "id": "7e0ce3896ff441a1b1d054ac59c7d90c",
+        "studentUniqueId": "604956"
+      },
+      {
+        "studentSectionAssociation_id": "32cf7575934b4f82a811f81f2c57da72",
+        "id": "49dfd7fc83204f9c8c4827ee7a4082ff",
+        "studentUniqueId": "604874"
+      },
+      {
+        "studentSectionAssociation_id": "a98c934199594c38b18fac8258ea2dd3",
+        "id": "c4b5658427eb45f4a1fb16c32d89be1e",
+        "studentUniqueId": "605088"
+      },
+      {
+        "studentSectionAssociation_id": "13a37b50a7e344388b3034202c95e882",
+        "id": "5cafc0d323bf45749c46058574f9ffb4",
+        "studentUniqueId": "604863"
+      },
+      {
+        "studentSectionAssociation_id": "f6dd4cbc39c5400a987fa30db38a8652",
+        "id": "3769dbae9c28412a8ed682647e2aba2d",
+        "studentUniqueId": "604974"
+      },
+      {
+        "studentSectionAssociation_id": "37085f21912642119266ee962726a25c",
+        "id": "07acef61e4f54ff69d07b5cecf306870",
+        "studentUniqueId": "605148"
+      },
+      {
+        "studentSectionAssociation_id": "9c5f4a7919ae46eab291a877bb929703",
+        "id": "21f3f497e0144f07b2fdae85c9fc1f92",
+        "studentUniqueId": "604881"
+      },
+      {
+        "studentSectionAssociation_id": "4325be4f949b4ec8812db3cb78224fe8",
+        "id": "b04a48e85704474d8ae00f7aebd5c18b",
+        "studentUniqueId": "605015"
+      },
+      {
+        "studentSectionAssociation_id": "d12fdc9681cf471aaa757d871e5f9772",
+        "id": "78622eebd78447ac9102a979923ca374",
+        "studentUniqueId": "604849"
+      },
+      {
+        "studentSectionAssociation_id": "408add4725c64e5aa2d6a05a1d4e51e8",
+        "id": "f019861f796e456f91f6e42e3ef775e7",
+        "studentUniqueId": "605135"
+      },
+      {
+        "studentSectionAssociation_id": "0f8586e5a2d94098b977ee0135c3c523",
+        "id": "cb50ac17aff74d9ca721ea579495deab",
+        "studentUniqueId": "604938"
+      },
+      {
+        "studentSectionAssociation_id": "714cfab7e35e4072927ced16044fdd17",
+        "id": "915ea6b80e0d4ec6a0f0bf3cc84d45e4",
+        "studentUniqueId": "605031"
+      },
+      {
+        "studentSectionAssociation_id": "40ed3b7a3aca4dcd9bf131571b1aed78",
+        "id": "a5928e8204c140c1a01162db883ff15a",
+        "studentUniqueId": "605129"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "04c1fddaa54341f3b15b1e4448d9c48c",
+      "localCourseCode": "ENG-1",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "59edc03d1078456dbd84fc6d6192d64a",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "120"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "38227e96bddc4ec1b829671fa11c5843",
+    "uniqueSectionCode": "25590100101Trad120ENG122011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "acae03ce4ad1462c806cbeaaa1ae30e9",
+        "id": "6ea7521383c14ee699b2dfb03d78b278",
+        "staffUniqueId": "207268"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "611ef0a123a141b692149740048bb2d0",
+        "id": "91ae7529879c49fcb2e9c8cfc043856e",
+        "studentUniqueId": "605042"
+      },
+      {
+        "studentSectionAssociation_id": "6df38a36263e4acd8c6435ba95fe56d3",
+        "id": "0169e51efb0c4db49e9e13bdb9e286f5",
+        "studentUniqueId": "604822"
+      },
+      {
+        "studentSectionAssociation_id": "baf3092645694f3ba4c721dafa85426f",
+        "id": "5164231ca1ed42e489f0453556624807",
+        "studentUniqueId": "605043"
+      },
+      {
+        "studentSectionAssociation_id": "8e9a8b58b2de4e4c950bbdf0fe6471d9",
+        "id": "1a1de17ffe9f48c0a4871cd740ffe204",
+        "studentUniqueId": "605047"
+      },
+      {
+        "studentSectionAssociation_id": "3dd5aed63e1b47d79cf8072916ad1155",
+        "id": "0bb4815bab2846649f343475c8987dbb",
+        "studentUniqueId": "604940"
+      },
+      {
+        "studentSectionAssociation_id": "4ed04eb7bf394759b981dfd8246f1e45",
+        "id": "189900bd49554c14b4bfc0df4a8ac04d",
+        "studentUniqueId": "604918"
+      },
+      {
+        "studentSectionAssociation_id": "ff901118ec21444894fb77a48263495b",
+        "id": "d8bd64ca0e1b43e4bc8f52a5f10ba1e5",
+        "studentUniqueId": "604969"
+      },
+      {
+        "studentSectionAssociation_id": "0a3e65933a2244c3bbf8658bac551ebc",
+        "id": "902e3cf3419f42de8955588b3d7dd870",
+        "studentUniqueId": "604927"
+      },
+      {
+        "studentSectionAssociation_id": "5d1adec01fcf48378a168e910d5adbca",
+        "id": "b0960b88216d4d42bedb1e1310f7a33f",
+        "studentUniqueId": "605134"
+      },
+      {
+        "studentSectionAssociation_id": "773c393da8d845c0a70f427d3c287f9b",
+        "id": "0bed20c7c8534eebba21c9398150dc2f",
+        "studentUniqueId": "604847"
+      },
+      {
+        "studentSectionAssociation_id": "57deb4dd5c7b4f25bf34e92d9e202473",
+        "id": "f3267fb9f88a4b10b6ae7d54039f4dc0",
+        "studentUniqueId": "605124"
+      },
+      {
+        "studentSectionAssociation_id": "036f64ccb5274481b04a960c5c23bb44",
+        "id": "232101262d2e4ad7a31c64b3ddb8acc8",
+        "studentUniqueId": "604905"
+      },
+      {
+        "studentSectionAssociation_id": "4604f85dfbdb4b01b5773f24a17e33da",
+        "id": "7e0ce3896ff441a1b1d054ac59c7d90c",
+        "studentUniqueId": "604956"
+      },
+      {
+        "studentSectionAssociation_id": "2484f8983e5243d5895918750db5ffcf",
+        "id": "49dfd7fc83204f9c8c4827ee7a4082ff",
+        "studentUniqueId": "604874"
+      },
+      {
+        "studentSectionAssociation_id": "2f334297c3cd438db3454ad229578adc",
+        "id": "c4b5658427eb45f4a1fb16c32d89be1e",
+        "studentUniqueId": "605088"
+      },
+      {
+        "studentSectionAssociation_id": "6eb91912ff674ef296856b92fee46399",
+        "id": "5cafc0d323bf45749c46058574f9ffb4",
+        "studentUniqueId": "604863"
+      },
+      {
+        "studentSectionAssociation_id": "86ed8377052246c5bde08d7998eefb09",
+        "id": "3769dbae9c28412a8ed682647e2aba2d",
+        "studentUniqueId": "604974"
+      },
+      {
+        "studentSectionAssociation_id": "70d74bb2cb3543f6ab880822a4261751",
+        "id": "07acef61e4f54ff69d07b5cecf306870",
+        "studentUniqueId": "605148"
+      },
+      {
+        "studentSectionAssociation_id": "71212cb324d84bfeac0716383770c119",
+        "id": "21f3f497e0144f07b2fdae85c9fc1f92",
+        "studentUniqueId": "604881"
+      },
+      {
+        "studentSectionAssociation_id": "8a1f303173dc469bb42611a6f843090f",
+        "id": "b04a48e85704474d8ae00f7aebd5c18b",
+        "studentUniqueId": "605015"
+      },
+      {
+        "studentSectionAssociation_id": "f7add2254b244531afc6ae1730622c77",
+        "id": "78622eebd78447ac9102a979923ca374",
+        "studentUniqueId": "604849"
+      },
+      {
+        "studentSectionAssociation_id": "cb41a51130eb4deba88bcb210d0ba551",
+        "id": "f019861f796e456f91f6e42e3ef775e7",
+        "studentUniqueId": "605135"
+      },
+      {
+        "studentSectionAssociation_id": "7fb835656afd4cf8bdb674dba0865053",
+        "id": "cb50ac17aff74d9ca721ea579495deab",
+        "studentUniqueId": "604938"
+      },
+      {
+        "studentSectionAssociation_id": "66ba001025654d4a9d4a27e663d0cfc2",
+        "id": "915ea6b80e0d4ec6a0f0bf3cc84d45e4",
+        "studentUniqueId": "605031"
+      },
+      {
+        "studentSectionAssociation_id": "fe73d363af934ff096cc7b663a98baae",
+        "id": "a5928e8204c140c1a01162db883ff15a",
+        "studentUniqueId": "605129"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "dcfe241e0318484297ad8c5fb2de7219",
+      "localCourseCode": "ENG-1",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "59edc03d1078456dbd84fc6d6192d64a",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "120"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "bbf0e083fe4348d6834c8fa74fd7c8a1",
+    "uniqueSectionCode": "25590100101Trad121ENG312011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "98e1f7940df747e7af304da60df36d13",
+        "id": "d468f2be62284b8ba4cce779e33c36bf",
+        "staffUniqueId": "207269"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "342464850681461fbcc0f800faeaf06b",
+        "id": "baf628b3038c4d3a99ea1dfbf994eac3",
+        "studentUniqueId": "605041"
+      },
+      {
+        "studentSectionAssociation_id": "36fe49b1630a421bab19164ec1504d97",
+        "id": "709c17c1a1a64950bc4ef34943973f8f",
+        "studentUniqueId": "605083"
+      },
+      {
+        "studentSectionAssociation_id": "879a0634aabf4d0c8aeae606ce2f8de5",
+        "id": "269ab26a24d844d38c15289296a56fc7",
+        "studentUniqueId": "604924"
+      },
+      {
+        "studentSectionAssociation_id": "4f22d9c06d324809949c44f5eb9f7580",
+        "id": "3a6a1fd716da4258b3429b776e7a1fd8",
+        "studentUniqueId": "604896"
+      },
+      {
+        "studentSectionAssociation_id": "3cca772eefb04a969b5dfa572e2f3d11",
+        "id": "7559c1dfcd4840bfb83284820335511e",
+        "studentUniqueId": "604886"
+      },
+      {
+        "studentSectionAssociation_id": "81f840110cc543dbab6e93dd30dfa9ed",
+        "id": "44c06c83023f4826a33ca8ebb1b07f58",
+        "studentUniqueId": "605093"
+      },
+      {
+        "studentSectionAssociation_id": "9abfa9f7f33a4a648f384356b24c61d3",
+        "id": "262e503a7fbc4ac7a07ee044dd0d60fe",
+        "studentUniqueId": "604962"
+      },
+      {
+        "studentSectionAssociation_id": "2da275a0a9b9477e9f2f27ba848fb852",
+        "id": "998651a3ffd0498a9f96afaf93185d1e",
+        "studentUniqueId": "604901"
+      },
+      {
+        "studentSectionAssociation_id": "6d404e8fbbb14d18b6d6e661d4172271",
+        "id": "d26271bc7e754164bc3ed44c9e6a74bc",
+        "studentUniqueId": "604915"
+      },
+      {
+        "studentSectionAssociation_id": "293c03ca77144581a9198b714b975299",
+        "id": "86b78dbc56894380b94eb122859892e6",
+        "studentUniqueId": "604987"
+      },
+      {
+        "studentSectionAssociation_id": "e723f3b617af475f9746369cce24ddb7",
+        "id": "579d9d72b5a14cc7b9d963910ac55aca",
+        "studentUniqueId": "605053"
+      },
+      {
+        "studentSectionAssociation_id": "d854a6c30889491bb5bed2dd93a8e9ff",
+        "id": "614eb03211b84487bb48997ed6e1d1f5",
+        "studentUniqueId": "605062"
+      },
+      {
+        "studentSectionAssociation_id": "c5ecd7e82f7a4de591ec66a3084be890",
+        "id": "da9f06fd91b74277ab14c4444124a3e4",
+        "studentUniqueId": "604827"
+      },
+      {
+        "studentSectionAssociation_id": "aeb94dc7dec9421893a8682257cea3cd",
+        "id": "631219abd6844bfda5d977f2884ce74c",
+        "studentUniqueId": "604990"
+      },
+      {
+        "studentSectionAssociation_id": "47d8400aea9a46e2be1bcf5693ab1f21",
+        "id": "3ec4ebb982414cf0af8963815d295734",
+        "studentUniqueId": "605019"
+      },
+      {
+        "studentSectionAssociation_id": "8340488ef9fe49f39d6990c9b3713f65",
+        "id": "be19257e27bc4e6988795c00d37cbf05",
+        "studentUniqueId": "604992"
+      },
+      {
+        "studentSectionAssociation_id": "4d1842c581124435884bf1d960668f75",
+        "id": "8eeff4902c4540fea88eeb8e3c3146ec",
+        "studentUniqueId": "604957"
+      },
+      {
+        "studentSectionAssociation_id": "ee2f0a22a7b7448fa688718dbdfbd4d4",
+        "id": "5c8a3c8cc8fd44178d82299f42e673a0",
+        "studentUniqueId": "605146"
+      },
+      {
+        "studentSectionAssociation_id": "cced7da00d8e48089935c4e3c1030546",
+        "id": "b1192d1b7dc7450d8dcc7c5c0764860a",
+        "studentUniqueId": "604830"
+      },
+      {
+        "studentSectionAssociation_id": "e5fbc1d2904043fda56026716ed2886a",
+        "id": "37e0e18ee8f34da0b16fdcf694a24c43",
+        "studentUniqueId": "605065"
+      },
+      {
+        "studentSectionAssociation_id": "f98c950f1d844360b06e334c137b41ca",
+        "id": "cc372fd8d5b44c66a538590d5cd5a1f5",
+        "studentUniqueId": "605115"
+      },
+      {
+        "studentSectionAssociation_id": "ddd91d1ec0e3405ba7b751d4febe239d",
+        "id": "fd17f24e52994111a3089c05c279c6be",
+        "studentUniqueId": "604883"
+      },
+      {
+        "studentSectionAssociation_id": "7fc8244e59174cd4b7b42fc35e5a934c",
+        "id": "cc95dae619f04aab8b59f6d514620e11",
+        "studentUniqueId": "604934"
+      },
+      {
+        "studentSectionAssociation_id": "edbee52b87214f928bc4b6778f9f2d13",
+        "id": "651761af435a4211a122aa51ed86f1bf",
+        "studentUniqueId": "605084"
+      },
+      {
+        "studentSectionAssociation_id": "412237e0e8a345ddbbcacacedb8e9ff6",
+        "id": "6e9a88274a2b44188257f7ec2690bb02",
+        "studentUniqueId": "605139"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "ceed95d2b7e34865b0c245bc9dd6a296",
+      "localCourseCode": "ENG-3",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "2a6b68b637bc48b7bc455d49c7973429",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "121"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "2717abf1fbd247859faef00635de6072",
+    "uniqueSectionCode": "25590100101Trad121ENG322011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "2544bb7d5e274eee99782dba68ab1647",
+        "id": "d468f2be62284b8ba4cce779e33c36bf",
+        "staffUniqueId": "207269"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "a564dfbcf3b74056869057735f715cbb",
+        "id": "baf628b3038c4d3a99ea1dfbf994eac3",
+        "studentUniqueId": "605041"
+      },
+      {
+        "studentSectionAssociation_id": "e52ba26bb3724548a2f262443624976a",
+        "id": "709c17c1a1a64950bc4ef34943973f8f",
+        "studentUniqueId": "605083"
+      },
+      {
+        "studentSectionAssociation_id": "3c7f12cd7e734b13b6f3ff9bd6ea9f67",
+        "id": "269ab26a24d844d38c15289296a56fc7",
+        "studentUniqueId": "604924"
+      },
+      {
+        "studentSectionAssociation_id": "81fdc2bbf543417e9b2dc05347531798",
+        "id": "3a6a1fd716da4258b3429b776e7a1fd8",
+        "studentUniqueId": "604896"
+      },
+      {
+        "studentSectionAssociation_id": "9ca8dc102d734f33bcf37e27ff9f6157",
+        "id": "7559c1dfcd4840bfb83284820335511e",
+        "studentUniqueId": "604886"
+      },
+      {
+        "studentSectionAssociation_id": "60ec17b2447d469c9d1ec4473b071a0d",
+        "id": "44c06c83023f4826a33ca8ebb1b07f58",
+        "studentUniqueId": "605093"
+      },
+      {
+        "studentSectionAssociation_id": "d8a745d3ce804dd6821c4a4b8c4aebb3",
+        "id": "262e503a7fbc4ac7a07ee044dd0d60fe",
+        "studentUniqueId": "604962"
+      },
+      {
+        "studentSectionAssociation_id": "45af5a2895af42adaea77008623dafae",
+        "id": "998651a3ffd0498a9f96afaf93185d1e",
+        "studentUniqueId": "604901"
+      },
+      {
+        "studentSectionAssociation_id": "d445fa69b5c5414193223875941a8098",
+        "id": "d26271bc7e754164bc3ed44c9e6a74bc",
+        "studentUniqueId": "604915"
+      },
+      {
+        "studentSectionAssociation_id": "251e0296a51442c8bcfd4bdaf0680ef5",
+        "id": "86b78dbc56894380b94eb122859892e6",
+        "studentUniqueId": "604987"
+      },
+      {
+        "studentSectionAssociation_id": "12144aeb353d47dd932adccf3dcff9a3",
+        "id": "579d9d72b5a14cc7b9d963910ac55aca",
+        "studentUniqueId": "605053"
+      },
+      {
+        "studentSectionAssociation_id": "7dad638d1fac4f99b81641f8979aa41f",
+        "id": "614eb03211b84487bb48997ed6e1d1f5",
+        "studentUniqueId": "605062"
+      },
+      {
+        "studentSectionAssociation_id": "b66df772255c425c9f9b76f8491af261",
+        "id": "da9f06fd91b74277ab14c4444124a3e4",
+        "studentUniqueId": "604827"
+      },
+      {
+        "studentSectionAssociation_id": "8433047e534e45739c143474f7663862",
+        "id": "631219abd6844bfda5d977f2884ce74c",
+        "studentUniqueId": "604990"
+      },
+      {
+        "studentSectionAssociation_id": "69714a28af4545cb8956890a258ef471",
+        "id": "3ec4ebb982414cf0af8963815d295734",
+        "studentUniqueId": "605019"
+      },
+      {
+        "studentSectionAssociation_id": "85b4caa991d24f889d1ca226fe44c9a3",
+        "id": "be19257e27bc4e6988795c00d37cbf05",
+        "studentUniqueId": "604992"
+      },
+      {
+        "studentSectionAssociation_id": "092187d1fbde4fd0a539f39dd3aac394",
+        "id": "8eeff4902c4540fea88eeb8e3c3146ec",
+        "studentUniqueId": "604957"
+      },
+      {
+        "studentSectionAssociation_id": "0984d9cb105342d387ca2c6a78c21269",
+        "id": "5c8a3c8cc8fd44178d82299f42e673a0",
+        "studentUniqueId": "605146"
+      },
+      {
+        "studentSectionAssociation_id": "72d8476d9ba047f8979c6e9c09c7900b",
+        "id": "b1192d1b7dc7450d8dcc7c5c0764860a",
+        "studentUniqueId": "604830"
+      },
+      {
+        "studentSectionAssociation_id": "fa4433f2ee9c4335b93eaff80b84bb25",
+        "id": "37e0e18ee8f34da0b16fdcf694a24c43",
+        "studentUniqueId": "605065"
+      },
+      {
+        "studentSectionAssociation_id": "7ddb2d47a63d411a8c9bda366d963871",
+        "id": "cc372fd8d5b44c66a538590d5cd5a1f5",
+        "studentUniqueId": "605115"
+      },
+      {
+        "studentSectionAssociation_id": "2f3eda656b4e4ca8bcd5d2581c7335f3",
+        "id": "fd17f24e52994111a3089c05c279c6be",
+        "studentUniqueId": "604883"
+      },
+      {
+        "studentSectionAssociation_id": "e7619853547848f0a3e08e7bcf9442b2",
+        "id": "cc95dae619f04aab8b59f6d514620e11",
+        "studentUniqueId": "604934"
+      },
+      {
+        "studentSectionAssociation_id": "e2086e17f884431ea1c6ec7fab2737fd",
+        "id": "651761af435a4211a122aa51ed86f1bf",
+        "studentUniqueId": "605084"
+      },
+      {
+        "studentSectionAssociation_id": "03ab305339404fee867fc6fc55a79c24",
+        "id": "6e9a88274a2b44188257f7ec2690bb02",
+        "studentUniqueId": "605139"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "b65ae0f141094287a96d5bddf0bc25dd",
+      "localCourseCode": "ENG-3",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "2a6b68b637bc48b7bc455d49c7973429",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "121"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "143bae82f71f467ebd102af106da9946",
+    "uniqueSectionCode": "25590100101Trad122GOVT12011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Social Sciences and History",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "d3023d7987aa47c18efb9c1a131f8c5a",
+        "id": "d63ef2d6b9e64c05a707246f0d645fb8",
+        "staffUniqueId": "207274"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "8bbb26c48dc34727ae8886284e45a3f1",
+        "id": "540052abc3094fd9b3c2228feeb5edf0",
+        "studentUniqueId": "605301"
+      },
+      {
+        "studentSectionAssociation_id": "f8056d3c89b14553b7e647acca621724",
+        "id": "e085668a61de4473b4e07573e56d3b5e",
+        "studentUniqueId": "605223"
+      },
+      {
+        "studentSectionAssociation_id": "165c8e7cd19c4ea8a0b2568f0cf10096",
+        "id": "25a1939841194c619fe806ab86558cd0",
+        "studentUniqueId": "605250"
+      },
+      {
+        "studentSectionAssociation_id": "c6aa5a3dccc341e88dae46abc80d463f",
+        "id": "6d7aee33303b4c3daebecd461c6c91f6",
+        "studentUniqueId": "605227"
+      },
+      {
+        "studentSectionAssociation_id": "c3c672846efb4deea42d53cf6e4339fa",
+        "id": "d4e8131d641a42d8ac3f2b00adc6fed6",
+        "studentUniqueId": "605319"
+      },
+      {
+        "studentSectionAssociation_id": "93a205330af34ed7b86fe5adf80d62da",
+        "id": "0aef4c0ad8d54f70aaf6e70257d2d8cd",
+        "studentUniqueId": "605322"
+      },
+      {
+        "studentSectionAssociation_id": "d239fac01a184949baa16b98edbbf39a",
+        "id": "51030b08d39b48ec8089ef6475577389",
+        "studentUniqueId": "605296"
+      },
+      {
+        "studentSectionAssociation_id": "9675be5a09654e299c5161cc9f255b2f",
+        "id": "ec55b19c80bd481288781092cac1bd85",
+        "studentUniqueId": "605380"
+      },
+      {
+        "studentSectionAssociation_id": "688c1ae0a96c4e63b46318e5f2a7a48a",
+        "id": "ce32344477434cf68828cf8701572c58",
+        "studentUniqueId": "605360"
+      },
+      {
+        "studentSectionAssociation_id": "525e5dd18e1a4d2fb7da5e6ed120edd4",
+        "id": "c4c1b98e0b784c15a2d7beb074dd899d",
+        "studentUniqueId": "605208"
+      },
+      {
+        "studentSectionAssociation_id": "a2d0953ab23f43b3b27e4caedb7f9c28",
+        "id": "3240863f0c23498d831ecb6ed30c95ea",
+        "studentUniqueId": "605407"
+      },
+      {
+        "studentSectionAssociation_id": "4b4a7a676020440a880cbb9628e1c661",
+        "id": "7b1d7b6b50804efc8e727f1d388693c7",
+        "studentUniqueId": "605195"
+      },
+      {
+        "studentSectionAssociation_id": "370f4efe670b4a8b9bf3a7998b391f74",
+        "id": "33d12a71cb9041008d111790f2a2685a",
+        "studentUniqueId": "605210"
+      },
+      {
+        "studentSectionAssociation_id": "94bdb1a8377a458a81e0454b50e85236",
+        "id": "f852b48af322446f871359d1e2054261",
+        "studentUniqueId": "605265"
+      },
+      {
+        "studentSectionAssociation_id": "99a6a1d87d75485e9f5748a371f7f673",
+        "id": "00395524ba584e0a99bbda8c31619bbc",
+        "studentUniqueId": "605274"
+      },
+      {
+        "studentSectionAssociation_id": "e126ab4f777c44fd8c64120959f37bf1",
+        "id": "f79d343c121041df9c06d4662ee3dc55",
+        "studentUniqueId": "605272"
+      },
+      {
+        "studentSectionAssociation_id": "7ed8461167a6476ba800119f29d76799",
+        "id": "a009a63264d84a5c90172595c4378e88",
+        "studentUniqueId": "605297"
+      },
+      {
+        "studentSectionAssociation_id": "301fcb6bfad44d92bd029841a9659ea8",
+        "id": "226b865571204e28933ddc33a0b11f7f",
+        "studentUniqueId": "605176"
+      },
+      {
+        "studentSectionAssociation_id": "07e7485c9a57497f852acdcc0055b065",
+        "id": "6417862452a04969af0c6b54c1b622fb",
+        "studentUniqueId": "605363"
+      },
+      {
+        "studentSectionAssociation_id": "57e57a3d44ae4797a3a6a90ecce6abb7",
+        "id": "63ba19970feb40ee9c2a501cf7da1e1b",
+        "studentUniqueId": "605288"
+      },
+      {
+        "studentSectionAssociation_id": "7f4772e005f24eaab1c8dd31aefcc94e",
+        "id": "6eead894fb904f078e24f491374c9207",
+        "studentUniqueId": "605251"
+      },
+      {
+        "studentSectionAssociation_id": "eeb877a6d7d943cbadf8802871bb5b60",
+        "id": "d2380076751a46bda03760de5604f40b",
+        "studentUniqueId": "605261"
+      },
+      {
+        "studentSectionAssociation_id": "a2f2b916d8a44d699c3ab45d0796e0b4",
+        "id": "b507d3a5c13145c7a7f6e041921c0d48",
+        "studentUniqueId": "605199"
+      },
+      {
+        "studentSectionAssociation_id": "29be8118d9df4fb287199d5f67ea69e6",
+        "id": "1d1d034789c34939a59aa702d3019b1b",
+        "studentUniqueId": "605314"
+      },
+      {
+        "studentSectionAssociation_id": "c6ad3292f3fb419c8e38b8c7b63fd4cf",
+        "id": "25c3c00a6507426284016918bf04ebf9",
+        "studentUniqueId": "605255"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "74a785ee8641484fb0ba36e97ae4fbb7",
+      "localCourseCode": "GOVT",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "dd5514fde0304e7c9c833207854e4add",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "122"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "bf430cd6382c4e808ec6b46adb9d2a11",
+    "uniqueSectionCode": "25590100101Trad122GOVT22011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Social Sciences and History",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "8dc0afb73d024d75a9fe8868e32c550f",
+        "id": "d63ef2d6b9e64c05a707246f0d645fb8",
+        "staffUniqueId": "207274"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "3f56b4e3b7e244ca9c7e5d37c7503eee",
+        "id": "540052abc3094fd9b3c2228feeb5edf0",
+        "studentUniqueId": "605301"
+      },
+      {
+        "studentSectionAssociation_id": "dfae739d1ae3426ebfe7ccced5c61add",
+        "id": "e085668a61de4473b4e07573e56d3b5e",
+        "studentUniqueId": "605223"
+      },
+      {
+        "studentSectionAssociation_id": "966f1522cfd54fa6aaa0515fcabaa4cf",
+        "id": "25a1939841194c619fe806ab86558cd0",
+        "studentUniqueId": "605250"
+      },
+      {
+        "studentSectionAssociation_id": "4042d60bd6294773947b162a49f94d56",
+        "id": "6d7aee33303b4c3daebecd461c6c91f6",
+        "studentUniqueId": "605227"
+      },
+      {
+        "studentSectionAssociation_id": "360c55c1c7ca4b66a24a2040641abe13",
+        "id": "d4e8131d641a42d8ac3f2b00adc6fed6",
+        "studentUniqueId": "605319"
+      },
+      {
+        "studentSectionAssociation_id": "0c069ba909a94faaad7e54edaf875d12",
+        "id": "0aef4c0ad8d54f70aaf6e70257d2d8cd",
+        "studentUniqueId": "605322"
+      },
+      {
+        "studentSectionAssociation_id": "a0d80e4337b54b158718b81ef578f076",
+        "id": "51030b08d39b48ec8089ef6475577389",
+        "studentUniqueId": "605296"
+      },
+      {
+        "studentSectionAssociation_id": "64dcc3e96e944f9eb396baf80d4a1f5a",
+        "id": "ec55b19c80bd481288781092cac1bd85",
+        "studentUniqueId": "605380"
+      },
+      {
+        "studentSectionAssociation_id": "35fdb430f113455f886b942d5d2d6ac8",
+        "id": "ce32344477434cf68828cf8701572c58",
+        "studentUniqueId": "605360"
+      },
+      {
+        "studentSectionAssociation_id": "26abd653330042e1a56c70461855170e",
+        "id": "c4c1b98e0b784c15a2d7beb074dd899d",
+        "studentUniqueId": "605208"
+      },
+      {
+        "studentSectionAssociation_id": "b1b818d4211b41f8921012d3fe657008",
+        "id": "3240863f0c23498d831ecb6ed30c95ea",
+        "studentUniqueId": "605407"
+      },
+      {
+        "studentSectionAssociation_id": "baddd8e85c2a441b85ce13eae6b7c275",
+        "id": "7b1d7b6b50804efc8e727f1d388693c7",
+        "studentUniqueId": "605195"
+      },
+      {
+        "studentSectionAssociation_id": "af194d7e0e564f6f90daf33053d275ba",
+        "id": "33d12a71cb9041008d111790f2a2685a",
+        "studentUniqueId": "605210"
+      },
+      {
+        "studentSectionAssociation_id": "3684d3d58d214aec905e3d5b0509aecb",
+        "id": "f852b48af322446f871359d1e2054261",
+        "studentUniqueId": "605265"
+      },
+      {
+        "studentSectionAssociation_id": "c26e16a300694b8ca19206813948e51d",
+        "id": "00395524ba584e0a99bbda8c31619bbc",
+        "studentUniqueId": "605274"
+      },
+      {
+        "studentSectionAssociation_id": "c22a7596020e40b18a70cf0de96729aa",
+        "id": "f79d343c121041df9c06d4662ee3dc55",
+        "studentUniqueId": "605272"
+      },
+      {
+        "studentSectionAssociation_id": "911bc9238b3b4b8d98dbcba65d3bdcf0",
+        "id": "a009a63264d84a5c90172595c4378e88",
+        "studentUniqueId": "605297"
+      },
+      {
+        "studentSectionAssociation_id": "dfb84d726dbd43379a1f1308c8b30f93",
+        "id": "226b865571204e28933ddc33a0b11f7f",
+        "studentUniqueId": "605176"
+      },
+      {
+        "studentSectionAssociation_id": "959dd613f32b4bcaa0734115fc756577",
+        "id": "6417862452a04969af0c6b54c1b622fb",
+        "studentUniqueId": "605363"
+      },
+      {
+        "studentSectionAssociation_id": "d4911bd9532344a6968705da1fbf2b22",
+        "id": "63ba19970feb40ee9c2a501cf7da1e1b",
+        "studentUniqueId": "605288"
+      },
+      {
+        "studentSectionAssociation_id": "17478d6283524d3ead19ce9f3d9ce3db",
+        "id": "6eead894fb904f078e24f491374c9207",
+        "studentUniqueId": "605251"
+      },
+      {
+        "studentSectionAssociation_id": "8eda5951e91f43ab9c40856872ec12fb",
+        "id": "d2380076751a46bda03760de5604f40b",
+        "studentUniqueId": "605261"
+      },
+      {
+        "studentSectionAssociation_id": "0a914cee22ab40739abd29e96bdb5bb6",
+        "id": "b507d3a5c13145c7a7f6e041921c0d48",
+        "studentUniqueId": "605199"
+      },
+      {
+        "studentSectionAssociation_id": "7a22bb8cc30541b5907a725915025fe6",
+        "id": "1d1d034789c34939a59aa702d3019b1b",
+        "studentUniqueId": "605314"
+      },
+      {
+        "studentSectionAssociation_id": "552ff75674af4a2997608147a1272cf4",
+        "id": "25c3c00a6507426284016918bf04ebf9",
+        "studentUniqueId": "605255"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "074746d5b01145be906457e0c551e6f9",
+      "localCourseCode": "GOVT",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "dd5514fde0304e7c9c833207854e4add",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "122"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "2e8f0d76750941b084ba03380c0b8fc0",
+    "uniqueSectionCode": "25590100101Trad123USHIST12011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Social Sciences and History",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "cf8c549401534a00ae2a21e47851b53a",
+        "id": "a1319f56bb214cc7b8c7dcec023f49c8",
+        "staffUniqueId": "207275"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "89e6e07eea45418d968a51d7db7f7217",
+        "id": "e71adfccc4e248ac9efb6102a87a1f6d",
+        "studentUniqueId": "605294"
+      },
+      {
+        "studentSectionAssociation_id": "31865d3a9f8840fead7cbbd33a0d99ad",
+        "id": "628d027179454e6cb17fe9ba480a3949",
+        "studentUniqueId": "605214"
+      },
+      {
+        "studentSectionAssociation_id": "55c0ef045e324ba9ab5f810332f58aaf",
+        "id": "e2ce42a127704fd093fcc9ba731bed82",
+        "studentUniqueId": "605225"
+      },
+      {
+        "studentSectionAssociation_id": "9e122c78947e41249f08a1e4d08db6e6",
+        "id": "ac9e7fd58cab4c44bf83faceca169ba6",
+        "studentUniqueId": "605302"
+      },
+      {
+        "studentSectionAssociation_id": "e13b9b6e63d54f2a8c8e5ac1b4d8bf20",
+        "id": "b13c56d978b840d7b237864b35f9c7fa",
+        "studentUniqueId": "605445"
+      },
+      {
+        "studentSectionAssociation_id": "5ab8340186824cdbac7c018ab86598af",
+        "id": "dfb4c770c3ba43449e00acb5fc166bd3",
+        "studentUniqueId": "605400"
+      },
+      {
+        "studentSectionAssociation_id": "2de0d641ddfc468ca9e936dc89f9e2c4",
+        "id": "0fc90493b301478aac73362a6369d54d",
+        "studentUniqueId": "605253"
+      },
+      {
+        "studentSectionAssociation_id": "93ff16e049194999b7cbc030754c8329",
+        "id": "87aa9376efde4dda84a0e003ed74d4ce",
+        "studentUniqueId": "605387"
+      },
+      {
+        "studentSectionAssociation_id": "3e109186f9094627ae9e1166ba835cf8",
+        "id": "093917712c734ff1a4ac42f9f91f638b",
+        "studentUniqueId": "605308"
+      },
+      {
+        "studentSectionAssociation_id": "9a194214c7844a1db156f75d92f16d7c",
+        "id": "cb96ce2c86134b4e904b6531b4319115",
+        "studentUniqueId": "605245"
+      },
+      {
+        "studentSectionAssociation_id": "7ff3d09fc5b541288f67de289bb4a8c9",
+        "id": "a8570e015ce342428178eca452a2042b",
+        "studentUniqueId": "605401"
+      },
+      {
+        "studentSectionAssociation_id": "05a6fa4e68c34da29fedf4894322f719",
+        "id": "c77b9d396a24425d9bebdf70113bfee1",
+        "studentUniqueId": "605326"
+      },
+      {
+        "studentSectionAssociation_id": "4ba52c0932a449b8b8af675d69e86bd8",
+        "id": "b73972b75ed949ccb1fece7e0525b2d0",
+        "studentUniqueId": "605187"
+      },
+      {
+        "studentSectionAssociation_id": "946cbee457a74408b702e0b2e0ede71f",
+        "id": "fab6f84f27d44e8b9b168bfac47fd4c2",
+        "studentUniqueId": "605266"
+      },
+      {
+        "studentSectionAssociation_id": "2bbd2c16e9914907b9291d0319e4fd49",
+        "id": "b58ef0f3e1d34687b5400e3177a984ec",
+        "studentUniqueId": "605273"
+      },
+      {
+        "studentSectionAssociation_id": "cc6ec833590046efb9b1976b60a768d3",
+        "id": "c8f83f34901447e5b48b9392aca1ad3d",
+        "studentUniqueId": "605422"
+      },
+      {
+        "studentSectionAssociation_id": "65554fcc7e2d4b54948620fc814ee8ed",
+        "id": "65f99b223bf846f8aeb63edac8c0bea8",
+        "studentUniqueId": "605451"
+      },
+      {
+        "studentSectionAssociation_id": "1609da112882426f9f21a450929a803a",
+        "id": "eaa1e2fe137643608fbe3e4aa74c7088",
+        "studentUniqueId": "605259"
+      },
+      {
+        "studentSectionAssociation_id": "f442133af84048a296f46bf097e722f6",
+        "id": "360449bb6b7e4fe2a47b56cd877f0b75",
+        "studentUniqueId": "605435"
+      },
+      {
+        "studentSectionAssociation_id": "473ff050b3614d39bff0e15fc7debbf1",
+        "id": "38b4ac88a47347fbaa1a88a2c6e10bbc",
+        "studentUniqueId": "605188"
+      },
+      {
+        "studentSectionAssociation_id": "3e7c9f08a7b64ddbae5c04d7fc25afdc",
+        "id": "122ccdb7539e4b2a9823951be134fa09",
+        "studentUniqueId": "605417"
+      },
+      {
+        "studentSectionAssociation_id": "9cc811d35b054d51a475b3a982864cfa",
+        "id": "d9d825f5e5554187beb892bf1230dd71",
+        "studentUniqueId": "605313"
+      },
+      {
+        "studentSectionAssociation_id": "0647550412df484eab03523446f8546b",
+        "id": "c3aac4428a7e45cca777659d52982286",
+        "studentUniqueId": "605240"
+      },
+      {
+        "studentSectionAssociation_id": "20f36aeab2d6409f8a2489b398f0d8bb",
+        "id": "055c8a26e7474e8a87205d193647d275",
+        "studentUniqueId": "605229"
+      },
+      {
+        "studentSectionAssociation_id": "d05f7ad6f8c04d29be64d88b53d10f1e",
+        "id": "15facf62bbaf4d16b62ba07ce9b4a621",
+        "studentUniqueId": "605248"
+      },
+      {
+        "studentSectionAssociation_id": "3366dc8119d84b028d0c6f3a4f8fe0d1",
+        "id": "43e1b01270cf4c5e9d3842fbe3a67a49",
+        "studentUniqueId": "605384"
+      },
+      {
+        "studentSectionAssociation_id": "bbc9fa28a7304c7f978e1acbfe202d10",
+        "id": "1f85f7766f954a3d854130fb195b2948",
+        "studentUniqueId": "605183"
+      },
+      {
+        "studentSectionAssociation_id": "5d869775629740d69530ff20353fdc3c",
+        "id": "39a5a34a3fe24e60b875ce0c317155c1",
+        "studentUniqueId": "605235"
+      },
+      {
+        "studentSectionAssociation_id": "d08049cf1dc84676816cb7072db8b62c",
+        "id": "64d64d4de5414da6a4b99d242afe4dd5",
+        "studentUniqueId": "605204"
+      },
+      {
+        "studentSectionAssociation_id": "a605a48202064d1e994a7b1c42239416",
+        "id": "11b7d6f9264141dfb8f59ece3041e7e7",
+        "studentUniqueId": "605196"
+      },
+      {
+        "studentSectionAssociation_id": "aa287322f39c4c1daf1dd9c6ba00e813",
+        "id": "4bc877e58f0b408fa09664dcd56c51cc",
+        "studentUniqueId": "605362"
+      },
+      {
+        "studentSectionAssociation_id": "9ae1cca1ccbb47188e2cee143365474b",
+        "id": "4d7db5aa28d84d3da96e4361f188e4a2",
+        "studentUniqueId": "605247"
+      },
+      {
+        "studentSectionAssociation_id": "58b3e4ec39be4fa9975af23460425237",
+        "id": "ea9b78b0b72342c7b5e5eb785240dfc4",
+        "studentUniqueId": "605335"
+      },
+      {
+        "studentSectionAssociation_id": "8b1c5358079e4c4986ac3209ddaf4aa4",
+        "id": "b5adea2ea3314438a78591d91919b936",
+        "studentUniqueId": "605348"
+      },
+      {
+        "studentSectionAssociation_id": "e9d0564419184abf89bcdf6f2a23bbed",
+        "id": "29d9f3e961d4411d803ad11e499b6e22",
+        "studentUniqueId": "605175"
+      },
+      {
+        "studentSectionAssociation_id": "1f548fb7b9174a80960001d5bdbf7536",
+        "id": "33d4d8776d474f0cbd8bd1ebcafca125",
+        "studentUniqueId": "605367"
+      },
+      {
+        "studentSectionAssociation_id": "f324b4418bb644baa307d88f9ef59cdb",
+        "id": "2ff5768fe71444dc82898c4dda7c7fbd",
+        "studentUniqueId": "605432"
+      },
+      {
+        "studentSectionAssociation_id": "c37a95278cfd42ad8c02abb798bc1f9a",
+        "id": "8729fe71940a46309d4b0b8aa751f495",
+        "studentUniqueId": "605394"
+      },
+      {
+        "studentSectionAssociation_id": "f0836fb6ab3f4371b1aa137cd673fd3f",
+        "id": "addaf1a9c3984ce7804071f0527db177",
+        "studentUniqueId": "605356"
+      },
+      {
+        "studentSectionAssociation_id": "b0f10a3d4ac6455dabebaa6175c0ca8c",
+        "id": "44fb8ed12f21457ab600f30056285634",
+        "studentUniqueId": "605287"
+      },
+      {
+        "studentSectionAssociation_id": "96eebb2d3ffd43c2ab04e93a38a7d720",
+        "id": "94a71fc107cc43a386fec3a5af91ca31",
+        "studentUniqueId": "605177"
+      },
+      {
+        "studentSectionAssociation_id": "5a328b0a3fc94705a1286074bba49b1c",
+        "id": "fe1fee53ef5f40a79eeb15b95fb7f024",
+        "studentUniqueId": "605398"
+      },
+      {
+        "studentSectionAssociation_id": "428088d8f8044f49afe288f0d3ce7cd4",
+        "id": "37654033ca314d40879f5a5f718f3309",
+        "studentUniqueId": "605216"
+      },
+      {
+        "studentSectionAssociation_id": "60cc8f94e46d4984899be3c2ea930505",
+        "id": "3182c372a1904c3093cb92863dcb278b",
+        "studentUniqueId": "605431"
+      },
+      {
+        "studentSectionAssociation_id": "9f70531fcc3d4168a04bcb29edece91f",
+        "id": "b96da72325f24862915be58fccd11fcf",
+        "studentUniqueId": "605207"
+      },
+      {
+        "studentSectionAssociation_id": "2d270dd5b1bc4b2486d44cd015ab46a2",
+        "id": "7be65a4edf3540688a8d978d89f41e63",
+        "studentUniqueId": "605212"
+      },
+      {
+        "studentSectionAssociation_id": "c93e505de28444e087c07759db8429a7",
+        "id": "bbe0d7e4715648f792a571691b64769c",
+        "studentUniqueId": "605260"
+      },
+      {
+        "studentSectionAssociation_id": "de6e2daa1b8a4c20b9a32e9335b7f1d7",
+        "id": "60bc1ea8069a4958b617d27277d58015",
+        "studentUniqueId": "605306"
+      },
+      {
+        "studentSectionAssociation_id": "21a2462e6486404db558c474875a90e3",
+        "id": "21682129c84848769b92884cc1ac3e85",
+        "studentUniqueId": "605217"
+      },
+      {
+        "studentSectionAssociation_id": "d838f1e9cbb743ac8d76c928652e992a",
+        "id": "9d45443ceb0a4eee82ffbe650a0bcd3c",
+        "studentUniqueId": "605427"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "bb125d74cc4742288f886b1378ae7bee",
+      "localCourseCode": "US-HIST",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "112ac9a6ded2418dbc55c16c0a4747aa",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "123"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "454211f808c240ae95e318e2a49147c5",
+    "uniqueSectionCode": "25590100101Trad123USHIST22011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Social Sciences and History",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "c8f371690908490f9fbffc9df9856e58",
+        "id": "a1319f56bb214cc7b8c7dcec023f49c8",
+        "staffUniqueId": "207275"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "437a753f840f41c1858ac3764a89fc38",
+        "id": "e71adfccc4e248ac9efb6102a87a1f6d",
+        "studentUniqueId": "605294"
+      },
+      {
+        "studentSectionAssociation_id": "9960155b7b7144df8fb2261affa448ed",
+        "id": "628d027179454e6cb17fe9ba480a3949",
+        "studentUniqueId": "605214"
+      },
+      {
+        "studentSectionAssociation_id": "22ff9fbe7e514a49a58fed872da814aa",
+        "id": "e2ce42a127704fd093fcc9ba731bed82",
+        "studentUniqueId": "605225"
+      },
+      {
+        "studentSectionAssociation_id": "7fcb8d46595f4fc298ff5b0b38c76501",
+        "id": "ac9e7fd58cab4c44bf83faceca169ba6",
+        "studentUniqueId": "605302"
+      },
+      {
+        "studentSectionAssociation_id": "c86fef8f45c34340805a400ca43c8053",
+        "id": "b13c56d978b840d7b237864b35f9c7fa",
+        "studentUniqueId": "605445"
+      },
+      {
+        "studentSectionAssociation_id": "ab3baf8dabdc4a449b9ee623ddfb76e6",
+        "id": "dfb4c770c3ba43449e00acb5fc166bd3",
+        "studentUniqueId": "605400"
+      },
+      {
+        "studentSectionAssociation_id": "9662ce0d53774c80b4deec341d57a142",
+        "id": "0fc90493b301478aac73362a6369d54d",
+        "studentUniqueId": "605253"
+      },
+      {
+        "studentSectionAssociation_id": "3a9e75cb1eb54849a63c7126e251b8c0",
+        "id": "87aa9376efde4dda84a0e003ed74d4ce",
+        "studentUniqueId": "605387"
+      },
+      {
+        "studentSectionAssociation_id": "eeb8fde548194e83b07c4d8cc0f92d12",
+        "id": "093917712c734ff1a4ac42f9f91f638b",
+        "studentUniqueId": "605308"
+      },
+      {
+        "studentSectionAssociation_id": "8dfe13f6bd414d68978f3e8584b39600",
+        "id": "cb96ce2c86134b4e904b6531b4319115",
+        "studentUniqueId": "605245"
+      },
+      {
+        "studentSectionAssociation_id": "85495ef1565d4be2bdd2895e6bcbbceb",
+        "id": "a8570e015ce342428178eca452a2042b",
+        "studentUniqueId": "605401"
+      },
+      {
+        "studentSectionAssociation_id": "1b0aa6210dca499c8294f53be92ec2e5",
+        "id": "c77b9d396a24425d9bebdf70113bfee1",
+        "studentUniqueId": "605326"
+      },
+      {
+        "studentSectionAssociation_id": "10fb06c20bed4a80b2376917353e9e17",
+        "id": "b73972b75ed949ccb1fece7e0525b2d0",
+        "studentUniqueId": "605187"
+      },
+      {
+        "studentSectionAssociation_id": "443a62af95c14eb490d92e63ee26223f",
+        "id": "fab6f84f27d44e8b9b168bfac47fd4c2",
+        "studentUniqueId": "605266"
+      },
+      {
+        "studentSectionAssociation_id": "bfdf68953fd542f48d470e8b1686fe12",
+        "id": "b58ef0f3e1d34687b5400e3177a984ec",
+        "studentUniqueId": "605273"
+      },
+      {
+        "studentSectionAssociation_id": "7303d623f73f4ceda3f5990d710c1cdb",
+        "id": "c8f83f34901447e5b48b9392aca1ad3d",
+        "studentUniqueId": "605422"
+      },
+      {
+        "studentSectionAssociation_id": "d95a3e04db1644e78e8536f64f66bb66",
+        "id": "65f99b223bf846f8aeb63edac8c0bea8",
+        "studentUniqueId": "605451"
+      },
+      {
+        "studentSectionAssociation_id": "1f68a76fa6024f29a7e0114b09696aa4",
+        "id": "eaa1e2fe137643608fbe3e4aa74c7088",
+        "studentUniqueId": "605259"
+      },
+      {
+        "studentSectionAssociation_id": "1239214b47f3418f891d06152da00f80",
+        "id": "360449bb6b7e4fe2a47b56cd877f0b75",
+        "studentUniqueId": "605435"
+      },
+      {
+        "studentSectionAssociation_id": "12c3382a8f4e4c569ac70066558de171",
+        "id": "38b4ac88a47347fbaa1a88a2c6e10bbc",
+        "studentUniqueId": "605188"
+      },
+      {
+        "studentSectionAssociation_id": "e8efddaff65348f18a3e4e2a96ff752f",
+        "id": "122ccdb7539e4b2a9823951be134fa09",
+        "studentUniqueId": "605417"
+      },
+      {
+        "studentSectionAssociation_id": "16d9aceea341456f9448e6fe0d582142",
+        "id": "d9d825f5e5554187beb892bf1230dd71",
+        "studentUniqueId": "605313"
+      },
+      {
+        "studentSectionAssociation_id": "30bb5a1c8d274d52bcd0d3a42703f833",
+        "id": "c3aac4428a7e45cca777659d52982286",
+        "studentUniqueId": "605240"
+      },
+      {
+        "studentSectionAssociation_id": "9ee7ad0de3554f718bdf1d3810361463",
+        "id": "055c8a26e7474e8a87205d193647d275",
+        "studentUniqueId": "605229"
+      },
+      {
+        "studentSectionAssociation_id": "e9b6e85d7df1443fa560870bfd667979",
+        "id": "15facf62bbaf4d16b62ba07ce9b4a621",
+        "studentUniqueId": "605248"
+      },
+      {
+        "studentSectionAssociation_id": "d8395cae0b1c40879a4ebc03dd063c45",
+        "id": "43e1b01270cf4c5e9d3842fbe3a67a49",
+        "studentUniqueId": "605384"
+      },
+      {
+        "studentSectionAssociation_id": "f35d01a45f8d44c0b9bbe1694bb0fdc0",
+        "id": "1f85f7766f954a3d854130fb195b2948",
+        "studentUniqueId": "605183"
+      },
+      {
+        "studentSectionAssociation_id": "c2ac91a40c4045a2be3bb6f1ca31319c",
+        "id": "39a5a34a3fe24e60b875ce0c317155c1",
+        "studentUniqueId": "605235"
+      },
+      {
+        "studentSectionAssociation_id": "fb4fb5841e894e0c8878853de9dc9336",
+        "id": "64d64d4de5414da6a4b99d242afe4dd5",
+        "studentUniqueId": "605204"
+      },
+      {
+        "studentSectionAssociation_id": "510dc6efffca496190fb9bc78f9b1627",
+        "id": "11b7d6f9264141dfb8f59ece3041e7e7",
+        "studentUniqueId": "605196"
+      },
+      {
+        "studentSectionAssociation_id": "c7e46c0c9ed441e09117906faa4025c6",
+        "id": "4bc877e58f0b408fa09664dcd56c51cc",
+        "studentUniqueId": "605362"
+      },
+      {
+        "studentSectionAssociation_id": "f3d75341b5b843cbbb4c2609bd8a9619",
+        "id": "4d7db5aa28d84d3da96e4361f188e4a2",
+        "studentUniqueId": "605247"
+      },
+      {
+        "studentSectionAssociation_id": "d661aedfab514835ae1eb9ecd1f1b116",
+        "id": "ea9b78b0b72342c7b5e5eb785240dfc4",
+        "studentUniqueId": "605335"
+      },
+      {
+        "studentSectionAssociation_id": "874765620e7348a2b3882891b8af734e",
+        "id": "b5adea2ea3314438a78591d91919b936",
+        "studentUniqueId": "605348"
+      },
+      {
+        "studentSectionAssociation_id": "9c8b7ae8778f464f8c06931adab38e18",
+        "id": "29d9f3e961d4411d803ad11e499b6e22",
+        "studentUniqueId": "605175"
+      },
+      {
+        "studentSectionAssociation_id": "09dbb09dc7c94a8ba7f07ad5f6b60a69",
+        "id": "33d4d8776d474f0cbd8bd1ebcafca125",
+        "studentUniqueId": "605367"
+      },
+      {
+        "studentSectionAssociation_id": "34460f38328a431181b5d0c73d19dd54",
+        "id": "2ff5768fe71444dc82898c4dda7c7fbd",
+        "studentUniqueId": "605432"
+      },
+      {
+        "studentSectionAssociation_id": "75f896f27661447aa162852316f031a8",
+        "id": "8729fe71940a46309d4b0b8aa751f495",
+        "studentUniqueId": "605394"
+      },
+      {
+        "studentSectionAssociation_id": "3e9545ad4f9a466ba5607056c347a067",
+        "id": "addaf1a9c3984ce7804071f0527db177",
+        "studentUniqueId": "605356"
+      },
+      {
+        "studentSectionAssociation_id": "857a9288086b41cf8714cc3e5b4ea223",
+        "id": "44fb8ed12f21457ab600f30056285634",
+        "studentUniqueId": "605287"
+      },
+      {
+        "studentSectionAssociation_id": "395111ec5fc04c20baf9e0037d1008ba",
+        "id": "94a71fc107cc43a386fec3a5af91ca31",
+        "studentUniqueId": "605177"
+      },
+      {
+        "studentSectionAssociation_id": "18f49db4c12a46239b2bfbdda550e345",
+        "id": "fe1fee53ef5f40a79eeb15b95fb7f024",
+        "studentUniqueId": "605398"
+      },
+      {
+        "studentSectionAssociation_id": "ea7ffd6dba6f4f0da5be500befcc8abc",
+        "id": "37654033ca314d40879f5a5f718f3309",
+        "studentUniqueId": "605216"
+      },
+      {
+        "studentSectionAssociation_id": "790845bbd7d44247a9566a5b0e9503f7",
+        "id": "3182c372a1904c3093cb92863dcb278b",
+        "studentUniqueId": "605431"
+      },
+      {
+        "studentSectionAssociation_id": "d9ff7c9c80224b57b4dec4aa18573842",
+        "id": "b96da72325f24862915be58fccd11fcf",
+        "studentUniqueId": "605207"
+      },
+      {
+        "studentSectionAssociation_id": "272edaf575f549a49c2b1aa086cd3194",
+        "id": "7be65a4edf3540688a8d978d89f41e63",
+        "studentUniqueId": "605212"
+      },
+      {
+        "studentSectionAssociation_id": "c6dba3d15d06484b93192b2a843b7134",
+        "id": "bbe0d7e4715648f792a571691b64769c",
+        "studentUniqueId": "605260"
+      },
+      {
+        "studentSectionAssociation_id": "364eebba47fb40359e430ac06913b1eb",
+        "id": "60bc1ea8069a4958b617d27277d58015",
+        "studentUniqueId": "605306"
+      },
+      {
+        "studentSectionAssociation_id": "14847f60d8f44e0b935b164f14c3c5ae",
+        "id": "21682129c84848769b92884cc1ac3e85",
+        "studentUniqueId": "605217"
+      },
+      {
+        "studentSectionAssociation_id": "71aaa94abbae42e6aacf143df4eec615",
+        "id": "9d45443ceb0a4eee82ffbe650a0bcd3c",
+        "studentUniqueId": "605427"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "6f38a0c6f00a42e69c70fa14889d11ff",
+      "localCourseCode": "US-HIST",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "112ac9a6ded2418dbc55c16c0a4747aa",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "123"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "9ebb65aec9a4494fb73511ae173b5938",
+    "uniqueSectionCode": "25590100101Trad124PHOTJOUR1201",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Career and Technical Education",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "262865421a6248308a80039c2882c4ec",
+        "id": "47925aa4a733471c8e3b4bcf0404ee07",
+        "staffUniqueId": "207282"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "9c305f37512a4635b46c919aa0a87e1b",
+        "id": "ccf849e573834c4c89e35565424bf711",
+        "studentUniqueId": "605780"
+      },
+      {
+        "studentSectionAssociation_id": "0a69f81a7341428eaf1972df544fdbd1",
+        "id": "375908625d484b538e7f1ac0508eb129",
+        "studentUniqueId": "605750"
+      },
+      {
+        "studentSectionAssociation_id": "40a123ffd0eb4a8798ad29b3fa322544",
+        "id": "dabbd644fcbf40eaa0b1e7a428dce297",
+        "studentUniqueId": "605674"
+      },
+      {
+        "studentSectionAssociation_id": "f1f3182bef13439a81cc24b5b49bdca3",
+        "id": "2df52085b8344054be98db3195173e8d",
+        "studentUniqueId": "605554"
+      },
+      {
+        "studentSectionAssociation_id": "a16c46665b4b4d80a5419d5afb0dc557",
+        "id": "d37aa21a6e8f49c6a488ff94c5371227",
+        "studentUniqueId": "605611"
+      },
+      {
+        "studentSectionAssociation_id": "3004d79c606148bb8561e155e60a1baa",
+        "id": "dc15a701155a4b80847d7082476711e6",
+        "studentUniqueId": "605638"
+      },
+      {
+        "studentSectionAssociation_id": "94790a43c3614ec29c8c2a2f682f7ca8",
+        "id": "eac7aa7b70ff4087a7509b5b37575355",
+        "studentUniqueId": "605743"
+      },
+      {
+        "studentSectionAssociation_id": "ca0f69ce6d7f4dc6bfebf143495de4d4",
+        "id": "8e6cac15c3bc48d4bacdc308dd182330",
+        "studentUniqueId": "605626"
+      },
+      {
+        "studentSectionAssociation_id": "1b5078ca647242198f8521034711f462",
+        "id": "efdc1014e4e84cfcb4aac12679bb7042",
+        "studentUniqueId": "605667"
+      },
+      {
+        "studentSectionAssociation_id": "4ddc220147e342d789bb7b0aac4a9e22",
+        "id": "6b05d31b00fd41dd92e5a61985466915",
+        "studentUniqueId": "605511"
+      },
+      {
+        "studentSectionAssociation_id": "9fe56063469044b68442f2a95b75c4e0",
+        "id": "bd0b8b2471ac4e3cae057a00e87f2d83",
+        "studentUniqueId": "605531"
+      },
+      {
+        "studentSectionAssociation_id": "3fe6911676164c23b7f8f722de0cbb38",
+        "id": "d848c5e358c94dadb60e6dd064368b9e",
+        "studentUniqueId": "605470"
+      },
+      {
+        "studentSectionAssociation_id": "4d81591b962e4c93935d970e02a86bf5",
+        "id": "937ff920cc314c2c99dee6b26b35812f",
+        "studentUniqueId": "605716"
+      },
+      {
+        "studentSectionAssociation_id": "440f42040de144e987407e1a23b9ebff",
+        "id": "399f72810340441e9718bf1d653c2e3c",
+        "studentUniqueId": "605654"
+      },
+      {
+        "studentSectionAssociation_id": "6a42155ca4e14cbd8f4cdab067ca4c45",
+        "id": "d398cff45bfa4f08801170796a87d039",
+        "studentUniqueId": "605732"
+      },
+      {
+        "studentSectionAssociation_id": "59b213bb957d459bac31750e0a91c6d6",
+        "id": "791a116b096e4644bc24c55cac390bf1",
+        "studentUniqueId": "605549"
+      },
+      {
+        "studentSectionAssociation_id": "1e0b88195eac40779da62c293f1d8ff2",
+        "id": "15ec4916e0944ba281ba45f03d940d6a",
+        "studentUniqueId": "605540"
+      },
+      {
+        "studentSectionAssociation_id": "17a52b02ab314966a1fe6233ec8e424d",
+        "id": "bce3b5f3826b4f93a8a71a0cb37b7f83",
+        "studentUniqueId": "605457"
+      },
+      {
+        "studentSectionAssociation_id": "bd986b64323a4f10853ecb8c3cfa786f",
+        "id": "4366472bd2f049a4ad9e2762384cea3e",
+        "studentUniqueId": "605474"
+      },
+      {
+        "studentSectionAssociation_id": "96d88a97fd6b46bf808149e40a6169ce",
+        "id": "3c813cfc427d4ec7943ebb8788b16d5c",
+        "studentUniqueId": "605456"
+      },
+      {
+        "studentSectionAssociation_id": "49307c9f9d614772b23c6556c06203f3",
+        "id": "5f281e0aac7d4656a2aa187cfc7ba0cf",
+        "studentUniqueId": "605760"
+      },
+      {
+        "studentSectionAssociation_id": "c573994015eb4ade8fb336556adca685",
+        "id": "91738c30ce2a4899a1208f93ead4682f",
+        "studentUniqueId": "605715"
+      },
+      {
+        "studentSectionAssociation_id": "ade0401d0e2c46488dee62d92ad33840",
+        "id": "82f94ef09d674ce7a9100dea41838a42",
+        "studentUniqueId": "605528"
+      },
+      {
+        "studentSectionAssociation_id": "85234824051b4423ba80d500f2b0e6c3",
+        "id": "5901ce8097c94d3f89d5e75f05283590",
+        "studentUniqueId": "605749"
+      },
+      {
+        "studentSectionAssociation_id": "9a519faba0d848e4818d4bad167e25cd",
+        "id": "15235c7b14ff496dadec16340483645a",
+        "studentUniqueId": "605587"
+      },
+      {
+        "studentSectionAssociation_id": "58aa6c15a8304e01be2ffce506bce50b",
+        "id": "9a1312cc3cf24fb8aa959180e23ad617",
+        "studentUniqueId": "605651"
+      },
+      {
+        "studentSectionAssociation_id": "4c674dd8ccae4c7cb3cc6bfc754f7bde",
+        "id": "48007dd582424a7888a1f279f4d7cfdd",
+        "studentUniqueId": "605467"
+      },
+      {
+        "studentSectionAssociation_id": "9da1296ec420463b989cdcac9c9b246c",
+        "id": "2780be696ecd4ebab7eb9497e2bcf35f",
+        "studentUniqueId": "605717"
+      },
+      {
+        "studentSectionAssociation_id": "162808d72ef3476fae2474720fead6e7",
+        "id": "d68c906ec15f4d4e931b842dd243d862",
+        "studentUniqueId": "605721"
+      },
+      {
+        "studentSectionAssociation_id": "a85535d4dc0c43aba594f2109a9429b9",
+        "id": "3c3ad2eb6e614b6dad80a6eb3989a0f7",
+        "studentUniqueId": "605691"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "3001ee4365f044ada6d879fad2854b30",
+      "localCourseCode": "PHOTJOUR",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "dcc007809bcc461db8a9b1ca7dc8c8d9",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "124"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "75cadd9c7c424088ba717663b904444e",
+    "uniqueSectionCode": "25590100101Trad124PHOTJOUR2201",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Career and Technical Education",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "c2cf9592f9744b4d900144ca449c0b1e",
+        "id": "47925aa4a733471c8e3b4bcf0404ee07",
+        "staffUniqueId": "207282"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "689be5117c4c4228962eebc10b07d795",
+        "id": "ccf849e573834c4c89e35565424bf711",
+        "studentUniqueId": "605780"
+      },
+      {
+        "studentSectionAssociation_id": "93839337da44462bbb0f1b23942b2022",
+        "id": "375908625d484b538e7f1ac0508eb129",
+        "studentUniqueId": "605750"
+      },
+      {
+        "studentSectionAssociation_id": "08fad17eb3f04c5c9298f4e1627a31e8",
+        "id": "dabbd644fcbf40eaa0b1e7a428dce297",
+        "studentUniqueId": "605674"
+      },
+      {
+        "studentSectionAssociation_id": "d7c165f0af94495cac6b76ca01b03e24",
+        "id": "2df52085b8344054be98db3195173e8d",
+        "studentUniqueId": "605554"
+      },
+      {
+        "studentSectionAssociation_id": "ff01566b1c8a46049855071bff303289",
+        "id": "d37aa21a6e8f49c6a488ff94c5371227",
+        "studentUniqueId": "605611"
+      },
+      {
+        "studentSectionAssociation_id": "4a8f06cb108e4fde833c8a32dec2400f",
+        "id": "dc15a701155a4b80847d7082476711e6",
+        "studentUniqueId": "605638"
+      },
+      {
+        "studentSectionAssociation_id": "b66f02a2d1084d7fa37bd2189e10b6a2",
+        "id": "eac7aa7b70ff4087a7509b5b37575355",
+        "studentUniqueId": "605743"
+      },
+      {
+        "studentSectionAssociation_id": "3182c7bc713c46ac872dd0ac365a004e",
+        "id": "8e6cac15c3bc48d4bacdc308dd182330",
+        "studentUniqueId": "605626"
+      },
+      {
+        "studentSectionAssociation_id": "ce6a58f898814575ba994400da2ce5b0",
+        "id": "efdc1014e4e84cfcb4aac12679bb7042",
+        "studentUniqueId": "605667"
+      },
+      {
+        "studentSectionAssociation_id": "b3e4e933042245e696b0ffacbd15bd05",
+        "id": "6b05d31b00fd41dd92e5a61985466915",
+        "studentUniqueId": "605511"
+      },
+      {
+        "studentSectionAssociation_id": "4f1df77af938438ebc9066440d322d36",
+        "id": "bd0b8b2471ac4e3cae057a00e87f2d83",
+        "studentUniqueId": "605531"
+      },
+      {
+        "studentSectionAssociation_id": "393a27e652fe42e0a44164de5e0cee43",
+        "id": "d848c5e358c94dadb60e6dd064368b9e",
+        "studentUniqueId": "605470"
+      },
+      {
+        "studentSectionAssociation_id": "42bc47c91a1b48a4b4644c7379233679",
+        "id": "937ff920cc314c2c99dee6b26b35812f",
+        "studentUniqueId": "605716"
+      },
+      {
+        "studentSectionAssociation_id": "64c137a3f49249d1badc5eb021bb8f23",
+        "id": "399f72810340441e9718bf1d653c2e3c",
+        "studentUniqueId": "605654"
+      },
+      {
+        "studentSectionAssociation_id": "027848bd7dc04fcab0e8a91d530ba9de",
+        "id": "d398cff45bfa4f08801170796a87d039",
+        "studentUniqueId": "605732"
+      },
+      {
+        "studentSectionAssociation_id": "9bd999d069884ae0af604a73e918dba0",
+        "id": "791a116b096e4644bc24c55cac390bf1",
+        "studentUniqueId": "605549"
+      },
+      {
+        "studentSectionAssociation_id": "500eb78a25b1491a86579004fb897990",
+        "id": "15ec4916e0944ba281ba45f03d940d6a",
+        "studentUniqueId": "605540"
+      },
+      {
+        "studentSectionAssociation_id": "9263a8a87c134b64b470ccff124960a9",
+        "id": "bce3b5f3826b4f93a8a71a0cb37b7f83",
+        "studentUniqueId": "605457"
+      },
+      {
+        "studentSectionAssociation_id": "9df4889c0e38473fa2233aea78231657",
+        "id": "4366472bd2f049a4ad9e2762384cea3e",
+        "studentUniqueId": "605474"
+      },
+      {
+        "studentSectionAssociation_id": "37b1af6313524f8881fd365b81fa8c3b",
+        "id": "3c813cfc427d4ec7943ebb8788b16d5c",
+        "studentUniqueId": "605456"
+      },
+      {
+        "studentSectionAssociation_id": "2fe9c3776fc942b7a193fca5a3bf531f",
+        "id": "5f281e0aac7d4656a2aa187cfc7ba0cf",
+        "studentUniqueId": "605760"
+      },
+      {
+        "studentSectionAssociation_id": "969f5627ffd7444f936d39675ca60164",
+        "id": "91738c30ce2a4899a1208f93ead4682f",
+        "studentUniqueId": "605715"
+      },
+      {
+        "studentSectionAssociation_id": "7566e4bd94754c7b86636d9ef215dd35",
+        "id": "82f94ef09d674ce7a9100dea41838a42",
+        "studentUniqueId": "605528"
+      },
+      {
+        "studentSectionAssociation_id": "3505882907a94ed1bb1dba8f64e92f9f",
+        "id": "5901ce8097c94d3f89d5e75f05283590",
+        "studentUniqueId": "605749"
+      },
+      {
+        "studentSectionAssociation_id": "19f5434d2bb240fcb6180248944365d1",
+        "id": "15235c7b14ff496dadec16340483645a",
+        "studentUniqueId": "605587"
+      },
+      {
+        "studentSectionAssociation_id": "48e80534b11c449089f50ca771a33b72",
+        "id": "9a1312cc3cf24fb8aa959180e23ad617",
+        "studentUniqueId": "605651"
+      },
+      {
+        "studentSectionAssociation_id": "bc859f56230e45cf96ff12629a242ff7",
+        "id": "48007dd582424a7888a1f279f4d7cfdd",
+        "studentUniqueId": "605467"
+      },
+      {
+        "studentSectionAssociation_id": "043b79575684457a8a6601b7e3dc9920",
+        "id": "2780be696ecd4ebab7eb9497e2bcf35f",
+        "studentUniqueId": "605717"
+      },
+      {
+        "studentSectionAssociation_id": "5d1408784b6b42a8b8a5627dbd38fb5d",
+        "id": "d68c906ec15f4d4e931b842dd243d862",
+        "studentUniqueId": "605721"
+      },
+      {
+        "studentSectionAssociation_id": "67e3301b9f9e49c9a627d7cdade32d43",
+        "id": "3c3ad2eb6e614b6dad80a6eb3989a0f7",
+        "studentUniqueId": "605691"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "d4dea3710c534ef2b91c2d6f20053951",
+      "localCourseCode": "PHOTJOUR",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "dcc007809bcc461db8a9b1ca7dc8c8d9",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "124"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "6dd42bb595d2413ab3268d0062e8813e",
+    "uniqueSectionCode": "25590100101Trad222ENVIRSYS1201",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Life and Physical Sciences",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "ac6816d50dc54cd5a64acf76a1e53894",
+        "id": "039e1dc9f0f94ee095aa4edf091a063f",
+        "staffUniqueId": "207272"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "4f750d6cf8c14e64a9e1e7482f716cd0",
+        "id": "c142382e0af14eab912dbd2f2cc19027",
+        "studentUniqueId": "605550"
+      },
+      {
+        "studentSectionAssociation_id": "1cb90f81a5b146bfb21a41df44b07b00",
+        "id": "5b2174c280174186ba03a6e66d4c4d29",
+        "studentUniqueId": "605739"
+      },
+      {
+        "studentSectionAssociation_id": "31c15d37e8f1474a9dc64e66cfa002b7",
+        "id": "9a1f7b0cbe8b41a5902a2bdbac1412ca",
+        "studentUniqueId": "605644"
+      },
+      {
+        "studentSectionAssociation_id": "f19ac21694464dfaaa7bd7619008aaf1",
+        "id": "e16162e516ee441baea440457c796455",
+        "studentUniqueId": "605439"
+      },
+      {
+        "studentSectionAssociation_id": "609bc9f2dd154bfc8237c170f24d62ee",
+        "id": "2d5a2fe2ccf94b4ba7b582466a026f13",
+        "studentUniqueId": "605756"
+      },
+      {
+        "studentSectionAssociation_id": "5c04384f88544842a3fb5ad9107d8198",
+        "id": "494d756eb9a740f4a557e652423dafe6",
+        "studentUniqueId": "605446"
+      },
+      {
+        "studentSectionAssociation_id": "4fb1b927ec4245988b40824615fb39ed",
+        "id": "5f8df67115fb450ea124f4956d84b28a",
+        "studentUniqueId": "605421"
+      },
+      {
+        "studentSectionAssociation_id": "39bb0d51aff8408f93f606146a18df68",
+        "id": "207decf6e0b44cba8cf8800ca2f53548",
+        "studentUniqueId": "605567"
+      },
+      {
+        "studentSectionAssociation_id": "41c2c0941593491c83dbd10fb874af6a",
+        "id": "2759a5f48fd8412ea52107ea63215f73",
+        "studentUniqueId": "605746"
+      },
+      {
+        "studentSectionAssociation_id": "4d6d01a36c694a25bd7b71d94726ba51",
+        "id": "e1107a975ab24baf9ce8f0ca219bbdb9",
+        "studentUniqueId": "605728"
+      },
+      {
+        "studentSectionAssociation_id": "9a17190b8b554f42b4e3c34ec58b4c7a",
+        "id": "475f76870f4344b58f233842c3219498",
+        "studentUniqueId": "605752"
+      },
+      {
+        "studentSectionAssociation_id": "8a31dd4ecec24622a5eef671745c1bbf",
+        "id": "f8f03b40d4554c6995e1c7b4cf35ec3a",
+        "studentUniqueId": "605610"
+      },
+      {
+        "studentSectionAssociation_id": "b8caba650913475290cb9146d6aad130",
+        "id": "f8a137f8365e407ba560d3c78a5844f5",
+        "studentUniqueId": "605609"
+      },
+      {
+        "studentSectionAssociation_id": "304f47e250624837895fe710229f121b",
+        "id": "711f695e152c4594a4be305c78dcd9e4",
+        "studentUniqueId": "605428"
+      },
+      {
+        "studentSectionAssociation_id": "7062374291814c0cb817ec4effdc2e10",
+        "id": "3067ba66dfea4877aa35bfaad61715d5",
+        "studentUniqueId": "605411"
+      },
+      {
+        "studentSectionAssociation_id": "806f3623fd31430c8a3e444610131727",
+        "id": "8ead73d1c7b24c1b99ad228b9f04a8bf",
+        "studentUniqueId": "605539"
+      },
+      {
+        "studentSectionAssociation_id": "af7f94b179cc4bc7b571eb2b312d9458",
+        "id": "53e06dbcf725470a810854fe9d4ae8fd",
+        "studentUniqueId": "605504"
+      },
+      {
+        "studentSectionAssociation_id": "4fb8262d40694ab799278cc1ba13ea03",
+        "id": "6b412f453e6a485ab340079628e94c95",
+        "studentUniqueId": "605537"
+      },
+      {
+        "studentSectionAssociation_id": "8f5414d7bd904905a661dd286f053083",
+        "id": "ac01fc2b59a24be6a87dfeeff86d6ffa",
+        "studentUniqueId": "605755"
+      },
+      {
+        "studentSectionAssociation_id": "4e1ea99fbdaf4751ad77cbd228093886",
+        "id": "d356a2a3d47844caae2eecb6a4649656",
+        "studentUniqueId": "605690"
+      },
+      {
+        "studentSectionAssociation_id": "a39aa61772194cd48bf0845e2ce4dec9",
+        "id": "a20c5e5a52dd48749237e029a02cbb95",
+        "studentUniqueId": "605628"
+      },
+      {
+        "studentSectionAssociation_id": "abb08213e3504212bd061cb3a04e787a",
+        "id": "20145b22567b419abe500ca264a733f2",
+        "studentUniqueId": "605588"
+      },
+      {
+        "studentSectionAssociation_id": "273ed87252d14f499d5b99b569278228",
+        "id": "1d04dcec35df422f8a0fc3e491c2a051",
+        "studentUniqueId": "605603"
+      },
+      {
+        "studentSectionAssociation_id": "b3e3428786504efda6e35440d4bf1268",
+        "id": "ad34aa1b17fd4e43809bad84f9460605",
+        "studentUniqueId": "605433"
+      },
+      {
+        "studentSectionAssociation_id": "7f5cd79a663e47c7ad22e7b58e2d21c0",
+        "id": "fb795c3157124c30b5a3c546fa6b6995",
+        "studentUniqueId": "605682"
+      },
+      {
+        "studentSectionAssociation_id": "4cb8136ab894414c8b0288eedfe89eb0",
+        "id": "bf267b56d2f9492cb09d534728afa412",
+        "studentUniqueId": "605694"
+      },
+      {
+        "studentSectionAssociation_id": "12d922ace2ae47b592af1dc8ec1dd3a3",
+        "id": "07fbd737afb142e6911795a77da3a34f",
+        "studentUniqueId": "605601"
+      },
+      {
+        "studentSectionAssociation_id": "3a425ca9ddd44064b3fdb1a8e75daafe",
+        "id": "12be2a72ba954b999f430696ac437208",
+        "studentUniqueId": "605614"
+      },
+      {
+        "studentSectionAssociation_id": "276b6231ec774f35b4d1d3537fcf05e2",
+        "id": "a29d253649fa4a2d923706ba4af44a72",
+        "studentUniqueId": "605718"
+      },
+      {
+        "studentSectionAssociation_id": "31518f14dc65452d909e9ed452753db4",
+        "id": "caa0c15bbb1846f481cc4f1c03823e8a",
+        "studentUniqueId": "605754"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "15245fd40fcc4ec4a4bef9852cd6cf31",
+      "localCourseCode": "ENVIRSYS",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "0e52b99e8e2040099d8715f1946ad8ad",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "222"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "08e135b2c1a14d2c99871538bb222688",
+    "uniqueSectionCode": "25590100101Trad222ENVIRSYS2201",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Life and Physical Sciences",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "bb7b15b16fee40bbaece709f90d525ef",
+        "id": "039e1dc9f0f94ee095aa4edf091a063f",
+        "staffUniqueId": "207272"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "e79783e4410846df8deca035a82a8629",
+        "id": "c142382e0af14eab912dbd2f2cc19027",
+        "studentUniqueId": "605550"
+      },
+      {
+        "studentSectionAssociation_id": "3c4eff84bf8346fcac6fa054c6255af8",
+        "id": "5b2174c280174186ba03a6e66d4c4d29",
+        "studentUniqueId": "605739"
+      },
+      {
+        "studentSectionAssociation_id": "296aa87012df4ea8b1c0d2ef3bb7e28d",
+        "id": "9a1f7b0cbe8b41a5902a2bdbac1412ca",
+        "studentUniqueId": "605644"
+      },
+      {
+        "studentSectionAssociation_id": "3e1dc6c858904ac7baa6ec2a1a2c4857",
+        "id": "e16162e516ee441baea440457c796455",
+        "studentUniqueId": "605439"
+      },
+      {
+        "studentSectionAssociation_id": "215385bbfcb34716b4ec43e74ad6bfc7",
+        "id": "2d5a2fe2ccf94b4ba7b582466a026f13",
+        "studentUniqueId": "605756"
+      },
+      {
+        "studentSectionAssociation_id": "b310c59c0f5a47e6b58fb136efe2a2e5",
+        "id": "494d756eb9a740f4a557e652423dafe6",
+        "studentUniqueId": "605446"
+      },
+      {
+        "studentSectionAssociation_id": "b3bc47f1c2284ca282470958322928ea",
+        "id": "5f8df67115fb450ea124f4956d84b28a",
+        "studentUniqueId": "605421"
+      },
+      {
+        "studentSectionAssociation_id": "664df3a33e32430491d0eb605b11906c",
+        "id": "207decf6e0b44cba8cf8800ca2f53548",
+        "studentUniqueId": "605567"
+      },
+      {
+        "studentSectionAssociation_id": "4ea7b84f3040483d99a5fee1a0653621",
+        "id": "2759a5f48fd8412ea52107ea63215f73",
+        "studentUniqueId": "605746"
+      },
+      {
+        "studentSectionAssociation_id": "02efdcdcadd44b409ac63424629f7209",
+        "id": "e1107a975ab24baf9ce8f0ca219bbdb9",
+        "studentUniqueId": "605728"
+      },
+      {
+        "studentSectionAssociation_id": "650451d37cba44ce898797545999ea6a",
+        "id": "475f76870f4344b58f233842c3219498",
+        "studentUniqueId": "605752"
+      },
+      {
+        "studentSectionAssociation_id": "b469da51d32343eca039941463f571ea",
+        "id": "f8f03b40d4554c6995e1c7b4cf35ec3a",
+        "studentUniqueId": "605610"
+      },
+      {
+        "studentSectionAssociation_id": "810a4afdb8574ffb8975730358dbc6e8",
+        "id": "f8a137f8365e407ba560d3c78a5844f5",
+        "studentUniqueId": "605609"
+      },
+      {
+        "studentSectionAssociation_id": "74abe43b65aa4498ab142c687cc21f98",
+        "id": "711f695e152c4594a4be305c78dcd9e4",
+        "studentUniqueId": "605428"
+      },
+      {
+        "studentSectionAssociation_id": "b06d2ecf4c8344efb86cb078b9d3cbc7",
+        "id": "3067ba66dfea4877aa35bfaad61715d5",
+        "studentUniqueId": "605411"
+      },
+      {
+        "studentSectionAssociation_id": "9b3a382ea5a14f3ea3e077f3002f1bee",
+        "id": "8ead73d1c7b24c1b99ad228b9f04a8bf",
+        "studentUniqueId": "605539"
+      },
+      {
+        "studentSectionAssociation_id": "c2a809bf51574666b061875efb95d7b4",
+        "id": "53e06dbcf725470a810854fe9d4ae8fd",
+        "studentUniqueId": "605504"
+      },
+      {
+        "studentSectionAssociation_id": "ca8b908ca2bf46c7a9efb8f8dc01a2b7",
+        "id": "6b412f453e6a485ab340079628e94c95",
+        "studentUniqueId": "605537"
+      },
+      {
+        "studentSectionAssociation_id": "eb6cf94eca48412e98e48bb73ff25e38",
+        "id": "ac01fc2b59a24be6a87dfeeff86d6ffa",
+        "studentUniqueId": "605755"
+      },
+      {
+        "studentSectionAssociation_id": "bdc2a6a78b834c6bbd7a70cceadc93ce",
+        "id": "d356a2a3d47844caae2eecb6a4649656",
+        "studentUniqueId": "605690"
+      },
+      {
+        "studentSectionAssociation_id": "5bfb011fbbf24aa5ac8928618eb5c234",
+        "id": "a20c5e5a52dd48749237e029a02cbb95",
+        "studentUniqueId": "605628"
+      },
+      {
+        "studentSectionAssociation_id": "15c476b9a38241218539e9299ab21057",
+        "id": "20145b22567b419abe500ca264a733f2",
+        "studentUniqueId": "605588"
+      },
+      {
+        "studentSectionAssociation_id": "e46c7bb91be24114a966b27008416c91",
+        "id": "1d04dcec35df422f8a0fc3e491c2a051",
+        "studentUniqueId": "605603"
+      },
+      {
+        "studentSectionAssociation_id": "5721027630b64e09835b66176ae06af7",
+        "id": "ad34aa1b17fd4e43809bad84f9460605",
+        "studentUniqueId": "605433"
+      },
+      {
+        "studentSectionAssociation_id": "30cc26cffe9f429983606f90c12a953e",
+        "id": "fb795c3157124c30b5a3c546fa6b6995",
+        "studentUniqueId": "605682"
+      },
+      {
+        "studentSectionAssociation_id": "04f5b62b3f2b4611bcdb42ac5dd1d658",
+        "id": "bf267b56d2f9492cb09d534728afa412",
+        "studentUniqueId": "605694"
+      },
+      {
+        "studentSectionAssociation_id": "630f8675ca064260be036dedde66243a",
+        "id": "07fbd737afb142e6911795a77da3a34f",
+        "studentUniqueId": "605601"
+      },
+      {
+        "studentSectionAssociation_id": "93c4cbdece644e5aae9c2cbb5f97ae31",
+        "id": "12be2a72ba954b999f430696ac437208",
+        "studentUniqueId": "605614"
+      },
+      {
+        "studentSectionAssociation_id": "76028abaf7aa448ea0e3bab35629f44d",
+        "id": "a29d253649fa4a2d923706ba4af44a72",
+        "studentUniqueId": "605718"
+      },
+      {
+        "studentSectionAssociation_id": "e534a36e54f7427a800a50eb2a397606",
+        "id": "caa0c15bbb1846f481cc4f1c03823e8a",
+        "studentUniqueId": "605754"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "22a5ed69af624d29ab7e762b6236b1e7",
+      "localCourseCode": "ENVIRSYS",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "0e52b99e8e2040099d8715f1946ad8ad",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "222"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "3baeb9c81fa24a9d82e4116dddabd35f",
+    "uniqueSectionCode": "25590100101Trad223PHYSICS12011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Science",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "78037a5269024bab9738882064595955",
+        "id": "af52746ee32849c38cbe0b4aa7431d77",
+        "staffUniqueId": "207273"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "12306d70081343fe891a09c5da8e1838",
+        "id": "7130597d86344171a7014b25af8687ac",
+        "studentUniqueId": "604899"
+      },
+      {
+        "studentSectionAssociation_id": "d92ed86925144dcb963e65a2c8ad93ff",
+        "id": "8b67522a64774c11838d1405a3b50f83",
+        "studentUniqueId": "604858"
+      },
+      {
+        "studentSectionAssociation_id": "ce19b241fe324d4ea0743394d9a7ec3f",
+        "id": "3c938529057f453c8b74d4d64b55d30e",
+        "studentUniqueId": "604984"
+      },
+      {
+        "studentSectionAssociation_id": "cec1555c120b460db1ee437059fc6d5c",
+        "id": "d83f5f6717d6407ba340aa03a01f9f04",
+        "studentUniqueId": "604848"
+      },
+      {
+        "studentSectionAssociation_id": "6bddfb19ad35422bb4c5afebbc4e00ed",
+        "id": "5d7c93da08b048fa82fdaa43da67a56b",
+        "studentUniqueId": "604975"
+      },
+      {
+        "studentSectionAssociation_id": "544999749ac44b1990f52a1894369ea6",
+        "id": "ff7458da3315447d8ed0dd7174c57d68",
+        "studentUniqueId": "604838"
+      },
+      {
+        "studentSectionAssociation_id": "236776702e52464da368550c65bca5bb",
+        "id": "99259f25520d4a079ebeacc832d44dfe",
+        "studentUniqueId": "605072"
+      },
+      {
+        "studentSectionAssociation_id": "503ca3f664de439eb1f7523125ddb895",
+        "id": "236100a4f2ff4852ac00f71f68cec8e1",
+        "studentUniqueId": "605121"
+      },
+      {
+        "studentSectionAssociation_id": "8ddc5227057d4cf9bb3c6e0d8b2cb436",
+        "id": "c0b2519e618d44a5bb55fb7000a71eea",
+        "studentUniqueId": "605029"
+      },
+      {
+        "studentSectionAssociation_id": "7ef974cea8a04c03b01138f86586469f",
+        "id": "fb4b94932ae44f84b93590fe030d8ab6",
+        "studentUniqueId": "605122"
+      },
+      {
+        "studentSectionAssociation_id": "0456ae75caa442bbbb2867cba2c34322",
+        "id": "b29d3cf3289f41fda4869ed4a00f7d7d",
+        "studentUniqueId": "605026"
+      },
+      {
+        "studentSectionAssociation_id": "c190ea0642f04297856377497c8f1ff4",
+        "id": "9e211b09f6c742b089c59f0c54346652",
+        "studentUniqueId": "605008"
+      },
+      {
+        "studentSectionAssociation_id": "f59c6da8833d4f9e9ccce64ff929b13c",
+        "id": "4fba5af3857a4a09b5ee11c6ed24ae0d",
+        "studentUniqueId": "605096"
+      },
+      {
+        "studentSectionAssociation_id": "eb10d18bead04a0c96b2d3fd00fa343c",
+        "id": "a36ec33a8d324301ab2f86ed18996e3a",
+        "studentUniqueId": "604998"
+      },
+      {
+        "studentSectionAssociation_id": "eb10fe4442ea44dd8fd1be6e3456b7ad",
+        "id": "5461e1024da14e8e90bd49a6f05cc546",
+        "studentUniqueId": "604873"
+      },
+      {
+        "studentSectionAssociation_id": "3611176108424cb0b4494ac17b14c57a",
+        "id": "c00d8fc6fd27404ea3f56ad53968b6d4",
+        "studentUniqueId": "604955"
+      },
+      {
+        "studentSectionAssociation_id": "8988db40d2db4c71986a58980519e531",
+        "id": "bf5b38a4bbd74adca6701a4d279ee799",
+        "studentUniqueId": "604947"
+      },
+      {
+        "studentSectionAssociation_id": "5c3ceb3e0b264ed992e3d44c295da990",
+        "id": "c0a92d1bb7534190802babfb1ecb3e46",
+        "studentUniqueId": "604862"
+      },
+      {
+        "studentSectionAssociation_id": "67b0681d89984d5eb1245577f9775b79",
+        "id": "69ecf62f306b44cebbd9559eb1f5ab41",
+        "studentUniqueId": "605151"
+      },
+      {
+        "studentSectionAssociation_id": "9224143a263e441ca0f213ec71e829f3",
+        "id": "0cadbeab41054d31b861faf3e17473f5",
+        "studentUniqueId": "604867"
+      },
+      {
+        "studentSectionAssociation_id": "3dcedef490d54cb2a3478ac2d2ba0b24",
+        "id": "c268fe90538c4ebbbd7ed5e85676cb73",
+        "studentUniqueId": "605105"
+      },
+      {
+        "studentSectionAssociation_id": "1c7165eddd234a0d8590eb16f34e9e36",
+        "id": "544b1acbd64f4aef87eec7740e78df7f",
+        "studentUniqueId": "605044"
+      },
+      {
+        "studentSectionAssociation_id": "c14f92f8e758490a894e6d97704f3771",
+        "id": "c7696ddecb254bd183ce561bd514041d",
+        "studentUniqueId": "605046"
+      },
+      {
+        "studentSectionAssociation_id": "a533079b0f404f63998f298988bd6814",
+        "id": "acc27ba398f94fad92210cb622e01711",
+        "studentUniqueId": "605095"
+      },
+      {
+        "studentSectionAssociation_id": "615910a69f0c42d3a5e3eb8fe45e9440",
+        "id": "a39f394ab1c340ce9470326a58fee9cb",
+        "studentUniqueId": "605162"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "fb06d625881b4a8e854591523d58ce5c",
+      "localCourseCode": "PHYSICS",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "a97a64784ecf47cca65fb42475974cd5",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "223"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "4cd120da0f82474ba2b5eb8573be00e6",
+    "uniqueSectionCode": "25590100101Trad223PHYSICS22011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Science",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "90bf1a33e1e44f9e96add6e0df32a7ae",
+        "id": "af52746ee32849c38cbe0b4aa7431d77",
+        "staffUniqueId": "207273"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "f2b2bc8b4d3b4a748c42123db32b251b",
+        "id": "7130597d86344171a7014b25af8687ac",
+        "studentUniqueId": "604899"
+      },
+      {
+        "studentSectionAssociation_id": "491767e9336447e0ae70dfad8deb3d6a",
+        "id": "8b67522a64774c11838d1405a3b50f83",
+        "studentUniqueId": "604858"
+      },
+      {
+        "studentSectionAssociation_id": "e30385727f5245cab4207fad9a879589",
+        "id": "3c938529057f453c8b74d4d64b55d30e",
+        "studentUniqueId": "604984"
+      },
+      {
+        "studentSectionAssociation_id": "5aed341d08744e43bc4ac60ccb740602",
+        "id": "d83f5f6717d6407ba340aa03a01f9f04",
+        "studentUniqueId": "604848"
+      },
+      {
+        "studentSectionAssociation_id": "cd9290aa067f4150b8a7ddeeea2ee244",
+        "id": "5d7c93da08b048fa82fdaa43da67a56b",
+        "studentUniqueId": "604975"
+      },
+      {
+        "studentSectionAssociation_id": "d83585a81dbd4eb59962b895466ae834",
+        "id": "ff7458da3315447d8ed0dd7174c57d68",
+        "studentUniqueId": "604838"
+      },
+      {
+        "studentSectionAssociation_id": "cb2ef606569847a59828a67401bc1d76",
+        "id": "99259f25520d4a079ebeacc832d44dfe",
+        "studentUniqueId": "605072"
+      },
+      {
+        "studentSectionAssociation_id": "4a98034df6684a3caaca64a0e51fa8a9",
+        "id": "236100a4f2ff4852ac00f71f68cec8e1",
+        "studentUniqueId": "605121"
+      },
+      {
+        "studentSectionAssociation_id": "4396eb5d94ee42bb9c98bc46997db9b9",
+        "id": "c0b2519e618d44a5bb55fb7000a71eea",
+        "studentUniqueId": "605029"
+      },
+      {
+        "studentSectionAssociation_id": "fde46acfa7074bd78dfe2001bf7c26c8",
+        "id": "fb4b94932ae44f84b93590fe030d8ab6",
+        "studentUniqueId": "605122"
+      },
+      {
+        "studentSectionAssociation_id": "428b6d6af2134c158f6d2f711e2b3de3",
+        "id": "b29d3cf3289f41fda4869ed4a00f7d7d",
+        "studentUniqueId": "605026"
+      },
+      {
+        "studentSectionAssociation_id": "5505bb5a7297478fbd0f72af6d89a271",
+        "id": "9e211b09f6c742b089c59f0c54346652",
+        "studentUniqueId": "605008"
+      },
+      {
+        "studentSectionAssociation_id": "d9f1f40d0718477b90b998458ef0bc40",
+        "id": "4fba5af3857a4a09b5ee11c6ed24ae0d",
+        "studentUniqueId": "605096"
+      },
+      {
+        "studentSectionAssociation_id": "27313265b0f64d228fb7635566e08274",
+        "id": "a36ec33a8d324301ab2f86ed18996e3a",
+        "studentUniqueId": "604998"
+      },
+      {
+        "studentSectionAssociation_id": "bc98e54ed30a4c7ebc103110983ae946",
+        "id": "5461e1024da14e8e90bd49a6f05cc546",
+        "studentUniqueId": "604873"
+      },
+      {
+        "studentSectionAssociation_id": "084f89b245e349f4886283e2931d60ad",
+        "id": "c00d8fc6fd27404ea3f56ad53968b6d4",
+        "studentUniqueId": "604955"
+      },
+      {
+        "studentSectionAssociation_id": "491e40eadc984b6a9a2ca5d3b17c972e",
+        "id": "bf5b38a4bbd74adca6701a4d279ee799",
+        "studentUniqueId": "604947"
+      },
+      {
+        "studentSectionAssociation_id": "b89a050a0b0549f1b2e4e004bf7923e3",
+        "id": "c0a92d1bb7534190802babfb1ecb3e46",
+        "studentUniqueId": "604862"
+      },
+      {
+        "studentSectionAssociation_id": "be64dc28c9924d5d928f185c42b2f855",
+        "id": "69ecf62f306b44cebbd9559eb1f5ab41",
+        "studentUniqueId": "605151"
+      },
+      {
+        "studentSectionAssociation_id": "1daec1424614429ca137be0f2a90f2c6",
+        "id": "0cadbeab41054d31b861faf3e17473f5",
+        "studentUniqueId": "604867"
+      },
+      {
+        "studentSectionAssociation_id": "a684546f923d4589b6f1108fd5793ce5",
+        "id": "c268fe90538c4ebbbd7ed5e85676cb73",
+        "studentUniqueId": "605105"
+      },
+      {
+        "studentSectionAssociation_id": "86ba6d9f30fd44819654332232671d8a",
+        "id": "544b1acbd64f4aef87eec7740e78df7f",
+        "studentUniqueId": "605044"
+      },
+      {
+        "studentSectionAssociation_id": "7af02fd2b0f14185a3f93ecfe4dbb413",
+        "id": "c7696ddecb254bd183ce561bd514041d",
+        "studentUniqueId": "605046"
+      },
+      {
+        "studentSectionAssociation_id": "b9d67e30bef24c7a9b61f3dbcc087518",
+        "id": "acc27ba398f94fad92210cb622e01711",
+        "studentUniqueId": "605095"
+      },
+      {
+        "studentSectionAssociation_id": "00a76d0b2ce24a54914066db69387109",
+        "id": "a39f394ab1c340ce9470326a58fee9cb",
+        "studentUniqueId": "605162"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "54a16669d883464ca4fa3df5bfd2bec1",
+      "localCourseCode": "PHYSICS",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "a97a64784ecf47cca65fb42475974cd5",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "223"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "fc014296f9114676a21aa43d715aeff2",
+    "uniqueSectionCode": "25590100101Trad321CREATWR12011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "7d95799142cb4f2bbb93f366b5461dfc",
+        "id": "bcb9096514764580b60d2d85031ba7d0",
+        "staffUniqueId": "207277"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "b06cd345d17d417f8dfaefae8353c1f5",
+        "id": "970511cfd5644706aaca9ee2e75f625f",
+        "studentUniqueId": "604968"
+      },
+      {
+        "studentSectionAssociation_id": "c2246e0361744eaab88ff50861d84a02",
+        "id": "8a90555664f7424fa26dc5982204cbb0",
+        "studentUniqueId": "605045"
+      },
+      {
+        "studentSectionAssociation_id": "84b5d04266854b57936c2c9f460fb8de",
+        "id": "90054e4250d044d5bcadbe63b8580164",
+        "studentUniqueId": "604823"
+      },
+      {
+        "studentSectionAssociation_id": "9abf7951039d431fb512eb587a034deb",
+        "id": "0378a3dfa41045189735e7864076e20e",
+        "studentUniqueId": "605090"
+      },
+      {
+        "studentSectionAssociation_id": "5a69cdec5b6c44008f79da49ed20af33",
+        "id": "f2d9203932444067b355a6859df73040",
+        "studentUniqueId": "604907"
+      },
+      {
+        "studentSectionAssociation_id": "e956256d61b54e8e84f672cf678685d3",
+        "id": "41c726e5d99b4435a77e942eda2eee07",
+        "studentUniqueId": "604892"
+      },
+      {
+        "studentSectionAssociation_id": "db03fb81fd1549848356b73eb73f9bf1",
+        "id": "2dff5eba813d461097b4a33ccc6d9aaf",
+        "studentUniqueId": "604983"
+      },
+      {
+        "studentSectionAssociation_id": "4fca9220131140f8b6b58b6e3c98f135",
+        "id": "0c852272b8f94d548d09773f55ccce97",
+        "studentUniqueId": "604928"
+      },
+      {
+        "studentSectionAssociation_id": "cddd116cb8e44906ac1f730a1e7b7b1a",
+        "id": "3f1875d48ddb4c7d8f328412d372d6a0",
+        "studentUniqueId": "604868"
+      },
+      {
+        "studentSectionAssociation_id": "72f24bb794154a169ec7e2f1ba5db200",
+        "id": "7e411aa552944fc28cb3e55d88720eb5",
+        "studentUniqueId": "604887"
+      },
+      {
+        "studentSectionAssociation_id": "c3f1c54c91214a439da64a3d0f822071",
+        "id": "736784d7c7634c33a5210c52907de66e",
+        "studentUniqueId": "605103"
+      },
+      {
+        "studentSectionAssociation_id": "ad395840779149d9b79fe27bb629743f",
+        "id": "b9c32eefd31f4f91947df0183d3aa385",
+        "studentUniqueId": "604880"
+      },
+      {
+        "studentSectionAssociation_id": "a2386caf84534606af3e798e0a281714",
+        "id": "a1e8687dbbe1460eb38db8ac8c061be1",
+        "studentUniqueId": "605119"
+      },
+      {
+        "studentSectionAssociation_id": "a467dad3256d40b28f73f69b46796abf",
+        "id": "21f22f2ba88742f4952793781c86ec8f",
+        "studentUniqueId": "605058"
+      },
+      {
+        "studentSectionAssociation_id": "3089b601d2a44679b09900b4f30df7c9",
+        "id": "c1775637793f49af9204afb911e4b0e2",
+        "studentUniqueId": "605168"
+      },
+      {
+        "studentSectionAssociation_id": "234600bf93d24fae84bce8b236444e86",
+        "id": "d635621882c64774a603f221091d8e60",
+        "studentUniqueId": "604836"
+      },
+      {
+        "studentSectionAssociation_id": "7597c6240d1f48ef960f2373f7062a02",
+        "id": "1c962a2dd66a4941b98e17cc29f978b8",
+        "studentUniqueId": "604935"
+      },
+      {
+        "studentSectionAssociation_id": "63cc1589f15d4cae9a3ae6e13608f6e6",
+        "id": "ad5e52b3d8f44ba4bfe3484d2b158767",
+        "studentUniqueId": "605082"
+      },
+      {
+        "studentSectionAssociation_id": "23467882236a47aa95b9ffefa3bf74ab",
+        "id": "6e67d7afc84f43a987067118abb200c0",
+        "studentUniqueId": "605141"
+      },
+      {
+        "studentSectionAssociation_id": "592ff405976b4a0998b84eeaab10e65a",
+        "id": "bb5a298e6f324ce196b0455af1bbac80",
+        "studentUniqueId": "605092"
+      },
+      {
+        "studentSectionAssociation_id": "9f0c4301d11940219afb9f5b4bd920c5",
+        "id": "9e8ab1c8d7b2402790d8a27c4216e8e5",
+        "studentUniqueId": "605054"
+      },
+      {
+        "studentSectionAssociation_id": "a88f8e871f9241e096eeb20eefef452a",
+        "id": "b0d1d5bf83e045d58662757b73fce302",
+        "studentUniqueId": "605120"
+      },
+      {
+        "studentSectionAssociation_id": "4e7f081bd2204cceb58a14c346edaa65",
+        "id": "2e394da7e70147ad8a47c335e7c98417",
+        "studentUniqueId": "605013"
+      },
+      {
+        "studentSectionAssociation_id": "662da53d477f47c79d36a10ea877a65a",
+        "id": "6ca1e28fe9d345269c9cb3487218b0e3",
+        "studentUniqueId": "604897"
+      },
+      {
+        "studentSectionAssociation_id": "524ea7deff3d4bcc96a8c2049f894b00",
+        "id": "ef7ffbbb17e14028859922eb8bba383b",
+        "studentUniqueId": "605035"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "a8c95711cfc34f968e270c4c3501a101",
+      "localCourseCode": "CREAT-WR",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "af784c11b94b4b5a8be6102f00bd2143",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "321"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "98f3ee0da2fe4730a86eabee1ed423cb",
+    "uniqueSectionCode": "25590100101Trad321CREATWR22011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "5d17092e85954c6fa10e17f785e7e338",
+        "id": "bcb9096514764580b60d2d85031ba7d0",
+        "staffUniqueId": "207277"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "a1bef020cc054c08871cf8d16d862d5c",
+        "id": "970511cfd5644706aaca9ee2e75f625f",
+        "studentUniqueId": "604968"
+      },
+      {
+        "studentSectionAssociation_id": "9b792f98f3394fa4ad426c9d43b76fbe",
+        "id": "8a90555664f7424fa26dc5982204cbb0",
+        "studentUniqueId": "605045"
+      },
+      {
+        "studentSectionAssociation_id": "ab5bf7f91ce340949123215ce62ed88b",
+        "id": "90054e4250d044d5bcadbe63b8580164",
+        "studentUniqueId": "604823"
+      },
+      {
+        "studentSectionAssociation_id": "a3642dd5bbab4b63a5073d59fce1131b",
+        "id": "0378a3dfa41045189735e7864076e20e",
+        "studentUniqueId": "605090"
+      },
+      {
+        "studentSectionAssociation_id": "7dd7836f7f5a48f587bd7785f6036d0a",
+        "id": "f2d9203932444067b355a6859df73040",
+        "studentUniqueId": "604907"
+      },
+      {
+        "studentSectionAssociation_id": "c5eb5ad388c04c88bcc1b6e3e3e1a904",
+        "id": "41c726e5d99b4435a77e942eda2eee07",
+        "studentUniqueId": "604892"
+      },
+      {
+        "studentSectionAssociation_id": "77a7ed0f12274c5faeaef28ca6709c50",
+        "id": "2dff5eba813d461097b4a33ccc6d9aaf",
+        "studentUniqueId": "604983"
+      },
+      {
+        "studentSectionAssociation_id": "7cba1d2d2e5c486c9a1620cb2ebc94b3",
+        "id": "0c852272b8f94d548d09773f55ccce97",
+        "studentUniqueId": "604928"
+      },
+      {
+        "studentSectionAssociation_id": "d90b94e5e4324655b2be6bbb76271251",
+        "id": "3f1875d48ddb4c7d8f328412d372d6a0",
+        "studentUniqueId": "604868"
+      },
+      {
+        "studentSectionAssociation_id": "f4f77a4e7e664d4d8af330f8b8e7dad5",
+        "id": "7e411aa552944fc28cb3e55d88720eb5",
+        "studentUniqueId": "604887"
+      },
+      {
+        "studentSectionAssociation_id": "d498773fdc8a456a8161a78e0b9265a6",
+        "id": "736784d7c7634c33a5210c52907de66e",
+        "studentUniqueId": "605103"
+      },
+      {
+        "studentSectionAssociation_id": "5d88818da24e4c818446387e403d0812",
+        "id": "b9c32eefd31f4f91947df0183d3aa385",
+        "studentUniqueId": "604880"
+      },
+      {
+        "studentSectionAssociation_id": "091090d5b2b8494b96b50eb0e936a02a",
+        "id": "a1e8687dbbe1460eb38db8ac8c061be1",
+        "studentUniqueId": "605119"
+      },
+      {
+        "studentSectionAssociation_id": "78fc80b442cd4e3eba43f765d2cd7b7a",
+        "id": "21f22f2ba88742f4952793781c86ec8f",
+        "studentUniqueId": "605058"
+      },
+      {
+        "studentSectionAssociation_id": "89c1b746096641d087f70c767a0f7f97",
+        "id": "c1775637793f49af9204afb911e4b0e2",
+        "studentUniqueId": "605168"
+      },
+      {
+        "studentSectionAssociation_id": "9fd744b8dced4b70b9135d76f8d73c77",
+        "id": "d635621882c64774a603f221091d8e60",
+        "studentUniqueId": "604836"
+      },
+      {
+        "studentSectionAssociation_id": "30c7dde67b4b4afbb11e360804f6c871",
+        "id": "1c962a2dd66a4941b98e17cc29f978b8",
+        "studentUniqueId": "604935"
+      },
+      {
+        "studentSectionAssociation_id": "2abce3509e1b4912b2f59ddb0c4412f3",
+        "id": "ad5e52b3d8f44ba4bfe3484d2b158767",
+        "studentUniqueId": "605082"
+      },
+      {
+        "studentSectionAssociation_id": "036d0a8e83094eb781859db0338111f2",
+        "id": "6e67d7afc84f43a987067118abb200c0",
+        "studentUniqueId": "605141"
+      },
+      {
+        "studentSectionAssociation_id": "70d3954bea074f68964eb02aaace9cb5",
+        "id": "bb5a298e6f324ce196b0455af1bbac80",
+        "studentUniqueId": "605092"
+      },
+      {
+        "studentSectionAssociation_id": "342803e4d0a54719b167f85465ebd979",
+        "id": "9e8ab1c8d7b2402790d8a27c4216e8e5",
+        "studentUniqueId": "605054"
+      },
+      {
+        "studentSectionAssociation_id": "1c452dfec1e44a089e9cee5c1d7dcd17",
+        "id": "b0d1d5bf83e045d58662757b73fce302",
+        "studentUniqueId": "605120"
+      },
+      {
+        "studentSectionAssociation_id": "9f40b6e4fcba4cd9a9d0b35a391dc25d",
+        "id": "2e394da7e70147ad8a47c335e7c98417",
+        "studentUniqueId": "605013"
+      },
+      {
+        "studentSectionAssociation_id": "d1078dc1e9964c4bb31726486412e4f4",
+        "id": "6ca1e28fe9d345269c9cb3487218b0e3",
+        "studentUniqueId": "604897"
+      },
+      {
+        "studentSectionAssociation_id": "f541d574f4514a0090e6ad70e914227b",
+        "id": "ef7ffbbb17e14028859922eb8bba383b",
+        "studentUniqueId": "605035"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "8eda85da834f46649b7356c17ae0b666",
+      "localCourseCode": "CREAT-WR",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "af784c11b94b4b5a8be6102f00bd2143",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "321"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "4258aa68b6154f5aae970631cd5597aa",
+    "uniqueSectionCode": "25590100101Trad322ART112011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Fine and Performing Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "c0bf79cdf48a4f1196f6d584006e63de",
+        "id": "4825173f8aa0437cbc8285009493fbbe",
+        "staffUniqueId": "207278"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "b0e0e1fea2684a519fbe72f10ce79bf9",
+        "id": "8a9d3469c64945a1aaf082d8a2760abb",
+        "studentUniqueId": "605241"
+      },
+      {
+        "studentSectionAssociation_id": "3c908d3ae80642398720db0c89373863",
+        "id": "87becd0d0d104ded84ae7147e133cadb",
+        "studentUniqueId": "605449"
+      },
+      {
+        "studentSectionAssociation_id": "8916e225e84f456f86665b8b39546c03",
+        "id": "aa20f0d5b3194a39b6dffe2c7abcc228",
+        "studentUniqueId": "605351"
+      },
+      {
+        "studentSectionAssociation_id": "afe735db5a204d73bd1c0de80ceea79c",
+        "id": "9ae2ec3b7aab4f56b5ece1cf60f6b890",
+        "studentUniqueId": "605316"
+      },
+      {
+        "studentSectionAssociation_id": "283e6c5498ca4ea2baff07a5c33b39a8",
+        "id": "b37605de155e47e08ddabda70cf6d71d",
+        "studentUniqueId": "605332"
+      },
+      {
+        "studentSectionAssociation_id": "af97ab35b8e84a1d8fa6fa2e8151c9c1",
+        "id": "016b0f39d4c348f9a91ba52ef9a99de9",
+        "studentUniqueId": "605447"
+      },
+      {
+        "studentSectionAssociation_id": "ed82a1df1226438b8e4c95204a2f1867",
+        "id": "373ff04b6c0e492ca1f6c7cbb45d7bb3",
+        "studentUniqueId": "605262"
+      },
+      {
+        "studentSectionAssociation_id": "f9149623882b425cb1377fe22ec5369f",
+        "id": "ddb777406faa401899744b16a214823c",
+        "studentUniqueId": "605389"
+      },
+      {
+        "studentSectionAssociation_id": "8391a645774f440f941ed41cb32f8b51",
+        "id": "1bf8583a3dc34c889cac47ac18598e37",
+        "studentUniqueId": "605370"
+      },
+      {
+        "studentSectionAssociation_id": "d1894931f1e44ee38dd7189b9d6a02c5",
+        "id": "aa1176e47523457d89b5d592acada706",
+        "studentUniqueId": "605374"
+      },
+      {
+        "studentSectionAssociation_id": "67af200512e546b0b80015c0e7972394",
+        "id": "149cb0e1ec924c45947c06b9c9854864",
+        "studentUniqueId": "605339"
+      },
+      {
+        "studentSectionAssociation_id": "1c07b9380ef14497b7f79d9a4d566577",
+        "id": "5195c873b8c84ac5819a4a2e4fe70873",
+        "studentUniqueId": "605346"
+      },
+      {
+        "studentSectionAssociation_id": "4c322f36d9ba4859b6eb3ebd748735c7",
+        "id": "399b0e6972734bb7815a444d9d6dfcf5",
+        "studentUniqueId": "605303"
+      },
+      {
+        "studentSectionAssociation_id": "7dce8c7ca6c146198e21185b31920772",
+        "id": "ffd12fae44ca4957be8ad442b5d7a691",
+        "studentUniqueId": "605263"
+      },
+      {
+        "studentSectionAssociation_id": "35bea6099dc8452a8b8d8574a70df96c",
+        "id": "dbca0f6286e347d3901e9b7bb8d0b14b",
+        "studentUniqueId": "605408"
+      },
+      {
+        "studentSectionAssociation_id": "da66d5eda6774b2794f36371134b7b50",
+        "id": "220ec07283034bcfb3697fdbc27eabee",
+        "studentUniqueId": "605334"
+      },
+      {
+        "studentSectionAssociation_id": "5772dd73afd14f9fb98636c998a058be",
+        "id": "d6a1e0b28d494d3abe1d9bc398d4bfb7",
+        "studentUniqueId": "605391"
+      },
+      {
+        "studentSectionAssociation_id": "c6ddacd661d0479688baf0ca7bd077cb",
+        "id": "5579787d26914c54923b0af719d951d5",
+        "studentUniqueId": "605276"
+      },
+      {
+        "studentSectionAssociation_id": "b49cd2f8eb3e46bb85f77c9185813274",
+        "id": "63bffb969e634afa968c97c224ce7a03",
+        "studentUniqueId": "605317"
+      },
+      {
+        "studentSectionAssociation_id": "9d9d1aef44d446568830a9d44832b16b",
+        "id": "839a57fe584044fba16594bd2cca0e18",
+        "studentUniqueId": "605309"
+      },
+      {
+        "studentSectionAssociation_id": "93bb363e76d949db958cf3f9ea1898ed",
+        "id": "01cc6a4c45584a23b16e6d13411ea5fb",
+        "studentUniqueId": "605393"
+      },
+      {
+        "studentSectionAssociation_id": "1362437270c644488ef0f310d3629e4d",
+        "id": "d6f8c35c689c4544b47ecf38cf40bd5d",
+        "studentUniqueId": "605257"
+      },
+      {
+        "studentSectionAssociation_id": "49fcbdf403db4f22883045dc07bdb168",
+        "id": "8d272d7066bf4314ab4741f0d10f25c5",
+        "studentUniqueId": "605328"
+      },
+      {
+        "studentSectionAssociation_id": "dd39e3d4cb954fffa7afe5ea4c301290",
+        "id": "aa697eab5cc14ba0848a9d2fa92c4a5a",
+        "studentUniqueId": "605173"
+      },
+      {
+        "studentSectionAssociation_id": "d7617ad67c8f453b928c760101888f1f",
+        "id": "0d8099539b2649ebb93e8c332aa9849d",
+        "studentUniqueId": "605349"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "8af7074715674ba89b79d5d1a74e2c83",
+      "localCourseCode": "ART-1",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "fd7fc36e05a34e2486154398f10eb8c2",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "322"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "a4a50b3f774340afb2837f24c9d196d1",
+    "uniqueSectionCode": "25590100101Trad322ART122011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Fine and Performing Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "3270c5dddf8f49c384ff9d4e8987ea7b",
+        "id": "4825173f8aa0437cbc8285009493fbbe",
+        "staffUniqueId": "207278"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "73993e63863d448d85b26a201b95e956",
+        "id": "8a9d3469c64945a1aaf082d8a2760abb",
+        "studentUniqueId": "605241"
+      },
+      {
+        "studentSectionAssociation_id": "b6cc4a99f8e149a4811f4fa5bf00f5d1",
+        "id": "87becd0d0d104ded84ae7147e133cadb",
+        "studentUniqueId": "605449"
+      },
+      {
+        "studentSectionAssociation_id": "64e43bfae5984ba9b502d2fe0e63aa55",
+        "id": "aa20f0d5b3194a39b6dffe2c7abcc228",
+        "studentUniqueId": "605351"
+      },
+      {
+        "studentSectionAssociation_id": "fac601a916c44ff2a8ce70e96de3480b",
+        "id": "9ae2ec3b7aab4f56b5ece1cf60f6b890",
+        "studentUniqueId": "605316"
+      },
+      {
+        "studentSectionAssociation_id": "035dee7fe8e44f2d9b41267fe1ef276f",
+        "id": "b37605de155e47e08ddabda70cf6d71d",
+        "studentUniqueId": "605332"
+      },
+      {
+        "studentSectionAssociation_id": "55bf8dbe1c3d444ca33a21e37f704499",
+        "id": "016b0f39d4c348f9a91ba52ef9a99de9",
+        "studentUniqueId": "605447"
+      },
+      {
+        "studentSectionAssociation_id": "7538d31f181e43d29f86ad7ef499c02d",
+        "id": "373ff04b6c0e492ca1f6c7cbb45d7bb3",
+        "studentUniqueId": "605262"
+      },
+      {
+        "studentSectionAssociation_id": "5ee3067e6a554ccd8f8430fcb513dc31",
+        "id": "ddb777406faa401899744b16a214823c",
+        "studentUniqueId": "605389"
+      },
+      {
+        "studentSectionAssociation_id": "05d7deceba4147009eb4169f4e565a85",
+        "id": "1bf8583a3dc34c889cac47ac18598e37",
+        "studentUniqueId": "605370"
+      },
+      {
+        "studentSectionAssociation_id": "dcbdffe21ef4455f9eaa1e73b26a3e90",
+        "id": "aa1176e47523457d89b5d592acada706",
+        "studentUniqueId": "605374"
+      },
+      {
+        "studentSectionAssociation_id": "1eb1592771b942d580e008e43e41e77f",
+        "id": "149cb0e1ec924c45947c06b9c9854864",
+        "studentUniqueId": "605339"
+      },
+      {
+        "studentSectionAssociation_id": "644d9ec911cd4d718b9e7a40d0ef5edc",
+        "id": "5195c873b8c84ac5819a4a2e4fe70873",
+        "studentUniqueId": "605346"
+      },
+      {
+        "studentSectionAssociation_id": "812a620a1d434a26b3cbe9578f79648d",
+        "id": "399b0e6972734bb7815a444d9d6dfcf5",
+        "studentUniqueId": "605303"
+      },
+      {
+        "studentSectionAssociation_id": "885c864d079f46cfaba94c01027fcc33",
+        "id": "ffd12fae44ca4957be8ad442b5d7a691",
+        "studentUniqueId": "605263"
+      },
+      {
+        "studentSectionAssociation_id": "d8e54bdd28fa4a258df61d41b5a8baee",
+        "id": "dbca0f6286e347d3901e9b7bb8d0b14b",
+        "studentUniqueId": "605408"
+      },
+      {
+        "studentSectionAssociation_id": "67dd390b59094356b0f30eb00e88da78",
+        "id": "220ec07283034bcfb3697fdbc27eabee",
+        "studentUniqueId": "605334"
+      },
+      {
+        "studentSectionAssociation_id": "88c2fbec765249d78b45e3da5655f95c",
+        "id": "d6a1e0b28d494d3abe1d9bc398d4bfb7",
+        "studentUniqueId": "605391"
+      },
+      {
+        "studentSectionAssociation_id": "867576bf21434230bc81484f2a78f0f2",
+        "id": "5579787d26914c54923b0af719d951d5",
+        "studentUniqueId": "605276"
+      },
+      {
+        "studentSectionAssociation_id": "42999c9e1b8148d5b1a00ea78a28e301",
+        "id": "63bffb969e634afa968c97c224ce7a03",
+        "studentUniqueId": "605317"
+      },
+      {
+        "studentSectionAssociation_id": "952e164d067843c082eef512564ae60e",
+        "id": "839a57fe584044fba16594bd2cca0e18",
+        "studentUniqueId": "605309"
+      },
+      {
+        "studentSectionAssociation_id": "7e8832016475431899948da62c086052",
+        "id": "01cc6a4c45584a23b16e6d13411ea5fb",
+        "studentUniqueId": "605393"
+      },
+      {
+        "studentSectionAssociation_id": "dae619a43a44414f9ebb607a2845fb7b",
+        "id": "d6f8c35c689c4544b47ecf38cf40bd5d",
+        "studentUniqueId": "605257"
+      },
+      {
+        "studentSectionAssociation_id": "c0db532a825143969832f98cd9b09729",
+        "id": "8d272d7066bf4314ab4741f0d10f25c5",
+        "studentUniqueId": "605328"
+      },
+      {
+        "studentSectionAssociation_id": "cae731eec3354b79b3629e2a93dfdf8c",
+        "id": "aa697eab5cc14ba0848a9d2fa92c4a5a",
+        "studentUniqueId": "605173"
+      },
+      {
+        "studentSectionAssociation_id": "d37daafc92034d38bc850d79eb430726",
+        "id": "0d8099539b2649ebb93e8c332aa9849d",
+        "studentUniqueId": "605349"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "1406e993b491423f9da705465b097079",
+      "localCourseCode": "ART-1",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "fd7fc36e05a34e2486154398f10eb8c2",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "322"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "3c8894da2ae54428b365a329f4116d66",
+    "uniqueSectionCode": "25590100101Trad324SPAN212011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Foreign Language and Literature",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "56604f40ced64737bd1e3ab098307189",
+        "id": "0b0b321de4d745cb87a5df87aeb6e627",
+        "staffUniqueId": "207280"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "54202e6db5114bebb662926d3a238589",
+        "id": "e71adfccc4e248ac9efb6102a87a1f6d",
+        "studentUniqueId": "605294"
+      },
+      {
+        "studentSectionAssociation_id": "acc615615ffb489b8aa3efa7e0bd85e3",
+        "id": "628d027179454e6cb17fe9ba480a3949",
+        "studentUniqueId": "605214"
+      },
+      {
+        "studentSectionAssociation_id": "7a088b42441847ae9cd49826c83914c9",
+        "id": "e2ce42a127704fd093fcc9ba731bed82",
+        "studentUniqueId": "605225"
+      },
+      {
+        "studentSectionAssociation_id": "64439daa34b9423082b41f9357b83169",
+        "id": "ac9e7fd58cab4c44bf83faceca169ba6",
+        "studentUniqueId": "605302"
+      },
+      {
+        "studentSectionAssociation_id": "1ceddfd739c04a0686f162845c48c071",
+        "id": "b13c56d978b840d7b237864b35f9c7fa",
+        "studentUniqueId": "605445"
+      },
+      {
+        "studentSectionAssociation_id": "c7ae1abb1b774aa5821900fe561afd05",
+        "id": "dfb4c770c3ba43449e00acb5fc166bd3",
+        "studentUniqueId": "605400"
+      },
+      {
+        "studentSectionAssociation_id": "0b5fa058025b4e4c9ca3a9854af42559",
+        "id": "0fc90493b301478aac73362a6369d54d",
+        "studentUniqueId": "605253"
+      },
+      {
+        "studentSectionAssociation_id": "51509db2da574d3ca2c855e78da05739",
+        "id": "87aa9376efde4dda84a0e003ed74d4ce",
+        "studentUniqueId": "605387"
+      },
+      {
+        "studentSectionAssociation_id": "16727d8d044d416ba39a31dedc6522df",
+        "id": "093917712c734ff1a4ac42f9f91f638b",
+        "studentUniqueId": "605308"
+      },
+      {
+        "studentSectionAssociation_id": "2556c1a29a004a74b98706210d9d104f",
+        "id": "cb96ce2c86134b4e904b6531b4319115",
+        "studentUniqueId": "605245"
+      },
+      {
+        "studentSectionAssociation_id": "e401bcdc59e444dfb22252fd41e621fb",
+        "id": "a8570e015ce342428178eca452a2042b",
+        "studentUniqueId": "605401"
+      },
+      {
+        "studentSectionAssociation_id": "9cd4315822954eb0ad10f6c90eef45af",
+        "id": "c77b9d396a24425d9bebdf70113bfee1",
+        "studentUniqueId": "605326"
+      },
+      {
+        "studentSectionAssociation_id": "1f14d46dc6774302bf54601e41961098",
+        "id": "b73972b75ed949ccb1fece7e0525b2d0",
+        "studentUniqueId": "605187"
+      },
+      {
+        "studentSectionAssociation_id": "12834e5ccfeb44c7bedcf047fbf8dc1e",
+        "id": "fab6f84f27d44e8b9b168bfac47fd4c2",
+        "studentUniqueId": "605266"
+      },
+      {
+        "studentSectionAssociation_id": "e267cc2a56aa47cfb46de79128547d2e",
+        "id": "b58ef0f3e1d34687b5400e3177a984ec",
+        "studentUniqueId": "605273"
+      },
+      {
+        "studentSectionAssociation_id": "b2393cd4e0ae45c9993347a8e3b751f5",
+        "id": "c8f83f34901447e5b48b9392aca1ad3d",
+        "studentUniqueId": "605422"
+      },
+      {
+        "studentSectionAssociation_id": "7dfd191d74ff4238a364a1788958dbaf",
+        "id": "65f99b223bf846f8aeb63edac8c0bea8",
+        "studentUniqueId": "605451"
+      },
+      {
+        "studentSectionAssociation_id": "0aeab43cff5a4915a7a01d260b28d753",
+        "id": "eaa1e2fe137643608fbe3e4aa74c7088",
+        "studentUniqueId": "605259"
+      },
+      {
+        "studentSectionAssociation_id": "ee24c663511b4669af74433bfd67fe4a",
+        "id": "360449bb6b7e4fe2a47b56cd877f0b75",
+        "studentUniqueId": "605435"
+      },
+      {
+        "studentSectionAssociation_id": "79cfe2a6514142fd83670fee3c129e66",
+        "id": "38b4ac88a47347fbaa1a88a2c6e10bbc",
+        "studentUniqueId": "605188"
+      },
+      {
+        "studentSectionAssociation_id": "96d2e47ef7da41cb92fb7aef7970cec5",
+        "id": "122ccdb7539e4b2a9823951be134fa09",
+        "studentUniqueId": "605417"
+      },
+      {
+        "studentSectionAssociation_id": "26bca55f4aef48eeb3153cb663d3a5e6",
+        "id": "d9d825f5e5554187beb892bf1230dd71",
+        "studentUniqueId": "605313"
+      },
+      {
+        "studentSectionAssociation_id": "649192f3588541458c2de830127ab090",
+        "id": "c3aac4428a7e45cca777659d52982286",
+        "studentUniqueId": "605240"
+      },
+      {
+        "studentSectionAssociation_id": "0ea2740d3f7c46dab6c46e084298f41c",
+        "id": "055c8a26e7474e8a87205d193647d275",
+        "studentUniqueId": "605229"
+      },
+      {
+        "studentSectionAssociation_id": "12c82d0301a440688fb2989ced60fc93",
+        "id": "15facf62bbaf4d16b62ba07ce9b4a621",
+        "studentUniqueId": "605248"
+      },
+      {
+        "studentSectionAssociation_id": "a5bae647ce134b7d88d649a7b136d939",
+        "id": "43e1b01270cf4c5e9d3842fbe3a67a49",
+        "studentUniqueId": "605384"
+      },
+      {
+        "studentSectionAssociation_id": "b3c717d90335463ca721b2398a66e06c",
+        "id": "1f85f7766f954a3d854130fb195b2948",
+        "studentUniqueId": "605183"
+      },
+      {
+        "studentSectionAssociation_id": "4618456b19e6403a895a80a4cc258c2b",
+        "id": "39a5a34a3fe24e60b875ce0c317155c1",
+        "studentUniqueId": "605235"
+      },
+      {
+        "studentSectionAssociation_id": "4adb8f3770ea4d97b4432e8191e0c8b5",
+        "id": "64d64d4de5414da6a4b99d242afe4dd5",
+        "studentUniqueId": "605204"
+      },
+      {
+        "studentSectionAssociation_id": "37316bdf9c1d4155bedaf11aa89d5f4f",
+        "id": "11b7d6f9264141dfb8f59ece3041e7e7",
+        "studentUniqueId": "605196"
+      },
+      {
+        "studentSectionAssociation_id": "7a848d0ba13a4755b4b57bf0b3af9e9e",
+        "id": "4bc877e58f0b408fa09664dcd56c51cc",
+        "studentUniqueId": "605362"
+      },
+      {
+        "studentSectionAssociation_id": "f6c180692b654a8caab55fbf19496392",
+        "id": "4d7db5aa28d84d3da96e4361f188e4a2",
+        "studentUniqueId": "605247"
+      },
+      {
+        "studentSectionAssociation_id": "633dd9135b1f4937a850a736b05b1078",
+        "id": "ea9b78b0b72342c7b5e5eb785240dfc4",
+        "studentUniqueId": "605335"
+      },
+      {
+        "studentSectionAssociation_id": "a359c783b26b4b759eb6711093a918cd",
+        "id": "b5adea2ea3314438a78591d91919b936",
+        "studentUniqueId": "605348"
+      },
+      {
+        "studentSectionAssociation_id": "489ee5fde6f345d896d30e7214b93ddf",
+        "id": "29d9f3e961d4411d803ad11e499b6e22",
+        "studentUniqueId": "605175"
+      },
+      {
+        "studentSectionAssociation_id": "604b8027a67b4b728ce36a50a97f13ad",
+        "id": "33d4d8776d474f0cbd8bd1ebcafca125",
+        "studentUniqueId": "605367"
+      },
+      {
+        "studentSectionAssociation_id": "949beb7f164748d5941e8fbdb4890cd2",
+        "id": "2ff5768fe71444dc82898c4dda7c7fbd",
+        "studentUniqueId": "605432"
+      },
+      {
+        "studentSectionAssociation_id": "1b100389e8f34ca59db970e2845addab",
+        "id": "8729fe71940a46309d4b0b8aa751f495",
+        "studentUniqueId": "605394"
+      },
+      {
+        "studentSectionAssociation_id": "b6a347a09487470b85978b25a0e0b5a3",
+        "id": "addaf1a9c3984ce7804071f0527db177",
+        "studentUniqueId": "605356"
+      },
+      {
+        "studentSectionAssociation_id": "2035658d22c44ac9b1428b6c54340ec4",
+        "id": "44fb8ed12f21457ab600f30056285634",
+        "studentUniqueId": "605287"
+      },
+      {
+        "studentSectionAssociation_id": "2971537ad5eb421faa221ea921eabc4c",
+        "id": "94a71fc107cc43a386fec3a5af91ca31",
+        "studentUniqueId": "605177"
+      },
+      {
+        "studentSectionAssociation_id": "674da4365a6447b296fe9d9c16efed36",
+        "id": "fe1fee53ef5f40a79eeb15b95fb7f024",
+        "studentUniqueId": "605398"
+      },
+      {
+        "studentSectionAssociation_id": "a8cb64999b024765b29903e549c4359d",
+        "id": "37654033ca314d40879f5a5f718f3309",
+        "studentUniqueId": "605216"
+      },
+      {
+        "studentSectionAssociation_id": "fc630d19cc61413b99821e63aa778f3e",
+        "id": "3182c372a1904c3093cb92863dcb278b",
+        "studentUniqueId": "605431"
+      },
+      {
+        "studentSectionAssociation_id": "44b68f463df549819998f700228f3ed1",
+        "id": "b96da72325f24862915be58fccd11fcf",
+        "studentUniqueId": "605207"
+      },
+      {
+        "studentSectionAssociation_id": "08d9acdf4ec34f5896c8b2e844d1a2c6",
+        "id": "7be65a4edf3540688a8d978d89f41e63",
+        "studentUniqueId": "605212"
+      },
+      {
+        "studentSectionAssociation_id": "bb7795a2d7294b05902a7b6241d89a17",
+        "id": "bbe0d7e4715648f792a571691b64769c",
+        "studentUniqueId": "605260"
+      },
+      {
+        "studentSectionAssociation_id": "64a2af4217824338b3d7d74c330d11ba",
+        "id": "60bc1ea8069a4958b617d27277d58015",
+        "studentUniqueId": "605306"
+      },
+      {
+        "studentSectionAssociation_id": "84581eca729148daad1fae4d605021ad",
+        "id": "21682129c84848769b92884cc1ac3e85",
+        "studentUniqueId": "605217"
+      },
+      {
+        "studentSectionAssociation_id": "7fa7fdbe19bc454d80947fdea51694dd",
+        "id": "9d45443ceb0a4eee82ffbe650a0bcd3c",
+        "studentUniqueId": "605427"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "af5c61b5099f42689550d566993978dc",
+      "localCourseCode": "SPAN-2",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "d83278b69e144a54b3572f64e47a27d6",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "324"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "2f9e7fc7742f496a92b1f6bf363be61e",
+    "uniqueSectionCode": "25590100101Trad324SPAN222011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Foreign Language and Literature",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "79da881a8cc84a5796af6f21ebed8afa",
+        "id": "0b0b321de4d745cb87a5df87aeb6e627",
+        "staffUniqueId": "207280"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "b2402cbbf006443ea2cc4122b2bf4deb",
+        "id": "e71adfccc4e248ac9efb6102a87a1f6d",
+        "studentUniqueId": "605294"
+      },
+      {
+        "studentSectionAssociation_id": "4e613d8a87374995ac84441f2a61a529",
+        "id": "628d027179454e6cb17fe9ba480a3949",
+        "studentUniqueId": "605214"
+      },
+      {
+        "studentSectionAssociation_id": "2a5bafd87c12424d9f14267fbc27866b",
+        "id": "e2ce42a127704fd093fcc9ba731bed82",
+        "studentUniqueId": "605225"
+      },
+      {
+        "studentSectionAssociation_id": "2a44a5596b0c4d69971aee40fdade22a",
+        "id": "ac9e7fd58cab4c44bf83faceca169ba6",
+        "studentUniqueId": "605302"
+      },
+      {
+        "studentSectionAssociation_id": "e185306d8aad4974bf29cbe54a92f4b7",
+        "id": "b13c56d978b840d7b237864b35f9c7fa",
+        "studentUniqueId": "605445"
+      },
+      {
+        "studentSectionAssociation_id": "5e5635f1105c48ae9174151a7c0685ab",
+        "id": "dfb4c770c3ba43449e00acb5fc166bd3",
+        "studentUniqueId": "605400"
+      },
+      {
+        "studentSectionAssociation_id": "c964e1b5265d49808633148dcec8c37c",
+        "id": "0fc90493b301478aac73362a6369d54d",
+        "studentUniqueId": "605253"
+      },
+      {
+        "studentSectionAssociation_id": "584d690343914e21af57616a2df942df",
+        "id": "87aa9376efde4dda84a0e003ed74d4ce",
+        "studentUniqueId": "605387"
+      },
+      {
+        "studentSectionAssociation_id": "48c54ef4002f44799955951ba11f5d91",
+        "id": "093917712c734ff1a4ac42f9f91f638b",
+        "studentUniqueId": "605308"
+      },
+      {
+        "studentSectionAssociation_id": "329f7768f03c487c917ac60e403e937e",
+        "id": "cb96ce2c86134b4e904b6531b4319115",
+        "studentUniqueId": "605245"
+      },
+      {
+        "studentSectionAssociation_id": "0444bbb09ecc4ee788147611a6d80203",
+        "id": "a8570e015ce342428178eca452a2042b",
+        "studentUniqueId": "605401"
+      },
+      {
+        "studentSectionAssociation_id": "d7b25c3c4d8840d8a2ba3828854e420d",
+        "id": "c77b9d396a24425d9bebdf70113bfee1",
+        "studentUniqueId": "605326"
+      },
+      {
+        "studentSectionAssociation_id": "64a82f24e7b64f16aa68c9e2a5ecb010",
+        "id": "b73972b75ed949ccb1fece7e0525b2d0",
+        "studentUniqueId": "605187"
+      },
+      {
+        "studentSectionAssociation_id": "5f03d8380fe64a879fbead5e15a886a2",
+        "id": "fab6f84f27d44e8b9b168bfac47fd4c2",
+        "studentUniqueId": "605266"
+      },
+      {
+        "studentSectionAssociation_id": "bb03abf7fb8e437189ea516fc48d72b7",
+        "id": "b58ef0f3e1d34687b5400e3177a984ec",
+        "studentUniqueId": "605273"
+      },
+      {
+        "studentSectionAssociation_id": "ee9bbb2caae9444bba805f8cfb595c59",
+        "id": "c8f83f34901447e5b48b9392aca1ad3d",
+        "studentUniqueId": "605422"
+      },
+      {
+        "studentSectionAssociation_id": "125256642f7944349a234bbdd01c18e8",
+        "id": "65f99b223bf846f8aeb63edac8c0bea8",
+        "studentUniqueId": "605451"
+      },
+      {
+        "studentSectionAssociation_id": "72e0d46fea324ed0857f6643b179d2f6",
+        "id": "eaa1e2fe137643608fbe3e4aa74c7088",
+        "studentUniqueId": "605259"
+      },
+      {
+        "studentSectionAssociation_id": "88faa3a40d5541f9897c5ab76591933a",
+        "id": "360449bb6b7e4fe2a47b56cd877f0b75",
+        "studentUniqueId": "605435"
+      },
+      {
+        "studentSectionAssociation_id": "09f4a927bbe743cfa591e05862f1d804",
+        "id": "38b4ac88a47347fbaa1a88a2c6e10bbc",
+        "studentUniqueId": "605188"
+      },
+      {
+        "studentSectionAssociation_id": "38085a152dfe4592b9dc142df187f955",
+        "id": "122ccdb7539e4b2a9823951be134fa09",
+        "studentUniqueId": "605417"
+      },
+      {
+        "studentSectionAssociation_id": "56725fd0c5b946ba908ec92b2766a24b",
+        "id": "d9d825f5e5554187beb892bf1230dd71",
+        "studentUniqueId": "605313"
+      },
+      {
+        "studentSectionAssociation_id": "56310bb964b44a27a0f76c8c50cde7c4",
+        "id": "c3aac4428a7e45cca777659d52982286",
+        "studentUniqueId": "605240"
+      },
+      {
+        "studentSectionAssociation_id": "86cd6f8669e448adb769ffcef21db1e9",
+        "id": "055c8a26e7474e8a87205d193647d275",
+        "studentUniqueId": "605229"
+      },
+      {
+        "studentSectionAssociation_id": "322455a4ff7c4d5a8e9416d4ec0ddaad",
+        "id": "15facf62bbaf4d16b62ba07ce9b4a621",
+        "studentUniqueId": "605248"
+      },
+      {
+        "studentSectionAssociation_id": "43827c11b745493ba8c5895795279d13",
+        "id": "43e1b01270cf4c5e9d3842fbe3a67a49",
+        "studentUniqueId": "605384"
+      },
+      {
+        "studentSectionAssociation_id": "648b12871d9d48dba640aace46d7a535",
+        "id": "1f85f7766f954a3d854130fb195b2948",
+        "studentUniqueId": "605183"
+      },
+      {
+        "studentSectionAssociation_id": "60245fed71504cb7bc6c48c935b1d1db",
+        "id": "39a5a34a3fe24e60b875ce0c317155c1",
+        "studentUniqueId": "605235"
+      },
+      {
+        "studentSectionAssociation_id": "9542f3c09aba4f1ead899ae683b66e6b",
+        "id": "64d64d4de5414da6a4b99d242afe4dd5",
+        "studentUniqueId": "605204"
+      },
+      {
+        "studentSectionAssociation_id": "9b798257a9094820b2b1117a557d0b68",
+        "id": "11b7d6f9264141dfb8f59ece3041e7e7",
+        "studentUniqueId": "605196"
+      },
+      {
+        "studentSectionAssociation_id": "9de726f7101e46ebbabc265dcecdf92e",
+        "id": "4bc877e58f0b408fa09664dcd56c51cc",
+        "studentUniqueId": "605362"
+      },
+      {
+        "studentSectionAssociation_id": "8b0810351e6a409999ba3739869f2115",
+        "id": "4d7db5aa28d84d3da96e4361f188e4a2",
+        "studentUniqueId": "605247"
+      },
+      {
+        "studentSectionAssociation_id": "bfce175a48634eac84dcb9458462a933",
+        "id": "ea9b78b0b72342c7b5e5eb785240dfc4",
+        "studentUniqueId": "605335"
+      },
+      {
+        "studentSectionAssociation_id": "2dd31433ee35486f912f8b8ceeee8391",
+        "id": "b5adea2ea3314438a78591d91919b936",
+        "studentUniqueId": "605348"
+      },
+      {
+        "studentSectionAssociation_id": "427cd19bf44b40cf9c10b1e46bf2a13b",
+        "id": "29d9f3e961d4411d803ad11e499b6e22",
+        "studentUniqueId": "605175"
+      },
+      {
+        "studentSectionAssociation_id": "c00204902e164fef90c2ccf64cdb090f",
+        "id": "33d4d8776d474f0cbd8bd1ebcafca125",
+        "studentUniqueId": "605367"
+      },
+      {
+        "studentSectionAssociation_id": "bbc5b03587194bed83c1c958dde74a8c",
+        "id": "2ff5768fe71444dc82898c4dda7c7fbd",
+        "studentUniqueId": "605432"
+      },
+      {
+        "studentSectionAssociation_id": "7c82b356c12e44aa97bdce8b5adaa894",
+        "id": "8729fe71940a46309d4b0b8aa751f495",
+        "studentUniqueId": "605394"
+      },
+      {
+        "studentSectionAssociation_id": "eb914f4ae2dc4f77ad87bf371e0fdd60",
+        "id": "addaf1a9c3984ce7804071f0527db177",
+        "studentUniqueId": "605356"
+      },
+      {
+        "studentSectionAssociation_id": "8bb01e72f8fb41fc9e5d36a826b8807d",
+        "id": "44fb8ed12f21457ab600f30056285634",
+        "studentUniqueId": "605287"
+      },
+      {
+        "studentSectionAssociation_id": "1c1ee26b23b44210a33808ae42d1b9e2",
+        "id": "94a71fc107cc43a386fec3a5af91ca31",
+        "studentUniqueId": "605177"
+      },
+      {
+        "studentSectionAssociation_id": "d84631fac4fd4d4e847a1c31089f6211",
+        "id": "fe1fee53ef5f40a79eeb15b95fb7f024",
+        "studentUniqueId": "605398"
+      },
+      {
+        "studentSectionAssociation_id": "0a212a5fc34a452f9eea233ea883dabb",
+        "id": "37654033ca314d40879f5a5f718f3309",
+        "studentUniqueId": "605216"
+      },
+      {
+        "studentSectionAssociation_id": "471642aba97f46618436b44bd9c4c363",
+        "id": "3182c372a1904c3093cb92863dcb278b",
+        "studentUniqueId": "605431"
+      },
+      {
+        "studentSectionAssociation_id": "f102dbe9c94d4c088cd5cd010699d58d",
+        "id": "b96da72325f24862915be58fccd11fcf",
+        "studentUniqueId": "605207"
+      },
+      {
+        "studentSectionAssociation_id": "66b36922d9a142be9704b8aa3fd2e148",
+        "id": "7be65a4edf3540688a8d978d89f41e63",
+        "studentUniqueId": "605212"
+      },
+      {
+        "studentSectionAssociation_id": "29e6a2c165384aaf91127eb99f20ec41",
+        "id": "bbe0d7e4715648f792a571691b64769c",
+        "studentUniqueId": "605260"
+      },
+      {
+        "studentSectionAssociation_id": "03d499caa5a24d02a48069c7e657d680",
+        "id": "60bc1ea8069a4958b617d27277d58015",
+        "studentUniqueId": "605306"
+      },
+      {
+        "studentSectionAssociation_id": "4d8958335af940ff9a6b509637cc3ce7",
+        "id": "21682129c84848769b92884cc1ac3e85",
+        "studentUniqueId": "605217"
+      },
+      {
+        "studentSectionAssociation_id": "bb4e100bf9cd4bfe81da6b8085962eed",
+        "id": "9d45443ceb0a4eee82ffbe650a0bcd3c",
+        "studentUniqueId": "605427"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "1e3dbdb1cd0549df98e78c95737bd4c2",
+      "schoolId": 255901001,
+      "name": "01 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "339ba2dd678d41519be9a98f186e3a4e",
+      "localCourseCode": "SPAN-2",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "d83278b69e144a54b3572f64e47a27d6",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "324"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "533490ef0ce94bd1bad98b343d9c3efb",
+    "uniqueSectionCode": "25590100102Trad120ENG112011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "11bfbee5cb514eafbed04593093885a9",
+        "id": "6ea7521383c14ee699b2dfb03d78b278",
+        "staffUniqueId": "207268"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "95fb0dc1cbf047dd949d2bf38fed72cc",
+        "id": "8a9d3469c64945a1aaf082d8a2760abb",
+        "studentUniqueId": "605241"
+      },
+      {
+        "studentSectionAssociation_id": "a40c0d3a3f1b4f5a914342f57336c791",
+        "id": "87becd0d0d104ded84ae7147e133cadb",
+        "studentUniqueId": "605449"
+      },
+      {
+        "studentSectionAssociation_id": "77edccdded154679b3ac69a9a4c658cb",
+        "id": "aa20f0d5b3194a39b6dffe2c7abcc228",
+        "studentUniqueId": "605351"
+      },
+      {
+        "studentSectionAssociation_id": "bea63a2f33ac4c1cb7997ba66bd97f00",
+        "id": "9ae2ec3b7aab4f56b5ece1cf60f6b890",
+        "studentUniqueId": "605316"
+      },
+      {
+        "studentSectionAssociation_id": "de0e96586e0540cc85f9e7a06c702918",
+        "id": "b37605de155e47e08ddabda70cf6d71d",
+        "studentUniqueId": "605332"
+      },
+      {
+        "studentSectionAssociation_id": "70fd617e48f64dcf90d1ed72796c10cd",
+        "id": "016b0f39d4c348f9a91ba52ef9a99de9",
+        "studentUniqueId": "605447"
+      },
+      {
+        "studentSectionAssociation_id": "bff7eef6490e4b03b17b03ab66919588",
+        "id": "373ff04b6c0e492ca1f6c7cbb45d7bb3",
+        "studentUniqueId": "605262"
+      },
+      {
+        "studentSectionAssociation_id": "6500d10baddd4c9198d135773cdc4d56",
+        "id": "ddb777406faa401899744b16a214823c",
+        "studentUniqueId": "605389"
+      },
+      {
+        "studentSectionAssociation_id": "f4d16e34d55a4830af1353cf2151c214",
+        "id": "1bf8583a3dc34c889cac47ac18598e37",
+        "studentUniqueId": "605370"
+      },
+      {
+        "studentSectionAssociation_id": "511b4b8b7c804500b76c4dfdc23af65c",
+        "id": "aa1176e47523457d89b5d592acada706",
+        "studentUniqueId": "605374"
+      },
+      {
+        "studentSectionAssociation_id": "47c7f2d8071c4f2fba0c77b61aa2fecb",
+        "id": "149cb0e1ec924c45947c06b9c9854864",
+        "studentUniqueId": "605339"
+      },
+      {
+        "studentSectionAssociation_id": "fd3aaf60c0f249dda65e923c6b9b90e1",
+        "id": "5195c873b8c84ac5819a4a2e4fe70873",
+        "studentUniqueId": "605346"
+      },
+      {
+        "studentSectionAssociation_id": "e5a8537af78e4e77b7f4ab3bcf338214",
+        "id": "399b0e6972734bb7815a444d9d6dfcf5",
+        "studentUniqueId": "605303"
+      },
+      {
+        "studentSectionAssociation_id": "68d1a823356f464486bf0c4584a29179",
+        "id": "ffd12fae44ca4957be8ad442b5d7a691",
+        "studentUniqueId": "605263"
+      },
+      {
+        "studentSectionAssociation_id": "bd3a42bf520a4d74bacf336a4326cfb4",
+        "id": "dbca0f6286e347d3901e9b7bb8d0b14b",
+        "studentUniqueId": "605408"
+      },
+      {
+        "studentSectionAssociation_id": "83a785bd31774f2b9d66a540315f161b",
+        "id": "220ec07283034bcfb3697fdbc27eabee",
+        "studentUniqueId": "605334"
+      },
+      {
+        "studentSectionAssociation_id": "b05c618f351f4a62a51ebdebb3e896e5",
+        "id": "d6a1e0b28d494d3abe1d9bc398d4bfb7",
+        "studentUniqueId": "605391"
+      },
+      {
+        "studentSectionAssociation_id": "f40dcc28c2d9473aa7a681e4aaaa3aec",
+        "id": "5579787d26914c54923b0af719d951d5",
+        "studentUniqueId": "605276"
+      },
+      {
+        "studentSectionAssociation_id": "7c3f341ae6894a13ab6fa0feeeecfc8c",
+        "id": "63bffb969e634afa968c97c224ce7a03",
+        "studentUniqueId": "605317"
+      },
+      {
+        "studentSectionAssociation_id": "fa0bc6ae605a4100a5d4995249eb3580",
+        "id": "839a57fe584044fba16594bd2cca0e18",
+        "studentUniqueId": "605309"
+      },
+      {
+        "studentSectionAssociation_id": "46eca4deb6184e1b80a47e853eae40c8",
+        "id": "01cc6a4c45584a23b16e6d13411ea5fb",
+        "studentUniqueId": "605393"
+      },
+      {
+        "studentSectionAssociation_id": "f57225376c3b42ef9bda1b94c4a76fc2",
+        "id": "d6f8c35c689c4544b47ecf38cf40bd5d",
+        "studentUniqueId": "605257"
+      },
+      {
+        "studentSectionAssociation_id": "9b0c736dfff640358c970b1b41778bd6",
+        "id": "8d272d7066bf4314ab4741f0d10f25c5",
+        "studentUniqueId": "605328"
+      },
+      {
+        "studentSectionAssociation_id": "15550f3ccbf24006941e6b39e5aa7424",
+        "id": "aa697eab5cc14ba0848a9d2fa92c4a5a",
+        "studentUniqueId": "605173"
+      },
+      {
+        "studentSectionAssociation_id": "aa85164449d143d5a0882da999830d56",
+        "id": "0d8099539b2649ebb93e8c332aa9849d",
+        "studentUniqueId": "605349"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "98b9331d541749b89e9653abfed27d95",
+      "schoolId": 255901001,
+      "name": "02 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "04c1fddaa54341f3b15b1e4448d9c48c",
+      "localCourseCode": "ENG-1",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "59edc03d1078456dbd84fc6d6192d64a",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "120"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "114aace801eb43ffaf4f8b23665f32ee",
+    "uniqueSectionCode": "25590100102Trad120ENG122011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "5f95b5692e6d495ca52601426a98a12c",
+        "id": "6ea7521383c14ee699b2dfb03d78b278",
+        "staffUniqueId": "207268"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "df3681cdb8f84038aa28e7cc5b125214",
+        "id": "8a9d3469c64945a1aaf082d8a2760abb",
+        "studentUniqueId": "605241"
+      },
+      {
+        "studentSectionAssociation_id": "ecb3f5e14aac427ca856f44687f9d87e",
+        "id": "87becd0d0d104ded84ae7147e133cadb",
+        "studentUniqueId": "605449"
+      },
+      {
+        "studentSectionAssociation_id": "d3c96f075bc14f5d89081adddf343ba5",
+        "id": "aa20f0d5b3194a39b6dffe2c7abcc228",
+        "studentUniqueId": "605351"
+      },
+      {
+        "studentSectionAssociation_id": "1618c67621554d209da93893c865c6a0",
+        "id": "9ae2ec3b7aab4f56b5ece1cf60f6b890",
+        "studentUniqueId": "605316"
+      },
+      {
+        "studentSectionAssociation_id": "8d48790ecccf455f8127ceb51e54bfd0",
+        "id": "b37605de155e47e08ddabda70cf6d71d",
+        "studentUniqueId": "605332"
+      },
+      {
+        "studentSectionAssociation_id": "c603b4c461c848aba7aaeccba962244f",
+        "id": "016b0f39d4c348f9a91ba52ef9a99de9",
+        "studentUniqueId": "605447"
+      },
+      {
+        "studentSectionAssociation_id": "59059bec83f541309c919357fadb1b8f",
+        "id": "373ff04b6c0e492ca1f6c7cbb45d7bb3",
+        "studentUniqueId": "605262"
+      },
+      {
+        "studentSectionAssociation_id": "123468eff1de4c08b04cfac5f29f7929",
+        "id": "ddb777406faa401899744b16a214823c",
+        "studentUniqueId": "605389"
+      },
+      {
+        "studentSectionAssociation_id": "1a0ec77319354e1bb7e486282a35c020",
+        "id": "1bf8583a3dc34c889cac47ac18598e37",
+        "studentUniqueId": "605370"
+      },
+      {
+        "studentSectionAssociation_id": "61312954502c4377a9f496e1ba8b6ca5",
+        "id": "aa1176e47523457d89b5d592acada706",
+        "studentUniqueId": "605374"
+      },
+      {
+        "studentSectionAssociation_id": "1eca0c81f9e7408192785ba1b7c47b77",
+        "id": "149cb0e1ec924c45947c06b9c9854864",
+        "studentUniqueId": "605339"
+      },
+      {
+        "studentSectionAssociation_id": "0f0411ad21f543a4987fa75b745685af",
+        "id": "5195c873b8c84ac5819a4a2e4fe70873",
+        "studentUniqueId": "605346"
+      },
+      {
+        "studentSectionAssociation_id": "7533bcc32d0b4ddd8a34f820f6c98496",
+        "id": "399b0e6972734bb7815a444d9d6dfcf5",
+        "studentUniqueId": "605303"
+      },
+      {
+        "studentSectionAssociation_id": "8466b9dab9ef4691b77d77473b7e3bb1",
+        "id": "ffd12fae44ca4957be8ad442b5d7a691",
+        "studentUniqueId": "605263"
+      },
+      {
+        "studentSectionAssociation_id": "5d29625d98854e72afec8ae5fbb3a53a",
+        "id": "dbca0f6286e347d3901e9b7bb8d0b14b",
+        "studentUniqueId": "605408"
+      },
+      {
+        "studentSectionAssociation_id": "cfbe0303877046d8b8475d21c8da864f",
+        "id": "220ec07283034bcfb3697fdbc27eabee",
+        "studentUniqueId": "605334"
+      },
+      {
+        "studentSectionAssociation_id": "093b9d0309a2414eb9032a73b89988d7",
+        "id": "d6a1e0b28d494d3abe1d9bc398d4bfb7",
+        "studentUniqueId": "605391"
+      },
+      {
+        "studentSectionAssociation_id": "af9902e389974828881d6f417f6b54d9",
+        "id": "5579787d26914c54923b0af719d951d5",
+        "studentUniqueId": "605276"
+      },
+      {
+        "studentSectionAssociation_id": "ccf037ee90f44034b8809425ff457b4c",
+        "id": "63bffb969e634afa968c97c224ce7a03",
+        "studentUniqueId": "605317"
+      },
+      {
+        "studentSectionAssociation_id": "da774563e88848c0a556aee12a3a3ee6",
+        "id": "839a57fe584044fba16594bd2cca0e18",
+        "studentUniqueId": "605309"
+      },
+      {
+        "studentSectionAssociation_id": "d12eb28c9c0f4ba28a0c10d2ecbcba53",
+        "id": "01cc6a4c45584a23b16e6d13411ea5fb",
+        "studentUniqueId": "605393"
+      },
+      {
+        "studentSectionAssociation_id": "e283c1c21f9142b2ab7253eb571aa48a",
+        "id": "d6f8c35c689c4544b47ecf38cf40bd5d",
+        "studentUniqueId": "605257"
+      },
+      {
+        "studentSectionAssociation_id": "0f2cdb04dd88475783ede3189d0e9a6a",
+        "id": "8d272d7066bf4314ab4741f0d10f25c5",
+        "studentUniqueId": "605328"
+      },
+      {
+        "studentSectionAssociation_id": "249e84859ef14f868f429026e5bdc715",
+        "id": "aa697eab5cc14ba0848a9d2fa92c4a5a",
+        "studentUniqueId": "605173"
+      },
+      {
+        "studentSectionAssociation_id": "ebebdcb6dfe04bb0a70beb3f6fa16bd9",
+        "id": "0d8099539b2649ebb93e8c332aa9849d",
+        "studentUniqueId": "605349"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "98b9331d541749b89e9653abfed27d95",
+      "schoolId": 255901001,
+      "name": "02 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "dcfe241e0318484297ad8c5fb2de7219",
+      "localCourseCode": "ENG-1",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "59edc03d1078456dbd84fc6d6192d64a",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "120"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "33250a2d9b764e55b4b32ff7d4dbf666",
+    "uniqueSectionCode": "25590100102Trad121ENG312011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "f1b1b783a4284c989f2136096bab191c",
+        "id": "d468f2be62284b8ba4cce779e33c36bf",
+        "staffUniqueId": "207269"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "3f63ed09218648e995cee936a53fb1bb",
+        "id": "e71adfccc4e248ac9efb6102a87a1f6d",
+        "studentUniqueId": "605294"
+      },
+      {
+        "studentSectionAssociation_id": "690c274b5a904eaeb72f266764972126",
+        "id": "628d027179454e6cb17fe9ba480a3949",
+        "studentUniqueId": "605214"
+      },
+      {
+        "studentSectionAssociation_id": "ac6120e1f88d49ecb3a3082767cdec38",
+        "id": "e2ce42a127704fd093fcc9ba731bed82",
+        "studentUniqueId": "605225"
+      },
+      {
+        "studentSectionAssociation_id": "563e37deec4b4dcfad2c03260e868b9e",
+        "id": "ac9e7fd58cab4c44bf83faceca169ba6",
+        "studentUniqueId": "605302"
+      },
+      {
+        "studentSectionAssociation_id": "1bb6e0aafc204c70a4120e24eb0b3644",
+        "id": "b13c56d978b840d7b237864b35f9c7fa",
+        "studentUniqueId": "605445"
+      },
+      {
+        "studentSectionAssociation_id": "df7b5ccfdb10415191d84387aa615ae2",
+        "id": "dfb4c770c3ba43449e00acb5fc166bd3",
+        "studentUniqueId": "605400"
+      },
+      {
+        "studentSectionAssociation_id": "24a0d0b349ff4ff884653d81adeac854",
+        "id": "0fc90493b301478aac73362a6369d54d",
+        "studentUniqueId": "605253"
+      },
+      {
+        "studentSectionAssociation_id": "80ead6321de44ac78620be8ac76ae33b",
+        "id": "87aa9376efde4dda84a0e003ed74d4ce",
+        "studentUniqueId": "605387"
+      },
+      {
+        "studentSectionAssociation_id": "4314a020b4684f5c8837301aeeceadc5",
+        "id": "093917712c734ff1a4ac42f9f91f638b",
+        "studentUniqueId": "605308"
+      },
+      {
+        "studentSectionAssociation_id": "71723f987550437c99601a7193adbae8",
+        "id": "cb96ce2c86134b4e904b6531b4319115",
+        "studentUniqueId": "605245"
+      },
+      {
+        "studentSectionAssociation_id": "567fc285ae4b49c0966d3a1880cefe67",
+        "id": "a8570e015ce342428178eca452a2042b",
+        "studentUniqueId": "605401"
+      },
+      {
+        "studentSectionAssociation_id": "06021130c706410fadebbf04260d8e35",
+        "id": "c77b9d396a24425d9bebdf70113bfee1",
+        "studentUniqueId": "605326"
+      },
+      {
+        "studentSectionAssociation_id": "e2aff5cd2b0a45b18034db7616ed5721",
+        "id": "b73972b75ed949ccb1fece7e0525b2d0",
+        "studentUniqueId": "605187"
+      },
+      {
+        "studentSectionAssociation_id": "72759ddd3b1047a79d0412955792aeb2",
+        "id": "fab6f84f27d44e8b9b168bfac47fd4c2",
+        "studentUniqueId": "605266"
+      },
+      {
+        "studentSectionAssociation_id": "9e39ae0c734c44c69dfdc61cc344d193",
+        "id": "b58ef0f3e1d34687b5400e3177a984ec",
+        "studentUniqueId": "605273"
+      },
+      {
+        "studentSectionAssociation_id": "831d157fbf314c0cb804c11cd16e0e8d",
+        "id": "c8f83f34901447e5b48b9392aca1ad3d",
+        "studentUniqueId": "605422"
+      },
+      {
+        "studentSectionAssociation_id": "a92a898ad67144059d7c58e095ee02da",
+        "id": "65f99b223bf846f8aeb63edac8c0bea8",
+        "studentUniqueId": "605451"
+      },
+      {
+        "studentSectionAssociation_id": "0cbff2375f9e4cc481175be48453d73f",
+        "id": "eaa1e2fe137643608fbe3e4aa74c7088",
+        "studentUniqueId": "605259"
+      },
+      {
+        "studentSectionAssociation_id": "50a347c30a014f009a4b3dd5802a1bf7",
+        "id": "360449bb6b7e4fe2a47b56cd877f0b75",
+        "studentUniqueId": "605435"
+      },
+      {
+        "studentSectionAssociation_id": "2c3b9264d370465399e9c149b7dd2142",
+        "id": "38b4ac88a47347fbaa1a88a2c6e10bbc",
+        "studentUniqueId": "605188"
+      },
+      {
+        "studentSectionAssociation_id": "7a3f209657274ebe9c99a4b6b6cb272e",
+        "id": "122ccdb7539e4b2a9823951be134fa09",
+        "studentUniqueId": "605417"
+      },
+      {
+        "studentSectionAssociation_id": "358271fb00a14b05b825029ed1934f8c",
+        "id": "d9d825f5e5554187beb892bf1230dd71",
+        "studentUniqueId": "605313"
+      },
+      {
+        "studentSectionAssociation_id": "20c7309f06164ea798680e00411a35c1",
+        "id": "c3aac4428a7e45cca777659d52982286",
+        "studentUniqueId": "605240"
+      },
+      {
+        "studentSectionAssociation_id": "8beb19172e014ec58c1e5f1622b33f77",
+        "id": "055c8a26e7474e8a87205d193647d275",
+        "studentUniqueId": "605229"
+      },
+      {
+        "studentSectionAssociation_id": "faf9c40ec44540308538ceed05862661",
+        "id": "15facf62bbaf4d16b62ba07ce9b4a621",
+        "studentUniqueId": "605248"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "98b9331d541749b89e9653abfed27d95",
+      "schoolId": 255901001,
+      "name": "02 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "ceed95d2b7e34865b0c245bc9dd6a296",
+      "localCourseCode": "ENG-3",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "2a6b68b637bc48b7bc455d49c7973429",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "121"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "00937941aa5941db93749eed3bbdb719",
+    "uniqueSectionCode": "25590100102Trad121ENG322011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "English Language Arts",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "bed7b8d5ffd5418485a8743d6953cce4",
+        "id": "d468f2be62284b8ba4cce779e33c36bf",
+        "staffUniqueId": "207269"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "4a4481bb46034f5ebf25f34bad16cb9e",
+        "id": "e71adfccc4e248ac9efb6102a87a1f6d",
+        "studentUniqueId": "605294"
+      },
+      {
+        "studentSectionAssociation_id": "a5fe2f10fafd4018bc2f270b2812600e",
+        "id": "628d027179454e6cb17fe9ba480a3949",
+        "studentUniqueId": "605214"
+      },
+      {
+        "studentSectionAssociation_id": "81067e54d7f348aaa25c1399d0a1e238",
+        "id": "e2ce42a127704fd093fcc9ba731bed82",
+        "studentUniqueId": "605225"
+      },
+      {
+        "studentSectionAssociation_id": "b5105d37d6644145a69d2848753f7d59",
+        "id": "ac9e7fd58cab4c44bf83faceca169ba6",
+        "studentUniqueId": "605302"
+      },
+      {
+        "studentSectionAssociation_id": "11d91a713be34d1ca72b4a6ec520325a",
+        "id": "b13c56d978b840d7b237864b35f9c7fa",
+        "studentUniqueId": "605445"
+      },
+      {
+        "studentSectionAssociation_id": "ccba10597fe04785947e1760137aa37d",
+        "id": "dfb4c770c3ba43449e00acb5fc166bd3",
+        "studentUniqueId": "605400"
+      },
+      {
+        "studentSectionAssociation_id": "8db9b434450f4589ba0a40cf9cb56347",
+        "id": "0fc90493b301478aac73362a6369d54d",
+        "studentUniqueId": "605253"
+      },
+      {
+        "studentSectionAssociation_id": "961e9a46e4904e49b37fd5760117b29d",
+        "id": "87aa9376efde4dda84a0e003ed74d4ce",
+        "studentUniqueId": "605387"
+      },
+      {
+        "studentSectionAssociation_id": "6a34fa92d8ff40af80b82ce8259308de",
+        "id": "093917712c734ff1a4ac42f9f91f638b",
+        "studentUniqueId": "605308"
+      },
+      {
+        "studentSectionAssociation_id": "0872ec69e6344f38b6fc27e391fe7bd3",
+        "id": "cb96ce2c86134b4e904b6531b4319115",
+        "studentUniqueId": "605245"
+      },
+      {
+        "studentSectionAssociation_id": "f1dc60eb1e3c4195b39a944131728bbf",
+        "id": "a8570e015ce342428178eca452a2042b",
+        "studentUniqueId": "605401"
+      },
+      {
+        "studentSectionAssociation_id": "91c101c061f9449f98659550f82b9af1",
+        "id": "c77b9d396a24425d9bebdf70113bfee1",
+        "studentUniqueId": "605326"
+      },
+      {
+        "studentSectionAssociation_id": "7faff14459124fa6a32bafc32770befc",
+        "id": "b73972b75ed949ccb1fece7e0525b2d0",
+        "studentUniqueId": "605187"
+      },
+      {
+        "studentSectionAssociation_id": "df02d8448efb401fb8942ad16ea40585",
+        "id": "fab6f84f27d44e8b9b168bfac47fd4c2",
+        "studentUniqueId": "605266"
+      },
+      {
+        "studentSectionAssociation_id": "b9233c9786bd4f068a3efa17acc3234f",
+        "id": "b58ef0f3e1d34687b5400e3177a984ec",
+        "studentUniqueId": "605273"
+      },
+      {
+        "studentSectionAssociation_id": "d7290b52e864409f8863f84b491459b3",
+        "id": "c8f83f34901447e5b48b9392aca1ad3d",
+        "studentUniqueId": "605422"
+      },
+      {
+        "studentSectionAssociation_id": "a816647a0f904494be18ae36e361d155",
+        "id": "65f99b223bf846f8aeb63edac8c0bea8",
+        "studentUniqueId": "605451"
+      },
+      {
+        "studentSectionAssociation_id": "6ec2b06536bc423d92d0dc6390cf3949",
+        "id": "eaa1e2fe137643608fbe3e4aa74c7088",
+        "studentUniqueId": "605259"
+      },
+      {
+        "studentSectionAssociation_id": "163007c9bef24c09bc16cd158a608bcf",
+        "id": "360449bb6b7e4fe2a47b56cd877f0b75",
+        "studentUniqueId": "605435"
+      },
+      {
+        "studentSectionAssociation_id": "3dfe4934d2ae41f592892c555fa3bdc7",
+        "id": "38b4ac88a47347fbaa1a88a2c6e10bbc",
+        "studentUniqueId": "605188"
+      },
+      {
+        "studentSectionAssociation_id": "2beb334c0c9f455a8411ba2b9437d706",
+        "id": "122ccdb7539e4b2a9823951be134fa09",
+        "studentUniqueId": "605417"
+      },
+      {
+        "studentSectionAssociation_id": "46acce7f92aa45ebbd222a3c0298dfdb",
+        "id": "d9d825f5e5554187beb892bf1230dd71",
+        "studentUniqueId": "605313"
+      },
+      {
+        "studentSectionAssociation_id": "dbdac50eeca34d9baa8ef24e995dec18",
+        "id": "c3aac4428a7e45cca777659d52982286",
+        "studentUniqueId": "605240"
+      },
+      {
+        "studentSectionAssociation_id": "58342fe0a2cc49ca94746d3fe5732b4c",
+        "id": "055c8a26e7474e8a87205d193647d275",
+        "studentUniqueId": "605229"
+      },
+      {
+        "studentSectionAssociation_id": "466161e3c17f44a0956f1684146bcc26",
+        "id": "15facf62bbaf4d16b62ba07ce9b4a621",
+        "studentUniqueId": "605248"
+      }
+    ],
+    "sessionReference": {
+      "id": "79df6929e7b646ac9089fb74fc1a453b",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester",
+      "sessionName": "2010-2011 Spring Semester",
+      "beginDate": "2011-01-04T00:00:00",
+      "endDate": "2011-05-27T00:00:00",
+      "totalInstructionalDays": 88
+    },
+    "classPeriodReference": {
+      "id": "98b9331d541749b89e9653abfed27d95",
+      "schoolId": 255901001,
+      "name": "02 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "b65ae0f141094287a96d5bddf0bc25dd",
+      "localCourseCode": "ENG-3",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Spring Semester"
+    },
+    "locationReference": {
+      "id": "2a6b68b637bc48b7bc455d49c7973429",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "121"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  },
+  {
+    "id": "859fc665099d44e6ab3055366b8aea2b",
+    "uniqueSectionCode": "25590100102Trad122GOVT12011",
+    "sequenceOfCourse": 1,
+    "educationalEnvironmentType": "Classroom",
+    "availableCredits": 1,
+    "academicSubjectDescriptor": "Social Sciences and History",
+    "staff": [
+      {
+        "staffSectionAssociation_id": "fc56219eda674a60ac43c68e3ce4cc35",
+        "id": "d63ef2d6b9e64c05a707246f0d645fb8",
+        "staffUniqueId": "207274"
+      }
+    ],
+    "students": [
+      {
+        "studentSectionAssociation_id": "c29d5354bef845b29e548fd1e467ed50",
+        "id": "c142382e0af14eab912dbd2f2cc19027",
+        "studentUniqueId": "605550"
+      },
+      {
+        "studentSectionAssociation_id": "64007b244f784d20a6695b7b1dc2164a",
+        "id": "5b2174c280174186ba03a6e66d4c4d29",
+        "studentUniqueId": "605739"
+      },
+      {
+        "studentSectionAssociation_id": "af5500b4f77b4ba68944b92c461fea8a",
+        "id": "9a1f7b0cbe8b41a5902a2bdbac1412ca",
+        "studentUniqueId": "605644"
+      },
+      {
+        "studentSectionAssociation_id": "827693ee04e1407d9df6e9b4cb83ab3f",
+        "id": "e16162e516ee441baea440457c796455",
+        "studentUniqueId": "605439"
+      },
+      {
+        "studentSectionAssociation_id": "f7e5c89ce2e84c95a117a688d72c11c5",
+        "id": "2d5a2fe2ccf94b4ba7b582466a026f13",
+        "studentUniqueId": "605756"
+      },
+      {
+        "studentSectionAssociation_id": "eedd9610b49f4f9a8cee62426843b8eb",
+        "id": "494d756eb9a740f4a557e652423dafe6",
+        "studentUniqueId": "605446"
+      },
+      {
+        "studentSectionAssociation_id": "35d7307e0a4a43cda63eede4e7252c10",
+        "id": "5f8df67115fb450ea124f4956d84b28a",
+        "studentUniqueId": "605421"
+      },
+      {
+        "studentSectionAssociation_id": "147a431f01234323bf96862363dade05",
+        "id": "207decf6e0b44cba8cf8800ca2f53548",
+        "studentUniqueId": "605567"
+      },
+      {
+        "studentSectionAssociation_id": "46c59ed70f404e9b89a409df569d0a87",
+        "id": "2759a5f48fd8412ea52107ea63215f73",
+        "studentUniqueId": "605746"
+      },
+      {
+        "studentSectionAssociation_id": "af08c1fd569a406da4ed9ebed3df0289",
+        "id": "e1107a975ab24baf9ce8f0ca219bbdb9",
+        "studentUniqueId": "605728"
+      },
+      {
+        "studentSectionAssociation_id": "96d5a20897d74f5d86dccdc6208da5be",
+        "id": "475f76870f4344b58f233842c3219498",
+        "studentUniqueId": "605752"
+      },
+      {
+        "studentSectionAssociation_id": "87d3b1f323f742e6845ec59f9b012155",
+        "id": "f8f03b40d4554c6995e1c7b4cf35ec3a",
+        "studentUniqueId": "605610"
+      },
+      {
+        "studentSectionAssociation_id": "025691ff883943e19e23ca9cd2401abd",
+        "id": "f8a137f8365e407ba560d3c78a5844f5",
+        "studentUniqueId": "605609"
+      },
+      {
+        "studentSectionAssociation_id": "f68128da102b4e0ba58bfa68df1e364f",
+        "id": "711f695e152c4594a4be305c78dcd9e4",
+        "studentUniqueId": "605428"
+      },
+      {
+        "studentSectionAssociation_id": "dd6cf9cfa1ef43338f698463521176f9",
+        "id": "3067ba66dfea4877aa35bfaad61715d5",
+        "studentUniqueId": "605411"
+      },
+      {
+        "studentSectionAssociation_id": "ed87cf21cfab436188d6ed87ca95abb2",
+        "id": "8ead73d1c7b24c1b99ad228b9f04a8bf",
+        "studentUniqueId": "605539"
+      },
+      {
+        "studentSectionAssociation_id": "cfd2561ccc094e2ea374af1656f1dccc",
+        "id": "53e06dbcf725470a810854fe9d4ae8fd",
+        "studentUniqueId": "605504"
+      },
+      {
+        "studentSectionAssociation_id": "5e8025e0912346ffb3a5f81c2b26dced",
+        "id": "6b412f453e6a485ab340079628e94c95",
+        "studentUniqueId": "605537"
+      },
+      {
+        "studentSectionAssociation_id": "af0f38579d7c42f4aa03dbaa4c6c9dd3",
+        "id": "ac01fc2b59a24be6a87dfeeff86d6ffa",
+        "studentUniqueId": "605755"
+      },
+      {
+        "studentSectionAssociation_id": "98109c52dd194a2c841f24b6aa145268",
+        "id": "d356a2a3d47844caae2eecb6a4649656",
+        "studentUniqueId": "605690"
+      },
+      {
+        "studentSectionAssociation_id": "276c3e32415e4e539b54ee39659a2de9",
+        "id": "a20c5e5a52dd48749237e029a02cbb95",
+        "studentUniqueId": "605628"
+      },
+      {
+        "studentSectionAssociation_id": "a6053a0df01d4af6a2e83e662e3d2cf9",
+        "id": "20145b22567b419abe500ca264a733f2",
+        "studentUniqueId": "605588"
+      },
+      {
+        "studentSectionAssociation_id": "3b8fb73ebd7842c482d494e76d6c6f8a",
+        "id": "1d04dcec35df422f8a0fc3e491c2a051",
+        "studentUniqueId": "605603"
+      },
+      {
+        "studentSectionAssociation_id": "3bb34685b2004ef082a2ea533d0415a6",
+        "id": "ad34aa1b17fd4e43809bad84f9460605",
+        "studentUniqueId": "605433"
+      },
+      {
+        "studentSectionAssociation_id": "6b60b3645f25467298a3337c0e88ae7c",
+        "id": "fb795c3157124c30b5a3c546fa6b6995",
+        "studentUniqueId": "605682"
+      },
+      {
+        "studentSectionAssociation_id": "b24efb687c05429783de747d646ac4c7",
+        "id": "bf267b56d2f9492cb09d534728afa412",
+        "studentUniqueId": "605694"
+      },
+      {
+        "studentSectionAssociation_id": "1e345fdb829d401ba15b2ea5614406a4",
+        "id": "07fbd737afb142e6911795a77da3a34f",
+        "studentUniqueId": "605601"
+      },
+      {
+        "studentSectionAssociation_id": "83637c0a58104bbeaf8a833f9c74aa39",
+        "id": "12be2a72ba954b999f430696ac437208",
+        "studentUniqueId": "605614"
+      },
+      {
+        "studentSectionAssociation_id": "efbb4c569ca64ad49c9984dce1cfd49d",
+        "id": "a29d253649fa4a2d923706ba4af44a72",
+        "studentUniqueId": "605718"
+      },
+      {
+        "studentSectionAssociation_id": "48b70ff1f0424d1bb36b991f18a9e2da",
+        "id": "caa0c15bbb1846f481cc4f1c03823e8a",
+        "studentUniqueId": "605754"
+      }
+    ],
+    "sessionReference": {
+      "id": "599748c843c749fd812c7c11bdb16512",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester",
+      "sessionName": "2010-2011 Fall Semester",
+      "beginDate": "2010-08-23T00:00:00",
+      "endDate": "2010-12-17T00:00:00",
+      "totalInstructionalDays": 81
+    },
+    "classPeriodReference": {
+      "id": "98b9331d541749b89e9653abfed27d95",
+      "schoolId": 255901001,
+      "name": "02 - Traditional"
+    },
+    "courseOfferingReference": {
+      "id": "74a785ee8641484fb0ba36e97ae4fbb7",
+      "localCourseCode": "GOVT",
+      "schoolId": 255901001,
+      "schoolYear": 2011,
+      "termDescriptor": "Fall Semester"
+    },
+    "locationReference": {
+      "id": "dd5514fde0304e7c9c833207854e4add",
+      "schoolId": 255901001,
+      "classroomIdentificationCode": "122"
+    },
+    "schoolReference": {
+      "id": "ceaa310e29674ce29a158ad4f2d487a7",
+      "schoolId": 255901001
+    }
+  }
+]

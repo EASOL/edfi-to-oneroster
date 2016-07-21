@@ -1,0 +1,230 @@
+﻿[
+  {
+    "id": "ceaa310e29674ce29a158ad4f2d487a7",
+    "schoolId": 255901001,
+    "stateOrganizationId": "255901001",
+    "nameOfInstitution": "Grand Bend High School",
+    "shortNameOfInstitution": "GBHS",
+    "webSite": "http://www.GBISD.edu/GBHS/",
+    "operationalStatusType": "Active",
+    "type": "Regular",
+    "charterStatusType": "Not a Charter School",
+    "titleIPartASchoolDesignationType": "Not designated as a Title I Part A school",
+    "administrativeFundingControlDescriptor": "Public School",
+    "addresses": [
+      {
+        "addressType": "Mailing",
+        "streetNumberName": "P.O. Box 2035",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "73334-2035",
+        "nameOfCounty": "Williston"
+      },
+      {
+        "addressType": "Physical",
+        "streetNumberName": "456 Elm Street",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "73334",
+        "nameOfCounty": "Williston"
+      }
+    ],
+    "educationOrganizationCategories": [
+      {
+        "type": "School"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "educationOrganizationIdentificationSystemDescriptor": "SEA",
+        "identificationCode": "255901001"
+      }
+    ],
+    "institutionTelephones": [
+      {
+        "institutionTelephoneNumberType": "Main",
+        "telephoneNumber": "(950) 325-9465"
+      },
+      {
+        "institutionTelephoneNumberType": "Fax",
+        "telephoneNumber": "(950) 393-3156"
+      }
+    ],
+    "internationalAddresses": [],
+    "schoolCategories": [
+      {
+        "type": "High School"
+      }
+    ],
+    "gradeLevels": [
+      {
+        "gradeLevelDescriptor": "Eleventh grade"
+      },
+      {
+        "gradeLevelDescriptor": "Ninth grade"
+      },
+      {
+        "gradeLevelDescriptor": "Tenth grade"
+      },
+      {
+        "gradeLevelDescriptor": "Twelfth grade"
+      }
+    ],
+    "localEducationAgencyReference": {
+      "id": "e7242ca4bb65453d92e0dc1887cdb1ed",
+      "localEducationAgencyId": 255901
+    }
+  },
+  {
+    "id": "16bd777d50e84d0d847ccf6d4b212c20",
+    "schoolId": 255901044,
+    "stateOrganizationId": "255901044",
+    "nameOfInstitution": "Grand Bend Middle School",
+    "shortNameOfInstitution": "GBMS",
+    "webSite": "http://www.GBISD.edu/GBMS/",
+    "operationalStatusType": "Active",
+    "type": "Regular",
+    "charterStatusType": "Not a Charter School",
+    "titleIPartASchoolDesignationType": "Not designated as a Title I Part A school",
+    "administrativeFundingControlDescriptor": "Public School",
+    "addresses": [
+      {
+        "addressType": "Mailing",
+        "streetNumberName": "P.O. Box 3393",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "73334-3393",
+        "nameOfCounty": "Williston"
+      },
+      {
+        "addressType": "Physical",
+        "streetNumberName": "9993 Space Blvd.",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "73334",
+        "nameOfCounty": "Williston"
+      }
+    ],
+    "educationOrganizationCategories": [
+      {
+        "type": "School"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "educationOrganizationIdentificationSystemDescriptor": "SEA",
+        "identificationCode": "255901044"
+      }
+    ],
+    "institutionTelephones": [
+      {
+        "institutionTelephoneNumberType": "Main",
+        "telephoneNumber": "(950) 325-3164"
+      },
+      {
+        "institutionTelephoneNumberType": "Fax",
+        "telephoneNumber": "(950) 366-9374"
+      }
+    ],
+    "internationalAddresses": [],
+    "schoolCategories": [
+      {
+        "type": "Middle School"
+      }
+    ],
+    "gradeLevels": [
+      {
+        "gradeLevelDescriptor": "Eighth grade"
+      },
+      {
+        "gradeLevelDescriptor": "Seventh grade"
+      },
+      {
+        "gradeLevelDescriptor": "Sixth grade"
+      }
+    ],
+    "localEducationAgencyReference": {
+      "id": "e7242ca4bb65453d92e0dc1887cdb1ed",
+      "localEducationAgencyId": 255901
+    }
+  },
+  {
+    "id": "b8b3e7a30dfd4c6e9fbbb5f51c998eef",
+    "schoolId": 255901107,
+    "stateOrganizationId": "255901107",
+    "nameOfInstitution": "Grand Bend Elementary School",
+    "shortNameOfInstitution": "GBES",
+    "webSite": "http://www.GBISD.edu/GBES/",
+    "operationalStatusType": "Active",
+    "type": "Regular",
+    "charterStatusType": "Not a Charter School",
+    "titleIPartASchoolDesignationType": "Not designated as a Title I Part A school",
+    "administrativeFundingControlDescriptor": "Public School",
+    "addresses": [
+      {
+        "addressType": "Mailing",
+        "streetNumberName": "P.O. Box 9991",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "73334-9991",
+        "nameOfCounty": "Williston"
+      },
+      {
+        "addressType": "Physical",
+        "streetNumberName": "52 Halsey Ave.",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "73334",
+        "nameOfCounty": "Williston"
+      }
+    ],
+    "educationOrganizationCategories": [
+      {
+        "type": "School"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "educationOrganizationIdentificationSystemDescriptor": "SEA",
+        "identificationCode": "255901107"
+      }
+    ],
+    "institutionTelephones": [
+      {
+        "institutionTelephoneNumberType": "Main",
+        "telephoneNumber": "(950) 367-1346"
+      },
+      {
+        "institutionTelephoneNumberType": "Fax",
+        "telephoneNumber": "(950) 325-1976"
+      }
+    ],
+    "internationalAddresses": [],
+    "schoolCategories": [
+      {
+        "type": "Elementary School"
+      }
+    ],
+    "gradeLevels": [
+      {
+        "gradeLevelDescriptor": "First grade"
+      },
+      {
+        "gradeLevelDescriptor": "Fifth grade"
+      },
+      {
+        "gradeLevelDescriptor": "Fourth grade"
+      },
+      {
+        "gradeLevelDescriptor": "Second grade"
+      },
+      {
+        "gradeLevelDescriptor": "Third grade"
+      }
+    ],
+    "localEducationAgencyReference": {
+      "id": "e7242ca4bb65453d92e0dc1887cdb1ed",
+      "localEducationAgencyId": 255901
+    }
+  }
+]
