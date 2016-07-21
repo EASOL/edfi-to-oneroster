@@ -14,5 +14,7 @@ namespace EF2OR.ViewModels
         public string AccessToken { get; set; }
         public int NumberOfDownloads { get; set; }
         public string LastAccess { get; set; }
+        public string CreatedDate { get; set; }
+        public string LastModifiedDate { get; set; }
     }
 }

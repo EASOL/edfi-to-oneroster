@@ -23,9 +23,6 @@
 }
 <h3>Data Selection</h3>
 
-@*http://v4-alpha.getbootstrap.com/components/collapse/*@
-
-@*@using (Html.BeginForm())*@
 @using (Html.BeginForm("DownloadCsv", "Exports", FormMethod.Post, new { id = "exportsForm" }))
 {
  <div>
@@ -39,11 +36,7 @@
      @Html.HiddenFor(x => x.NewTemplateName)
      @Html.HiddenFor(x => x.NewTemplateVendorName)
      @Html.HiddenFor(x => x.EditTemplateId)
-
-     @*<div id="criteriaContainer">
-            @Html.EditorFor(x => x.CriteriaSections)
-            <input type="submit" value="OK" />
-        </div>*@
+  
      @Html.Partial("_CriteriaSection", Model.SchoolsCriteriaSection, new ViewDataDictionary()
 {
     TemplateInfo = new TemplateInfo()
@@ -142,6 +135,10 @@
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
         <script>
+            function toggleDiv(divId) {
+                $('#' + divId).slideToggle('fast');
+            }
+
             function deselectAll(divId) {
                 $("#" + divId).find("input:checkbox").prop("checked", false);
                 checkboxRecount(divId);
@@ -236,19 +233,7 @@
             }
 
             function dataPreview() {
-                //need to make sure all collapsables are initialized.  Then trigger collapse/hide all
-                //$('.accordionHeader').collapse({
-                //    toggle: false
-                //});
-                //$('.collapse').collapse('hide');
-                //$('.collapse').collapse('hide');
-
-                //var isExpanded = !$(".accordionHeader").hasClass("expanded");
-                //$(".accordionHeader").toggleClass("expanded", isExpanded);
-                //if ($("div.inbox").hasClass("in")) {
-                //    $("div.inbox").collapse('hide');
-                //}
-
+                $('.collapsableSection').hide('fast');
                 $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
                 var schoolIds = getCheckedIds("Schools");

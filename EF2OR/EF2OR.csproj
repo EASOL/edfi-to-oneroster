@@ -260,7 +260,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\EF2OR.css" />
     <Content Include="Content\Images\easollogo.png" />
-    <Content Include="Content\Images\ed-fi-branding-logo.png" />
+    <Content Include="Content\Images\EdFi-logo-RGB.PNG" />
     <Content Include="Content\Images\logo-revised.png" />
     <Content Include="Content\jquery.modal.min.css" />
     <Content Include="Content\Images\loading.gif" />
@@ -320,7 +320,6 @@
     <Content Include="Views\Logs\Index.cshtml" />
     <Content Include="Views\Exports\Index.cshtml" />
     <Content Include="Views\Exports\EditorTemplates\ExportsCheckbox.cshtml" />
-    <Content Include="Views\Exports\EditorTemplates\ApiCriteriaSection.cshtml" />
     <Content Include="Views\Exports\_CriteriaSection.cshtml" />
     <Content Include="Views\Exports\_DataPreview.cshtml" />
     <Content Include="Views\Settings\EditorTemplates\AcademicSessionTypeViewModel.cshtml" />
