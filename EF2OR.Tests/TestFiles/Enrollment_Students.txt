@@ -1,0 +1,1739 @@
+﻿[
+  {
+    "id": "1322c606d644497b8548207933921855",
+    "studentUniqueId": "605704",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Shelby",
+    "middleName": "Ruby",
+    "lastSurname": "Barajas",
+    "loginId": "sbarajas",
+    "sexType": "Female",
+    "birthDate": "2005-12-15T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Temporary",
+        "streetNumberName": "654 Mission Hills",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Homeless"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "ShelbyBarajas@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "704"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "5754419775"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 293 5517"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "e82054b21dd849a7ac03e7d1611caa2e",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "5757b9b9c4ad4b6db1a0056b2d08b7bd",
+    "studentUniqueId": "604888",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Gilbert",
+    "middleName": "Jesse",
+    "lastSurname": "Fritz",
+    "loginId": "gfritz",
+    "sexType": "Male",
+    "birthDate": "2005-12-16T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "16 Green Hague Way",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "yjruxybk.mniwzdtj@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "888"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "7805205568"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Black - African American"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 146 4726"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "a5caf476f907464b9fb7904efaaed018",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "de2ff0baf23b432387c9fa4af3c3fa44",
+    "studentUniqueId": "605372",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Debbie",
+    "lastSurname": "Savage",
+    "loginId": "dsavage",
+    "sexType": "Female",
+    "birthDate": "2005-06-12T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "economicDisadvantaged": true,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "123 Simons Way",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Homeless"
+      },
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Organization",
+        "electronicMailAddress": "sraaqk.zqgtezsl@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "372"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "1122336502"
+      }
+    ],
+    "indicators": [
+      {
+        "indicatorName": "At Risk",
+        "indicator": "True"
+      }
+    ],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 697 5685"
+      },
+      {
+        "telephoneNumberType": "Work",
+        "telephoneNumber": "(950) 632-1548"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "8e08929281174893b5c93f3ec4238326",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "47e92dbeae264f52b5325f8bd9e02826",
+    "studentUniqueId": "604903",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Alicia",
+    "middleName": "Angela",
+    "lastSurname": "Dennis",
+    "loginId": "adennis",
+    "sexType": "Female",
+    "birthDate": "2005-11-09T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "25 North Clarendon Boulevard",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Organization",
+        "electronicMailAddress": "dxqpty.egbrpiwv@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "903"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "7260975125"
+      }
+    ],
+    "indicators": [],
+    "languages": [
+      {
+        "languageDescriptor": "Spanish"
+      }
+    ],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "telephoneNumber": "(950) 232 7299"
+      },
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 006 8745"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "8583775ef440431198bd63e1e49fa8b3",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "23ada2a9e6ce49f68041197b19dddc50",
+    "studentUniqueId": "605086",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Christine",
+    "lastSurname": "Simmons",
+    "loginId": "csimmons",
+    "sexType": "Female",
+    "birthDate": "2005-10-16T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "29 West Rocky Clarendon Freeway",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Homeless"
+      },
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "lrjv13@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "086"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "1286667316"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      },
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Fax",
+        "telephoneNumber": "(950) 403 7015"
+      },
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 315 8501"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "a634363aa904484b9cda2f92553c96f2",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "de5fda81a9e94723a0f57abca0b7b96f",
+    "studentUniqueId": "604893",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Alice",
+    "lastSurname": "Higgins",
+    "loginId": "ahiggins",
+    "sexType": "Female",
+    "birthDate": "2005-09-08T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "56 Old Freeway",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "higgins05@example.com\n    "
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "893"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "7333244475"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "White"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 002 4571"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "a4fc2c8f3ad1482a9717c816b4dc61ec",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "5218265a844c4e54af9a148d92be3664",
+    "studentUniqueId": "605364",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Laura",
+    "lastSurname": "Sherman",
+    "loginId": "lsherman",
+    "sexType": "Female",
+    "birthDate": "2005-09-11T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Other",
+        "streetNumberName": "572 Clarendon Road",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Migrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Organization",
+        "electronicMailAddress": "ntxxgjr.xvaspdfbz@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "364"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "6120455107"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "American Indian - Alaskan Native"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 678 5718"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "2fc32619c6c345d2b48b47088c853ec3",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "f48381c4c23c4ab0abcd9b416e9f3027",
+    "studentUniqueId": "604922",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Darryl",
+    "middleName": "Everett",
+    "lastSurname": "Franco",
+    "loginId": "dfranco",
+    "sexType": "Male",
+    "birthDate": "2005-12-04T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "80 White Old Avenue",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "gtwr@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "922"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "4811560680"
+      }
+    ],
+    "indicators": [
+      {
+        "indicatorName": "At Risk",
+        "indicator": "True"
+      }
+    ],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "American Indian - Alaskan Native"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 924 4350"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "5332ea67d69141b0b0967f9713e4d527",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "208eb831012d4c5d96e2663754aab406",
+    "studentUniqueId": "605279",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Ben",
+    "middleName": "Richard",
+    "lastSurname": "Love",
+    "loginId": "blove",
+    "sexType": "Male",
+    "birthDate": "2005-01-09T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Other",
+        "streetNumberName": "94 White Clarendon Road",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Migrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "docbubu.oaqqp@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "279"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "8258772971"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Black - African American"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 512 9294"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "cc075e6ad16d49b88aa6b9ae229bcace",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "3aba6edd12f54fbdb2b27d0758976bdd",
+    "studentUniqueId": "604826",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Jeremy",
+    "middleName": "Alexander",
+    "lastSurname": "Coleman",
+    "loginId": "jcoleman",
+    "sexType": "Male",
+    "birthDate": "2005-05-05T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "22 Oak Way",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "nicvmjrx10@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "826"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "4104488374"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Black - African American"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 700 3889"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "9e104bb6567c43d7abcffa1103af6ed8",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "04c2e80f97784b26970afccd6bb96f4b",
+    "studentUniqueId": "605569",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Edgar",
+    "lastSurname": "Irwin",
+    "loginId": "eirwin",
+    "sexType": "Male",
+    "birthDate": "2005-05-19T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Billing",
+        "streetNumberName": "290 West Rocky First Road",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "qwomzfn.hlkvgqowa@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "569"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "7417235788"
+      }
+    ],
+    "indicators": [
+      {
+        "indicatorName": "ELL",
+        "indicator": "True"
+      }
+    ],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Black - African American"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "telephoneNumber": "(950) 886 9546"
+      },
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 175 1830"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "10718e633b66427d8b619060f5b048d5",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "5e035555396d4c3499dd5af7624dc9aa",
+    "studentUniqueId": "605243",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Randi",
+    "lastSurname": "Jackson",
+    "loginId": "rjackson",
+    "sexType": "Female",
+    "birthDate": "2005-12-21T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Other",
+        "streetNumberName": "43 Nobel Way",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Parent in Military"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "mqjsd.boad@example.com"
+      },
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "hpewouqf1@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "243"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "1775996749"
+      }
+    ],
+    "indicators": [],
+    "languages": [
+      {
+        "languageDescriptor": "Kimbundu"
+      }
+    ],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Black - African American"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 233 7651"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "59200771315e4b538a0e32f0d4f0372a",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "9740fab3ad9f4ebf853874f6355fe170",
+    "studentUniqueId": "605571",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Benjamin",
+    "middleName": "Lewis",
+    "lastSurname": "Sandoval",
+    "loginId": "bsandoval",
+    "sexType": "Male",
+    "birthDate": "2005-11-28T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "economicDisadvantaged": true,
+    "addresses": [
+      {
+        "addressType": "Billing",
+        "streetNumberName": "45 West Green Fabien Avenue",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      },
+      {
+        "studentCharacteristicDescriptor": "Runaway"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "rohkyf.btqxlkyu@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "571"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "9545367126"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Black - African American"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 035 4416"
+      },
+      {
+        "telephoneNumberType": "Other",
+        "telephoneNumber": "(950) 961 6080"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "95c320feafd34cdd9a7ea2b64af2a09f",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "15c6056f76354d6cba46f8de872aa5e0",
+    "studentUniqueId": "605377",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Amy",
+    "middleName": "Betty",
+    "lastSurname": "Montes",
+    "loginId": "amontes",
+    "sexType": "Female",
+    "birthDate": "2005-06-06T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Work",
+        "streetNumberName": "195 Green Second Road",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "hamdpr48@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "377"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "4069839576"
+      }
+    ],
+    "indicators": [
+      {
+        "indicatorName": "At Risk",
+        "indicator": "True"
+      }
+    ],
+    "languages": [
+      {
+        "languageDescriptor": "Tigrinya"
+      }
+    ],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 541 0439"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "ac6cebe534bd4fab80468b3932b56bbb",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "242034b26ea64211bb9d1708fe060726",
+    "studentUniqueId": "604953",
+    "personalTitlePrefix": "Dr",
+    "firstName": "Lonnie",
+    "middleName": "Mike",
+    "lastSurname": "Alexander",
+    "loginId": "lalexander",
+    "sexType": "Male",
+    "birthDate": "2005-08-01T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "924 Oak Blvd.",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "gogbqa60@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "953"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "3965742729"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "White"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 440 2818"
+      },
+      {
+        "telephoneNumberType": "Mobile",
+        "telephoneNumber": "(950) 726 8178"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "4991c0f78ec24fd1a10ca97a84d6e56a",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "0a3491c335a9441b8168727336020713",
+    "studentUniqueId": "605323",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Jeffery",
+    "middleName": "Daryl",
+    "lastSurname": "Buchanan",
+    "loginId": "jbuchanan",
+    "sexType": "Male",
+    "birthDate": "2005-09-01T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "117 North Hague Boulevard",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Migrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Organization",
+        "electronicMailAddress": "xyoinhq.jruqhau@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "323"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "2572337245"
+      }
+    ],
+    "indicators": [
+      {
+        "indicatorName": "At Risk",
+        "indicator": "True"
+      }
+    ],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 665 3090"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "2abac6f946b54d1a8b6d1855944aac54",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "6eefacbc0f30466ebe4ad71c44036c5b",
+    "studentUniqueId": "605409",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Bridgett",
+    "middleName": "Keri",
+    "lastSurname": "Mccann",
+    "loginId": "bmccann",
+    "sexType": "Female",
+    "birthDate": "2005-09-26T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "66 Rocky Old Blvd.",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "byntsg@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "409"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "4435023976"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 298 9683"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "2083c78d5b60439a84a240c5ad5fa210",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "200bdcb551e842508d38c6fb11cc2f1f",
+    "studentUniqueId": "605478",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Gabriel",
+    "lastSurname": "Pope",
+    "loginId": "gpope",
+    "sexType": "Male",
+    "birthDate": "2005-06-19T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "250 First Boulevard",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Migrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Organization",
+        "electronicMailAddress": "bmspdvpq.wqpuj@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "478"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "6185865966"
+      }
+    ],
+    "indicators": [
+      {
+        "indicatorName": "At Risk",
+        "indicator": "True"
+      }
+    ],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "telephoneNumber": "(950) 506 4500"
+      },
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 210 5224"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "669705a14b0840fb98e2846cea5bd727",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "97db57892ccf466da67533ed5a49587d",
+    "studentUniqueId": "604864",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Justin",
+    "lastSurname": "Zimmerman",
+    "loginId": "jzimmerman",
+    "sexType": "Male",
+    "birthDate": "2005-09-12T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "67 White Hague Avenue",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "atffphou425@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "864"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "5113127201"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "telephoneNumber": "(950) 487 4328"
+      },
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 051 7395"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "a46596e74a004cbc9c27239dc68b281b",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "1a5b0ae87ddd415ea60513a504bbf38d",
+    "studentUniqueId": "605125",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Ellen",
+    "lastSurname": "Mc Mahon",
+    "loginId": "emc mahon",
+    "sexType": "Female",
+    "birthDate": "2005-09-03T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "economicDisadvantaged": false,
+    "addresses": [
+      {
+        "addressType": "Mailing",
+        "streetNumberName": "830 Rocky Second Boulevard",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Migrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "qrxivupl.cicvcjc@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "125"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "6720894725"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "White"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 799 8017"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "d2736530ac7c4b2c99e54c01dcdc6631",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "066a2ecd5a3d42108f2a8b5ffaf78dd5",
+    "studentUniqueId": "605491",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Anne",
+    "lastSurname": "Frye",
+    "loginId": "afrye",
+    "sexType": "Female",
+    "birthDate": "2005-07-17T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Work",
+        "streetNumberName": "712 Rocky Clarendon Road",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Migrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "oabukg39@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "491"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "8594432807"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "American Indian - Alaskan Native"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 369 8137"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "3d1256ec8eb641649f18623d49f48f2e",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "118638e2105a456ab655388343f7280c",
+    "studentUniqueId": "605055",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Colleen",
+    "middleName": "Sandra",
+    "lastSurname": "Odom",
+    "loginId": "codom",
+    "sexType": "Female",
+    "birthDate": "2005-07-09T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "309 Nobel Parkway",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "bnkyptno3@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "055"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "7917877464"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "American Indian - Alaskan Native"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 639 0464"
+      },
+      {
+        "telephoneNumberType": "Unlisted",
+        "telephoneNumber": "(950) 778 7059"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "4371fa7632b441f5b0f23d97fada6a27",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "6303fa8fd0484029823455b57186ab6d",
+    "studentUniqueId": "605157",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Renee",
+    "middleName": "Miriam",
+    "lastSurname": "Estrada",
+    "loginId": "restrada",
+    "sexType": "Female",
+    "birthDate": "2005-06-22T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "173 South Green New Street",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Parent in Military"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "ylaiottr54@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "157"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "2728041498"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "Black - African American"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Other",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 253 7585"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "c1530292da2741b0b36f834ccb3e2d53",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "36ed75cc9c6f45408693e683b658befc",
+    "studentUniqueId": "605584",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Esther",
+    "middleName": "Mindy",
+    "lastSurname": "Randolph",
+    "loginId": "erandolph",
+    "sexType": "Female",
+    "birthDate": "2005-02-09T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Billing",
+        "streetNumberName": "40 White Nobel Avenue",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [
+      {
+        "studentCharacteristicDescriptor": "Immigrant"
+      }
+    ],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "lswq.vvlifm@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "584"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "9789310804"
+      }
+    ],
+    "indicators": [],
+    "languages": [],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "American Indian - Alaskan Native"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Home",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 452 9981"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "fbd7e0b13eb4453bbaef5f7679b989e2",
+        "gradeLevel": "First grade"
+      }
+    ]
+  },
+  {
+    "id": "84940054dac04ef8a42a02376c5b348b",
+    "studentUniqueId": "604920",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Carey",
+    "lastSurname": "Barber",
+    "loginId": "cbarber",
+    "sexType": "Female",
+    "birthDate": "2005-12-09T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [
+      {
+        "addressType": "Home",
+        "streetNumberName": "269 Oak Parkway",
+        "city": "Grand Bend",
+        "stateAbbreviationType": "TX",
+        "postalCode": "78834",
+        "nameOfCounty": "WILLISTON"
+      }
+    ],
+    "characteristics": [],
+    "cohortYears": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Home/Personal",
+        "electronicMailAddress": "halfmqk@example.com"
+      },
+      {
+        "electronicMailType": "Other",
+        "electronicMailAddress": "jmrdvdjy@example.com"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "assigningOrganizationIdentificationCode": "Local",
+        "studentIdentificationSystemDescriptor": "Local",
+        "identificationCode": "920"
+      },
+      {
+        "assigningOrganizationIdentificationCode": "SSN",
+        "studentIdentificationSystemDescriptor": "SSN",
+        "identificationCode": "1746035403"
+      }
+    ],
+    "indicators": [],
+    "languages": [
+      {
+        "languageDescriptor": "Gujarati"
+      }
+    ],
+    "programParticipations": [],
+    "races": [
+      {
+        "raceType": "White"
+      }
+    ],
+    "telephones": [
+      {
+        "telephoneNumberType": "Mobile",
+        "orderOfPriority": 1,
+        "telephoneNumber": "(950) 072 5486"
+      }
+    ],
+    "schoolAssociations": [
+      {
+        "id": "82b4ee25a54342db9b39ba8a50baa7fd",
+        "gradeLevel": "First grade"
+      }
+    ]
+  }
+]

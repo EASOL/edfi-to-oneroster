@@ -1,6 +1,7 @@
 ﻿@model EF2OR.ViewModels.LogsViewModel
 @{
-    ViewBag.Title = "Logs";
+    var templateTitle = Model.TemplateId == null ? "" : " - " + Model.TemplateName;
+    ViewBag.Title = "Logs" + templateTitle;
 }
 <h3>@ViewBag.Title</h3>
 

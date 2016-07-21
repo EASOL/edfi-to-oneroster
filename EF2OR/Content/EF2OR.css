@@ -26,17 +26,9 @@
     bottom:0px;
     padding:8px;
     height:40px;
-    background-color:#44a657;
+    background-color:#eee;
     color:#FFFFFF;
     border-top: 1px solid #080808;
     width:100%;
-}
-
-.footer a {
-    color:white;
-    text-decoration:underline;
-}
-
-.footer a:hover {
-    color:black;
+    text-align:center;
 }
