@@ -18,6 +18,13 @@ namespace EF2OR.Controllers
         {
             var downloadTypes = new List<string> { ActionTypes.DownloadCsvAdmin, ActionTypes.DownloasCsvVendor };
             var model = (from t in db.Templates
+                         let logs = db.AuditLogs.Where(x => x.TemplateId == t.TemplateId)
+                         let createdLog = logs.FirstOrDefault(x => x.Type == ActionTypes.TemplateCreated)
+                         let createdTime = createdLog == null ? "" : createdLog.DateTimeStamp.ToString()
+
+                         let modifiedLogs = logs.Where(x => x.Type == ActionTypes.TemplateModified)
+                         let lastModified = modifiedLogs.Count() == 0 ? "" : modifiedLogs.Max(x => x.DateTimeStamp).ToString()
+
                          let downloads = db.AuditLogs.Where(x => x.TemplateId == t.TemplateId && downloadTypes.Contains(x.Type) && x.Success)
                          let numDownloads = downloads.Count()
                          let lastAccess = numDownloads == 0 ? "" : downloads.Max(x => x.DateTimeStamp).ToString()
@@ -29,7 +36,9 @@ namespace EF2OR.Controllers
                             AccessUrl = t.AccessUrl,
                             AccessToken = t.AccessToken,
                             NumberOfDownloads = numDownloads,
-                            LastAccess = lastAccess
+                            LastAccess = lastAccess,
+                            LastModifiedDate = lastModified,
+                            CreatedDate = createdTime
                          }).ToList();
             return View(model);
         }
