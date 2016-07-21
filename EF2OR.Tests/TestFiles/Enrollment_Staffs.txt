@@ -1,0 +1,824 @@
+﻿[
+  {
+    "id": "81c35732eb2249f9a496ebc6153a2dbb",
+    "staffUniqueId": "207288",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Barry",
+    "lastSurname": "Tanner",
+    "loginId": "btanner",
+    "sexType": "Male",
+    "birthDate": "1965-08-19T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "BarryTanner@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207288"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "American Indian - Alaskan Native"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "LEA Administrator"
+      }
+    ]
+  },
+  {
+    "id": "9df90c820b164ff9b2536c8bcc23b8f5",
+    "staffUniqueId": "207249",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Tamika",
+    "lastSurname": "Mcpherson",
+    "loginId": "tmcpherson",
+    "sexType": "Female",
+    "birthDate": "1972-05-25T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "TamikaMcpherson@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207249"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Other"
+      }
+    ]
+  },
+  {
+    "id": "bdda37ca6bb249d391abf10583d25c59",
+    "staffUniqueId": "207264",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Marjorie",
+    "lastSurname": "Montoya",
+    "loginId": "mmontoya",
+    "sexType": "Female",
+    "birthDate": "1962-08-14T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "MarjorieMontoya@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207264"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Principal"
+      }
+    ]
+  },
+  {
+    "id": "afab02b31e2d45bdbfe8b27a6f7c431f",
+    "staffUniqueId": "207265",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Alvin",
+    "lastSurname": "Lee",
+    "loginId": "alee",
+    "sexType": "Male",
+    "birthDate": "1985-09-04T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "AlvinLee@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207265"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Other"
+      }
+    ]
+  },
+  {
+    "id": "08941d87773a4b1ba5780ace325078ae",
+    "staffUniqueId": "207263",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Margaret",
+    "lastSurname": "Massey",
+    "loginId": "mmassey",
+    "sexType": "Female",
+    "birthDate": "1962-10-26T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "MargaretMassey@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207263"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "School Administrator"
+      }
+    ]
+  },
+  {
+    "id": "f112a5212b554f2199e7d1391fa2507a",
+    "staffUniqueId": "207247",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Kurt",
+    "lastSurname": "McCarthy",
+    "loginId": "kmccarthy",
+    "sexType": "Male",
+    "birthDate": "1988-01-24T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "KurtMcCarthy@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207247"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "LEA Administrator"
+      }
+    ]
+  },
+  {
+    "id": "2f80e1430cb94f09afeb8b21605b872e",
+    "staffUniqueId": "207266",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Cody",
+    "lastSurname": "West",
+    "loginId": "cwest",
+    "sexType": "Male",
+    "birthDate": "1962-04-16T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "CodyWest@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207266"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "School Administrator"
+      }
+    ]
+  },
+  {
+    "id": "2c1664239f7d4b79ab8891ffe6171b5f",
+    "staffUniqueId": "207248",
+    "personalTitlePrefix": "Ms",
+    "firstName": "Diana",
+    "lastSurname": "Tanner",
+    "loginId": "dtanner",
+    "sexType": "Female",
+    "birthDate": "1986-09-24T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "DianaTanner@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207248"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "School Administrator"
+      }
+    ]
+  },
+  {
+    "id": "62275e08595745a8961e27a8c97ec561",
+    "staffUniqueId": "207284",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Sheldon",
+    "lastSurname": "Dickson",
+    "loginId": "sdickson",
+    "sexType": "Male",
+    "birthDate": "1966-06-24T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "SheldonDickson@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207284"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Other"
+      }
+    ]
+  },
+  {
+    "id": "bac6f103dd3e4e17bc2a967f2d6d4619",
+    "staffUniqueId": "207285",
+    "personalTitlePrefix": "Mr",
+    "firstName": "David",
+    "lastSurname": "Wilson",
+    "loginId": "dwilson",
+    "sexType": "Male",
+    "birthDate": "1958-05-02T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "DavidWilson@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207285"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "White"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Superintendent"
+      }
+    ]
+  },
+  {
+    "id": "50c7e7cf583a4c01ad7b4d2885e28b1f",
+    "staffUniqueId": "207267",
+    "personalTitlePrefix": "Mrs",
+    "firstName": "Alisa",
+    "lastSurname": "Cameron",
+    "loginId": "acameron",
+    "sexType": "Female",
+    "birthDate": "1956-03-13T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "AlisaCameron@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207267"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Principal"
+      }
+    ]
+  },
+  {
+    "id": "c50cc185ebe74c80ba80b542b1a5de6f",
+    "staffUniqueId": "207283",
+    "personalTitlePrefix": "Mr",
+    "firstName": "Efrain",
+    "lastSurname": "Rodriguez",
+    "loginId": "erodriguez",
+    "sexType": "Male",
+    "birthDate": "1953-04-23T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [
+      {
+        "electronicMailType": "Work",
+        "electronicMailAddress": "EfrainRodriguez@edfi.org"
+      }
+    ],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207283"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Counselor"
+      }
+    ]
+  },
+  {
+    "id": "fc974d132b2f4324bdb76ca4814c2081",
+    "staffUniqueId": "207225",
+    "firstName": "Marsha",
+    "lastSurname": "McLean",
+    "loginId": "mmclean",
+    "sexType": "Female",
+    "birthDate": "1953-05-06T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207225"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "b4037674092f4895a9be40fcf2f78a9d",
+    "staffUniqueId": "207220",
+    "firstName": "Gene",
+    "lastSurname": "Macias",
+    "loginId": "gmacias",
+    "sexType": "Male",
+    "birthDate": "1959-04-30T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207220"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "54295f06ef184d498ab30b09754dfb19",
+    "staffUniqueId": "207222",
+    "firstName": "Terrell",
+    "lastSurname": "Bright",
+    "loginId": "tbright",
+    "sexType": "Male",
+    "birthDate": "1955-11-03T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207222"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "fd3f61a0fd2943beaffe2eb1313d8fb5",
+    "staffUniqueId": "207221",
+    "firstName": "Fred",
+    "lastSurname": "Lloyd",
+    "loginId": "flloyd",
+    "sexType": "Male",
+    "birthDate": "1984-06-04T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207221"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "828f506907dd4693a8075d7d5bb09e70",
+    "staffUniqueId": "207224",
+    "firstName": "Lakesha",
+    "lastSurname": "Salas",
+    "loginId": "lsalas",
+    "sexType": "Female",
+    "birthDate": "1953-08-15T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207224"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "c2fc3c36d87047ce9a197630096acd7d",
+    "staffUniqueId": "207219",
+    "firstName": "Earnest",
+    "lastSurname": "Buck",
+    "loginId": "ebuck",
+    "sexType": "Male",
+    "birthDate": "1969-09-13T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207219"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "0a41594ad7944ffe9a4c96f918020c2d",
+    "staffUniqueId": "207226",
+    "firstName": "Anitra",
+    "lastSurname": "Snyder",
+    "loginId": "asnyder",
+    "sexType": "Female",
+    "birthDate": "1984-05-05T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207226"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "af0c3f33afa54e7fb33282c3752b99e8",
+    "staffUniqueId": "207223",
+    "firstName": "Priscilla",
+    "lastSurname": "Kane",
+    "loginId": "pkane",
+    "sexType": "Female",
+    "birthDate": "1985-11-27T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207223"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "958a02e51570467e9a8d9224461b5153",
+    "staffUniqueId": "207230",
+    "firstName": "Alexander",
+    "lastSurname": "Kim",
+    "loginId": "akim",
+    "sexType": "Male",
+    "birthDate": "1953-08-09T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207230"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "5fd2ec6bbf1749439838fe8c26f34130",
+    "staffUniqueId": "207228",
+    "firstName": "Eric",
+    "lastSurname": "Cherry",
+    "loginId": "echerry",
+    "sexType": "Male",
+    "birthDate": "1965-09-14T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207228"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "cc1cb7cb87894e0fb0bf73ea40e1bfd3",
+    "staffUniqueId": "207229",
+    "firstName": "Meredith",
+    "lastSurname": "Whitaker",
+    "loginId": "mwhitaker",
+    "sexType": "Female",
+    "birthDate": "1964-08-16T00:00:00",
+    "hispanicLatinoEthnicity": true,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207229"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Native Hawaiian - Pacific Islander"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "401b38b6740342adbecda0f0570f1754",
+    "staffUniqueId": "207227",
+    "firstName": "Debra",
+    "lastSurname": "Rocha",
+    "loginId": "drocha",
+    "sexType": "Female",
+    "birthDate": "1970-06-02T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207227"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  },
+  {
+    "id": "902845910e6647e2ba7da3592576a714",
+    "staffUniqueId": "207231",
+    "firstName": "Lauren",
+    "lastSurname": "Key",
+    "loginId": "lkey",
+    "sexType": "Female",
+    "birthDate": "1973-12-09T00:00:00",
+    "hispanicLatinoEthnicity": false,
+    "addresses": [],
+    "electronicMails": [],
+    "identificationCodes": [
+      {
+        "staffIdentificationSystemDescriptor": "State",
+        "identificationCode": "207231"
+      }
+    ],
+    "languages": [],
+    "races": [
+      {
+        "raceType": "Asian"
+      }
+    ],
+    "telephones": [],
+    "classifications": [
+      {
+        "classification": "Teacher"
+      }
+    ]
+  }
+]
