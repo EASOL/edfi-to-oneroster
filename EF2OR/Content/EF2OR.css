@@ -31,4 +31,5 @@
     border-top: 1px solid #080808;
     width:100%;
     text-align:center;
+    z-index:3;
 }

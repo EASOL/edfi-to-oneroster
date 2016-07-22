@@ -70,6 +70,7 @@ namespace EF2OR.Controllers.Tests
                 {
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
                 };
+                FakesHelper.SetupFakeApiResponse();
                 ExportsViewModel defaultExportsViewModel = await GetDefaultExportsViewModel();
                 var previewResult = await exportsController.Preview(
                     schoolIds: defaultExportsViewModel.SelectedSchools.Split(',').ToList(),
@@ -112,43 +113,7 @@ namespace EF2OR.Controllers.Tests
                 {
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
                 };
-                //EF2OR.Utils.Fakes.ShimApiCalls.GetApiResponseStringString = (apiEndpoint, fields) =>
-                //{
-                //    return null;
-                //};
-                EF2OR.Utils.Fakes.ShimApiCalls.GetApiResponseArrayStringBooleanString =
-                    async (apiEndpoint, forceNew, fields) =>
-                {
-                    JArray result = null;
-                    JArray apiResponse = null;
-                    switch (apiEndpoint)
-                    {
-                        case "enrollment/schools":
-                            apiResponse =
-                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
-                            result = await Task.FromResult(apiResponse);
-                            break;
-                        case "enrollment/staffs":
-                            apiResponse =
-                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
-                            result = await Task.FromResult(apiResponse);
-                            break;
-                        case "enrollment/students":
-                            apiResponse =
-                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Students);
-                            result = await Task.FromResult(apiResponse);
-                            break;
-                        case "enrollment/sections":
-                            apiResponse =
-                            JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
-                            result = await Task.FromResult(apiResponse);
-                            break;
-                        default:
-                            Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
-                            break;
-                    }
-                    return result;
-                };
+                FakesHelper.SetupFakeApiResponse();
 
                 //ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
                 ExportsViewModel defaultExportViewModel = new ExportsViewModel();
@@ -682,7 +647,7 @@ namespace EF2OR.Controllers.Tests
                 {
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
                 };
-
+                FakesHelper.SetupFakeApiResponse();
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
                 var defaultResult = await controller.Index();
                 Assert.IsNotNull(defaultResult, "invalid result");
