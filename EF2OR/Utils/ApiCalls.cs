@@ -39,7 +39,6 @@ namespace EF2OR.Utils
         #endregion
 
         #region TokenMethods
-        //public async Task<ApiCallViewModel> GetToken()
         public static TokenViewModel GetToken(bool forceNewToken = false)
         {
             if (forceNewToken || HttpContext.Current.Session["token"] == null || ((TokenViewModel)HttpContext.Current.Session["token"]).IsSuccessful == false)
@@ -84,10 +83,10 @@ namespace EF2OR.Utils
                     var tokenRequestResult = client.PostAsync(ApiEndPoints.OauthGetToken,
                         new FormUrlEncodedContent(new[]
                         {
-                    new KeyValuePair<string,string>("Client_id",apiKey),
-                    new KeyValuePair<string,string>("Client_secret",apiSecret),
-                    new KeyValuePair<string,string>("Code",code),
-                    new KeyValuePair<string,string>("Grant_type","authorization_code")
+                            new KeyValuePair<string,string>("Client_id",apiKey),
+                            new KeyValuePair<string,string>("Client_secret",apiSecret),
+                            new KeyValuePair<string,string>("Code",code),
+                            new KeyValuePair<string,string>("Grant_type","authorization_code")
                         })).Result;
                     var tokenJson = tokenRequestResult.Content.ReadAsStringAsync().Result;
 
@@ -121,7 +120,7 @@ namespace EF2OR.Utils
             var schoolYears = await GetSchoolYears();
             var terms = await GetTerms();
 
-            /////////////Load these two now because the API is already stored in the dictionary up top.  It'll be in the session for the user for later.  He'll get instant checkboxes
+            /////////////Load these now because the API is already stored in the dictionary up top.  It'll be in the session for the user for later.  He'll get instant checkboxes
             await GetSubjects();
             await GetCourses();
             await GetTeachers();
@@ -184,11 +183,11 @@ namespace EF2OR.Utils
 
                 var schoolYears = (from s in schoolYearsStrings
                                    select new ExportsCheckbox
-                              {
-                                  Id = s,
-                                  Text = s,
-                                  Visible = true
-                              }).OrderBy(x => x.Text).ToList();
+                                   {
+                                       Id = s,
+                                       Text = s,
+                                       Visible = true
+                                   }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllSchoolYears"] = schoolYears;
             }
 
@@ -208,11 +207,11 @@ namespace EF2OR.Utils
 
                 var terms = (from s in termStrings
                              select new ExportsCheckbox
-                                   {
-                                       Id = s,
-                                       Text = s,
-                                       Visible = true
-                                   }).OrderBy(x => x.Text).ToList();
+                             {
+                                 Id = s,
+                                 Text = s,
+                                 Visible = true
+                             }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllTerms"] = terms;
             }
 
@@ -254,16 +253,16 @@ namespace EF2OR.Utils
             {
                 var responseArray = await GetApiResponseArray(ApiEndPoints.Courses);
                 var courses = (from s in responseArray
-                                select new ExportsCheckbox
-                                {
-                                    Id = (string)s["courseOfferingReference"]["localCourseCode"],
-                                    SchoolId = (string)s["schoolReference"]["id"],
-                                    SchoolYear = (string)s["sessionReference"]["schoolYear"],
-                                    Term = (string)s["sessionReference"]["termDescriptor"],
-                                    Text = (string)s["courseOfferingReference"]["localCourseCode"],
-                                    Subject = (string)s["academicSubjectDescriptor"],
-                                    Visible = true
-                                }).OrderBy(x => x.Text).ToList();
+                               select new ExportsCheckbox
+                               {
+                                   Id = (string)s["courseOfferingReference"]["localCourseCode"],
+                                   SchoolId = (string)s["schoolReference"]["id"],
+                                   SchoolYear = (string)s["sessionReference"]["schoolYear"],
+                                   Term = (string)s["sessionReference"]["termDescriptor"],
+                                   Text = (string)s["courseOfferingReference"]["localCourseCode"],
+                                   Subject = (string)s["academicSubjectDescriptor"],
+                                   Visible = true
+                               }).OrderBy(x => x.Text).ToList();
 
                 HttpContext.Current.Session["AllCourses"] = courses;
             }
@@ -281,15 +280,15 @@ namespace EF2OR.Utils
                 var sectionsResponse = await GetApiResponseArray(ApiEndPoints.Sections);
                 var sections = (from o in sectionsResponse
                                 let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
-                                       select new
-                                       {
-                                           SchoolId = (string)o["schoolReference"]["id"],
-                                           SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                           Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                           Subject = (string)o["academicSubjectDescriptor"],
-                                           Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                           staffs = staffs
-                                       });
+                                select new
+                                {
+                                    SchoolId = (string)o["schoolReference"]["id"],
+                                    SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                    Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                    Subject = (string)o["academicSubjectDescriptor"],
+                                    Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                    staffs = staffs
+                                });
 
                 var staffSections = from section in sections
                                     from staff in section.staffs

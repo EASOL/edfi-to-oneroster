@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using EF2OR.Models;
 using Microsoft.AspNet.Identity;
 using EF2OR.ViewModels;
-using EF2OR.Utils;
 
 namespace EF2OR.Controllers
 {
@@ -81,12 +77,10 @@ namespace EF2OR.Controllers
                 {
                     succeeded = false;
                 }
-                //return RedirectToAction(actionName: "Index", controllerName: "Home");
             }
             catch (Exception ex)
             {
                 ViewBag.Error = "Unable to setup database configuration. Error: " + ex.ToString();
-                //return View(model);
                 succeeded = false;
             }
             return succeeded;

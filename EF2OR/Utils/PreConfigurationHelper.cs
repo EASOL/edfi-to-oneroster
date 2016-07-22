@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace EF2OR.Utils
@@ -55,10 +51,10 @@ namespace EF2OR.Utils
                 {
                     Directory.CreateDirectory(directory);
                 }
-                writer = System.IO.File.Create(mappedPath);
+                writer = File.Create(mappedPath);
             }
             else
-                writer = System.IO.File.Open(mappedPath, System.IO.FileMode.Create);
+                writer = File.Open(mappedPath, System.IO.FileMode.Create);
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(LocalAdminInfo));
             using (writer)
             {
