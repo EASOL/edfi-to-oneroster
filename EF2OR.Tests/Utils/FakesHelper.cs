@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +33,48 @@ namespace EF2OR.Tests.Utils
             {
                 return "-1";
             };
+            SetupFakeApiResponse();
+        }
+
+        internal static void SetupFakeApiResponse()
+        {
+            //EF2OR.Utils.Fakes.ShimApiCalls.GetApiResponseStringString = (apiEndpoint, fields) =>
+            //{
+            //    return null;
+            //};
+            EF2OR.Utils.Fakes.ShimApiCalls.GetApiResponseArrayStringBooleanString =
+                async (apiEndpoint, forceNew, fields) =>
+                {
+                    JArray result = null;
+                    JArray apiResponse = null;
+                    switch (apiEndpoint)
+                    {
+                        case "enrollment/schools":
+                            apiResponse =
+                                JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        case "enrollment/staffs":
+                            apiResponse =
+                                JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        case "enrollment/students":
+                            apiResponse =
+                                JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Students);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        case "enrollment/sections":
+                            apiResponse =
+                                JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
+                            result = await Task.FromResult(apiResponse);
+                            break;
+                        default:
+                            Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
+                            break;
+                    }
+                    return result;
+                };
         }
     }
 }
