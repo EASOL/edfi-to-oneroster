@@ -9,7 +9,7 @@ namespace EF2OR.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(EF2OR.Models.ApplicationDbContext context)
