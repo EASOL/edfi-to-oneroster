@@ -38,7 +38,7 @@ namespace EF2OR.Controllers
                             LastAccess = lastAccess,
                             LastModifiedDate = lastModified,
                             CreatedDate = createdTime
-                         }).ToList();
+                         }).OrderByDescending(x => x.CreatedDate).ToList();
             return View(model);
         }
 

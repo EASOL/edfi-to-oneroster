@@ -116,8 +116,8 @@ namespace EF2OR.Utils
         #region FilterMethods
         public static async Task PopulateFilterSection1(ExportsViewModel model)
         {
-            var schools = await GetSchools();
-            var schoolYears = await GetSchoolYears();
+            var schools = await GetSchools("id,nameOfInstitution");
+            var schoolYears = await GetSchoolYears("id,uniqueSectionCode,academicSubjectDescriptor,sessionReference,courseOfferingReference,locationReference,schoolReference,staff");
             var terms = await GetTerms();
 
             /////////////Load these now because the API is already stored in the dictionary up top.  It'll be in the session for the user for later.  He'll get instant checkboxes
@@ -149,11 +149,11 @@ namespace EF2OR.Utils
             };
         }
 
-        public static async Task<List<ExportsCheckbox>> GetSchools()
+        public static async Task<List<ExportsCheckbox>> GetSchools(string fields = null)
         {
             if (HttpContext.Current.Session["AllSchools"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.Schools);
+                var responseArray = await GetApiResponseArray(ApiEndPoints.Schools, false, fields);
                 var schools = (from s in responseArray
                                select new ExportsCheckbox
                                {
@@ -172,11 +172,11 @@ namespace EF2OR.Utils
             return allSchools;
         }
 
-        public static async Task<List<ExportsCheckbox>> GetSchoolYears()
+        public static async Task<List<ExportsCheckbox>> GetSchoolYears(string fields = null)
         {
             if (HttpContext.Current.Session["AllSchoolYears"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.SchoolYears, false, "id,uniqueSectionCode,academicSubjectDescriptor,sessionReference,courseOfferingReference,locationReference,schoolReference,staff");
+                var responseArray = await GetApiResponseArray(ApiEndPoints.SchoolYears, false, fields);
 
                 var schoolYearsStrings = (from s in responseArray
                                    select (string)s["sessionReference"]["schoolYear"]).Distinct();

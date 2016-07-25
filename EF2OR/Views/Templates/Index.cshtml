@@ -27,8 +27,8 @@
             <th>Access Token</th>
             <th># of Downloads</th>
             <th>Last Access</th>
-            <th>Last Modified</th>
             <th>Created Date</th>
+            <th>Last Modified</th>
             <th>Actions</th>
         </tr>
         @foreach (var template in Model)
@@ -41,8 +41,8 @@
                 <td>@template.AccessToken</td>
                 <td>@template.NumberOfDownloads</td>
                 <td>@template.LastAccess</td>
-                <td>@template.LastModifiedDate</td>
                 <td>@template.CreatedDate</td>
+                <td>@template.LastModifiedDate</td>
                 <td>
                     <a href="javascript:dataPreview(@template.TemplateId);">Preview</a> |
                     <a href="javascript:dataDownload(@template.TemplateId);">Download</a> |
