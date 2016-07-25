@@ -1,0 +1,26 @@
+EF2OR System Requirements:
+Windows machine with IIS and SQL Server:
+	To Install IIS, Go to:
+		Control Panel
+		Programs and Features
+		Turn Windows features on or off
+		Make sure Internet Information Services is checked.
+		Press OK
+
+	To install SQL Server 2014 Express (free version):
+		Navigate to this link and follow instructions - https://www.microsoft.com/en-us/download/details.aspx?id=42299
+		Open SQL Server Management Studio
+		Create a new empty database with default settings
+
+EF2OR Install Steps:
+-Download release folder, and place it in the desired location.  (Unzip the folder if it is zipped)
+-Open IIS (run "inetmgr")
+	- If IIS is not installed you can install it from Control Panel
+-On the left, Open Sites and right-click on Default Web Site
+-Choose Add Application
+-In "Alias" put "EF2OR".  In "Physical Path" choose the unzipped folder: eg: C:\MyApplications\EF2OR.Release.7.25.2016
+-Press OK
+-Now you can navigate to "http://localhost/EF2OR" in any browser
+	-The first time visiting the page, you will be asked to choose a database connection.
+		-Enter the details for an existing empty SQL Server database.   (Can be local, remote, Azure, AWS, etc.  To set up a local DB see instructions for installing SQL Server 2014 Express)
+
