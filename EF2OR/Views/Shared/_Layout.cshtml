@@ -34,7 +34,7 @@
     <div class="container body-content" style="padding-bottom: 80px;">
         @if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Request.IsSecureConnection == false)
         {
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" role="alert" style="margin-top:10px;">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only">Error:</span>
                 Website is not using HTTPS
@@ -53,7 +53,6 @@
     </footer>
 
     @RenderSection("BodyOutsideOfContainer", required: false)
-
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

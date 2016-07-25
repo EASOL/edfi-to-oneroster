@@ -4,7 +4,7 @@ Add Migration
 add-migration migrationName 
 
 =============================================================================================
-Generate SQL for Migration
+Generate SQL for Migration - not needed because Auto Update is on....
 =============================================================================================
 Update-Database -Script -SourceMigration: migration1 -TargetMigration: migration2
 

@@ -3,7 +3,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
-using System.ComponentModel.DataAnnotations.Schema;
 using EF2OR.Enums;
 using System.Dynamic;
 using System.Collections.Generic;
@@ -22,6 +21,8 @@ namespace EF2OR.Models
         public DbSet<Template> Templates { get; set; }
         public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
         public DbSet<AcademicSessionType> AcademicSessionTypes { get; set; }
+        public DbSet<ErrorLog> ErrorLogs { get; set; }
+
 
         public static ApplicationDbContext Create()
         {
@@ -71,22 +72,6 @@ namespace EF2OR.Models
             return entityTypeName;
         }
 
-        //private static Type GetEntityType(DbEntityEntry dbEntry, out string tableName)
-        //{
-        //    // Get the Table() attribute, if one exists
-        //    var entityType = dbEntry.Entity.GetType();
-        //    var tableAttr = entityType.GetCustomAttributes(typeof(TableAttribute), false).SingleOrDefault() as TableAttribute;
-        //    var entityTypeName = entityType.Name;
-        //    if (entityType.BaseType != null && String.IsNullOrEmpty(entityType.BaseType.Name) == false && entityType.BaseType.Name != "Object")
-        //    {
-        //        entityTypeName = entityType.BaseType.Name;
-        //    }
-
-        //    // Get table name (if it has a Table attribute, use that, otherwise get the pluralized name)
-        //    tableName = tableAttr != null ? tableAttr.Name : entityTypeName;
-        //    return entityType;
-        //}
-
         private AuditLog GetAuditLog(DbEntityEntry entry, string userName, string ipAddress)
         {
             var entityType = entry.Entity.GetType();
@@ -123,17 +108,6 @@ namespace EF2OR.Models
                     }
                     break;
             }
-
-            //http://stackoverflow.com/questions/17904631/how-can-i-log-all-entities-change-during-savechanges-using-ef-code-first
-            //https://jmdority.wordpress.com/2011/07/20/using-entity-framework-4-1-dbcontext-change-tracking-for-audit-logging/
-            //string primaryKeyName = dbEntry.GetAuditRecordKeyName();
-            //int primaryKeyId = 0;
-            //object primaryKeyValue;
-            //primaryKeyValue = dbEntry.GetPropertyValue(primaryKeyName, true);
-            //if (primaryKeyValue != null)
-            //{
-            //    Int32.TryParse(primaryKeyValue.ToString(), out primaryKeyId);
-            //}
 
             dynamic originals = new ExpandoObject();
             dynamic current = new ExpandoObject();
@@ -214,8 +188,6 @@ namespace EF2OR.Models
                 jsonOriginalValues = JsonConvert.SerializeObject(originals);
             }
 
-            
-
             var auditLog = new AuditLog
             {
                 User = userName,
@@ -231,6 +203,4 @@ namespace EF2OR.Models
             return auditLog;
         }
     }
-
-    
 }

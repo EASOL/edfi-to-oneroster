@@ -37,7 +37,11 @@ namespace EF2OR.Tests.Utils
             _testUser = DB.Users.Where(p => p.UserName == TESTUSER_USERNAME).FirstOrDefault();
             if (_testUser == null)
             {
-                CreateTestUser();
+                _testUser = new ApplicationUser
+                {
+                    UserName = TESTUSER_USERNAME,
+                    Email = TESTUSER_USERNAME
+                };
             }
         }
 
@@ -47,40 +51,6 @@ namespace EF2OR.Tests.Utils
             {
                 return _testUser;
             }
-        }
-        private static async void CreateTestUser()
-        {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
-                Microsoft.AspNet.Identity.Fakes.ShimUserManager<ApplicationUser, string>.AllInstances.CreateAsyncT0 = (userManager, userInfo) =>
-            {
-                try
-                {
-                    _db.Users.Add(userInfo);
-                    _db.SaveChanges();
-                    _testUser = userInfo;
-                    return Task.FromResult(IdentityResult.Success);
-                }
-                catch (System.Data.Entity.Validation.DbEntityValidationException dbValEx)
-                {
-                    System.Text.StringBuilder errorsList = new StringBuilder();
-                    foreach (var valError in dbValEx.EntityValidationErrors)
-                    {
-                        foreach (var singleError in valError.ValidationErrors)
-                        {
-                            errorsList.AppendLine(string.Format("Property: {0} - Message:{1}", singleError.PropertyName, singleError.ErrorMessage));
-                        }
-                    }
-                    throw dbValEx;
-                }
-            };
-                var user = new ApplicationUser
-                {
-                    UserName = TESTUSER_USERNAME,
-                    Email = TESTUSER_USERNAME
-                };
-                var result = await AppUserManager.CreateAsync(user, TESTUSER_ORIGINALPASSWORD);
-            };
         }
 
         internal static ApplicationUserManager AppUserManager

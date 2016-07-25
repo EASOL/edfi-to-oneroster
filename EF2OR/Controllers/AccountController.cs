@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -81,8 +79,6 @@ namespace EF2OR.Controllers
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
 
             var logUtils = new LoggingMethods();
@@ -113,8 +109,7 @@ namespace EF2OR.Controllers
             {
                 return RedirectToAction("Login");
             }
-            ViewModels.RegisterViewModel model = new RegisterViewModel();
-            model.ApiPrefix = "api/v2/2016/";
+            RegisterViewModel model = new RegisterViewModel();
             return View(model);
         }
 
@@ -266,7 +261,6 @@ namespace EF2OR.Controllers
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            //var result = UserManager.ResetPassword(user.Id, model.Code, model.Password); // if you dont want async...
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");

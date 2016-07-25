@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using EF2OR.ViewModels;
 using EF2OR.Models;
@@ -39,7 +38,7 @@ namespace EF2OR.Controllers
                             LastAccess = lastAccess,
                             LastModifiedDate = lastModified,
                             CreatedDate = createdTime
-                         }).ToList();
+                         }).OrderByDescending(x => x.CreatedDate).ToList();
             return View(model);
         }
 

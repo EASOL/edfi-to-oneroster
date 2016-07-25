@@ -69,7 +69,7 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-3 col-md-9">
+        <div class="col-md-offset-3 col-md-3">
             <span id="testConnectionResult"></span>
         </div>
     </div>
@@ -137,7 +137,7 @@
     <script src="~/Scripts/PreConfiguration/PreConfiguration.js"></script>
     <script>
         function testConnection() {
-            $("#testConnectionResult").hide();
+            $('#testConnectionResult').html('<div style="text-align:center; color:black;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 32px;" /><p>Loading...</p></div>');
 
             var apiBaseUrl = $("#@Html.IdFor(m => m.ApiBaseUrl)").val();
             var apiKey = $("#@Html.IdFor(m => m.ApiKey)").val();
@@ -148,6 +148,7 @@
                 type: 'POST',
                 data: { apiBaseUrl: apiBaseUrl, apiKey: apiKey, apiSecret: apiSecret },
                 success: function (result) {
+                    $('#testConnectionResult').html('');
                     if (result["IsSuccessful"]) {
                         $("#testConnectionResult").text("Connection Successful").removeClass("connectionFailed").addClass("connectionSuccessful");
                     }
@@ -155,7 +156,6 @@
                         var errorMsg = result["ErrorMessage"];
                         $("#testConnectionResult").text("Connection Failed: " + errorMsg).removeClass("connectionSuccessful").addClass("connectionFailed");
                     }
-                    $("#testConnectionResult").show();
                 },
                 error: function () {
                 }

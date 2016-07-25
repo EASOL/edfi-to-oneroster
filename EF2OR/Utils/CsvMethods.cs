@@ -33,20 +33,13 @@ namespace EF2OR.Utils
                 Sections = sections
             };
             model = await ApiCalls.GetDataResults(inputs);
-            //schoolIds,
-            //schoolYears,
-            //terms,
-            //subjects,
-            //courses,
-            //teachers,
-            //sections);
 
             var csvFilesDirectory = "~/CsvFiles";
-            var csvDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(csvFilesDirectory);
+            var csvDirectoryFullName = HttpContext.Current.Server.MapPath(csvFilesDirectory);
 
             var directoryGuid = Guid.NewGuid().ToString();
             var tempDirectory = csvFilesDirectory + "/" + directoryGuid;
-            var tempDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(tempDirectory);
+            var tempDirectoryFullName = HttpContext.Current.Server.MapPath(tempDirectory);
 
             Directory.CreateDirectory(tempDirectoryFullName);
             WriteObjectToCsv(model.Orgs, tempDirectoryFullName, "orgs.csv");
@@ -55,12 +48,6 @@ namespace EF2OR.Utils
             WriteObjectToCsv(model.Classes, tempDirectoryFullName, "classes.csv");
             WriteObjectToCsv(model.Enrollments, tempDirectoryFullName, "enrollments.csv");
             WriteObjectToCsv(model.AcademicSessions, tempDirectoryFullName, "academicSessions.csv");
-            //WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "orgs.csv");
-            //WriteObjectToCsv(await ApiCalls.GetCsvUsers(), tempDirectoryFullName, "users.csv");
-            //WriteObjectToCsv(await ApiCalls.GetCsvCourses(), tempDirectoryFullName, "courses.csv");
-            //WriteObjectToCsv(await ApiCalls.GetCsvClasses(), tempDirectoryFullName, "classes.csv");
-            //WriteObjectToCsv(await ApiCalls.GetCsvEnrollments(), tempDirectoryFullName, "enrollments.csv");
-            //WriteObjectToCsv(await ApiCalls.GetCsvAcademicSessions(), tempDirectoryFullName, "academicSessions.csv");
 
             var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
 
@@ -77,7 +64,6 @@ namespace EF2OR.Utils
             Directory.Delete(tempDirectoryFullName, true);
             File.Delete(zipPath);
             return bytes;
-            
         }
 
         private void WriteObjectToCsv<T>(List<T> inputList, string directoryPath, string fileName)
@@ -103,7 +89,6 @@ namespace EF2OR.Utils
                 }
             }
         }
-
 
         //private async Task<FileResult> GetZipFile()
         //{

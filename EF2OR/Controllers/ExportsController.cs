@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using EF2OR.ViewModels;
 using System.Threading.Tasks;
-using System.Net.Http;
-using EF2OR.Enums;
-using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
 using EF2OR.Utils;
-using System.Text;
-using System.IO;
-using System.IO.Compression;
-using System.Dynamic;
 using Newtonsoft.Json;
 using EF2OR.Models;
 
@@ -390,6 +381,5 @@ namespace EF2OR.Controllers
                 SectionName = "Sections"
             };
         }
-       
     }
 }

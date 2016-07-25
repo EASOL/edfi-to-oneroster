@@ -43,12 +43,12 @@ namespace EF2OR.Controllers.Tests
             using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
             {
                 EF2OR.Tests.Utils.FakesHelper.SetupFakes();
-                var userIdentity = await AuthenticationHelper.TestUser.GenerateUserIdentityAsync(AuthenticationHelper.AppUserManager);
+                //var userIdentity = await AuthenticationHelper.TestUser.GenerateUserIdentityAsync(AuthenticationHelper.AppUserManager);
                 EF2OR.Controllers.Fakes.ShimBaseController.AllInstances.UserIdGet = (baseController) =>
                 {
                     return AuthenticationHelper.TestUser.Id;
                 };
-                SettingsController controller = new SettingsController(AuthenticationHelper.AppUserManager);
+                SettingsController controller = new SettingsController();
                 var result = await controller.Index() as ViewResult;
                 Assert.IsNotNull(result, "Invalid Result");
                 Assert.IsNotNull(result.Model, "Null Model");
