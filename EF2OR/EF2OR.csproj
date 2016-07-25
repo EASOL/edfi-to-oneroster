@@ -230,6 +230,7 @@
     <Compile Include="Models\AuditLog.cs" />
     <Compile Include="Models\ApplicationSetting.cs" />
     <Compile Include="Models\CustomHandleErrorInfoModel.cs" />
+    <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -322,10 +323,11 @@
     <Content Include="Views\Settings\EditorTemplates\AcademicSessionTypeViewModel.cshtml" />
     <Content Include="Views\Admin\InitialSetup.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DatabaseSettings.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CsvFiles\" />
-    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

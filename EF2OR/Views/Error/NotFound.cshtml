@@ -1,0 +1,10 @@
+﻿@model EF2OR.Models.CustomHandleErrorInfoModel
+@{
+    ViewBag.Title = "NotFound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null && Model.Exception != null)
+{
+    @Model.Exception.Message
+}

@@ -24,7 +24,7 @@ namespace EF2OR
                 var migrator = new DbMigrator(configuration);
                 migrator.Update();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }

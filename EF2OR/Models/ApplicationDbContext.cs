@@ -21,6 +21,8 @@ namespace EF2OR.Models
         public DbSet<Template> Templates { get; set; }
         public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
         public DbSet<AcademicSessionType> AcademicSessionTypes { get; set; }
+        public DbSet<ErrorLog> ErrorLogs { get; set; }
+
 
         public static ApplicationDbContext Create()
         {

@@ -1,4 +1,5 @@
-﻿using EF2OR.Controllers;
+﻿using EF2OR.App_Start.CustomAttributes;
+using EF2OR.Controllers;
 using EF2OR.Models;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,9 @@ namespace EF2OR
             }
 
             var ex = Server.GetLastError();
+            var dataObject = CustomHandleErrorAttribute.CreateDictionaryFromForm(httpContext.Request.Form);
+            CustomHandleErrorAttribute.LogError(errorId, ex, dataObject);
+
             var controller = new ErrorController();
             var routeData = new RouteData();
             var action = "Index";
