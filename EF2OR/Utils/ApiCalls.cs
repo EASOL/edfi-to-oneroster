@@ -558,8 +558,8 @@ namespace EF2OR.Utils
                                  username = si.username
                              }).ToList();
 
-            var distinctStudents = studentInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
-            var distinctStaff = staffInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
+            var distinctStudents = studentInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First());
+            var distinctStaff = staffInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First());
 
             var studentsAndStaff = distinctStudents.Concat(distinctStaff);
             return studentsAndStaff.ToList();
