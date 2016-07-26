@@ -195,9 +195,9 @@ namespace EF2OR.Controllers
                 }
             }
 
-            InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiBaseUrl, model.ApiBaseUrl);
-            InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiKey, model.ApiKey);
-            InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiSecret, model.ApiSecret);
+            var baseUrlChanged = InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiBaseUrl, model.ApiBaseUrl);
+            var apiKeyChanged = InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiKey, model.ApiKey);
+            var apiSecretChanged = InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiSecret, model.ApiSecret);
             InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiPrefix, model.ApiPrefix);
             InsertUpdateApplicationSetting(ApplicationSettingsTypes.OrgsIdentifier, model.OrgsIdentifier);
 
@@ -225,6 +225,12 @@ namespace EF2OR.Controllers
             try
             {
                 db.SaveChanges(UserName, IpAddress);
+
+                if (baseUrlChanged || apiKeyChanged || apiSecretChanged)
+                {
+                    ApiCalls.GetToken(true);
+                }
+
                 ViewBag.SuccessMessage = "Settings successfully saved";
                 var result = await Index();
                 return result;
@@ -236,12 +242,14 @@ namespace EF2OR.Controllers
             }
         }
 
-        private void InsertUpdateApplicationSetting(string settingName, string settingValue)
+        private bool InsertUpdateApplicationSetting(string settingName, string settingValue)
         {
+            bool valueChanged = false;
             var setting = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == settingName);
 
             if (setting == null)
             {
+                valueChanged = true;
                 var newSetting = new ApplicationSetting
                 {
                     SettingName = settingName,
@@ -251,8 +259,13 @@ namespace EF2OR.Controllers
             }
             else
             {
-                setting.SettingValue = settingValue;
+                if (setting.SettingValue != settingValue)
+                {
+                    valueChanged = true;
+                    setting.SettingValue = settingValue;
+                }
             }
+            return valueChanged;
         }
 
         [HttpPost]
@@ -284,7 +297,7 @@ namespace EF2OR.Controllers
                     string errors = string.Empty;
                     bool succeedSaveConnectionString = SaveConnectionString(model.DatabaseSettings, out errors);
                     if (succeedSaveConnectionString)
-                        return RedirectToAction(actionName: "Index", controllerName: "Home");
+                        return RedirectToAction(actionName: "Index", controllerName: "Templates");
                     else
                     {
                         ViewBag.Error = errors;
