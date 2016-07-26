@@ -15,6 +15,11 @@ namespace EF2OR
             new { controller = "Export", action = "Index", id = UrlParameter.Optional });
 
             routes.MapRoute(
+            "InitialSetupRoute",
+            "Admin/InitialSetup",
+            new { controller = "Admin", action = "InitialSetup"});
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Templates", action = "Index", id = UrlParameter.Optional });
