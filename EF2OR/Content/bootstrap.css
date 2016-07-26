@@ -4183,7 +4183,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-fixed-top {
   top: 0;
-  z-index: 1030;
+  z-index: 2;
 }
 
 .navbar-fixed-bottom {

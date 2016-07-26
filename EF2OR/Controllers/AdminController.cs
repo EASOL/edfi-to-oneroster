@@ -10,7 +10,7 @@ namespace EF2OR.Controllers
         {
             if (Utils.PreConfigurationHelper.IsInitialSetup(filterContext.HttpContext))
             {
-                filterContext.Result = new RedirectResult("/Admin/InitialSetup");
+                filterContext.Result = new RedirectToRouteResult("InitialSetupRoute", null);
             }
             else
                 base.OnActionExecuting(filterContext);
@@ -79,7 +79,8 @@ namespace EF2OR.Controllers
                 if (!HttpContext.User.Identity
                     .IsAuthenticated)
                 {
-                    return RedirectToAction(controllerName: "Account", actionName: "Login", routeValues: new { ReturnUrl = "/Admin/InitialSetup" });
+                    var routeUrl = Url.RouteUrl("InitialSetupRoute");
+                    return RedirectToAction(controllerName: "Account", actionName: "Login", routeValues: new { ReturnUrl = routeUrl });
                 }
             }
             ViewModels.InitialSetup model = new ViewModels.InitialSetup();

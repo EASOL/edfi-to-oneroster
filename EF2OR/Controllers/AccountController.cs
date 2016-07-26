@@ -285,6 +285,9 @@ namespace EF2OR.Controllers
         {
             var logUtils = new LoggingMethods();
             logUtils.LogUserLogout(UserName, IpAddress);
+
+            Session.Clear();
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Account");
         }
