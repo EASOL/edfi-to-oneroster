@@ -88,10 +88,14 @@
      </div>
 
      <br />
-     <div id="DataPreview"></div>
+     @*<div id="DataPreview"></div>*@
  </div>
 
-<div id="editWindow" style="display:none;">
+ <div id="previewWindow" style="display:none; overflow-y: auto; width:100%;">
+     <div id="previewWindowContent" class="container"></div>
+ </div>
+
+<div id="editWindow" style="display:none; overflow-y: auto;">
     <h4 align="center">Save New Template</h4>
 
     <div class="form-group">
@@ -236,7 +240,12 @@
 
             function dataPreview() {
                 $('.collapsableSection').hide('fast');
-                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+                //$('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+                $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+
+                $("#previewWindow").modal({
+                    showClose: true
+                });
 
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
@@ -246,7 +255,8 @@
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
 
-                $("#DataPreview").load("@Url.Action("Preview")", {
+                //$("#DataPreview").load("@Url.Action("Preview")", {
+                $("#previewWindowContent").load("@Url.Action("Preview")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
@@ -255,6 +265,7 @@
                     teachers: teachers,
                     sections: sections,
                 });
+
             }
 
             function setHiddens() {
