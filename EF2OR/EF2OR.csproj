@@ -223,6 +223,10 @@
     <Compile Include="Migrations\201607181744585_ApplicationSettingsChanges.Designer.cs">
       <DependentUpon>201607181744585_ApplicationSettingsChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607271614135_ErrorLog.cs" />
+    <Compile Include="Migrations\201607271614135_ErrorLog.Designer.cs">
+      <DependentUpon>201607271614135_ErrorLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicSessionType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -364,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607181744585_ApplicationSettingsChanges.resx">
       <DependentUpon>201607181744585_ApplicationSettingsChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607271614135_ErrorLog.resx">
+      <DependentUpon>201607271614135_ErrorLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
