@@ -86,9 +86,7 @@
        { HtmlFieldPrefix = "Sections" }
    })
      </div>
-
      <br />
-     @*<div id="DataPreview"></div>*@
  </div>
 
  <div id="previewWindow" style="display:none; overflow-y: auto; width:100%;">
@@ -240,7 +238,6 @@
 
             function dataPreview() {
                 $('.collapsableSection').hide('fast');
-                //$('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
                 $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
                 $("#previewWindow").modal({
@@ -255,7 +252,6 @@
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
 
-                //$("#DataPreview").load("@Url.Action("Preview")", {
                 $("#previewWindowContent").load("@Url.Action("Preview")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
