@@ -38,12 +38,22 @@
         </tr>
         @foreach (var template in Model)
         {
-            var tokenText = string.IsNullOrEmpty(template.AccessToken) ? "Assign Token" : "Generate New Token";
+            bool tokenExists = !string.IsNullOrEmpty(template.AccessToken);
+            var tokenText = tokenExists ? "Generate New Token" : "Assign Token";
             <tr>
                 <td>@template.TemplateName</td>
                 <td>@template.VendorName</td>
-                <td>@(string.IsNullOrEmpty(template.AccessUrl) ? "" : exportActionUrl + template.AccessUrl)</td>
-                <td>@template.AccessToken</td>
+                <td>
+                    @if (tokenExists)
+                    {
+                        <a href="javascript: copyToClipboard('@(exportActionUrl + template.AccessUrl)')"><i class="fa fa-clipboard"></i></a>@(exportActionUrl + template.AccessUrl)
+                    }
+                </td>
+                <td>
+                    @if (tokenExists)
+                    { <a href="javascript: copyToClipboard('@template.AccessToken')"><i class="fa fa-clipboard"></i></a> }
+                    @template.AccessToken
+                </td>
                 <td>@template.NumberOfDownloads</td>
                 <td>@template.LastAccess</td>
                 <td>@template.CreatedDate</td>
@@ -69,7 +79,9 @@
 
 
 @section BodyOutsideOfContainer{
-    <div style="position:fixed; bottom:40px; padding:10px; background-color: white; width:100%;">
+    <input type="text" id="copytextbox" value="" style="position:fixed; bottom:5px; left: 5px;" />
+
+    <div style="position:fixed; bottom:40px; padding:10px; background-color: white; width:100%; border-top:2px solid #eee;">
         <div class="container">
             <a href="@Url.Action("Index", "Exports")" class="btn btn-primary">Create New Template</a>
         </div>
@@ -109,6 +121,14 @@
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
   <script>
+
+      function copyToClipboard(copyValue) {
+          $("#copytextbox").val(copyValue);
+          var copyTextarea = document.querySelector('#copytextbox');
+          copyTextarea.select();
+          document.execCommand('copy');
+      }
+
       function dataPreview(templateId) {
           $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
