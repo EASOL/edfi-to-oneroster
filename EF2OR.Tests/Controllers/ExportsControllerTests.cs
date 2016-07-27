@@ -13,6 +13,9 @@ using System.Web.Routing;
 using EF2OR.ViewModels;
 using EF2OR.Utils;
 using System.IO.Compression;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace EF2OR.Controllers.Tests
 {
@@ -67,6 +70,7 @@ namespace EF2OR.Controllers.Tests
                 {
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
                 };
+                FakesHelper.SetupFakeApiResponse();
                 ExportsViewModel defaultExportsViewModel = await GetDefaultExportsViewModel();
                 var previewResult = await exportsController.Preview(
                     schoolIds: defaultExportsViewModel.SelectedSchools.Split(',').ToList(),
@@ -109,6 +113,7 @@ namespace EF2OR.Controllers.Tests
                 {
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
                 };
+                FakesHelper.SetupFakeApiResponse();
 
                 //ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
                 ExportsViewModel defaultExportViewModel = new ExportsViewModel();
@@ -579,7 +584,7 @@ namespace EF2OR.Controllers.Tests
                 ValidateField("classSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("schoolSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
                 ValidateField("userSourcedId", null, lstFileInvalidInfo, iRow, csvreader);
-                ValidateField("role", new string[] { "student" , "teacher" , "parent" , "guardian" , "relative" , 
+                ValidateField("role", new string[] { "student" , "teacher" , "parent" , "guardian" , "relative" ,
                     "aide", "administrator" }, lstFileInvalidInfo, iRow, csvreader);
                 iRow++;
             }
@@ -642,7 +647,7 @@ namespace EF2OR.Controllers.Tests
                 {
                     return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
                 };
-
+                FakesHelper.SetupFakeApiResponse();
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
                 var defaultResult = await controller.Index();
                 Assert.IsNotNull(defaultResult, "invalid result");

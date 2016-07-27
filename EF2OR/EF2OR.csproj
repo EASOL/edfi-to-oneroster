@@ -223,6 +223,10 @@
     <Compile Include="Migrations\201607181744585_ApplicationSettingsChanges.Designer.cs">
       <DependentUpon>201607181744585_ApplicationSettingsChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607271614135_ErrorLog.cs" />
+    <Compile Include="Migrations\201607271614135_ErrorLog.Designer.cs">
+      <DependentUpon>201607271614135_ErrorLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicSessionType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -230,6 +234,7 @@
     <Compile Include="Models\AuditLog.cs" />
     <Compile Include="Models\ApplicationSetting.cs" />
     <Compile Include="Models\CustomHandleErrorInfoModel.cs" />
+    <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -260,7 +265,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\EF2OR.css" />
     <Content Include="Content\Images\easollogo.png" />
-    <Content Include="Content\Images\ed-fi-branding-logo.png" />
+    <Content Include="Content\Images\EdFi-logo-Powered-RGB-TM.png" />
+    <Content Include="Content\Images\EdFi-logo-RGB.PNG" />
+    <Content Include="Content\Images\powered-by.png" />
     <Content Include="Content\Images\logo-revised.png" />
     <Content Include="Content\jquery.modal.min.css" />
     <Content Include="Content\Images\loading.gif" />
@@ -268,6 +275,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Install Instructions.txt" />
     <Content Include="ReadMe.txt" />
     <Content Include="Scripts\bootstrap-table-filter-control.js" />
     <Content Include="Scripts\bootstrap-table.js" />
@@ -275,6 +283,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Fakes Include="Fakes\System.Web.fakes" />
+    <None Include="Properties\PublishProfiles\deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Local IIS.pubxml" />
+    <None Include="Properties\PublishProfiles\Packaged File.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -307,12 +318,6 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
@@ -320,16 +325,16 @@
     <Content Include="Views\Logs\Index.cshtml" />
     <Content Include="Views\Exports\Index.cshtml" />
     <Content Include="Views\Exports\EditorTemplates\ExportsCheckbox.cshtml" />
-    <Content Include="Views\Exports\EditorTemplates\ApiCriteriaSection.cshtml" />
     <Content Include="Views\Exports\_CriteriaSection.cshtml" />
     <Content Include="Views\Exports\_DataPreview.cshtml" />
     <Content Include="Views\Settings\EditorTemplates\AcademicSessionTypeViewModel.cshtml" />
     <Content Include="Views\Admin\InitialSetup.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DatabaseSettings.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CsvFiles\" />
-    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -363,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607181744585_ApplicationSettingsChanges.resx">
       <DependentUpon>201607181744585_ApplicationSettingsChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607271614135_ErrorLog.resx">
+      <DependentUpon>201607271614135_ErrorLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

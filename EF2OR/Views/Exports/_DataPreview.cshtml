@@ -27,31 +27,37 @@
             $(function () {
                 var orgsData = @Html.Raw(Model.JsonPreviews.Orgs);
                 $('#table_orgs').bootstrapTable({
+                    undefinedText: '',
                     data: orgsData
                 });
 
                 var usersData = @Html.Raw(Model.JsonPreviews.Users);
                 $('#table_users').bootstrapTable({
+                    undefinedText: '',
                     data: usersData
                 });
 
                 var coursesData = @Html.Raw(Model.JsonPreviews.Courses);
                 $('#table_courses').bootstrapTable({
+                    undefinedText: '',
                     data: coursesData
                 });
 
                 var classesData = @Html.Raw(Model.JsonPreviews.Classes);
                 $('#table_classes').bootstrapTable({
+                    undefinedText: '',
                     data: classesData
                 });
 
                 var enrollmentsData = @Html.Raw(Model.JsonPreviews.Enrollments);
                 $('#table_enrollments').bootstrapTable({
+                    undefinedText: '',
                     data: enrollmentsData
                 });
 
                 var academicsessions = @Html.Raw(Model.JsonPreviews.AcademicSessions);
                 $('#table_academicsessions').bootstrapTable({
+                    undefinedText: '',
                     data: academicsessions
                 });
             });

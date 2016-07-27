@@ -34,7 +34,7 @@ namespace EF2OR.ViewModels
         public bool IsError { get; set; }
         public string ErrorMessage { get; set; }
 
-        public ViewModels.InitialSetup DatabaseSettings { get; set; } = new InitialSetup();
+        public InitialSetup DatabaseSettings { get; set; } = new InitialSetup();
     }
 
     public class AcademicSessionTypeViewModel

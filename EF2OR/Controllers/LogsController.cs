@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using EF2OR.ViewModels;
 using Newtonsoft.Json;
 using EF2OR.Enums;
-using Newtonsoft.Json.Linq;
 
 namespace EF2OR.Controllers
 {
@@ -14,25 +12,25 @@ namespace EF2OR.Controllers
     {
         public ActionResult Index(int? templateId = null)
         {
+            var templateName = "";
             var logs = (from a in db.AuditLogs
                         from t in db.Templates.Where(x => x.TemplateId == a.TemplateId).DefaultIfEmpty()
                         let mostRecentOldValues = db.AuditLogs.Where(x => x.TemplateId == a.TemplateId).OrderByDescending(x => x.DateTimeStamp).FirstOrDefault().OldValues
                         where templateId == null || t.TemplateId == templateId
                        select new TemplateLogViewmodel
                        {
-                           TemplateName = t.TemplateName ?? "",
-                           VendorName = t.VendorName ?? "",
+                           TemplateName = t.TemplateName,
+                           VendorName = t.VendorName,
                            Action = a.Type,
                            DateValue = a.DateTimeStamp,
                            DateString = a.DateTimeStamp.ToString(),
-                           OldValues = a.OldValues ?? "",
-                           NewValues = a.NewValues ?? "",
+                           OldValues = a.OldValues,
+                           NewValues = a.NewValues,
                            Success = a.Success,
                            FailureReason = a.FailureReason,
                            IpAddress = a.IpAddress,
                            MostRecentOldValues = mostRecentOldValues
                        }).OrderByDescending(x => x.DateValue).ToList();
-
 
             foreach (var log in logs)
             {
@@ -45,8 +43,13 @@ namespace EF2OR.Controllers
                         {
                             log.TemplateName = mostRecentOldValues["TemplateName"].ToString();
                             log.VendorName = mostRecentOldValues["VendorName"].ToString();
+                            templateName = mostRecentOldValues["TemplateName"].ToString(); //This is the template name for the model. It will always be the same if templateId is provided
                         }
                     }
+                }
+                else
+                {
+                    templateName = log.TemplateName; //This is the template name for the model. It will always be the same if templateId is provided
                 }
 
                 if (log.Action == ActionTypes.DownloadCsvAdmin || log.Action == ActionTypes.DownloasCsvVendor)
@@ -114,7 +117,9 @@ namespace EF2OR.Controllers
 
             var model = new LogsViewModel
             {
-                LogsJson = JsonConvert.SerializeObject(logs)
+                LogsJson = JsonConvert.SerializeObject(logs),
+                TemplateId = templateId,
+                TemplateName = templateName
             };
 
             return View(model);

@@ -39,15 +39,14 @@ namespace EF2OR.Utils
         #endregion
 
         #region TokenMethods
-        //public async Task<ApiCallViewModel> GetToken()
         public static TokenViewModel GetToken(bool forceNewToken = false)
         {
             if (forceNewToken || HttpContext.Current.Session["token"] == null || ((TokenViewModel)HttpContext.Current.Session["token"]).IsSuccessful == false)
             {
                 var context = new ApplicationDbContext();
-                var apiBaseUrl = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
-                var apiKey = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiKey)?.SettingValue;
-                var apiSecret = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiSecret)?.SettingValue;
+                var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
+                var apiKey = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiKey)?.SettingValue;
+                var apiSecret = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiSecret)?.SettingValue;
                 HttpContext.Current.Session["token"] = GetToken(apiBaseUrl, apiKey, apiSecret);
                 context.Dispose();
             }
@@ -84,10 +83,10 @@ namespace EF2OR.Utils
                     var tokenRequestResult = client.PostAsync(ApiEndPoints.OauthGetToken,
                         new FormUrlEncodedContent(new[]
                         {
-                    new KeyValuePair<string,string>("Client_id",apiKey),
-                    new KeyValuePair<string,string>("Client_secret",apiSecret),
-                    new KeyValuePair<string,string>("Code",code),
-                    new KeyValuePair<string,string>("Grant_type","authorization_code")
+                            new KeyValuePair<string,string>("Client_id",apiKey),
+                            new KeyValuePair<string,string>("Client_secret",apiSecret),
+                            new KeyValuePair<string,string>("Code",code),
+                            new KeyValuePair<string,string>("Grant_type","authorization_code")
                         })).Result;
                     var tokenJson = tokenRequestResult.Content.ReadAsStringAsync().Result;
 
@@ -117,11 +116,11 @@ namespace EF2OR.Utils
         #region FilterMethods
         public static async Task PopulateFilterSection1(ExportsViewModel model)
         {
-            var schools = await GetSchools();
-            var schoolYears = await GetSchoolYears();
+            var schools = await GetSchools("id,nameOfInstitution");
+            var schoolYears = await GetSchoolYears("id,uniqueSectionCode,academicSubjectDescriptor,sessionReference,courseOfferingReference,locationReference,schoolReference,staff");
             var terms = await GetTerms();
 
-            /////////////Load these two now because the API is already stored in the dictionary up top.  It'll be in the session for the user for later.  He'll get instant checkboxes
+            /////////////Load these now because the API is already stored in the dictionary up top.  It'll be in the session for the user for later.  He'll get instant checkboxes
             await GetSubjects();
             await GetCourses();
             await GetTeachers();
@@ -150,11 +149,11 @@ namespace EF2OR.Utils
             };
         }
 
-        public static async Task<List<ExportsCheckbox>> GetSchools()
+        public static async Task<List<ExportsCheckbox>> GetSchools(string fields = null)
         {
             if (HttpContext.Current.Session["AllSchools"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.Schools);
+                var responseArray = await GetApiResponseArray(ApiEndPoints.Schools, false, fields);
                 var schools = (from s in responseArray
                                select new ExportsCheckbox
                                {
@@ -173,22 +172,22 @@ namespace EF2OR.Utils
             return allSchools;
         }
 
-        public static async Task<List<ExportsCheckbox>> GetSchoolYears()
+        public static async Task<List<ExportsCheckbox>> GetSchoolYears(string fields = null)
         {
             if (HttpContext.Current.Session["AllSchoolYears"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.SchoolYears, false, "id,uniqueSectionCode,academicSubjectDescriptor,sessionReference,courseOfferingReference,locationReference,schoolReference,staff");
+                var responseArray = await GetApiResponseArray(ApiEndPoints.SchoolYears, false, fields);
 
                 var schoolYearsStrings = (from s in responseArray
                                    select (string)s["sessionReference"]["schoolYear"]).Distinct();
 
                 var schoolYears = (from s in schoolYearsStrings
                                    select new ExportsCheckbox
-                              {
-                                  Id = s,
-                                  Text = s,
-                                  Visible = true
-                              }).OrderBy(x => x.Text).ToList();
+                                   {
+                                       Id = s,
+                                       Text = s,
+                                       Visible = true
+                                   }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllSchoolYears"] = schoolYears;
             }
 
@@ -208,11 +207,11 @@ namespace EF2OR.Utils
 
                 var terms = (from s in termStrings
                              select new ExportsCheckbox
-                                   {
-                                       Id = s,
-                                       Text = s,
-                                       Visible = true
-                                   }).OrderBy(x => x.Text).ToList();
+                             {
+                                 Id = s,
+                                 Text = s,
+                                 Visible = true
+                             }).OrderBy(x => x.Text).ToList();
                 HttpContext.Current.Session["AllTerms"] = terms;
             }
 
@@ -254,16 +253,16 @@ namespace EF2OR.Utils
             {
                 var responseArray = await GetApiResponseArray(ApiEndPoints.Courses);
                 var courses = (from s in responseArray
-                                select new ExportsCheckbox
-                                {
-                                    Id = (string)s["courseOfferingReference"]["localCourseCode"],
-                                    SchoolId = (string)s["schoolReference"]["id"],
-                                    SchoolYear = (string)s["sessionReference"]["schoolYear"],
-                                    Term = (string)s["sessionReference"]["termDescriptor"],
-                                    Text = (string)s["courseOfferingReference"]["localCourseCode"],
-                                    Subject = (string)s["academicSubjectDescriptor"],
-                                    Visible = true
-                                }).OrderBy(x => x.Text).ToList();
+                               select new ExportsCheckbox
+                               {
+                                   Id = (string)s["courseOfferingReference"]["localCourseCode"],
+                                   SchoolId = (string)s["schoolReference"]["id"],
+                                   SchoolYear = (string)s["sessionReference"]["schoolYear"],
+                                   Term = (string)s["sessionReference"]["termDescriptor"],
+                                   Text = (string)s["courseOfferingReference"]["localCourseCode"],
+                                   Subject = (string)s["academicSubjectDescriptor"],
+                                   Visible = true
+                               }).OrderBy(x => x.Text).ToList();
 
                 HttpContext.Current.Session["AllCourses"] = courses;
             }
@@ -281,15 +280,15 @@ namespace EF2OR.Utils
                 var sectionsResponse = await GetApiResponseArray(ApiEndPoints.Sections);
                 var sections = (from o in sectionsResponse
                                 let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
-                                       select new
-                                       {
-                                           SchoolId = (string)o["schoolReference"]["id"],
-                                           SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                           Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                           Subject = (string)o["academicSubjectDescriptor"],
-                                           Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                           staffs = staffs
-                                       });
+                                select new
+                                {
+                                    SchoolId = (string)o["schoolReference"]["id"],
+                                    SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                    Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                    Subject = (string)o["academicSubjectDescriptor"],
+                                    Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                    staffs = staffs
+                                });
 
                 var staffSections = from section in sections
                                     from staff in section.staffs
@@ -559,8 +558,8 @@ namespace EF2OR.Utils
                                  username = si.username
                              }).ToList();
 
-            var distinctStudents = studentInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
-            var distinctStaff = staffInfo.GroupBy(x => x.sourcedId).Select(group => group.First());
+            var distinctStudents = studentInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First());
+            var distinctStaff = staffInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First());
 
             var studentsAndStaff = distinctStudents.Concat(distinctStaff);
             return studentsAndStaff.ToList();

@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace EF2OR.App_Start.CustomAttributes
 {
@@ -73,11 +71,61 @@ namespace EF2OR.App_Start.CustomAttributes
             //        serializedData = strWriter.GetStringBuilder().ToString();
             //    }
             //}
+            Dictionary<string, string> formValuesDictionary = CreateDictionaryFromForm(filterContext.HttpContext.Request.Form);
+            LogError(errorId, filterContext.Exception, formValuesDictionary);
+
             filterContext.ExceptionHandled = true;
             filterContext.HttpContext.Response.Clear();
             filterContext.HttpContext.Response.StatusCode = 500;
 
             filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
         }
+
+        internal static void LogError(Guid errorId, Exception ex, Dictionary<string, string> dataObject)
+        {
+            try
+            {
+                using (Models.ApplicationDbContext ctx = new ApplicationDbContext())
+                {
+                    ErrorLog errorLogInfo = new ErrorLog();
+                    errorLogInfo.ErrorId = errorId;
+                    errorLogInfo.Message = ex.ToString();
+                    XElement objectData = new System.Xml.Linq.XElement("ObjectData");
+                    foreach (var singleItem in dataObject)
+                    {
+                        XElement propertyInfoElement = new XElement("PropertyInfo");
+                        propertyInfoElement.SetAttributeValue("Name", singleItem.Key);
+                        propertyInfoElement.SetAttributeValue("Value", singleItem.Value);
+                        objectData.Add(propertyInfoElement);
+                    }
+                    errorLogInfo.Data = objectData.ToString();
+                    ctx.ErrorLogs.Add(errorLogInfo);
+                    ctx.SaveChanges();
+                }
+
+            }
+            catch (Exception)
+            {
+                //do nothing
+            }
+        }
+
+        internal static Dictionary<string, string> CreateDictionaryFromForm(NameValueCollection form)
+        {
+            Dictionary<string, string> formValuesDictionary = new Dictionary<string, string>();
+            for (int i = 0; i < form.Count; i++)
+            {
+                try
+                {
+                    formValuesDictionary.Add(form.GetKey(i), form[form.GetKey(i)]);
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            return formValuesDictionary;
+        }
+
     }
 }

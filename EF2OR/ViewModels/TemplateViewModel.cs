@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace EF2OR.ViewModels
+﻿namespace EF2OR.ViewModels
 {
     public class TemplateViewModel
     {
@@ -14,5 +9,7 @@ namespace EF2OR.ViewModels
         public string AccessToken { get; set; }
         public int NumberOfDownloads { get; set; }
         public string LastAccess { get; set; }
+        public string CreatedDate { get; set; }
+        public string LastModifiedDate { get; set; }
     }
 }

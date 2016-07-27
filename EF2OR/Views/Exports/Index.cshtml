@@ -23,9 +23,6 @@
 }
 <h3>Data Selection</h3>
 
-@*http://v4-alpha.getbootstrap.com/components/collapse/*@
-
-@*@using (Html.BeginForm())*@
 @using (Html.BeginForm("DownloadCsv", "Exports", FormMethod.Post, new { id = "exportsForm" }))
 {
  <div>
@@ -39,11 +36,7 @@
      @Html.HiddenFor(x => x.NewTemplateName)
      @Html.HiddenFor(x => x.NewTemplateVendorName)
      @Html.HiddenFor(x => x.EditTemplateId)
-
-     @*<div id="criteriaContainer">
-            @Html.EditorFor(x => x.CriteriaSections)
-            <input type="submit" value="OK" />
-        </div>*@
+  
      @Html.Partial("_CriteriaSection", Model.SchoolsCriteriaSection, new ViewDataDictionary()
 {
     TemplateInfo = new TemplateInfo()
@@ -95,10 +88,14 @@
      </div>
 
      <br />
-     <div id="DataPreview"></div>
+     @*<div id="DataPreview"></div>*@
  </div>
 
-<div id="editWindow" style="display:none;">
+ <div id="previewWindow" style="display:none; overflow-y: auto; width:100%;">
+     <div id="previewWindowContent" class="container"></div>
+ </div>
+
+<div id="editWindow" style="display:none; overflow-y: auto;">
     <h4 align="center">Save New Template</h4>
 
     <div class="form-group">
@@ -125,23 +122,29 @@
 }
 
 @section BodyOutsideOfContainer{
-    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%;">
-        <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
-        <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
-        @if (isEditTemplate)
-        {
-            <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
-        }
-        else
-        {
-            <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
-        }
+    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%; z-index:2;">
+        <div class="container">
+            <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
+            <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
+            @if (isEditTemplate)
+            {
+                <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
+            }
+        </div>
     </div>
 }
 
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
         <script>
+            function toggleDiv(divId) {
+                $('#' + divId).slideToggle('fast');
+            }
+
             function deselectAll(divId) {
                 $("#" + divId).find("input:checkbox").prop("checked", false);
                 checkboxRecount(divId);
@@ -236,20 +239,13 @@
             }
 
             function dataPreview() {
-                //need to make sure all collapsables are initialized.  Then trigger collapse/hide all
-                //$('.accordionHeader').collapse({
-                //    toggle: false
-                //});
-                //$('.collapse').collapse('hide');
-                //$('.collapse').collapse('hide');
+                $('.collapsableSection').hide('fast');
+                //$('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+                $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
-                //var isExpanded = !$(".accordionHeader").hasClass("expanded");
-                //$(".accordionHeader").toggleClass("expanded", isExpanded);
-                //if ($("div.inbox").hasClass("in")) {
-                //    $("div.inbox").collapse('hide');
-                //}
-
-                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+                $("#previewWindow").modal({
+                    showClose: true
+                });
 
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
@@ -259,7 +255,8 @@
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
 
-                $("#DataPreview").load("@Url.Action("Preview")", {
+                //$("#DataPreview").load("@Url.Action("Preview")", {
+                $("#previewWindowContent").load("@Url.Action("Preview")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
@@ -268,6 +265,7 @@
                     teachers: teachers,
                     sections: sections,
                 });
+
             }
 
             function setHiddens() {

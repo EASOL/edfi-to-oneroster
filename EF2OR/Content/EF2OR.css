@@ -20,3 +20,16 @@
     font-weight: bold;
     color: darkred;
 }
+
+.footer {
+    position:fixed;
+    bottom:0px;
+    padding:8px;
+    height:40px;
+    background-color:#eee;
+    color:#FFFFFF;
+    border-top: 1px solid #080808;
+    width:100%;
+    text-align:center;
+    z-index:3;
+}
