@@ -135,7 +135,7 @@ namespace EF2OR.Controllers
                         InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiBaseUrl, model.ApiBaseUrl);
                         InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiKey, model.ApiKey);
                         InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiSecret, model.ApiSecret);
-                        InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiPrefix, model.ApiPrefix);
+                        InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiPrefix, SettingDefaults.ApiPrefix);
                         db.SaveChanges();
                     }
                     catch (Exception ex)

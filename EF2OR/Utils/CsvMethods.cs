@@ -35,11 +35,11 @@ namespace EF2OR.Utils
             model = await ApiCalls.GetDataResults(inputs);
 
             var csvFilesDirectory = "~/CsvFiles";
-            var csvDirectoryFullName = HttpContext.Current.Server.MapPath(csvFilesDirectory);
+            var csvDirectoryFullName = CommonUtils.PathProvider.MapPath(csvFilesDirectory);
 
             var directoryGuid = Guid.NewGuid().ToString();
             var tempDirectory = csvFilesDirectory + "/" + directoryGuid;
-            var tempDirectoryFullName = HttpContext.Current.Server.MapPath(tempDirectory);
+            var tempDirectoryFullName = CommonUtils.PathProvider.MapPath(tempDirectory);
 
             Directory.CreateDirectory(tempDirectoryFullName);
             WriteObjectToCsv(model.Orgs, tempDirectoryFullName, "orgs.csv");
@@ -93,11 +93,11 @@ namespace EF2OR.Utils
         //private async Task<FileResult> GetZipFile()
         //{
         //    var csvFilesDirectory = "~/CsvFiles";
-        //    var csvDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(csvFilesDirectory);
+        //    var csvDirectoryFullName = CommonUtils.PathProviderMapPath(csvFilesDirectory);
 
         //    var directoryGuid = Guid.NewGuid().ToString();
         //    var tempDirectory = csvFilesDirectory + "/" + directoryGuid;
-        //    var tempDirectoryFullName = System.Web.HttpContext.Current.Server.MapPath(tempDirectory);
+        //    var tempDirectoryFullName = CommonUtils.PathProvider.MapPath(tempDirectory);
 
         //    Directory.CreateDirectory(tempDirectoryFullName);
         //    WriteObjectToCsv(await ApiCalls.GetCsvOrgs(), tempDirectoryFullName, "orgs.csv");

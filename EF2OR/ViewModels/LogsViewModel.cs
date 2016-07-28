@@ -20,6 +20,7 @@ namespace EF2OR.ViewModels
         public string OldValues { get; set; }
         public string NewValues { get; set; }
         public bool Success { get; set; }
+        public string SuccessString { get; set; }
         public string FailureReason { get; set; }
         public string IpAddress { get; set; }
         public string MostRecentOldValues { get; set; }

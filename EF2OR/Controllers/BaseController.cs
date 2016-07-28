@@ -23,7 +23,7 @@ namespace EF2OR.Controllers
         {
             get
             {
-                return User.Identity.Name;
+                return Utils.CommonUtils.UserProvider.UserName;
             }
         }
 
@@ -31,7 +31,7 @@ namespace EF2OR.Controllers
         {
             get
             {
-                return Request.UserHostAddress;
+                return Utils.CommonUtils.UserProvider.IpAddress;
             }
         }
 

@@ -15,9 +15,9 @@
     }
 
     .modal a.close-modal {
-  top: 30px;
-  right: 30px;
-}
+        top: 30px;
+        right: 30px;
+    }
 </style>
 
 <h3>@ViewBag.Title</h3>
@@ -46,13 +46,24 @@
                 <td>
                     @if (tokenExists)
                     {
-                        <a href="javascript: copyToClipboard('@(exportActionUrl + template.AccessUrl)')"><i class="fa fa-clipboard"></i></a>@(exportActionUrl + template.AccessUrl)
+                        <table>
+                            <tr>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a href="javascript: copyToClipboard('@(exportActionUrl + template.AccessUrl)')"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;">@(exportActionUrl + template.AccessUrl)</td>
+                            </tr>
+                        </table>
                     }
                 </td>
                 <td>
                     @if (tokenExists)
-                    { <a href="javascript: copyToClipboard('@template.AccessToken')"><i class="fa fa-clipboard"></i></a> }
-                    @template.AccessToken
+                    {
+                        <table>
+                            <tr>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a href="javascript: copyToClipboard('@template.AccessToken')"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;">@template.AccessToken</td>
+                            </tr>
+                        </table>
+                    }
                 </td>
                 <td>@template.NumberOfDownloads</td>
                 <td>@template.LastAccess</td>
@@ -83,7 +94,7 @@
 
     <div style="position:fixed; bottom:40px; padding:10px; background-color: white; width:100%; border-top:2px solid #eee;">
         <div class="container">
-            <a href="@Url.Action("Index", "Exports")" class="btn btn-primary">Create New Template</a>
+            <a href="@Url.Action("Index", "Exports")" class="btn btn-primary-blue">Create New Template</a>
         </div>
     </div>
 }

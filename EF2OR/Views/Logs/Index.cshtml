@@ -4,7 +4,6 @@
     ViewBag.Title = "Logs" + templateTitle;
 }
 <h3>@ViewBag.Title</h3>
-
 <div class="container">
     <table id="table"
            data-pagination="true"
@@ -14,8 +13,9 @@
         <thead>
             <tr>
                 <th data-field="Action" data-filter-control="select" class="col-md-2">Action</th>
-                <th data-field="TemplateName" data-filter-control="input" class="col-md-2">Template Name</th>
+                <th data-field="TemplateName" data-filter-control="input" class="col-md-1">Template Name</th>
                 <th data-field="VendorName" data-filter-control="input" class="col-md-1">Vendor Name</th>
+                <th data-field="SuccessString" data-filter-control="select" class="col-md-1">Success</th>
                 <th data-field="Description" class="col-md-4">Description</th>
                 <th data-field="DateString" class="col-md-2">Date</th>
                 <th data-field="IpAddress" class="col-md-1">IP Address</th>

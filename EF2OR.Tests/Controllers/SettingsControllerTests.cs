@@ -35,19 +35,12 @@ namespace EF2OR.Controllers.Tests
             HttpContextBaseMock.SetupGet(x => x.Request).Returns(HttpRequestMock.Object);
             HttpContextBaseMock.SetupGet(x => x.Response).Returns(HttpResponseMock.Object);
             SessionHelper.Initialize();
+            EF2OR.Tests.Utils.ProvidersHelper.InitializeProviders();
         }
 
         [TestMethod()]
         public async Task SettingsController_IndexTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
-                EF2OR.Tests.Utils.FakesHelper.SetupFakes();
-                //var userIdentity = await AuthenticationHelper.TestUser.GenerateUserIdentityAsync(AuthenticationHelper.AppUserManager);
-                EF2OR.Controllers.Fakes.ShimBaseController.AllInstances.UserIdGet = (baseController) =>
-                {
-                    return AuthenticationHelper.TestUser.Id;
-                };
                 SettingsController controller = new SettingsController();
                 var result = await controller.Index() as ViewResult;
                 Assert.IsNotNull(result, "Invalid Result");
@@ -61,7 +54,6 @@ namespace EF2OR.Controllers.Tests
                 var postResult = await controller.Index(settingsVM);
                 Assert.IsTrue(controller.ModelState.IsValid, "Invalid model");
                 Assert.IsNotNull(postResult, "Invalid Result");
-            }
         }
 
         [TestMethod()]

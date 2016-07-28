@@ -52,9 +52,6 @@ namespace EF2OR.ViewModels
 
         [Display(Name = "Ed-Fi API Secret")]
         public string ApiSecret { get; set; }
-
-        [Display(Name = "Ed-Fi API Prefix")]
-        public string ApiPrefix { get; set; }
     }
 
     public class ResetPasswordViewModel

@@ -14,7 +14,7 @@ namespace EF2OR.Utils
         private static string path = "~/Config/preconfigurationInfo.dat";
         internal static LocalAdminInfo GetLocalAdminInfo(HttpContextBase context)
         {
-            string mappedPath = context.Server.MapPath(path);
+            string mappedPath = CommonUtils.PathProvider.MapPath(path);
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(LocalAdminInfo));
             LocalAdminInfo objAdminInfo = null;
             if (System.IO.File.Exists(mappedPath))
@@ -42,7 +42,7 @@ namespace EF2OR.Utils
 
         internal static void SaveAdminUser(LocalAdminInfo adminUser, HttpContextBase context)
         {
-            string mappedPath = context.Server.MapPath(path);
+            string mappedPath = CommonUtils.PathProvider.MapPath(path);
             System.IO.FileStream writer = null;
             if (!System.IO.File.Exists(mappedPath))
             {

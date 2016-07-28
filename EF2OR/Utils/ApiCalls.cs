@@ -18,100 +18,21 @@ namespace EF2OR.Utils
     {
         #region Variables
         private static readonly ApplicationDbContext db = new ApplicationDbContext();
-        private static Dictionary<string, JArray> ExistingResponses = new Dictionary<string, JArray>();
+        static ApiCalls()
+        {
+            Providers.ApiResponseProvider.db = ApiCalls.db;
+            CommonUtils.ExistingResponses = new Dictionary<string, JArray>();
+    }
         private static string UserId
         {
             get
             {
-                var context = HttpContext.Current;
-                return context.User.Identity.GetUserId();
-            }
-        }
-
-        private static string GetApiPrefix()
-        {
-            using (var context = new ApplicationDbContext())
-            {
-               return context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiPrefix)?.SettingValue;
+                return CommonUtils.UserProvider.UserId;
             }
         }
 
         #endregion
 
-        #region TokenMethods
-        public static TokenViewModel GetToken(bool forceNewToken = false)
-        {
-            if (forceNewToken || HttpContext.Current.Session["token"] == null || ((TokenViewModel)HttpContext.Current.Session["token"]).IsSuccessful == false)
-            {
-                var context = new ApplicationDbContext();
-                var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
-                var apiKey = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiKey)?.SettingValue;
-                var apiSecret = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiSecret)?.SettingValue;
-                HttpContext.Current.Session["token"] = GetToken(apiBaseUrl, apiKey, apiSecret);
-                context.Dispose();
-            }
-
-            return (TokenViewModel)HttpContext.Current.Session["token"];
-        }
-
-        public static TokenViewModel GetToken(string apiBaseUrl, string apiKey, string apiSecret)
-        {
-            try
-            {
-                using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
-                {
-                    var authorizeResult = client.PostAsync(ApiEndPoints.OauthAuthorize,
-                    new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string,string>("Client_id",apiKey),
-                        new KeyValuePair<string,string>("Response_type","code")
-                    })).Result;
-                    var codeJson = authorizeResult.Content.ReadAsStringAsync().Result;
-
-                    if (!authorizeResult.IsSuccessStatusCode)
-                    {
-                        return GetApiCallViewModel(false, "Request returned \"" + authorizeResult.ReasonPhrase + "\"", "");
-                    }
-
-                    if (JObject.Parse(codeJson)["error"] != null)
-                    {
-                        return GetApiCallViewModel(false, JObject.Parse(codeJson)["error"].ToString(), "");
-                    }
-
-                    var code = JObject.Parse(codeJson)["code"].ToString();
-
-                    var tokenRequestResult = client.PostAsync(ApiEndPoints.OauthGetToken,
-                        new FormUrlEncodedContent(new[]
-                        {
-                            new KeyValuePair<string,string>("Client_id",apiKey),
-                            new KeyValuePair<string,string>("Client_secret",apiSecret),
-                            new KeyValuePair<string,string>("Code",code),
-                            new KeyValuePair<string,string>("Grant_type","authorization_code")
-                        })).Result;
-                    var tokenJson = tokenRequestResult.Content.ReadAsStringAsync().Result;
-
-                    if (JObject.Parse(tokenJson)["error"] != null)
-                    {
-                        return GetApiCallViewModel(false, JObject.Parse(tokenJson)["error"].ToString(), "");
-                    }
-
-                    return GetApiCallViewModel(true, "", JObject.Parse(tokenJson)["access_token"].ToString());
-                }
-            }
-            catch (AggregateException ex)
-            {
-                return GetApiCallViewModel(false, ex.InnerException.InnerException.Message, "");
-            }
-            catch (UriFormatException ex)
-            {
-                return GetApiCallViewModel(false, "Invalid Url", "");
-            }
-            catch (Exception ex)
-            {
-                return GetApiCallViewModel(false, ex.Message, "");
-            }
-        }
-        #endregion
 
         #region FilterMethods
         public static async Task PopulateFilterSection1(ExportsViewModel model)
@@ -151,9 +72,9 @@ namespace EF2OR.Utils
 
         public static async Task<List<ExportsCheckbox>> GetSchools(string fields = null)
         {
-            if (HttpContext.Current.Session["AllSchools"] == null)
+            if (CommonUtils.HttpContextProvider.Current.Session["AllSchools"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.Schools, false, fields);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Schools, false, fields);
                 var schools = (from s in responseArray
                                select new ExportsCheckbox
                                {
@@ -163,10 +84,10 @@ namespace EF2OR.Utils
                                    Visible = true
                                }).OrderBy(x => x.Text).ToList();
 
-                HttpContext.Current.Session["AllSchools"] = schools;
+                CommonUtils.HttpContextProvider.Current.Session["AllSchools"] = schools;
             }
 
-            var allSchools = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchools"];
+            var allSchools = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllSchools"];
             allSchools.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
             return allSchools;
@@ -174,12 +95,12 @@ namespace EF2OR.Utils
 
         public static async Task<List<ExportsCheckbox>> GetSchoolYears(string fields = null)
         {
-            if (HttpContext.Current.Session["AllSchoolYears"] == null)
+            if (CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.SchoolYears, false, fields);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.SchoolYears, false, fields);
 
                 var schoolYearsStrings = (from s in responseArray
-                                   select (string)s["sessionReference"]["schoolYear"]).Distinct();
+                                          select (string)s["sessionReference"]["schoolYear"]).Distinct();
 
                 var schoolYears = (from s in schoolYearsStrings
                                    select new ExportsCheckbox
@@ -188,10 +109,10 @@ namespace EF2OR.Utils
                                        Text = s,
                                        Visible = true
                                    }).OrderBy(x => x.Text).ToList();
-                HttpContext.Current.Session["AllSchoolYears"] = schoolYears;
+                CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] = schoolYears;
             }
 
-            var allSchoolYears = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSchoolYears"];
+            var allSchoolYears = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"];
             allSchoolYears.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
             return allSchoolYears;
@@ -199,11 +120,11 @@ namespace EF2OR.Utils
 
         public static async Task<List<ExportsCheckbox>> GetTerms()
         {
-            if (HttpContext.Current.Session["AllTerms"] == null)
+            if (CommonUtils.HttpContextProvider.Current.Session["AllTerms"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.SchoolYears);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.SchoolYears);
                 var termStrings = (from s in responseArray
-                                          select (string)s["sessionReference"]["termDescriptor"]).Distinct();
+                                   select (string)s["sessionReference"]["termDescriptor"]).Distinct();
 
                 var terms = (from s in termStrings
                              select new ExportsCheckbox
@@ -212,10 +133,10 @@ namespace EF2OR.Utils
                                  Text = s,
                                  Visible = true
                              }).OrderBy(x => x.Text).ToList();
-                HttpContext.Current.Session["AllTerms"] = terms;
+                CommonUtils.HttpContextProvider.Current.Session["AllTerms"] = terms;
             }
 
-            var allTerms = (List<ExportsCheckbox>)HttpContext.Current.Session["AllTerms"];
+            var allTerms = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllTerms"];
             allTerms.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
             return allTerms;
@@ -223,9 +144,9 @@ namespace EF2OR.Utils
 
         public static async Task<List<ExportsCheckbox>> GetSubjects()
         {
-            if (HttpContext.Current.Session["AllSubjects"] == null)
+            if (CommonUtils.HttpContextProvider.Current.Session["AllSubjects"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.Subjects);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Subjects);
                 var subjects = (from s in responseArray
                                 select new ExportsCheckbox
                                 {
@@ -238,10 +159,10 @@ namespace EF2OR.Utils
                                 }).OrderBy(x => x.Text).ToList();
 
 
-                HttpContext.Current.Session["AllSubjects"] = subjects;
+                CommonUtils.HttpContextProvider.Current.Session["AllSubjects"] = subjects;
             }
 
-            var allSubjects = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSubjects"];
+            var allSubjects = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllSubjects"];
             allSubjects.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
             return allSubjects;
@@ -249,9 +170,9 @@ namespace EF2OR.Utils
 
         public static async Task<List<ExportsCheckbox>> GetCourses()
         {
-            if (HttpContext.Current.Session["AllCourses"] == null)
+            if (CommonUtils.HttpContextProvider.Current.Session["AllCourses"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.Courses);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Courses);
                 var courses = (from s in responseArray
                                select new ExportsCheckbox
                                {
@@ -264,10 +185,10 @@ namespace EF2OR.Utils
                                    Visible = true
                                }).OrderBy(x => x.Text).ToList();
 
-                HttpContext.Current.Session["AllCourses"] = courses;
+                CommonUtils.HttpContextProvider.Current.Session["AllCourses"] = courses;
             }
 
-            var allCourses = (List<ExportsCheckbox>)HttpContext.Current.Session["AllCourses"];
+            var allCourses = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllCourses"];
             allCourses.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
             return allCourses;
@@ -275,9 +196,9 @@ namespace EF2OR.Utils
 
         public static async Task<List<ExportsCheckbox>> GetTeachers()
         {
-            if (HttpContext.Current.Session["AllTeachers"] == null)
+            if (CommonUtils.HttpContextProvider.Current.Session["AllTeachers"] == null)
             {
-                var sectionsResponse = await GetApiResponseArray(ApiEndPoints.Sections);
+                var sectionsResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Sections);
                 var sections = (from o in sectionsResponse
                                 let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
                                 select new
@@ -304,7 +225,7 @@ namespace EF2OR.Utils
 
                 var distinctStaffSections = staffSections.GroupBy(x => x.StaffId).Select(group => group.First());
 
-                var staffResponse = await GetApiResponseArray(ApiEndPoints.Staff, false, "id,firstName,lastSurname");
+                var staffResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Staff, false, "id,firstName,lastSurname");
                 var staffInfo = from s in staffResponse
                                 select new
                                 {
@@ -326,10 +247,10 @@ namespace EF2OR.Utils
                                     Id = ss.StaffId
                                 });
 
-                HttpContext.Current.Session["AllTeachers"] = teachers.OrderBy(x => x.Text).ToList();
+                CommonUtils.HttpContextProvider.Current.Session["AllTeachers"] = teachers.OrderBy(x => x.Text).ToList();
             }
 
-            var allTeachers = (List<ExportsCheckbox>)HttpContext.Current.Session["AllTeachers"];
+            var allTeachers = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllTeachers"];
             allTeachers.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
             return allTeachers;
@@ -337,9 +258,9 @@ namespace EF2OR.Utils
 
         public static async Task<List<ExportsCheckbox>> GetSections()
         {
-            if (HttpContext.Current.Session["AllSections"] == null)
+            if (CommonUtils.HttpContextProvider.Current.Session["AllSections"] == null)
             {
-                var responseArray = await GetApiResponseArray(ApiEndPoints.Sections);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Sections);
                 var sections = (from s in responseArray
                                 select new ExportsCheckbox
                                 {
@@ -353,10 +274,10 @@ namespace EF2OR.Utils
                                     Visible = true
                                 }).OrderBy(x => x.Text).ToList();
 
-                HttpContext.Current.Session["AllSections"] = sections;
+                CommonUtils.HttpContextProvider.Current.Session["AllSections"] = sections;
             }
 
-            var allSections = (List<ExportsCheckbox>)HttpContext.Current.Session["AllSections"];
+            var allSections = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllSections"];
             allSections.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
             return allSections;
@@ -367,7 +288,7 @@ namespace EF2OR.Utils
         #region ResultsMethods
         public static async Task<List<string>> GetTermDescriptors(bool forceNew = false)
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.Terms, forceNew);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Terms, forceNew);
             var terms = responseArray.Select(x => (string)x["sessionReference"]["termDescriptor"]).Distinct();
             return terms.ToList();
         }
@@ -391,9 +312,9 @@ namespace EF2OR.Utils
         {
             var dataResults = new DataResults();
 
-            if (ExistingResponses.Count() > 0)
+            if (CommonUtils.ExistingResponses.Count() > 0)
             {
-                ExistingResponses.Clear(); //reset the global dictionary so we get fresh data
+                CommonUtils.ExistingResponses.Clear(); //reset the global dictionary so we get fresh data
             }
 
             dataResults.Orgs = await GetCsvOrgs(inputs);
@@ -403,14 +324,14 @@ namespace EF2OR.Utils
             dataResults.Enrollments = await GetCsvEnrollments(inputs);
             dataResults.AcademicSessions = await GetCsvAcademicSessions(inputs);
 
-            ExistingResponses.Clear(); //reset the global dictionary so next time we get fresh data.  Also so it doesn't sit in memory.
+            CommonUtils.ExistingResponses.Clear(); //reset the global dictionary so next time we get fresh data.  Also so it doesn't sit in memory.
 
             return dataResults;
         }
 
         public static async Task<List<CsvOrgs>> GetCsvOrgs(FilterInputs inputs)
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvOrgs);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvOrgs);
 
             var context = new ApplicationDbContext();
             var identifierSetting = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.OrgsIdentifier)?.SettingValue;
@@ -437,7 +358,7 @@ namespace EF2OR.Utils
 
         public static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
         {
-            var enrollmentsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsers);
+            var enrollmentsResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvUsers);
 
             var enrollmentsList = (from o in enrollmentsResponse
                                    let students = o["students"].Children().Select(x => (string)x["id"])
@@ -481,29 +402,8 @@ namespace EF2OR.Utils
             }
             enrollmentsList = enrollmentsList.ToList();
 
-            var studentsResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStudents);
+            var studentsResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvUsersStudents);
             var studentsResponseInfo = (from s in studentsResponse
-                               let mainTelephone = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
-                               let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
-                               let emailAddress = (s["electronicMails"] == null || s["electronicMails"].Count() == 0) ? "" : (string)s["electronicMails"][0]["electronicMailAddress"] //TODO: just pick 0?.  or get based on electronicMailType field.
-                               let mobile = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
-                               let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
-                               select new
-                               {
-                                   id = (string)s["id"],
-                                   userId = (string)s["studentUniqueId"],
-                                   givenName = (string)s["firstName"],
-                                   familyName = (string)s["lastSurname"],
-                                   identifier = (string)s["studentUniqueId"],
-                                   email = emailAddress,
-                                   sms = mobileNumber,
-                                   phone = mainTelephoneNumber,
-                                   username = (string)s["loginId"]
-                               }).ToList();
-
-
-            var staffResponse = await GetApiResponseArray(ApiEndPoints.CsvUsersStaff);
-            var staffResponseInfo = (from s in staffResponse
                                         let mainTelephone = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
                                         let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
                                         let emailAddress = (s["electronicMails"] == null || s["electronicMails"].Count() == 0) ? "" : (string)s["electronicMails"][0]["electronicMailAddress"] //TODO: just pick 0?.  or get based on electronicMailType field.
@@ -512,15 +412,36 @@ namespace EF2OR.Utils
                                         select new
                                         {
                                             id = (string)s["id"],
-                                            userId = (string)s["staffUniqueId"],
+                                            userId = (string)s["studentUniqueId"],
                                             givenName = (string)s["firstName"],
                                             familyName = (string)s["lastSurname"],
-                                            identifier = (string)s["staffUniqueId"],
+                                            identifier = (string)s["studentUniqueId"],
                                             email = emailAddress,
                                             sms = mobileNumber,
                                             phone = mainTelephoneNumber,
                                             username = (string)s["loginId"]
                                         }).ToList();
+
+
+            var staffResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvUsersStaff);
+            var staffResponseInfo = (from s in staffResponse
+                                     let mainTelephone = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
+                                     let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
+                                     let emailAddress = (s["electronicMails"] == null || s["electronicMails"].Count() == 0) ? "" : (string)s["electronicMails"][0]["electronicMailAddress"] //TODO: just pick 0?.  or get based on electronicMailType field.
+                                     let mobile = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
+                                     let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+                                     select new
+                                     {
+                                         id = (string)s["id"],
+                                         userId = (string)s["staffUniqueId"],
+                                         givenName = (string)s["firstName"],
+                                         familyName = (string)s["lastSurname"],
+                                         identifier = (string)s["staffUniqueId"],
+                                         email = emailAddress,
+                                         sms = mobileNumber,
+                                         phone = mainTelephoneNumber,
+                                         username = (string)s["loginId"]
+                                     }).ToList();
 
             var studentInfo = (from e in enrollmentsList
                                from s in e.students
@@ -567,7 +488,7 @@ namespace EF2OR.Utils
 
         public static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvCourses);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvCourses);
             var enrollmentsList = (from o in responseArray
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new CsvCourses
@@ -618,7 +539,7 @@ namespace EF2OR.Utils
 
         public static async Task<List<CsvClasses>> GetCsvClasses(FilterInputs inputs)
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvClasses);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvClasses);
             var enrollmentsList = (from o in responseArray
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new CsvClasses
@@ -669,7 +590,7 @@ namespace EF2OR.Utils
 
         public static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvEnrollments);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvEnrollments);
             var enrollmentsList = (from o in responseArray
                                    let students = o["students"].Children()
                                    let staffs = o["staff"].Children()
@@ -742,7 +663,7 @@ namespace EF2OR.Utils
 
         public static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)
         {
-            var responseArray = await GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
 
             var context = new ApplicationDbContext();
             var typeDictionary = context.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
@@ -801,114 +722,7 @@ namespace EF2OR.Utils
         #endregion
 
         #region PrivateMethods
-        private static async Task<JArray> GetApiResponseArray(string apiEndpoint, bool forceNew = false, string fields = null)
-        {
-            if (ExistingResponses.ContainsKey(apiEndpoint) && !forceNew)
-            {
-                return ExistingResponses[apiEndpoint];
-            }
 
-            var response = await GetApiResponse(apiEndpoint, fields);
-            if (response.TokenExpired)
-            {
-                GetToken(true);
-                response = await GetApiResponse(apiEndpoint, fields);
-            }
-
-            if (ExistingResponses.ContainsKey(apiEndpoint))
-            {
-                ExistingResponses.Remove(apiEndpoint);
-            }
-
-            ExistingResponses.Add(apiEndpoint, response.ResponseArray);
-
-            return response.ResponseArray;
-        }
-
-        private static async Task<ApiResponse> GetApiResponse(string apiEndpoint, string fields)
-        {
-            var context = new ApplicationDbContext();
-            //var stopFetchingRecordsAt = 500;
-            var maxRecordLimit = 100;
-            var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
-
-            if (!string.IsNullOrEmpty(fields))
-            {
-                fullUrl += "&fields=" + fields;
-            }
-
-            var tokenModel = GetToken();
-            if (!tokenModel.IsSuccessful)
-            {
-                return null;
-            }
-
-            var token = tokenModel.Token;
-
-            var apiBaseUrl = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
-
-            var finalResponse = new JArray();
-            using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
-            {
-                client.DefaultRequestHeaders.Authorization =
-                       new AuthenticationHeaderValue("Bearer", token);
-
-                var offset = 0;
-                bool getMoreRecords = true;
-                while (getMoreRecords)
-                {
-                    var apiResponse = await client.GetAsync(fullUrl + "&offset=" + offset);
-
-                    if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
-                    {
-                        return new ApiResponse
-                        {
-                            TokenExpired = true,
-                            ResponseArray = null
-                        };
-                    }
-
-                    if (apiResponse.IsSuccessStatusCode == false)
-                    {
-                        throw new Exception(apiResponse.ReasonPhrase);
-                    }
-
-                    var responseJson = await apiResponse.Content.ReadAsStringAsync();
-                    var responseArray = JArray.Parse(responseJson);
-
-                    if (responseArray != null && responseArray.Count() > 0)
-                    {
-                        finalResponse = new JArray(finalResponse.Union(responseArray));
-                        offset += maxRecordLimit;
-                    }
-                    else
-                    {
-                        getMoreRecords = false;
-                    }
-
-                    if (responseArray.Count() != maxRecordLimit)//  || finalResponse.Count() >= stopFetchingRecordsAt)
-                    {
-                        getMoreRecords = false;
-                    }
-                }
-
-                return new ApiResponse
-                {
-                    TokenExpired = false,
-                    ResponseArray = finalResponse
-                };
-            }
-        }
-
-        private static TokenViewModel GetApiCallViewModel(bool isSuccessful, string errorMsg, string token)
-        {
-            return new TokenViewModel
-            {
-                IsSuccessful = isSuccessful,
-                ErrorMessage = errorMsg,
-                Token = token
-            };
-        }
         #endregion
     }
 }

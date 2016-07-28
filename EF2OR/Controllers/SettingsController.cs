@@ -166,7 +166,7 @@ namespace EF2OR.Controllers
         [HttpPost]
         public ActionResult TestConnection(string apiBaseUrl, string apiKey, string apiSecret)
         {
-            var tokenResult = ApiCalls.GetToken(apiBaseUrl, apiKey, apiSecret);
+            var tokenResult = Providers.ApiResponseProvider.GetToken(apiBaseUrl, apiKey, apiSecret);
             return Json(tokenResult, JsonRequestBehavior.AllowGet);
         }
 
@@ -228,7 +228,7 @@ namespace EF2OR.Controllers
 
                 if (baseUrlChanged || apiKeyChanged || apiSecretChanged)
                 {
-                    ApiCalls.GetToken(true);
+                    Providers.ApiResponseProvider.GetToken(true);
                 }
 
                 ViewBag.SuccessMessage = "Settings successfully saved";
