@@ -120,17 +120,17 @@
 }
 
 @section BodyOutsideOfContainer{
-    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%; z-index:2;">
+    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%; z-index:2; border-top:2px solid #eee;">
         <div class="container">
-            <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
-            <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
+            <button type="button" class="btn btn-primary-blue" onclick="dataPreview()">Preview Data</button>
+            <button type="button" class="btn btn-primary-blue" onclick="downloadCsv()">Download CSV Package</button>
             @if (isEditTemplate)
             {
-                <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
+                <button type="button" class="btn btn-primary-blue" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
             }
             else
             {
-                <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
+                <button type="button" class="btn btn-primary-blue" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
             }
         </div>
     </div>

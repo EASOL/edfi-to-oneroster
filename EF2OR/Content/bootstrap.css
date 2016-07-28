@@ -2095,6 +2095,12 @@ fieldset[disabled] .btn-default.active {
   border-color: #368546;
 }
 
+.btn-primary-blue {
+  color: #ffffff;
+  background-color: #129ED9;
+  border-color: #2e6da4;
+}
+
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -2104,6 +2110,13 @@ fieldset[disabled] .btn-default.active {
   background-color: #368546;
   border-color: rgba(0, 0, 0, 0.5);
 }
+
+.btn-primary-blue:hover {
+  color: #fff;
+  background-color: #0F80B0;
+  border-color: #204d74;
+}
+
 
 .btn-primary:active,
 .btn-primary.active,
