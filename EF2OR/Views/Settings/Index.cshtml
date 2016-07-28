@@ -81,7 +81,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-3 control-label">
-            @Html.LabelFor(m => m.ApiPrefix) <i>(eg: api/v2/2016/)</i>
+            @Html.LabelFor(m => m.ApiPrefix) <i>(eg: @SettingDefaults.ApiPrefix)</i>
         </div>
         <div class="col-md-9">
             @Html.TextBoxFor(m => m.ApiPrefix, new { @class = "form-control" })

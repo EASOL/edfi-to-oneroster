@@ -188,6 +188,7 @@
     <Compile Include="Enums\OrgIdentifierSettings.cs" />
     <Compile Include="Enums\ActionTypes.cs" />
     <Compile Include="Enums\ApiEndPoints.cs" />
+    <Compile Include="Enums\SettingDefaults.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
