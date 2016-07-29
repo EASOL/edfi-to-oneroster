@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Templates";
     var exportActionUrl = Url.Action("Index", "Export", new { }, Request.Url.Scheme) + "/";
+    int clipIconCounter = 0;
 }
 
 <style>
@@ -48,10 +49,11 @@
                     {
                         <table>
                             <tr>
-                                <td style="border:none; padding:0px; padding-right:2px;"><a href="javascript: copyToClipboard('@(exportActionUrl + template.AccessUrl)')"><i class="fa fa-clipboard"></i></a></td>
-                                <td style="border:none; padding:0px;">@(exportActionUrl + template.AccessUrl)</td>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a data-toggle="tooltip" title="Click to copy" href="javascript: copyToClipboard('@(exportActionUrl + template.AccessUrl)', @clipIconCounter)"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;"><span id="urlSpan_@clipIconCounter.ToString()">@(exportActionUrl + template.AccessUrl)</span></td>
                             </tr>
                         </table>
+                        clipIconCounter++;
                     }
                 </td>
                 <td>
@@ -59,10 +61,11 @@
                     {
                         <table>
                             <tr>
-                                <td style="border:none; padding:0px; padding-right:2px;"><a href="javascript: copyToClipboard('@template.AccessToken')"><i class="fa fa-clipboard"></i></a></td>
-                                <td style="border:none; padding:0px;">@template.AccessToken</td>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a data-toggle="tooltip" title="Click to copy" href="javascript: copyToClipboard('@template.AccessToken', @clipIconCounter)"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;"><span id="urlSpan_@clipIconCounter.ToString()">@template.AccessToken</span></td>
                             </tr>
                         </table>
+                        clipIconCounter++;
                     }
                 </td>
                 <td>@template.NumberOfDownloads</td>
@@ -133,11 +136,27 @@
 <script src="~/Scripts/jquery.modal.min.js"></script>
   <script>
 
-      function copyToClipboard(copyValue) {
+      function copyToClipboard(copyValue, counter) {
           $("#copytextbox").val(copyValue);
           var copyTextarea = document.querySelector('#copytextbox');
           copyTextarea.select();
           document.execCommand('copy');
+
+          $("#urlSpan_" + counter)
+          .attr('data-original-title', "Copied")
+          .tooltip('fixTitle')
+          .tooltip('show');
+
+          setTimeout(function () {
+              $("#urlSpan_" + counter).tooltip('hide')
+              .attr('data-original-title', "")
+              .tooltip('fixTitle');
+          }, 1000);
+
+          //$("#clipicon").attr("title").val("Copied");
+          //document.getElementById('clipicon').title = 'Copied';
+          //$("#hideme").tooltip('hide');
+          //$("#clipicon").tooltip('show');
       }
 
       function dataPreview(templateId) {
@@ -214,5 +233,9 @@
               window.location.href = url;
           }
       }
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>   
 }
