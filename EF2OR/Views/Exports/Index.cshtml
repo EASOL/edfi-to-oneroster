@@ -87,11 +87,9 @@
    })
      </div>
      <br />
+     <div id="DataPreview"></div>
  </div>
 
- <div id="previewWindow" style="display:none; overflow-y: auto; width:100%;">
-     <div id="previewWindowContent" class="container"></div>
- </div>
 
 <div id="editWindow" style="display:none; overflow-y: auto;">
     <h4 align="center">Save New Template</h4>
@@ -238,11 +236,7 @@
 
             function dataPreview() {
                 $('.collapsableSection').hide('fast');
-                $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
-
-                $("#previewWindow").modal({
-                    showClose: true
-                });
+                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
@@ -252,7 +246,7 @@
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
 
-                $("#previewWindowContent").load("@Url.Action("Preview")", {
+                $("#DataPreview").load("@Url.Action("Preview")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
