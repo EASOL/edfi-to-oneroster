@@ -19,7 +19,8 @@ namespace EF2OR.Controllers
             var model = (from t in db.Templates
                          let logs = db.AuditLogs.Where(x => x.TemplateId == t.TemplateId)
                          let createdLog = logs.FirstOrDefault(x => x.Type == ActionTypes.TemplateCreated)
-                         let createdTime = createdLog == null ? "" : createdLog.DateTimeStamp.ToString()
+                         let createdTime = createdLog == null ? DateTime.MinValue : createdLog.DateTimeStamp
+                         let createdTimeString = createdLog == null ? "" : createdLog.DateTimeStamp.ToString()
 
                          let modifiedLogs = logs.Where(x => x.Type == ActionTypes.TemplateModified)
                          let lastModified = modifiedLogs.Count() == 0 ? "" : modifiedLogs.Max(x => x.DateTimeStamp).ToString()
@@ -37,7 +38,8 @@ namespace EF2OR.Controllers
                             NumberOfDownloads = numDownloads,
                             LastAccess = lastAccess,
                             LastModifiedDate = lastModified,
-                            CreatedDate = createdTime
+                            CreatedDate = createdTime,
+                            CreatedDateString = createdTimeString
                          }).OrderByDescending(x => x.CreatedDate).ToList();
             return View(model);
         }

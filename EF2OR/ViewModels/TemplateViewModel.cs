@@ -1,4 +1,6 @@
-﻿namespace EF2OR.ViewModels
+﻿using System;
+
+namespace EF2OR.ViewModels
 {
     public class TemplateViewModel
     {
@@ -9,7 +11,8 @@
         public string AccessToken { get; set; }
         public int NumberOfDownloads { get; set; }
         public string LastAccess { get; set; }
-        public string CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedDateString { get; set; }
         public string LastModifiedDate { get; set; }
     }
 }
