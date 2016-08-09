@@ -235,6 +235,7 @@
     <Compile Include="Models\AuditLog.cs" />
     <Compile Include="Models\ApplicationSetting.cs" />
     <Compile Include="Models\CustomHandleErrorInfoModel.cs" />
+    <Compile Include="Models\EF2ORCustomException.cs" />
     <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
