@@ -66,7 +66,7 @@ namespace EF2OR.Controllers
                 bool isValidConnectionString = IsValidConnectionString(strCSB.ConnectionString, out errors);
                 if (isValidConnectionString)
                 {
-                    var configuration = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/");
+                    var configuration = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
                     configuration.ConnectionStrings.ConnectionStrings.Remove("DefaultConnection");
                     configuration.ConnectionStrings.ConnectionStrings.Add(
                         new System.Configuration.ConnectionStringSettings("DefaultConnection", strCSB.ConnectionString, "System.Data.SqlClient"));
