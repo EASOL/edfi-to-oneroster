@@ -152,7 +152,8 @@ namespace EF2OR.Providers
             var tokenModel = GetToken();
             if (!tokenModel.IsSuccessful)
             {
-                return null;
+                var ex = new EF2ORCustomException("There was a problem connecting to the API.  Make sure the connection can test properly in the Settings page.");
+                throw ex;
             }
 
             var token = tokenModel.Token;
