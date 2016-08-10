@@ -169,8 +169,8 @@ namespace EF2OR.Models
 
             if (entry.State == EntityState.Deleted)
             {
-                templateId = entry.CurrentValues.PropertyNames.Contains("TemplateId")
-                        ? (int)entry.CurrentValues.GetValue<object>("TemplateId")
+                templateId = entry.OriginalValues.PropertyNames.Contains("TemplateId")
+                        ? (int)entry.OriginalValues.GetValue<object>("TemplateId")
                         : 0;
 
                 foreach (string propertyName in entry.OriginalValues.PropertyNames)

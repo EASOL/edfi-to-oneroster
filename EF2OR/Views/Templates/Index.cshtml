@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Templates";
     var exportActionUrl = Url.Action("Index", "Export", new { }, Request.Url.Scheme) + "/";
+    int clipIconCounter = 0;
 }
 
 <style>
@@ -15,9 +16,9 @@
     }
 
     .modal a.close-modal {
-  top: 30px;
-  right: 30px;
-}
+        top: 30px;
+        right: 30px;
+    }
 </style>
 
 <h3>@ViewBag.Title</h3>
@@ -38,31 +39,51 @@
         </tr>
         @foreach (var template in Model)
         {
-            var tokenText = string.IsNullOrEmpty(template.AccessToken) ? "Assign Token" : "Generate New Token";
+            bool tokenExists = !string.IsNullOrEmpty(template.AccessToken);
+            var tokenText = tokenExists ? "Generate New Token" : "Assign Token";
             <tr>
                 <td>@template.TemplateName</td>
                 <td>@template.VendorName</td>
-                <td>@(string.IsNullOrEmpty(template.AccessUrl) ? "" : exportActionUrl + template.AccessUrl)</td>
-                <td>@template.AccessToken</td>
+                <td>
+                    @if (tokenExists)
+                    {
+                        <table>
+                            <tr>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a data-toggle="tooltip" title="Click to copy" href="javascript: copyToClipboard('@(exportActionUrl + template.AccessUrl)', @clipIconCounter)"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;"><span id="urlSpan_@clipIconCounter.ToString()">@(exportActionUrl + template.AccessUrl)</span></td>
+                            </tr>
+                        </table>
+                        clipIconCounter++;
+                    }
+                </td>
+                <td>
+                    @if (tokenExists)
+                    {
+                        <table>
+                            <tr>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a data-toggle="tooltip" title="Click to copy" href="javascript: copyToClipboard('@template.AccessToken', @clipIconCounter)"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;"><span id="urlSpan_@clipIconCounter.ToString()">@template.AccessToken</span></td>
+                            </tr>
+                        </table>
+                        clipIconCounter++;
+                    }
+                </td>
                 <td>@template.NumberOfDownloads</td>
                 <td>@template.LastAccess</td>
-                <td>@template.CreatedDate</td>
+                <td>@template.CreatedDateString</td>
                 <td>@template.LastModifiedDate</td>
                 <td>
                     <a href="javascript:dataPreview(@template.TemplateId);">Preview</a> |
                     <a href="javascript:dataDownload(@template.TemplateId);">Download</a> |
                     <a href="@Url.Action("Index", "Logs", new { templateId = template.TemplateId })">View Log</a> |
                     <a href="javascript:openCloneWindow(@template.TemplateId);">Clone</a> |
-                    <a href="javascript:openEditWindow(@template.TemplateId, '@template.TemplateName', '@template.VendorName');">Edit</a> |
-                    <a href="javascript:deleteTemplate(@template.TemplateId);">Delete</a> |
+                    <a href="javascript:openEditWindow(@template.TemplateId, '@template.TemplateName.Replace("'", "\\'")', '@template.VendorName.Replace("'", "\\'")');">Edit</a> |
+                    <a href="javascript:deleteTemplate(@template.TemplateId, '@template.TemplateName.Replace("'", "\\'")');">Delete</a> |
                     @Html.ActionLink(tokenText, "AssignToken", new { templateId = template.TemplateId })
                 </td>
             </tr>
         }
     </table>
-
-    @*<div id="DataPreview"></div>*@
-    @*<div id="placeHolder"></div>*@
 </div>
 
 <div id="previewWindow" style="display:none; overflow-y: auto; width:100%;">
@@ -72,9 +93,11 @@
 
 
 @section BodyOutsideOfContainer{
-    <div style="position:fixed; bottom:40px; padding:10px; background-color: white; width:100%;">
+    <input type="text" id="copytextbox" value="" style="position:fixed; bottom:5px; left: 5px;" />
+
+    <div style="position:fixed; bottom:40px; padding:10px; background-color: white; width:100%; border-top:2px solid #eee;">
         <div class="container">
-            <a href="@Url.Action("Index", "Exports")" class="btn btn-primary">Create New Template</a>
+            <a href="@Url.Action("Index", "Exports")" class="btn btn-primary-blue">Create New Template</a>
         </div>
     </div>
 }
@@ -112,18 +135,32 @@
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
   <script>
+
+      function copyToClipboard(copyValue, counter) {
+          $("#copytextbox").val(copyValue);
+          var copyTextarea = document.querySelector('#copytextbox');
+          copyTextarea.select();
+          document.execCommand('copy');
+
+          $("#urlSpan_" + counter)
+          .attr('data-original-title', "Copied")
+          .tooltip('fixTitle')
+          .tooltip('show');
+
+          setTimeout(function () {
+              $("#urlSpan_" + counter).tooltip('hide')
+              .attr('data-original-title', "")
+              .tooltip('fixTitle');
+          }, 1000);
+      }
+
       function dataPreview(templateId) {
           $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
-          //$('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
           $("#previewWindow").modal({
               showClose: true
           });
 
-          //var element_to_scroll_to = document.getElementById('placeHolder');
-          //element_to_scroll_to.scrollIntoView();
-
-          //$("#DataPreview").load("@Url.Action("PreviewFromTemplate", "Exports")", {
           $("#previewWindowContent").load("@Url.Action("PreviewFromTemplate", "Exports")", {
               templateId: templateId
           });
@@ -185,11 +222,15 @@
           window.location.href = url;
       }
 
-      function deleteTemplate(templateId) {
-          if (confirm("Are you sure you want to delete this Template?")) {
+      function deleteTemplate(templateId, templateName) {
+          if (confirm("Are you sure you want to delete the template \"" + templateName + "\"?")) {
               var url = "@Url.Action("Delete")?templateId=" + templateId;
               window.location.href = url;
           }
       }
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>   
 }

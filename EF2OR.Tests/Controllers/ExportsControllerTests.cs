@@ -41,6 +41,7 @@ namespace EF2OR.Controllers.Tests
             HttpContextBaseMock.SetupGet(x => x.Request).Returns(HttpRequestMock.Object);
             HttpContextBaseMock.SetupGet(x => x.Response).Returns(HttpResponseMock.Object);
             SessionHelper.Initialize();
+            EF2OR.Tests.Utils.ProvidersHelper.InitializeProviders();
         }
 
         protected void SetupController(Controller controller)
@@ -53,24 +54,9 @@ namespace EF2OR.Controllers.Tests
         [TestMethod]
         public async Task ExportsController_PreviewTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
                 AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
-                System.Web.Fakes.ShimHttpContext.CurrentGet = () =>
-                {
-                    return AuthenticationHelper.HttpContext;
-                };
                 ExportsController exportsController = new ExportsController();
                 SetupController(exportsController);
-                EF2OR.Utils.Fakes.ShimApiCalls.UserIdGet = () =>
-                {
-                    return AuthenticationHelper.TestUser.Id;
-                };
-                System.Web.Fakes.ShimHttpServerUtility.AllInstances.MapPathString = (server, path) =>
-                {
-                    return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
-                };
-                FakesHelper.SetupFakeApiResponse();
                 ExportsViewModel defaultExportsViewModel = await GetDefaultExportsViewModel();
                 var previewResult = await exportsController.Preview(
                     schoolIds: defaultExportsViewModel.SelectedSchools.Split(',').ToList(),
@@ -89,64 +75,47 @@ namespace EF2OR.Controllers.Tests
                 ExportsViewModel partialResultModel = partialViewResult.Model as ExportsViewModel;
                 Assert.IsTrue(partialResultModel.DataPreviewSections.Count > 0, "No Data Preview Sections");
                 Assert.IsTrue(partialResultModel.JsonPreviews.Orgs.Count() > 0, "No Orgs for JsonPreview");
-            }
         }
 
 
         [TestMethod()]
         public async Task ExportsController_DownloadCsvTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
-                AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
-                System.Web.Fakes.ShimHttpContext.CurrentGet = () =>
-                {
-                    return AuthenticationHelper.HttpContext;
-                };
-                ExportsController controller = new ExportsController();
-                SetupController(controller);
-                EF2OR.Utils.Fakes.ShimApiCalls.UserIdGet = () =>
-                {
-                    return AuthenticationHelper.TestUser.Id;
-                };
-                System.Web.Fakes.ShimHttpServerUtility.AllInstances.MapPathString = (server, path) =>
-                {
-                    return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
-                };
-                FakesHelper.SetupFakeApiResponse();
+            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
+            ExportsController controller = new ExportsController();
+            SetupController(controller);
 
-                //ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
-                ExportsViewModel defaultExportViewModel = new ExportsViewModel();
-                var defaultResult = await controller.DownloadCsv(defaultExportViewModel);
-                Assert.IsNotNull(defaultResult, "Invalid Result");
-                Assert.IsInstanceOfType(defaultResult, typeof(FileContentResult), "Is not a FileResult");
-                FileContentResult fileResult = defaultResult as FileContentResult;
-                Assert.IsTrue(!string.IsNullOrWhiteSpace(fileResult.FileDownloadName), "Invalid File Name");
-                Assert.IsTrue(fileResult.FileContents != null && fileResult.FileContents.Count() > 0, "Invalid File Contents");
-                List<string> lstInvalidFileNames = new List<string>();
-                using (System.IO.MemoryStream memStream = new System.IO.MemoryStream(fileResult.FileContents))
+            //ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            ExportsViewModel defaultExportViewModel = new ExportsViewModel();
+            var defaultResult = await controller.DownloadCsv(defaultExportViewModel);
+            Assert.IsNotNull(defaultResult, "Invalid Result");
+            Assert.IsInstanceOfType(defaultResult, typeof(FileContentResult), "Is not a FileResult");
+            FileContentResult fileResult = defaultResult as FileContentResult;
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(fileResult.FileDownloadName), "Invalid File Name");
+            Assert.IsTrue(fileResult.FileContents != null && fileResult.FileContents.Count() > 0, "Invalid File Contents");
+            List<string> lstInvalidFileNames = new List<string>();
+            using (System.IO.MemoryStream memStream = new System.IO.MemoryStream(fileResult.FileContents))
+            {
+                System.IO.Compression.ZipArchive zipArchive = new ZipArchive(memStream);
+                string[] validFileNames =
+                    { "orgs.csv", "users.csv", "courses.csv", "classes.csv", "enrollments.csv", "academicSessions.csv" };
+                foreach (var singleEntry in zipArchive.Entries)
                 {
-                    System.IO.Compression.ZipArchive zipArchive = new ZipArchive(memStream);
-                    string[] validFileNames =
-                        { "orgs.csv", "users.csv", "courses.csv", "classes.csv", "enrollments.csv", "academicSessions.csv" };
-                    foreach (var singleEntry in zipArchive.Entries)
+                    if (!validFileNames.Contains(singleEntry.Name))
                     {
-                        if (!validFileNames.Contains(singleEntry.Name))
-                        {
-                            lstInvalidFileNames.Add(singleEntry.Name);
-                        }
-                        //For Validation rules check https://docs.google.com/spreadsheets/d/1X-gX06CaeDwDn5-Q-pqVAVahgJRtQqFOx5jj3FtIHKs/edit#gid=0
-                        ValidateFileContents(singleEntry);
+                        lstInvalidFileNames.Add(singleEntry.Name);
                     }
-                    memStream.Close();
+                    //For Validation rules check https://docs.google.com/spreadsheets/d/1X-gX06CaeDwDn5-Q-pqVAVahgJRtQqFOx5jj3FtIHKs/edit#gid=0
+                    ValidateFileContents(singleEntry);
                 }
-                if (lstInvalidFileNames.Count > 0)
-                {
-                    Assert.Fail("Invalid File Names: " +
-                        String.Join(",", lstInvalidFileNames.ToArray()));
-                }
-                //var zipFile = System.IO.Compression.ZipFile
+                memStream.Close();
             }
+            if (lstInvalidFileNames.Count > 0)
+            {
+                Assert.Fail("Invalid File Names: " +
+                    String.Join(",", lstInvalidFileNames.ToArray()));
+            }
+            //var zipFile = System.IO.Compression.ZipFile
         }
 
         private static void ValidateField(string fieldName, string[] validValues, List<string> lstInvalidInfo,
@@ -630,24 +599,9 @@ namespace EF2OR.Controllers.Tests
         [TestMethod()]
         public async Task ExportsController_IndexTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
                 AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
-                System.Web.Fakes.ShimHttpContext.CurrentGet = () =>
-                  {
-                      return AuthenticationHelper.HttpContext;
-                  };
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
-                EF2OR.Utils.Fakes.ShimApiCalls.UserIdGet = () =>
-                {
-                    return AuthenticationHelper.TestUser.Id;
-                };
-                System.Web.Fakes.ShimHttpServerUtility.AllInstances.MapPathString = (server, path) =>
-                {
-                    return System.IO.Path.Combine(Environment.CurrentDirectory, "FakeMappedPAth", path);
-                };
-                FakesHelper.SetupFakeApiResponse();
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
                 var defaultResult = await controller.Index();
                 Assert.IsNotNull(defaultResult, "invalid result");
@@ -660,7 +614,6 @@ namespace EF2OR.Controllers.Tests
                     modelResult.SchoolsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
                 Assert.IsTrue(modelResult.SchoolYearsCriteriaSection.FilterCheckboxes != null &&
                     modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
-            }
         }
 
         private async Task<ExportsViewModel> GetDefaultExportsViewModel()
@@ -701,9 +654,6 @@ namespace EF2OR.Controllers.Tests
         [TestMethod()]
         public async Task ExportsController_GetTeachersPartialTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
-                EF2OR.Tests.Utils.FakesHelper.SetupFakes();
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -725,15 +675,11 @@ namespace EF2OR.Controllers.Tests
                 Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
                 ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
                 Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
-            }
         }
 
         [TestMethod()]
         public async Task ExportsController_GetSectionsPartialTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
-                EF2OR.Tests.Utils.FakesHelper.SetupFakes();
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -755,45 +701,37 @@ namespace EF2OR.Controllers.Tests
                 Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
                 ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
                 Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
-            }
         }
 
         [TestMethod()]
         public async Task ExportsController_GetCoursesPartialTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
-                EF2OR.Tests.Utils.FakesHelper.SetupFakes();
-                ExportsController controller = new ExportsController();
-                SetupController(controller);
-                ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
-                var defaultResult = await controller.Index();
-                Assert.IsNotNull(defaultResult, "invalid result");
-                Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
-                ViewResult defaultViewResult = defaultResult as ViewResult;
-                Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
-                Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
-                ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
-                var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
-                var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
-                var partialResult = await controller.GetCoursesPartial(schoolIds: schoolIds,
-                    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
-                Assert.IsNotNull(partialResult, "Invalid result");
-                Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
-                PartialViewResult partialViewResult = partialResult as PartialViewResult;
-                Assert.IsNotNull(partialViewResult.Model, "Invalid model");
-                Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
-                ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
-                Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
-            }
+            ExportsController controller = new ExportsController();
+            SetupController(controller);
+            ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            var defaultResult = await controller.Index();
+            Assert.IsNotNull(defaultResult, "invalid result");
+            Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
+            ViewResult defaultViewResult = defaultResult as ViewResult;
+            Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
+            Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
+            ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
+            var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
+            var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
+            var partialResult = await controller.GetCoursesPartial(schoolIds: schoolIds,
+                schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
+            Assert.IsNotNull(partialResult, "Invalid result");
+            Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
+            PartialViewResult partialViewResult = partialResult as PartialViewResult;
+            Assert.IsNotNull(partialViewResult.Model, "Invalid model");
+            Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
+            ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
+            Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
         }
 
         [TestMethod()]
         public async Task ExportsController_GetSubjectsPartialTest()
         {
-            using (Microsoft.QualityTools.Testing.Fakes.ShimsContext.Create())
-            {
-                EF2OR.Tests.Utils.FakesHelper.SetupFakes();
                 ExportsController controller = new ExportsController();
                 SetupController(controller);
                 ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -815,7 +753,6 @@ namespace EF2OR.Controllers.Tests
                 Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
                 ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
                 Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
-            }
         }
     }
 }

@@ -27,6 +27,7 @@ namespace EF2OR.Controllers
                            OldValues = a.OldValues,
                            NewValues = a.NewValues,
                            Success = a.Success,
+                           SuccessString = a.Success ? "Yes" : "No",
                            FailureReason = a.FailureReason,
                            IpAddress = a.IpAddress,
                            MostRecentOldValues = mostRecentOldValues
@@ -54,11 +55,7 @@ namespace EF2OR.Controllers
 
                 if (log.Action == ActionTypes.DownloadCsvAdmin || log.Action == ActionTypes.DownloasCsvVendor)
                 {
-                    if (log.Success)
-                    {
-                        log.Description = "Success";
-                    }
-                    else
+                    if (!log.Success)
                     {
                         log.Description = "Failure: " + log.FailureReason;
                     }
@@ -104,11 +101,7 @@ namespace EF2OR.Controllers
                 }
                 else if (log.Action == ActionTypes.LogIn || log.Action == ActionTypes.LogOut)
                 {
-                    if (log.Success)
-                    {
-                        log.Description = "Success";
-                    }
-                    else
+                    if (!log.Success)
                     {
                         log.Description = "Failure: " + log.FailureReason;
                     }

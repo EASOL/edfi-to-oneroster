@@ -86,14 +86,10 @@
        { HtmlFieldPrefix = "Sections" }
    })
      </div>
-
      <br />
-     @*<div id="DataPreview"></div>*@
+     <div id="DataPreview"></div>
  </div>
 
- <div id="previewWindow" style="display:none; overflow-y: auto; width:100%;">
-     <div id="previewWindowContent" class="container"></div>
- </div>
 
 <div id="editWindow" style="display:none; overflow-y: auto;">
     <h4 align="center">Save New Template</h4>
@@ -122,17 +118,17 @@
 }
 
 @section BodyOutsideOfContainer{
-    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%; z-index:2;">
+    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%; z-index:2; border-top:2px solid #eee;">
         <div class="container">
-            <button type="button" class="btn btn-primary" onclick="dataPreview()">Preview Data</button>
-            <button type="button" class="btn btn-primary" onclick="downloadCsv()">Download CSV Package</button>
+            <button type="button" class="btn btn-primary-blue" onclick="dataPreview()">Preview Data</button>
+            <button type="button" class="btn btn-primary-blue" onclick="downloadCsv()">Download CSV Package</button>
             @if (isEditTemplate)
             {
-                <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
+                <button type="button" class="btn btn-primary-blue" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
             }
             else
             {
-                <button type="button" class="btn btn-primary" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
+                <button type="button" class="btn btn-primary-blue" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
             }
         </div>
     </div>
@@ -240,12 +236,7 @@
 
             function dataPreview() {
                 $('.collapsableSection').hide('fast');
-                //$('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
-                $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
-
-                $("#previewWindow").modal({
-                    showClose: true
-                });
+                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
@@ -255,8 +246,7 @@
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
 
-                //$("#DataPreview").load("@Url.Action("Preview")", {
-                $("#previewWindowContent").load("@Url.Action("Preview")", {
+                $("#DataPreview").load("@Url.Action("Preview")", {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,

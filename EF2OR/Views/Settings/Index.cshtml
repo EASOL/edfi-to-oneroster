@@ -81,7 +81,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-3 control-label">
-            @Html.LabelFor(m => m.ApiPrefix) <i>(eg: api/v2/2016/)</i>
+            @Html.LabelFor(m => m.ApiPrefix) <i>(eg: @SettingDefaults.ApiPrefix)</i>
         </div>
         <div class="col-md-9">
             @Html.TextBoxFor(m => m.ApiPrefix, new { @class = "form-control" })
@@ -122,7 +122,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-3 col-md-9">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-primary" />
         </div>
     </div>
 }
@@ -134,7 +134,7 @@
     @Html.EditorFor(p => p.DatabaseSettings, templateName: "DatabaseSettings")
     <div class="form-group">
         <div class="col-md-offset-3 col-md-9 div-Padding">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-primary" />
         </div>
     </div>
 }
