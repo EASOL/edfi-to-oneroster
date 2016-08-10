@@ -235,6 +235,7 @@
     <Compile Include="Models\AuditLog.cs" />
     <Compile Include="Models\ApplicationSetting.cs" />
     <Compile Include="Models\CustomHandleErrorInfoModel.cs" />
+    <Compile Include="Models\EF2ORCustomException.cs" />
     <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -274,7 +275,9 @@
     <Content Include="Content\bootstrap-table.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\EF2OR.css" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\easollogo.png" />
     <Content Include="Content\Images\EdFi-logo-Powered-RGB-TM.png" />
     <Content Include="Content\Images\EdFi-logo-RGB.PNG" />
@@ -292,10 +295,18 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Fakes Include="Fakes\System.Web.fakes" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Local IIS.pubxml" />
     <None Include="Properties\PublishProfiles\Packaged File.pubxml" />
