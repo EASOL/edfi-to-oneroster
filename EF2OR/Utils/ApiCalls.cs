@@ -288,7 +288,7 @@ namespace EF2OR.Utils
         #region ResultsMethods
         public static async Task<List<string>> GetTermDescriptors(bool forceNew = false)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Terms, forceNew);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Terms, forceNew, "sessionReference");
             var terms = responseArray.Select(x => (string)x["sessionReference"]["termDescriptor"]).Distinct();
             return terms.ToList();
         }
