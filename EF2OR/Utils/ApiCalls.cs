@@ -290,6 +290,7 @@ namespace EF2OR.Utils
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Terms, forceNew, "sessionReference");
             var terms = responseArray.Select(x => (string)x["sessionReference"]["termDescriptor"]).Distinct();
+            CommonUtils.ExistingResponses.Remove(ApiEndPoints.Terms);  //now we have one in there with only termDescriptor
             return terms.ToList();
         }
 
