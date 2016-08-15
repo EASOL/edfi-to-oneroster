@@ -11,12 +11,11 @@ namespace EF2OR
     {
         public void Configuration(IAppBuilder app)
         {
+            ConfigureAuth(app);
             Utils.CommonUtils.ApiResponseProvider = new Providers.ApiResponseProvider();
             Utils.CommonUtils.PathProvider = new Providers.WebPathProvider();
             Utils.CommonUtils.HttpContextProvider = new Providers.HttpContextProvider();
             Utils.CommonUtils.UserProvider = new Providers.WebUserProvider();
-
-            ConfigureAuth(app);
             //The following code will force Entity Framework Migrations on Application Start
             ConfigureMigrations(app);
         }
