@@ -235,3 +235,4 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 ED2OR/ED2OR/Config/
+EF2OR/Config/
