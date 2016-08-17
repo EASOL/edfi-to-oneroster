@@ -104,31 +104,33 @@
 
 
 <div id="editWindow" style="display:none; overflow-y: auto;">
-    <input type="hidden" id="editTemplateId" />
+    <form id="templateEditForm"  method="post">
+        <input type="hidden" id="editTemplateId" name="editTemplateId" />
 
-    <h4 align="center" id="modalHeader"></h4>
+        <h4 align="center" id="modalHeader"></h4>
 
-    <div class="form-group">
-        <label class="col-md-6 control-label">Template Name:</label>
-        <div class="col-md-6">
-            <input type="text" class="form-control" id="editTemplateName" />
+        <div class="form-group">
+            <label class="col-md-6 control-label">Template Name:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="editTemplateName" name="editTemplateName" />
+            </div>
         </div>
-    </div>
-    <br />
-    <br />
-    <div class="form-group">
-        <label class="col-md-6 control-label">Vendor Name:</label>
-        <div class="col-md-6">
-            <input type="text" class="form-control" id="editTemplateVendorName" />
+        <br />
+        <br />
+        <div class="form-group">
+            <label class="col-md-6 control-label">Vendor Name:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="editTemplateVendorName" name="editTemplateVendorName" />
+            </div>
         </div>
-    </div>
-    <br />
-    <br />
-    <div style="text-align:center;">
-        <button type="button" class="btn btn-primary" id="cloneSave" onclick="cloneTemplate()">Save and Review Filters</button>
-        <button type="button" class="btn btn-primary" id="editSave" onclick="editTemplate()">Save</button>
-        <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
-    </div>
+        <br />
+        <br />
+        <div style="text-align:center;">
+            <button type="button" class="btn btn-primary" id="cloneSave" onclick="cloneTemplate()">Save and Review Filters</button>
+            <button type="button" class="btn btn-primary" id="editSave" onclick="editTemplate()">Save</button>
+            <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
+        </div>
+    </form>
 </div>
 
 
@@ -197,29 +199,19 @@
       }
 
       function editTemplate() {
-          var editTemplateId = $("#editTemplateId").val();
-          var editTemplateName = $("#editTemplateName").val();
-          var editTemplateVendorName = $("#editTemplateVendorName").val();
-
-          var url = "@Url.Action("Edit")";
-          url += "?templateId=" + editTemplateId;
-          url += "&templateName=" + editTemplateName;
-          url += "&vendorName=" + editTemplateVendorName;
-
-          window.location.href = url;
+          var frm = document.getElementById('templateEditForm') || null;
+          if (frm) {
+              frm.action = '@Url.Action("Edit")';
+          }
+          document.getElementById('templateEditForm').submit();
       }
 
       function cloneTemplate() {
-          var editTemplateId = $("#editTemplateId").val();
-          var editTemplateName = $("#editTemplateName").val();
-          var editTemplateVendorName = $("#editTemplateVendorName").val();
-
-          var url = "@Url.Action("Clone")";
-          url += "?templateId=" + editTemplateId;
-          url += "&templateName=" + editTemplateName;
-          url += "&vendorName=" + editTemplateVendorName;
-
-          window.location.href = url;
+          var frm = document.getElementById('templateEditForm') || null;
+          if (frm) {
+              frm.action = '@Url.Action("Clone")';
+          }
+          document.getElementById('templateEditForm').submit();
       }
 
       function deleteTemplate(templateId, templateName) {
