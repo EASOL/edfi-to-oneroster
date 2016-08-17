@@ -57,23 +57,25 @@ namespace EF2OR.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(int templateId, string templateName, string vendorName)
+        [HttpPost]
+        public ActionResult Edit(EditTemplateViewModel model)
         {
-            var template = db.Templates.FirstOrDefault(x => x.TemplateId == templateId);
-            template.TemplateName = templateName;
-            template.VendorName = vendorName;
+            var template = db.Templates.FirstOrDefault(x => x.TemplateId == model.editTemplateId);
+            template.TemplateName = model.editTemplateName;
+            template.VendorName = model.editTemplateVendorName;
             db.SaveChanges(UserName, IpAddress);
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult Clone(int templateId, string templateName, string vendorName)
+        [HttpPost]
+        public ActionResult Clone(EditTemplateViewModel model)
         {
-            var existingTemplate = db.Templates.First(x => x.TemplateId == templateId);
+            var existingTemplate = db.Templates.First(x => x.TemplateId == model.editTemplateId);
             var newTemplate = new Template
             {
-                TemplateName = templateName,
-                VendorName = vendorName,
+                TemplateName = model.editTemplateName,
+                VendorName = model.editTemplateVendorName,
                 Filters = existingTemplate.Filters
             };
             db.Templates.Add(newTemplate);
