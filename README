@@ -1,1 +1,136 @@
+# EASOL Ed-Fi to OneRoster Utility
 
+
+With the recently announced [IMS Global](imsglobal.org) partnership, [Ed-Fi](http://www.ed-fi.org/) is expanding support for the [IMS Global OneRoster format](https://www.imsglobal.org/activity/onerosterlis). The OneRoster format provisions teaching and learning tools with essential roster information (education organization, course, class/section and teacher/student enrollment) with a well-known format.  
+
+**EASOL Ed-FI to OneRoster Utility** provides an ability to easily convert [Ed-Fi](http://www.ed-fi.org/) Data to support [IMS Global](imsglobal.org) [One Roster v1.0](https://www.imsglobal.org/lis/imsOneRosterv1p0/imsOneRosterCSV-v1p0.html) CSV format.
+
+<img src="http://www.ed-fi.org/wp-content/themes/ed-fi/assets/i/ed-fi-branding-logo.png" width="102"/>  <img src="https://s31.postimg.org/dijcpqdnv/full_IMSglobalregistered.jpg" width="150"/>
+
+## Functionality
+### Users
+Current version of the application only supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `AOx91piOvWdXB`. Afterwards, we strongly suggest to change it by using Settings section of the application
+
+
+Additionally, to improve security there is implemented an auto-lock, which is enabled after 5 unsuccessful attempts.The auto-lock is disabled after 1 hour or by changing a value in the database.
+
+### Export Utility
+
+An administrator defines filters to retrieve a data-set from the Ed-Fi Operational Data Store (ODS) API, which is converted and packaged into One Roster v1.0 format. It's possible both to preview the data on the page and also download it as an archive.
+
+![Export Utility](https://s32.postimg.org/f2yvzemw5/Screen_Shot_2016_08_01_at_19_26_54.png)
+
+### Templates
+
+Templates allow third-party vendors to access data remotely with pre-defined filters.  Each template is assigned with a unique token (which must be specified in the HTTP header) and can be retrieved by using a cURL command such as:
+```
+curl -o filename.zip  http://domain/Export/$template_id -H "Token:<template token>"
+``` 
+
+![Templates](https://s32.postimg.org/51i627ath/Screen_Shot_2016_08_01_at_19_25_00.png)
+
+### Logs
+
+Logs allow auditing of application operations and troubleshooting if errors are encountered during data retrieval.
+
+### Settings
+
+Settings allow the Administrator to do the following:
+* Change password
+* Change Ed-FI ODS API Connection details
+* Manage Ed-FI to One-Roster related Mapping parameters
+* Change Database Connection Details
+
+## Getting Started
+
+The instructions below will describe how to setup and deploy **EASOL Ed-Fi to OneRoster Utility** on a selected Windows Machine and configure it to be ready to operate.
+
+
+### Prerequisites
+
+1. [Ed-Fi ODS API 2.1](https://techdocs.ed-fi.org/display/ODSAPI21/) - configured and running instance
+2. IIS 8.5+
+3. SQL Server 2012+ 
+4. [.NET 4.5 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=42643)
+
+Visual Studio 2015 is required if building the solution from source code.
+
+Important Information for Configuring Application Pool Identities and Permissions:
+* http://www.iis.net/learn/manage/configuring-security/application-pool-identities
+* http://stackoverflow.com/questions/5437723/iis-apppoolidentity-and-file-system-write-access-permissions
+
+***
+
+### Installation (deployment)
+
+The process of deployment the system on a machine.
+
+#### Download the Source Code
+Download the `release` folder and place it into selected location. Unzip it.
+
+#### Add the Application into IIS 
+
+Open IIS Manager, Right-Click on `Default Web Site` and select `Add Selection`. Place `EDFI2OR` into the `Alias` and the path to unzipped folder into `Physical Path` field.
+
+#### Validate the application
+
+Validate whether the application is working by navigating to http://localhost/EDFI2OR
+
+#### Create an empty database
+
+This application requires a database to be created separately. Create an empty database with any name for this purpose.
+(The database can be local, remote, Azure, AWS, etc.)
+
+#### Configure Application connection to your database
+
+The first screen on the application is the Database Configuration. Enter your details and submit the form. It might take a while before the system boots up.
+
+![Initial Set-up](https://s31.postimg.org/d4w1ar05n/Screen_Shot_2016_08_01_at_19_31_46.png)
+
+#### Configure Administrator user account and connection to your Ed-Fi ODS API Project
+The next screen after Database Configuration is Ed-Fi ODS API and User set-up.
+* The user name is your email address.
+* The password needs to be at least 6 characters and have at least one number or character.
+
+
+![Registration](https://s31.postimg.org/m2b0hxuaz/registration2.png)
+
+#### Notes
+* The application pool assigned to the Web Site hosting the Web Application must be running on .NET 4 and Integrated Pipeline.
+* Verify your Database is configured to allow Remote Connections
+* If using Integrated Security, verify the user running the application pool has permissions to access the database.
+
+
+***
+
+### Building & Testing
+The process of building the project on a machine together with testing. This would be required if there are required changes to be done for the application.
+
+#### Launch Project in Visual Studio
+Open Visual Studio 2015 and open `EF2OR.sln` project. Ensure that the `EF2OR` project is set as a startup project. Click `Build` and then `Rebuild Solution`
+
+
+#### Running the tests
+Tests are kept in a separate EF2OR.Tests Visual Studio Project. It's suggested to run those after doing any of the source code changes. The tests are using a separate database, which should be defined. The responses from Ed-FI API ODS are mocked, so you don't need to enter the credentials in this project.
+
+* With the `EF2OR.sln` solution open find the file `app.config` in the project `EF2OR.Tests`.
+* Modify the connectionstring named “DefaultConnection”, with the connectionstring used to connect to the database you want to test with.
+The default is:
+```xml
+<add name="DefaultConnection" connectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=ED2OR;Integrated Security=SSPI" providerName="System.Data.SqlClient" />
+```
+* Save, Rebuild All, and then go to `Test -> Windows -> Text Explorer`
+![Test Explorer](https://s32.postimg.org/ss668ieph/Untitled.png)
+![Test Explorer](https://s31.postimg.org/r8x52h4jf/image.png)
+* Click `Run All`
+
+***
+
+
+## Contributing
+
+Community contributions to this application will keep it healthy and active.  We strongly welcome pull requests with new feature enhancements and bug fixes.
+
+## License
+
+This project is licensed under the Apache 2.0 license - see the [LICENSE.md](LICENSE.md) file for details
