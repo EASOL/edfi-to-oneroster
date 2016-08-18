@@ -77,6 +77,39 @@ namespace EF2OR.Controllers.Tests
                 Assert.IsTrue(partialResultModel.JsonPreviews.Orgs.Count() > 0, "No Orgs for JsonPreview");
         }
 
+        [TestMethod]
+        public async Task ExportsController_SaveTemplate()
+        {
+            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
+            ExportsController controller = new ExportsController();
+            SetupController(controller);
+
+            //ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            DateTime currentTime = DateTime.UtcNow;
+            ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            defaultExportViewModel.NewTemplateName = string.Format("[UNIT TEST TEMPLATE]-{0}", currentTime);
+            defaultExportViewModel.NewTemplateVendorName = string.Format("[UNIT TEST VENDOR]-{0}", currentTime);
+            var result = controller.SaveTemplate(defaultExportViewModel);
+            Assert.IsNotNull(result, "Invalid result");
+            if (result is RedirectToRouteResult)
+            {
+                RedirectToRouteResult redirecResult = result as RedirectToRouteResult;
+                Assert.IsTrue(redirecResult.RouteValues["action"].ToString() == "Index" && redirecResult.RouteValues["controller"].ToString() == "Templates");
+            }
+            else
+            {
+                Assert.Fail("Unexpected result");
+            }
+            var templateToDelete = AuthenticationHelper.DB.Templates.Where(p => p.VendorName ==
+            defaultExportViewModel.NewTemplateVendorName && p.TemplateName == defaultExportViewModel.NewTemplateName).FirstOrDefault();
+            if (templateToDelete != null)
+            {
+                AuthenticationHelper.DB.Templates.Remove(templateToDelete);
+                if (
+                AuthenticationHelper.DB.SaveChanges() == 0)
+                    Assert.Fail("Unable to delete template: " + defaultExportViewModel.NewTemplateName);
+            }
+        }
 
         [TestMethod()]
         public async Task ExportsController_DownloadCsvTest()
