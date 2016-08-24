@@ -9,7 +9,7 @@ With the recently announced [IMS Global](imsglobal.org) partnership, [Ed-Fi](htt
 
 ## Functionality
 ### Users
-Current version of the application only supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `AOx91piOvWdXB`. Afterwards, we strongly suggest to change it by using Settings section of the application
+Current version of the application only supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `AOx91piOvWdXB+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `aU8n&9$nw#72gFb&2ib%j3`. Afterwards, we strongly suggest to change it by using Settings section of the application
 
 
 Additionally, to improve security there is implemented an auto-lock, which is enabled after 5 unsuccessful attempts.The auto-lock is disabled after 1 hour or by changing a value in the database.
