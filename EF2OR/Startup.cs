@@ -12,8 +12,11 @@ namespace EF2OR
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            Utils.CommonUtils.ApiResponseProvider = new Providers.ApiResponseProvider();
             Utils.CommonUtils.PathProvider = new Providers.WebPathProvider();
+            string strDatabaseConfigFile = Utils.CommonUtils.PathProvider.MapPath("database.config");
+            if (!System.IO.File.Exists(strDatabaseConfigFile))
+                System.IO.File.WriteAllBytes(strDatabaseConfigFile, Properties.Resources.database_config);
+            Utils.CommonUtils.ApiResponseProvider = new Providers.ApiResponseProvider();
             Utils.CommonUtils.HttpContextProvider = new Providers.HttpContextProvider();
             Utils.CommonUtils.UserProvider = new Providers.WebUserProvider();
             //The following code will force Entity Framework Migrations on Application Start
