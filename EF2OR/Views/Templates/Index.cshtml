@@ -29,6 +29,7 @@
         <tr>
             <th>Template Name</th>
             <th>Vendor</th>
+            <th>OneRoster Version</th>
             <th>Access URL</th>
             <th>Access Token</th>
             <th># of Downloads</th>
@@ -44,6 +45,7 @@
             <tr>
                 <td>@template.TemplateName</td>
                 <td>@template.VendorName</td>
+                <td>@template.OneRosterVersion</td>
                 <td>
                     @if (tokenExists)
                     {
@@ -107,29 +109,29 @@
     <form id="templateEditForm"  method="post">
         <input type="hidden" id="editTemplateId" name="editTemplateId" />
 
-        <h4 align="center" id="modalHeader"></h4>
+    <h4 align="center" id="modalHeader"></h4>
 
-        <div class="form-group">
-            <label class="col-md-6 control-label">Template Name:</label>
-            <div class="col-md-6">
+    <div class="form-group">
+        <label class="col-md-6 control-label">Template Name:</label>
+        <div class="col-md-6">
                 <input type="text" class="form-control" id="editTemplateName" name="editTemplateName" />
-            </div>
         </div>
-        <br />
-        <br />
-        <div class="form-group">
-            <label class="col-md-6 control-label">Vendor Name:</label>
-            <div class="col-md-6">
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        <label class="col-md-6 control-label">Vendor Name:</label>
+        <div class="col-md-6">
                 <input type="text" class="form-control" id="editTemplateVendorName" name="editTemplateVendorName" />
-            </div>
         </div>
-        <br />
-        <br />
-        <div style="text-align:center;">
-            <button type="button" class="btn btn-primary" id="cloneSave" onclick="cloneTemplate()">Save and Review Filters</button>
-            <button type="button" class="btn btn-primary" id="editSave" onclick="editTemplate()">Save</button>
-            <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
-        </div>
+    </div>
+    <br />
+    <br />
+    <div style="text-align:center;">
+        <button type="button" class="btn btn-primary" id="cloneSave" onclick="cloneTemplate()">Save and Review Filters</button>
+        <button type="button" class="btn btn-primary" id="editSave" onclick="editTemplate()">Save</button>
+        <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
+    </div>
     </form>
 </div>
 

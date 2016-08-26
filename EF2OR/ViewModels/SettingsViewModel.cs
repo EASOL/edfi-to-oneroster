@@ -33,6 +33,8 @@ namespace EF2OR.ViewModels
         public List<AcademicSessionTypeViewModel> AcademicSessionTypes { get; set; }
         public bool IsError { get; set; }
         public string ErrorMessage { get; set; }
+        [Display(Name = "Default OneRoster Version")]
+        public string DefaultOneRosterVersion { get; set;}
 
         public InitialSetup DatabaseSettings { get; set; } = new InitialSetup();
     }

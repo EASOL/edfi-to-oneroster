@@ -24,6 +24,7 @@ namespace EF2OR.Controllers.Tests
             if (model.Count > 0)
             {
                 var firstItem = model.First();
+                Assert.IsTrue(firstItem.NumberOfDownloads >0 ,"Incorrect Number of Downloads");
                 Assert.IsTrue(!string.IsNullOrWhiteSpace(firstItem.AccessToken), "Empty Access Token");
                 Assert.IsTrue(!string.IsNullOrWhiteSpace(firstItem.AccessUrl), "Empty Access Token");
                 Assert.IsTrue(!string.IsNullOrWhiteSpace(firstItem.TemplateName), "Empty Template Name");

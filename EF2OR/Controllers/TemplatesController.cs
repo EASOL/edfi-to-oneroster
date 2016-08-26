@@ -33,6 +33,7 @@ namespace EF2OR.Controllers
                             TemplateId = t.TemplateId,
                             TemplateName = t.TemplateName,
                             VendorName = t.VendorName,
+                            OneRosterVersion = t.OneRosterVersion,
                             AccessUrl = t.AccessUrl,
                             AccessToken = t.AccessToken,
                             NumberOfDownloads = numDownloads,
@@ -76,7 +77,8 @@ namespace EF2OR.Controllers
             {
                 TemplateName = model.editTemplateName,
                 VendorName = model.editTemplateVendorName,
-                Filters = existingTemplate.Filters
+                Filters = existingTemplate.Filters,
+                OneRosterVersion = existingTemplate.OneRosterVersion
             };
             db.Templates.Add(newTemplate);
             db.SaveChanges(UserName, IpAddress);
@@ -106,7 +108,8 @@ namespace EF2OR.Controllers
                 filters.Subjects,
                 filters.Courses,
                 filters.Teachers,
-                filters.Sections);
+                filters.Sections,
+                template.OneRosterVersion);
 
             var logUtils = new LoggingMethods();
             string ip = Request.UserHostAddress;

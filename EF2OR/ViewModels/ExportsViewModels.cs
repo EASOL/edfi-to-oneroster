@@ -22,6 +22,7 @@ namespace EF2OR.ViewModels
         public string SelectedSections { get; set; }
         public string NewTemplateName { get; set; }
         public string NewTemplateVendorName { get; set; }
+        public string OneRosterVersion { get; set; }
 
         public int EditTemplateId { get; set; }
         public string EditTemplateName { get; set; }
@@ -35,6 +36,7 @@ namespace EF2OR.ViewModels
         public string Classes { get; set; }
         public string Enrollments { get; set; }
         public string AcademicSessions { get; set; }
+        public string Manifest { get; set; }
     }
 
     public class DataPreviewSection
@@ -51,6 +53,7 @@ namespace EF2OR.ViewModels
         public List<CsvClasses> Classes { get; set; }
         public List<CsvEnrollments> Enrollments { get; set; }
         public List<CsvAcademicSessions> AcademicSessions { get; set; }
+        public List<CsvManifest> Manifest { get; set; }
     }
 
     public class FilterInputs

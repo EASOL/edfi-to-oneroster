@@ -5,8 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+using EF2OR.Enums;
 
 namespace EF2OR.Utils
 {
@@ -19,7 +18,8 @@ namespace EF2OR.Utils
             List<string> subjects,
             List<string> courses,
             List<string> teachers,
-            List<string> sections)
+            List<string> sections,
+            string oneRosterVersion)
         {
             var model = new DataResults();
             var inputs = new FilterInputs
@@ -32,7 +32,7 @@ namespace EF2OR.Utils
                 Teachers = teachers,
                 Sections = sections
             };
-            model = await ApiCalls.GetDataResults(inputs);
+            model = await ApiCalls.GetDataResults(inputs, oneRosterVersion);
 
             var csvFilesDirectory = "~/CsvFiles";
             var csvDirectoryFullName = CommonUtils.PathProvider.MapPath(csvFilesDirectory);
@@ -42,12 +42,16 @@ namespace EF2OR.Utils
             var tempDirectoryFullName = CommonUtils.PathProvider.MapPath(tempDirectory);
 
             Directory.CreateDirectory(tempDirectoryFullName);
-            WriteObjectToCsv(model.Orgs, tempDirectoryFullName, "orgs.csv");
-            WriteObjectToCsv(model.Users, tempDirectoryFullName, "users.csv");
-            WriteObjectToCsv(model.Courses, tempDirectoryFullName, "courses.csv");
-            WriteObjectToCsv(model.Classes, tempDirectoryFullName, "classes.csv");
-            WriteObjectToCsv(model.Enrollments, tempDirectoryFullName, "enrollments.csv");
-            WriteObjectToCsv(model.AcademicSessions, tempDirectoryFullName, "academicSessions.csv");
+            WriteObjectToCsv(model.Orgs, tempDirectoryFullName, "orgs.csv", oneRosterVersion);
+            WriteObjectToCsv(model.Users, tempDirectoryFullName, "users.csv", oneRosterVersion);
+            WriteObjectToCsv(model.Courses, tempDirectoryFullName, "courses.csv", oneRosterVersion);
+            WriteObjectToCsv(model.Classes, tempDirectoryFullName, "classes.csv", oneRosterVersion);
+            WriteObjectToCsv(model.Enrollments, tempDirectoryFullName, "enrollments.csv", oneRosterVersion);
+            WriteObjectToCsv(model.AcademicSessions, tempDirectoryFullName, "academicSessions.csv", oneRosterVersion);
+            if (oneRosterVersion == OneRosterVersions.OR_1_1)
+            {
+                WriteObjectToCsv(model.Manifest, tempDirectoryFullName, "manifest.csv", oneRosterVersion);
+            }
 
             var zipPath = Path.Combine(csvDirectoryFullName, directoryGuid + ".zip");
 
@@ -58,6 +62,10 @@ namespace EF2OR.Utils
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicSessions.csv", "academicSessions.csv");
+            if (oneRosterVersion == OneRosterVersions.OR_1_1)
+            {
+                zip.CreateEntryFromFile(tempDirectoryFullName + "\\manifest.csv", "manifest.csv");
+            }
             zip.Dispose();
 
             var bytes = File.ReadAllBytes(zipPath); //if this eats memory there are other options: http://stackoverflow.com/questions/2041717/how-to-delete-file-after-download-with-asp-net-mvc
@@ -66,13 +74,21 @@ namespace EF2OR.Utils
             return bytes;
         }
 
-        private void WriteObjectToCsv<T>(List<T> inputList, string directoryPath, string fileName)
+        private void WriteObjectToCsv<T>(List<T> inputList, string directoryPath, string fileName, string oneRosterVersion)
         {
             var filePath = Path.Combine(directoryPath, fileName);
 
             using (StreamWriter sw = new StreamWriter(filePath))
             {
-                var columnNames = typeof(T).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name);
+                IEnumerable<string> columnNames;
+                if (oneRosterVersion == OneRosterVersions.OR_1_0)
+                {
+                    columnNames = typeof(T).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name);
+                }
+                else
+                {
+                    columnNames = typeof(T).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name);
+                }
                 var headerLine = string.Join(",", columnNames);
                 headerLine = headerLine.Replace("__", ".");  //some column names have dots in them.  I put double underscores that should be replaced
                 sw.WriteLine(headerLine);

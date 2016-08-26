@@ -42,7 +42,7 @@ namespace EF2OR.Controllers
                     else
                     {
                         if (!string.IsNullOrWhiteSpace(errors))
-                            ViewBag.Error = errors;
+                        ViewBag.Error = errors;
                         return View(model);
                     }
                 }

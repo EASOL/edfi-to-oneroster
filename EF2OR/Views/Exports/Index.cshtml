@@ -17,14 +17,22 @@
 </style>
 <link href="~/Content/jquery.modal.min.css" rel="stylesheet" />
 
-@if (isEditTemplate)
-{
-    <h3>Edit Template - @Model.EditTemplateName</h3>
-}
-<h3>Data Selection</h3>
-
 @using (Html.BeginForm("DownloadCsv", "Exports", FormMethod.Post, new { id = "exportsForm" }))
 {
+    if (isEditTemplate)
+    {
+        <h3 style="float:left;margin-top:0px;">Edit Template - @Model.EditTemplateName</h3>
+    }
+    else
+    {
+        <h3 style="float:left;margin-top:0px;">Data Selection</h3>
+    }
+
+    <div style="float:right;">
+        <label class="control-label">OneRoster Version</label>&nbsp;
+        @Html.DropDownListFor(m => m.OneRosterVersion, (List<SelectListItem>)ViewBag.OneRosterVersions, new { @class = "form-control", style ="display: inline; width: inherit;" })
+    </div>
+
  <div>
      @Html.HiddenFor(x => x.SelectedSchools)
      @Html.HiddenFor(x => x.SelectedSchoolYears)
@@ -245,6 +253,7 @@
                 var courses = getCheckedIds("Courses");
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
+                var oneRosterVersion = $("#@Html.IdFor(m => m.OneRosterVersion)").val();
 
                 $("#DataPreview").load("@Url.Action("Preview")", {
                     schoolIds: schoolIds,
@@ -254,6 +263,7 @@
                     courses: courses,
                     teachers: teachers,
                     sections: sections,
+                    oneRosterVersion: oneRosterVersion
                 });
 
             }

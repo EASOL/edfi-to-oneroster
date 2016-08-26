@@ -30,9 +30,9 @@ namespace EF2OR
                     //We force migrations to run when a database has been set
                     if (!Utils.PreConfigurationHelper.IsInitialSetup(httpContext))
                     {
-                        var configuration = new Configuration();
-                        var migrator = new DbMigrator(configuration);
-                        migrator.Update();
+                var configuration = new Configuration();
+                var migrator = new DbMigrator(configuration);
+                migrator.Update();
                     }
                 }
             }
