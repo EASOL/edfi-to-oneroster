@@ -158,7 +158,7 @@ namespace EF2OR.Providers
 
             var token = tokenModel.Token;
 
-            var apiBaseUrl = db.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
+            var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
 
             var finalResponse = new JArray();
             using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
