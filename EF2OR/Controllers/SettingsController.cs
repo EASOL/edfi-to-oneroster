@@ -109,7 +109,7 @@ namespace EF2OR.Controllers
 
         private void LoadDropdownValues()
         {
-            ViewBag.AcademicSessionTypes = new List<SelectListItem>
+            ViewBag.ViewBag.AcademicSessionTypeValues = new List<SelectListItem>
                 {
                     new SelectListItem
                     {
