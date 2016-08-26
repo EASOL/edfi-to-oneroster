@@ -7,5 +7,6 @@
         public const string ApiBaseUrl = "ApiBaseUrl";
         public const string ApiPrefix = "ApiPrefix";
         public const string OrgsIdentifier = "OrgsIdentifier";
+        public const string DefaultOneRosterVersion = "DefaultOneRosterVersion";
     }
 }

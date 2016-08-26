@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EF2OR.Utils;
 using Newtonsoft.Json;
 using EF2OR.Models;
+using EF2OR.Enums;
 
 namespace EF2OR.Controllers
 {
@@ -28,8 +29,8 @@ namespace EF2OR.Controllers
 
         public async Task<ActionResult> PreviewFromTemplate(int templateId)
         {
-            var filtersJson = db.Templates.First(x => x.TemplateId == templateId).Filters;
-            var filters = JsonConvert.DeserializeObject<FilterInputs>(filtersJson);
+            var template = db.Templates.FirstOrDefault(x => x.TemplateId == templateId);
+            var filters = JsonConvert.DeserializeObject<FilterInputs>(template.Filters);
 
             return await Preview(
                 filters.Schools,
@@ -38,7 +39,8 @@ namespace EF2OR.Controllers
                 filters.Subjects,
                 filters.Courses,
                 filters.Teachers,
-                filters.Sections);
+                filters.Sections,
+                template.OneRosterVersion);
         }
 
         [HttpPost]
@@ -48,7 +50,8 @@ namespace EF2OR.Controllers
             List<string> subjects,
             List<string> courses,
             List<string> teachers,
-            List<string> sections)
+            List<string> sections,
+            string oneRosterVersion)
         {
             var model = new ExportsViewModel();
             var inputs = new FilterInputs
@@ -62,14 +65,33 @@ namespace EF2OR.Controllers
                 Sections = sections
             };
 
-            model.JsonPreviews = await ApiCalls.GetJsonPreviews(inputs);
+            model.JsonPreviews = await ApiCalls.GetJsonPreviews(inputs, oneRosterVersion);
 
-            var orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
-            var usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
-            var coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
-            var classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
-            var enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
-            var academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Where(x => !Attribute.IsDefined(x, typeof(CsvIgnoreFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            IEnumerable<string> orgColumnNames;
+            IEnumerable<string> usersColumnNames;
+            IEnumerable<string> coursesColumnNames;
+            IEnumerable<string> classesColumnNames;
+            IEnumerable<string> enrollmentsColumnNames;
+            IEnumerable<string> academicsessionsColumnNames;
+
+            if (oneRosterVersion == OneRosterVersions.OR_1_0)
+            {
+                orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            }
+            else
+            {
+                orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                academicsessionsColumnNames = typeof(CsvAcademicSessions).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+            }
 
             model.DataPreviewSections = new List<DataPreviewSection>
                 {
@@ -105,6 +127,16 @@ namespace EF2OR.Controllers
                     }
                 };
 
+            if (oneRosterVersion == OneRosterVersions.OR_1_1)
+            {
+                var manifestColumnNames = typeof(CsvManifest).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                model.DataPreviewSections.Add(new DataPreviewSection
+                {
+                    SectionName = "manifest",
+                    ColumnNames = manifestColumnNames
+                });
+            }
+
             return PartialView("_DataPreview", model);
         }
 
@@ -120,7 +152,7 @@ namespace EF2OR.Controllers
             var sections = model.SelectedSections?.Split(',').ToList();
 
             var csvUtils = new CsvMethods();
-            var bytes = await csvUtils.GetZipFile(schools, schoolYears, terms, subjects, courses, teachers, sections);
+            var bytes = await csvUtils.GetZipFile(schools, schoolYears, terms, subjects, courses, teachers, sections, model.OneRosterVersion);
 
             var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
             return File(bytes, "application/zip", downloadFileName);
@@ -152,6 +184,7 @@ namespace EF2OR.Controllers
 
             var template = db.Templates.First(x => x.TemplateId == model.EditTemplateId);
             template.Filters = inputsJson;
+            template.OneRosterVersion = model.OneRosterVersion;
 
             db.SaveChanges(UserName, IpAddress);
 
@@ -186,6 +219,7 @@ namespace EF2OR.Controllers
             {
                 TemplateName = model.NewTemplateName,
                 VendorName = model.NewTemplateVendorName,
+                OneRosterVersion = model.OneRosterVersion,
                 Filters = inputsJson
             };
 
@@ -324,6 +358,7 @@ namespace EF2OR.Controllers
 
             model.EditTemplateId = templateId;
             model.EditTemplateName = template.TemplateName;
+            model.OneRosterVersion = template.OneRosterVersion;
 
             var filters = JsonConvert.DeserializeObject<FilterInputs>(template.Filters);
 
@@ -380,6 +415,26 @@ namespace EF2OR.Controllers
             {
                 SectionName = "Sections"
             };
+
+            using (var context = new ApplicationDbContext())
+            {
+                model.OneRosterVersion = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.DefaultOneRosterVersion)?.SettingValue;
+            }
+
+            ViewBag.OneRosterVersions = new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = OneRosterVersions.OR_1_0,
+                        Value = OneRosterVersions.OR_1_0
+                    },
+                    new SelectListItem
+                    {
+                        Text = OneRosterVersions.OR_1_1,
+                        Value = OneRosterVersions.OR_1_1
+                    }
+            };
+
         }
     }
 }

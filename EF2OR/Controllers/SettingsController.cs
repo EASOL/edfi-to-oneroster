@@ -109,7 +109,7 @@ namespace EF2OR.Controllers
 
         private void LoadDropdownValues()
         {
-            ViewBag.ViewBag.AcademicSessionTypeValues = new List<SelectListItem>
+            ViewBag.AcademicSessionTypeValues = new List<SelectListItem>
                 {
                     new SelectListItem
                     {
@@ -132,6 +132,20 @@ namespace EF2OR.Controllers
                         Value = "semester"
                     }
                 };
+
+            ViewBag.OneRosterVersions = new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = OneRosterVersions.OR_1_0,
+                        Value = OneRosterVersions.OR_1_0
+                    },
+                    new SelectListItem
+                    {
+                        Text = OneRosterVersions.OR_1_1,
+                        Value = OneRosterVersions.OR_1_1
+                    }
+            };
         }
 
         [AllowAnonymous]
@@ -200,6 +214,7 @@ namespace EF2OR.Controllers
             var apiSecretChanged = InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiSecret, model.ApiSecret);
             InsertUpdateApplicationSetting(ApplicationSettingsTypes.ApiPrefix, model.ApiPrefix);
             InsertUpdateApplicationSetting(ApplicationSettingsTypes.OrgsIdentifier, model.OrgsIdentifier);
+            InsertUpdateApplicationSetting(ApplicationSettingsTypes.DefaultOneRosterVersion, model.DefaultOneRosterVersion);
 
             if (model.AcademicSessionTypes != null)
             {

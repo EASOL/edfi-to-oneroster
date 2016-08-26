@@ -65,7 +65,8 @@ namespace EF2OR.Controllers.Tests
                     subjects: null,
                     courses: defaultExportsViewModel.SelectedCourses.Split(',').ToList(),
                     teachers: null,
-                    sections: null
+                    sections: null,
+                    oneRosterVersion: null
                     );
                 Assert.IsNotNull(previewResult, "Invalid result");
                 Assert.IsInstanceOfType(previewResult, typeof(PartialViewResult), "Invalid result type");

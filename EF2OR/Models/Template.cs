@@ -11,5 +11,7 @@ namespace EF2OR.Models
         public string AccessUrl { get; set; }
         public string AccessToken { get; set; }
         public string Filters { get; set; }
+        public string OneRosterVersion { get; set; }
+        public string DownloadType { get; set; }
     }
 }

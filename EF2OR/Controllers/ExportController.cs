@@ -41,7 +41,8 @@ namespace EF2OR.Controllers
                 filters.Subjects,
                 filters.Courses,
                 filters.Teachers,
-                filters.Sections);
+                filters.Sections,
+                template.OneRosterVersion);
 
             logUtils.LogUserDownload(template, IpAddress, true, null);
 

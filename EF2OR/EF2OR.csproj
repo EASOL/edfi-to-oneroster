@@ -185,6 +185,8 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Enums\ApplicationSettingTypes.cs" />
+    <Compile Include="Enums\DownloadTypes.cs" />
+    <Compile Include="Enums\EdFiVersions.cs" />
     <Compile Include="Enums\OrgIdentifierSettings.cs" />
     <Compile Include="Enums\ActionTypes.cs" />
     <Compile Include="Enums\ApiEndPoints.cs" />
@@ -228,6 +230,10 @@
     <Compile Include="Migrations\201607271614135_ErrorLog.Designer.cs">
       <DependentUpon>201607271614135_ErrorLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608081515089_VersionOnePointOne.cs" />
+    <Compile Include="Migrations\201608081515089_VersionOnePointOne.Designer.cs">
+      <DependentUpon>201608081515089_VersionOnePointOne.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AcademicSessionType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -259,7 +265,8 @@
     <Compile Include="ViewModels\CsvEnrollments.cs" />
     <Compile Include="ViewModels\CsvAcademicSessions.cs" />
     <Compile Include="ViewModels\CsvCourses.cs" />
-    <Compile Include="ViewModels\CsvIgnoreFieldAttribute.cs" />
+    <Compile Include="ViewModels\CsvFieldAttributes.cs" />
+    <Compile Include="ViewModels\CsvManifest.cs" />
     <Compile Include="ViewModels\CsvUsers.cs" />
     <Compile Include="ViewModels\EditTemplateViewModel.cs" />
     <Compile Include="ViewModels\InitialSetup.cs" />
@@ -396,6 +403,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607271614135_ErrorLog.resx">
       <DependentUpon>201607271614135_ErrorLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608081515089_VersionOnePointOne.resx">
+      <DependentUpon>201608081515089_VersionOnePointOne.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

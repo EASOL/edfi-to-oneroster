@@ -294,9 +294,9 @@ namespace EF2OR.Utils
             return terms.ToList();
         }
 
-        public static async Task<PreveiwJsonResults> GetJsonPreviews(FilterInputs inputs)
+        public static async Task<PreveiwJsonResults> GetJsonPreviews(FilterInputs inputs, string oneRosterVersion)
         {
-            var dataResults = await GetDataResults(inputs);
+            var dataResults = await GetDataResults(inputs, oneRosterVersion);
 
             var previewModel = new PreveiwJsonResults();
             previewModel.Orgs = JsonConvert.SerializeObject(dataResults.Orgs);
@@ -305,11 +305,15 @@ namespace EF2OR.Utils
             previewModel.Classes = JsonConvert.SerializeObject(dataResults.Classes);
             previewModel.Enrollments = JsonConvert.SerializeObject(dataResults.Enrollments);
             previewModel.AcademicSessions = JsonConvert.SerializeObject(dataResults.AcademicSessions);
+            if (oneRosterVersion == OneRosterVersions.OR_1_1)
+            {
+                previewModel.Manifest = JsonConvert.SerializeObject(dataResults.Manifest);
+            }
 
             return previewModel;
         }
 
-        public static async Task<DataResults> GetDataResults(FilterInputs inputs)
+        public static async Task<DataResults> GetDataResults(FilterInputs inputs, string oneRosterVersion)
         {
             var dataResults = new DataResults();
 
@@ -324,13 +328,17 @@ namespace EF2OR.Utils
             dataResults.Classes = await GetCsvClasses(inputs);
             dataResults.Enrollments = await GetCsvEnrollments(inputs);
             dataResults.AcademicSessions = await GetCsvAcademicSessions(inputs);
+            if (oneRosterVersion == OneRosterVersions.OR_1_1)
+            {
+                dataResults.Manifest = GetCsvManifest(DownloadTypes.bulk);
+            }
 
             CommonUtils.ExistingResponses.Clear(); //reset the global dictionary so next time we get fresh data.  Also so it doesn't sit in memory.
 
             return dataResults;
         }
 
-        public static async Task<List<CsvOrgs>> GetCsvOrgs(FilterInputs inputs)
+        private static async Task<List<CsvOrgs>> GetCsvOrgs(FilterInputs inputs)
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvOrgs);
 
@@ -357,7 +365,7 @@ namespace EF2OR.Utils
             return listOfObjects.ToList();
         }
 
-        public static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
+        private static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
         {
             var enrollmentsResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvUsers);
 
@@ -416,6 +424,7 @@ namespace EF2OR.Utils
                                             userId = (string)s["studentUniqueId"],
                                             givenName = (string)s["firstName"],
                                             familyName = (string)s["lastSurname"],
+                                            middleName = (string)s["middleName"],
                                             identifier = (string)s["studentUniqueId"],
                                             email = emailAddress,
                                             sms = mobileNumber,
@@ -437,6 +446,7 @@ namespace EF2OR.Utils
                                          userId = (string)s["staffUniqueId"],
                                          givenName = (string)s["firstName"],
                                          familyName = (string)s["lastSurname"],
+                                         middleName = (string)s["middleName"],
                                          identifier = (string)s["staffUniqueId"],
                                          email = emailAddress,
                                          sms = mobileNumber,
@@ -451,10 +461,12 @@ namespace EF2OR.Utils
                                {
                                    sourcedId = s,
                                    orgSourcedIds = e.SchoolId,
+                                   enabledUser = "TRUE",
                                    role = "student",
                                    userId = si.userId,
                                    givenName = si.givenName,
                                    familyName = si.familyName,
+                                   middleNames = si.middleName,
                                    identifier = si.identifier,
                                    email = si.email,
                                    sms = si.sms,
@@ -469,10 +481,12 @@ namespace EF2OR.Utils
                              {
                                  sourcedId = s,
                                  orgSourcedIds = e.SchoolId,
+                                 enabledUser = "TRUE",
                                  role = "teacher",
                                  userId = si.userId,
                                  givenName = si.givenName,
                                  familyName = si.familyName,
+                                 middleNames = si.middleName,
                                  identifier = si.identifier,
                                  email = si.email,
                                  sms = si.sms,
@@ -487,7 +501,7 @@ namespace EF2OR.Utils
             return studentsAndStaff.ToList();
         }
 
-        public static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
+        private static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvCourses);
             var enrollmentsList = (from o in responseArray
@@ -538,7 +552,7 @@ namespace EF2OR.Utils
             return enrollmentsList.ToList();
         }
 
-        public static async Task<List<CsvClasses>> GetCsvClasses(FilterInputs inputs)
+        private static async Task<List<CsvClasses>> GetCsvClasses(FilterInputs inputs)
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvClasses);
             var enrollmentsList = (from o in responseArray
@@ -589,7 +603,7 @@ namespace EF2OR.Utils
             return enrollmentsList.ToList();
         }
 
-        public static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
+        private static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvEnrollments);
             var enrollmentsList = (from o in responseArray
@@ -662,7 +676,7 @@ namespace EF2OR.Utils
             return allEnrollments;
         }
 
-        public static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)
+        private static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
 
@@ -688,7 +702,8 @@ namespace EF2OR.Utils
                                        Subject = (string)o["academicSubjectDescriptor"],
                                        Course = (string)o["courseOfferingReference"]["localCourseCode"],
                                        Section = (string)o["uniqueSectionCode"],
-                                       Teachers = teachers
+                                       Teachers = teachers,
+                                       schoolYear = (string)o["sessionReference"]["schoolYear"]
                                    });
 
             if (inputs != null)
@@ -719,6 +734,30 @@ namespace EF2OR.Utils
 
             context.Dispose();
             return enrollmentsList.ToList();
+        }
+
+        private static List<CsvManifest> GetCsvManifest(string bulkOrDelta)
+        {
+            return new List<CsvManifest>
+            {
+                new CsvManifest { propertyName = "manifest.version", value = "1.0" },
+                new CsvManifest { propertyName = "oneroster.version", value = "1.1" },
+                new CsvManifest { propertyName = "file.academicSessions", value = bulkOrDelta },
+                new CsvManifest { propertyName = "file.categories", value = "absent" },
+                new CsvManifest { propertyName = "file.classes", value = bulkOrDelta },
+                new CsvManifest { propertyName = "file.classResources", value = "absent" },
+                new CsvManifest { propertyName = "file.courses", value = bulkOrDelta },
+                new CsvManifest { propertyName = "file.courseResources", value = "absent" },
+                new CsvManifest { propertyName = "file.demographics", value = "absent" },
+                new CsvManifest { propertyName = "file.enrollments", value = bulkOrDelta },
+                new CsvManifest { propertyName = "file.lineItems", value = "absent" },
+                new CsvManifest { propertyName = "file.orgs", value = bulkOrDelta },
+                new CsvManifest { propertyName = "file.resources", value = "absent" },
+                new CsvManifest { propertyName = "file.results", value = "absent" },
+                new CsvManifest { propertyName = "file.users", value = bulkOrDelta },
+                new CsvManifest { propertyName = "source.systemName", value = "absent" },
+                new CsvManifest { propertyName = "source.systemCode", value = "absent" }
+            };
         }
         #endregion
 

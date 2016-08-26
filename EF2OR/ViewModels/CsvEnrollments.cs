@@ -4,28 +4,41 @@ namespace EF2OR.ViewModels
 {
     public class CsvEnrollments
     {
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string sourcedId { get; set; }
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string classSourcedId { get; set; }
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string schoolSourcedId { get; set; }
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string userSourcedId { get; set; }
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string role { get; set; }
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string status { get; set; }
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string dateLastModified { get; set; }
+        [OR10IncludeField]
+        [OR11IncludeField]
         public string primary { get; set; }
+        [OR11IncludeField]
+        public string beginDate { get; set; }
+        [OR11IncludeField]
+        public string endDate { get; set; }
 
-        [CsvIgnoreField]
         public string SchoolId { get; set; }
-        [CsvIgnoreField]
         public string SchoolYear { get; set; }
-        [CsvIgnoreField]
         public string Term { get; set; }
-        [CsvIgnoreField]
         public string Subject { get; set; }
-        [CsvIgnoreField]
         public string Course { get; set; }
-        [CsvIgnoreField]
         public string Section { get; set; }
-        [CsvIgnoreField]
         public IEnumerable<string> Teachers { get; set; }
     }
 }
