@@ -2,7 +2,7 @@
 
     <tr>
         <td>@Model.TermDescriptor</td>
-        <td>@Html.DropDownListFor(m => m.Type, (List<SelectListItem>)ViewBag.AcademicSessionTypes, "Select...")</td>
+        <td>@Html.DropDownListFor(m => m.Type, (List<SelectListItem>)ViewBag.ViewBag.AcademicSessionTypeValues, "Select...")</td>
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.TermDescriptor)
     </tr>

@@ -11,6 +11,7 @@
         public const string Staff = "enrollment/staffs";
         public const string SchoolYears = "enrollment/sections";
         public const string Terms = "enrollment/sections";
+        public const string TermDescriptors = "termDescriptors";
 
         public const string CsvOrgs = "enrollment/schools";
         public const string CsvUsersStudents = "enrollment/students";
