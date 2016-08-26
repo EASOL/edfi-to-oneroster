@@ -288,9 +288,9 @@ namespace EF2OR.Utils
         #region ResultsMethods
         public static async Task<List<string>> GetTermDescriptors(bool forceNew = false)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Terms, forceNew, "sessionReference");
-            var terms = responseArray.Select(x => (string)x["sessionReference"]["termDescriptor"]).Distinct();
-            CommonUtils.ExistingResponses.Remove(ApiEndPoints.Terms);  //now we have one in there with only termDescriptor
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.TermDescriptors, forceNew);
+            var terms = responseArray.Select(x => (string)x["description"]).Distinct();
+            CommonUtils.ExistingResponses.Remove(ApiEndPoints.TermDescriptors);  //now we have one in there with only termDescriptor
             return terms.ToList();
         }
 
