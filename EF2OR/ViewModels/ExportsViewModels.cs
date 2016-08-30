@@ -69,9 +69,13 @@ namespace EF2OR.ViewModels
 
     public class ApiCriteriaSection
     {
+        public List<ExportsCheckbox> AllCheckboxes { get; set; }
         public List<ExportsCheckbox> FilterCheckboxes { get; set; }
         public string SectionName { get; set; }
         public bool IsExpanded { get; set; }
+        public int CurrentOffset { get; set; }
+        public int NumCheckBoxesToDisplay { get; set; }
+        public bool AllDataReceived { get; set; }
     }
 
     public class ExportsCheckbox

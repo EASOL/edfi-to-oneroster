@@ -46,13 +46,13 @@ namespace EF2OR.Providers
             return response.ResponseArray;
         }
 
-        public async Task<JArray> GetPagedApiData(string apiEndpoint, int limit, int offset, string fields = null)
+        public async Task<JArray> GetPagedApiData(string apiEndpoint, int offset, string fields = null)
         {
-            var response = await GetPagedApiResponse(apiEndpoint, fields, limit, offset);
+            var response = await GetPagedApiResponse(apiEndpoint, fields, offset);
             if (response.TokenExpired)
             {
                 Providers.ApiResponseProvider.GetToken(true);
-                response = await GetPagedApiResponse(apiEndpoint, fields, limit, offset);
+                response = await GetPagedApiResponse(apiEndpoint, fields, offset);
             }
 
             return response.ResponseArray;
@@ -149,12 +149,13 @@ namespace EF2OR.Providers
             }
         }
 
-        public async Task<ApiResponse> GetPagedApiResponse(string apiEndpoint, string fields, int limit, int offset)
+        public async Task<ApiResponse> GetPagedApiResponse(string apiEndpoint, string fields, int offset)
         {
             var context = new ApplicationDbContext();
             var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
 
-            var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + limit;
+            var maxRecordLimit = 100;
+            var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
             if (!string.IsNullOrEmpty(fields))
             {
                 fullUrl += "&fields=" + fields;
