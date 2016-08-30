@@ -61,7 +61,8 @@ namespace EF2OR.Controllers
                     academicSessionTypes.Add(
                         new AcademicSessionTypeViewModel
                         {
-                            TermDescriptor = term
+                            TermDescriptor = term,
+                            Type = ""
                         });
                 }
             }
