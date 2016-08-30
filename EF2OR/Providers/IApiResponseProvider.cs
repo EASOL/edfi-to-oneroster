@@ -7,7 +7,7 @@ namespace EF2OR.Providers
 {
     public interface IApiResponseProvider
     {
-
-        Task<JArray> GetApiResponseArray(string apiEndpoint, bool forceNew = false, string fields = null);
+        Task<JArray> GetApiData(string apiEndpoint, bool forceNew = false, string fields = null);
+        Task<JArray> GetPagedApiData(string apiEndpoint, int limit, int offset, string fields = null);
     }
 }

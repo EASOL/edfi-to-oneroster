@@ -74,7 +74,7 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllSchools"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Schools, false, fields);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Schools, false, fields);
                 var schools = (from s in responseArray
                                select new ExportsCheckbox
                                {
@@ -97,7 +97,7 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.SchoolYears, false, fields);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.SchoolYears, false, fields);
 
                 var schoolYearsStrings = (from s in responseArray
                                           select (string)s["sessionReference"]["schoolYear"]).Distinct();
@@ -122,7 +122,7 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllTerms"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.SchoolYears);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.SchoolYears);
                 var termStrings = (from s in responseArray
                                    select (string)s["sessionReference"]["termDescriptor"]).Distinct();
 
@@ -146,7 +146,7 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllSubjects"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Subjects);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Subjects);
                 var subjects = (from s in responseArray
                                 select new ExportsCheckbox
                                 {
@@ -172,7 +172,7 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllCourses"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Courses);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Courses);
                 var courses = (from s in responseArray
                                select new ExportsCheckbox
                                {
@@ -198,7 +198,7 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllTeachers"] == null)
             {
-                var sectionsResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Sections);
+                var sectionsResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Sections);
                 var sections = (from o in sectionsResponse
                                 let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
                                 select new
@@ -225,7 +225,7 @@ namespace EF2OR.Utils
 
                 var distinctStaffSections = staffSections.GroupBy(x => x.StaffId).Select(group => group.First());
 
-                var staffResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Staff, false, "id,firstName,lastSurname");
+                var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Staff, false, "id,firstName,lastSurname");
                 var staffInfo = from s in staffResponse
                                 select new
                                 {
@@ -260,7 +260,7 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllSections"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.Sections);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Sections);
                 var sections = (from s in responseArray
                                 select new ExportsCheckbox
                                 {
@@ -288,7 +288,7 @@ namespace EF2OR.Utils
         #region ResultsMethods
         public static async Task<List<string>> GetTermDescriptors(bool forceNew = false)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.TermDescriptors, forceNew);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.TermDescriptors, forceNew);
             var terms = responseArray.Select(x => (string)x["description"]).Distinct();
             CommonUtils.ExistingResponses.Remove(ApiEndPoints.TermDescriptors);  //now we have one in there with only termDescriptor
             return terms.ToList();
@@ -340,7 +340,7 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvOrgs>> GetCsvOrgs(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvOrgs);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvOrgs);
 
             var context = new ApplicationDbContext();
             var identifierSetting = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.OrgsIdentifier)?.SettingValue;
@@ -367,7 +367,7 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
         {
-            var enrollmentsResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvUsers);
+            var enrollmentsResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvUsers);
 
             var enrollmentsList = (from o in enrollmentsResponse
                                    let students = o["students"].Children().Select(x => (string)x["id"])
@@ -411,7 +411,7 @@ namespace EF2OR.Utils
             }
             enrollmentsList = enrollmentsList.ToList();
 
-            var studentsResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvUsersStudents);
+            var studentsResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvUsersStudents);
             var studentsResponseInfo = (from s in studentsResponse
                                         let mainTelephone = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
                                         let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
@@ -433,7 +433,7 @@ namespace EF2OR.Utils
                                         }).ToList();
 
 
-            var staffResponse = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvUsersStaff);
+            var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvUsersStaff);
             var staffResponseInfo = (from s in staffResponse
                                      let mainTelephone = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
                                      let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
@@ -503,7 +503,7 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvCourses);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvCourses);
             var enrollmentsList = (from o in responseArray
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new CsvCourses
@@ -554,7 +554,7 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvClasses>> GetCsvClasses(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvClasses);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvClasses);
             var enrollmentsList = (from o in responseArray
                                    let teachers = o["staff"].Children().Select(x => (string)x["id"])
                                    select new CsvClasses
@@ -605,7 +605,7 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvEnrollments);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvEnrollments);
             var enrollmentsList = (from o in responseArray
                                    let students = o["students"].Children()
                                    let staffs = o["staff"].Children()
@@ -678,7 +678,7 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiResponseArray(ApiEndPoints.CsvAcademicSessions);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvAcademicSessions);
 
             var context = new ApplicationDbContext();
             var typeDictionary = context.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);

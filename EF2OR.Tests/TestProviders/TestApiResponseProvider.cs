@@ -12,7 +12,7 @@ namespace EF2OR.Tests.TestProviders
 {
     public class TestApiResponseProvider : EF2OR.Providers.IApiResponseProvider
     {
-        async Task<JArray> IApiResponseProvider.GetApiResponseArray(string apiEndpoint, bool forceNew, string fields)
+        async Task<JArray> IApiResponseProvider.GetApiData(string apiEndpoint, bool forceNew, string fields)
         {
             JArray result = null;
             JArray apiResponse = null;

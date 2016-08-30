@@ -22,7 +22,7 @@ namespace EF2OR.Providers
         {
         }
 
-        public async Task<JArray> GetApiResponseArray(string apiEndpoint, bool forceNew = false, string fields = null)
+        public async Task<JArray> GetApiData(string apiEndpoint, bool forceNew = false, string fields = null)
         {
             if (CommonUtils.ExistingResponses.ContainsKey(apiEndpoint) && !forceNew)
             {
@@ -42,6 +42,18 @@ namespace EF2OR.Providers
             }
 
             CommonUtils.ExistingResponses.Add(apiEndpoint, response.ResponseArray);
+
+            return response.ResponseArray;
+        }
+
+        public async Task<JArray> GetPagedApiData(string apiEndpoint, int limit, int offset, string fields = null)
+        {
+            var response = await GetPagedApiResponse(apiEndpoint, fields, limit, offset);
+            if (response.TokenExpired)
+            {
+                Providers.ApiResponseProvider.GetToken(true);
+                response = await GetPagedApiResponse(apiEndpoint, fields, limit, offset);
+            }
 
             return response.ResponseArray;
         }
@@ -137,13 +149,12 @@ namespace EF2OR.Providers
             }
         }
 
-        public async Task<ApiResponse> GetApiResponse(string apiEndpoint, string fields)
+        public async Task<ApiResponse> GetPagedApiResponse(string apiEndpoint, string fields, int limit, int offset)
         {
             var context = new ApplicationDbContext();
-            //var stopFetchingRecordsAt = 500;
-            var maxRecordLimit = 100;
-            var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
+            var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
 
+            var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + limit;
             if (!string.IsNullOrEmpty(fields))
             {
                 fullUrl += "&fields=" + fields;
@@ -158,9 +169,39 @@ namespace EF2OR.Providers
 
             var token = tokenModel.Token;
 
+            return await GetPagedJArray(token, fullUrl, apiBaseUrl, offset);
+        }
+
+        public async Task<ApiResponse> GetApiResponse(string apiEndpoint, string fields)
+        {
+            var context = new ApplicationDbContext();
             var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
+            var maxRecordLimit = 100;
+            //var stopFetchingRecordsAt = 500;
+
+            var fullUrl = GetApiPrefix() + apiEndpoint + "?limit=" + maxRecordLimit;
+            if (!string.IsNullOrEmpty(fields))
+            {
+                fullUrl += "&fields=" + fields;
+            }
+
+            var tokenModel = GetToken();
+            if (!tokenModel.IsSuccessful)
+            {
+                var ex = new EF2ORCustomException("There was a problem connecting to the API.  Make sure the connection can test properly in the Settings page.");
+                throw ex;
+            }
+
+            var token = tokenModel.Token;
+
+            return await GetFullJArray(token, fullUrl, apiBaseUrl, maxRecordLimit);
+        }
+
+        private async Task<ApiResponse> GetFullJArray(string token, string fullUrl, string apiBaseUrl, int maxRecordLimit)
+        {
 
             var finalResponse = new JArray();
+            
             using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
             {
                 client.DefaultRequestHeaders.Authorization =
@@ -204,11 +245,44 @@ namespace EF2OR.Providers
                         getMoreRecords = false;
                     }
                 }
-
                 return new ApiResponse
                 {
                     TokenExpired = false,
                     ResponseArray = finalResponse
+                };
+            }
+        }
+
+        private async Task<ApiResponse> GetPagedJArray(string token, string fullUrl, string apiBaseUrl, int offset)
+        {
+            using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
+            {
+                client.DefaultRequestHeaders.Authorization =
+                       new AuthenticationHeaderValue("Bearer", token);
+
+                var apiResponse = await client.GetAsync(fullUrl + "&offset=" + offset);
+
+                if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
+                {
+                    return new ApiResponse
+                    {
+                        TokenExpired = true,
+                        ResponseArray = null
+                    };
+                }
+
+                if (apiResponse.IsSuccessStatusCode == false)
+                {
+                    throw new Exception(apiResponse.ReasonPhrase);
+                }
+
+                var responseJson = await apiResponse.Content.ReadAsStringAsync();
+                var responseArray = JArray.Parse(responseJson);
+
+                return new ApiResponse
+                {
+                    TokenExpired = false,
+                    ResponseArray = responseArray
                 };
             }
         }
