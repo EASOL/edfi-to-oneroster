@@ -145,6 +145,13 @@
 @section scripts{
 <script src="~/Scripts/jquery.modal.min.js"></script>
         <script>
+            var urls = {
+                "Subjects": "@Url.Action("GetSubjectsPartial")",
+                "Teachers": "@Url.Action("GetTeachersPartial")",
+                "Courses": "@Url.Action("GetCoursesPartial")",
+                "Sections": "@Url.Action("GetSectionsPartial")"
+            };
+
             function toggleDiv(divId) {
                 $('#' + divId).slideToggle('fast');
             }
@@ -186,6 +193,23 @@
                 return arr;
             }
 
+            function getMore(divId) {
+                var schoolIds = getCheckedIds("Schools");
+                var schoolYears = getCheckedIds("School_Years");
+                var terms = getCheckedIds("Terms");
+
+                var coursesAlreadyChecked = getCheckedIds(divId);
+                $("#numSelected_" + divId).text("(Loading...)");
+
+                $("#" + divId + "Container").load(urls[divId], {
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    boxesAlreadyChecked: coursesAlreadyChecked,
+                    getMore: true
+                });
+            }
+
             function topGroupChanged() {
                 var schoolIds = getCheckedIds("Schools");
                 var schoolYears = getCheckedIds("School_Years");
@@ -201,30 +225,36 @@
                 $("#numSelected_Teachers").text("(Loading...)");
                 $("#numSelected_Sections").text("(Loading...)");
 
-                $("#SubjectsContainer").load("@Url.Action("GetSubjectsPartial")", {
+                $("#SubjectsContainer").load(urls["Subjects"], {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
-                    boxesAlreadyChecked: subjectsAlreadyChecked });
-
-                $("#CoursesContainer").load("@Url.Action("GetCoursesPartial")", {
-                    schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
-                    boxesAlreadyChecked: coursesAlreadyChecked });
-
-                $("#TeachersContainer").load("@Url.Action("GetTeachersPartial")", {
-                    schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
-                    boxesAlreadyChecked: teachersAlreadyChecked
+                    boxesAlreadyChecked: subjectsAlreadyChecked,
+                    getMore : false
                 });
 
-                $("#SectionsContainer").load("@Url.Action("GetSectionsPartial")", {
+                $("#CoursesContainer").load(urls["Courses"], {
                     schoolIds: schoolIds,
                     schoolYears: schoolYears,
                     terms: terms,
-                    boxesAlreadyChecked: sectionsAlreadyChecked
+                    boxesAlreadyChecked: coursesAlreadyChecked,
+                    getMore : false
+                });
+
+                $("#TeachersContainer").load(urls["Teachers"], {
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    boxesAlreadyChecked: teachersAlreadyChecked,
+                    getMore : false
+            });
+
+                $("#SectionsContainer").load(urls["Sections"], {
+                    schoolIds: schoolIds,
+                    schoolYears: schoolYears,
+                    terms: terms,
+                    boxesAlreadyChecked: sectionsAlreadyChecked,
+                    getMore : false
                 });
             }
 

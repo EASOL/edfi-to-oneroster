@@ -232,40 +232,27 @@ namespace EF2OR.Controllers
         public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds,
             List<string> schoolYears,
             List<string> terms,
-            List<string> boxesAlreadyChecked)
+            List<string> boxesAlreadyChecked,
+            bool getMore)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Subjects";
 
-            var model = new ApiCriteriaSection
-            {
-                SectionName = "Subjects",
-                IsExpanded = true
-            };
+            var model = await ApiCalls.GetSubjects(schoolIds, schoolYears, terms, getMore);
+            CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
 
-            var allBoxes = await ApiCalls.GetSubjects();
-            model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
-            
             return PartialView("_CriteriaSection", model);
         }
 
         public async Task<ActionResult> GetCoursesPartial(List<string> schoolIds,
             List<string> schoolYears,
             List<string> terms,
-            List<string> boxesAlreadyChecked)
+            List<string> boxesAlreadyChecked,
+            bool getMore)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Courses";
 
-            //var model = new ApiCriteriaSection
-            //{
-            //    SectionName = "Courses",
-            //    IsExpanded = true
-            //};
-
-            //var allBoxes = await ApiCalls.GetCourses();
-            var model = await ApiCalls.GetCourses(schoolIds, schoolYears, terms, 20, 0);
+            var model = await ApiCalls.GetCourses(schoolIds, schoolYears, terms, getMore);
             CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
-            //model.FilterCheckboxes = GetFilteredCheckboxes(model.FilterCheckboxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
-            //model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
 
             return PartialView("_CriteriaSection", model);
         }
@@ -273,18 +260,13 @@ namespace EF2OR.Controllers
         public async Task<ActionResult> GetTeachersPartial(List<string> schoolIds,
             List<string> schoolYears,
             List<string> terms,
-            List<string> boxesAlreadyChecked)
+            List<string> boxesAlreadyChecked,
+            bool getMore)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Teachers";
 
-            var model = new ApiCriteriaSection
-            {
-                SectionName = "Teachers",
-                IsExpanded = true
-            };
-
-            var allBoxes = await ApiCalls.GetTeachers();
-            model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
+            var model = await ApiCalls.GetTeachers(schoolIds, schoolYears, terms, getMore);
+            CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
 
             return PartialView("_CriteriaSection", model);
         }
@@ -292,64 +274,57 @@ namespace EF2OR.Controllers
         public async Task<ActionResult> GetSectionsPartial(List<string> schoolIds,
             List<string> schoolYears,
             List<string> terms,
-            List<string> boxesAlreadyChecked)
+            List<string> boxesAlreadyChecked,
+            bool getMore)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Sections";
 
-            var model = new ApiCriteriaSection
-            {
-                SectionName = "Sections",
-                IsExpanded = true
-            };
-
-            var allBoxes = await ApiCalls.GetSections();
-            model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
+            var model = await ApiCalls.GetSections(schoolIds, schoolYears, terms, getMore);
+            CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
 
             return PartialView("_CriteriaSection", model);
         }
 
-        private List<ExportsCheckbox> GetFilteredCheckboxes(List<ExportsCheckbox> allBoxes,
-           List<string> schoolIds,
-           List<string> schoolYears,
-           List<string> terms,
-           List<string> boxesAlreadyChecked)
-        {
-            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
-            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
-            bool allTerms = terms == null || terms.Count() == 0;
+        //private List<ExportsCheckbox> GetFilteredCheckboxes(List<ExportsCheckbox> allBoxes,
+        //   List<string> schoolIds,
+        //   List<string> schoolYears,
+        //   List<string> terms,
+        //   List<string> boxesAlreadyChecked)
+        //{
+        //    bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+        //    bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+        //    bool allTerms = terms == null || terms.Count() == 0;
 
-            var filteredBoxes = new List<ExportsCheckbox>();
-            filteredBoxes.AddRange(allBoxes);
+        //    var filteredBoxes = new List<ExportsCheckbox>();
+        //    filteredBoxes.AddRange(allBoxes);
 
-            if (!allSchools)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                schoolIds.Contains(x.SchoolId)).ToList();
-            }
+        //    if (!allSchools)
+        //    {
+        //        filteredBoxes = filteredBoxes.Where(x =>
+        //        schoolIds.Contains(x.SchoolId)).ToList();
+        //    }
 
-            if (!allSchoolYears)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                schoolYears.Contains(x.SchoolYear)).ToList();
-            }
+        //    if (!allSchoolYears)
+        //    {
+        //        filteredBoxes = filteredBoxes.Where(x =>
+        //        schoolYears.Contains(x.SchoolYear)).ToList();
+        //    }
 
-            if (!allTerms)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                terms.Contains(x.Term)).ToList();
-            }
+        //    if (!allTerms)
+        //    {
+        //        filteredBoxes = filteredBoxes.Where(x =>
+        //        terms.Contains(x.Term)).ToList();
+        //    }
 
-            filteredBoxes = filteredBoxes.GroupBy(x => x.Text).Select(group => group.First()).ToList();
+        //    filteredBoxes = filteredBoxes.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
-            CheckSelectedBoxes(filteredBoxes, boxesAlreadyChecked);
+        //    CheckSelectedBoxes(filteredBoxes, boxesAlreadyChecked);
 
-            return filteredBoxes;
-        }
+        //    return filteredBoxes;
+        //}
 
         private void CheckSelectedBoxes(List<ExportsCheckbox> boxes, List<string> boxesAlreadyChecked)
         {
-            boxes.ForEach(c => c.Selected = false); // make sure all are unchecked first
-
             if (boxesAlreadyChecked != null && boxesAlreadyChecked.Count() > 0)
             {
                 var boxesToCheck = boxes.Where(x => boxesAlreadyChecked.Contains(x.Id)).ToList();
