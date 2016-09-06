@@ -9,5 +9,7 @@ namespace EF2OR.Providers
     {
         Task<JArray> GetApiData(string apiEndpoint, bool forceNew = false, string fields = null);
         Task<JArray> GetPagedApiData(string apiEndpoint, int offset, string fields = null);
+        Task<JArray> GetCustomApiData(string customUrl);
+        string GetApiPrefix();
     }
 }

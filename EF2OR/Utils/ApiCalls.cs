@@ -12,6 +12,7 @@ using EF2OR.Models;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System.Configuration;
+using System.Web;
 
 namespace EF2OR.Utils
 {
@@ -97,18 +98,24 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.SchoolYears, false, fields);
-
-                var schoolYearsStrings = (from s in responseArray
-                                          select (string)s["sessionReference"]["schoolYear"]).Distinct();
-
-                var schoolYears = (from s in schoolYearsStrings
-                                   select new ExportsCheckbox
-                                   {
-                                       Id = s,
-                                       Text = s,
-                                       Visible = true
-                                   }).OrderBy(x => x.Text).ToList();
+                var schoolYears = new List<ExportsCheckbox>();
+                var apiPrefix = CommonUtils.ApiResponseProvider.GetApiPrefix();
+                for (int i = 0; i < 10; i++)
+                {
+                    var yr = (DateTime.Now.Year - i).ToString();
+                    var customUrl = apiPrefix + ApiEndPoints.SchoolYears + "?limit=1&fields=id&schoolYear=" + yr;
+                    var newresponseArray = await CommonUtils.ApiResponseProvider.GetCustomApiData(customUrl);
+                    if (newresponseArray.Count > 0)
+                    {
+                        schoolYears.Add(new ExportsCheckbox
+                            {
+                                Id = yr,
+                                Text = yr,
+                                Visible = true
+                            });
+                    }
+                }
+                
                 CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] = schoolYears;
             }
 
@@ -122,17 +129,27 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllTerms"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.SchoolYears);
-                var termStrings = (from s in responseArray
-                                   select (string)s["sessionReference"]["termDescriptor"]).Distinct();
+                var allTermDescriptors = await GetTermDescriptors();
 
-                var terms = (from s in termStrings
-                             select new ExportsCheckbox
-                             {
-                                 Id = s,
-                                 Text = s,
-                                 Visible = true
-                             }).OrderBy(x => x.Text).ToList();
+                var terms = new List<ExportsCheckbox>();
+                var apiPrefix = CommonUtils.ApiResponseProvider.GetApiPrefix();
+                foreach (var termDescriptor in allTermDescriptors)
+                {
+                    // http://api.ef2or.learningtapestry.com:80/api/v2.0/2016/enrollment/sections?limit=1&fields=id&termDescriptor=Fall%20Semester
+                    var customUrl = apiPrefix + ApiEndPoints.Terms + "?limit=1&fields=id&termDescriptor=" + HttpUtility.UrlPathEncode(termDescriptor);
+                    
+                    var newresponseArray = await CommonUtils.ApiResponseProvider.GetCustomApiData(customUrl);
+                    if (newresponseArray.Count > 0)
+                    {
+                        terms.Add(new ExportsCheckbox
+                        {
+                            Id = termDescriptor,
+                            Text = termDescriptor,
+                            Visible = true
+                        });
+                    }
+                }
+                
                 CommonUtils.HttpContextProvider.Current.Session["AllTerms"] = terms;
             }
 
