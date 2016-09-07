@@ -64,6 +64,18 @@ namespace EF2OR.Providers
             return response.ResponseArray;
         }
 
+        public async Task<JArray> GetCustomApiData(string customUrl)
+        {
+            var response = await GetCustomApiResponse(customUrl);
+            if (response.TokenExpired)
+            {
+                Providers.ApiResponseProvider.GetToken(true);
+                response = await GetCustomApiResponse(customUrl);
+            }
+
+            return response.ResponseArray;
+        }
+
         public static TokenViewModel GetToken(bool forceNewToken = false)
         {
             if (forceNewToken || CommonUtils.HttpContextProvider.Current.Session["token"] == null || ((TokenViewModel)HttpContext.Current.Session["token"]).IsSuccessful == false)
@@ -147,7 +159,7 @@ namespace EF2OR.Providers
             }
         }
 
-        private static string GetApiPrefix()
+        public string GetApiPrefix()
         {
             using (var context = new ApplicationDbContext())
             {
@@ -155,7 +167,52 @@ namespace EF2OR.Providers
             }
         }
 
-        public async Task<ApiResponse> GetPagedApiResponse(string apiEndpoint, string fields, int offset)
+        private async Task<ApiResponse> GetCustomApiResponse(string customUrl)
+        {
+            var tokenModel = GetToken();
+            if (!tokenModel.IsSuccessful)
+            {
+                var ex = new EF2ORCustomException("There was a problem connecting to the API.  Make sure the connection can test properly in the Settings page.");
+                throw ex;
+            }
+
+            var token = tokenModel.Token;
+
+            var context = new ApplicationDbContext();
+            var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
+            using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
+            {
+                client.DefaultRequestHeaders.Authorization =
+                       new AuthenticationHeaderValue("Bearer", token);
+
+                var apiResponse = await client.GetAsync(customUrl);
+
+                if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
+                {
+                    return new ApiResponse
+                    {
+                        TokenExpired = true,
+                        ResponseArray = null
+                    };
+                }
+
+                if (apiResponse.IsSuccessStatusCode == false)
+                {
+                    throw new Exception(apiResponse.ReasonPhrase);
+                }
+
+                var responseJson = await apiResponse.Content.ReadAsStringAsync();
+                var responseArray = JArray.Parse(responseJson);
+
+                return new ApiResponse
+                {
+                    TokenExpired = false,
+                    ResponseArray = responseArray
+                };
+            }
+        }
+
+        private async Task<ApiResponse> GetPagedApiResponse(string apiEndpoint, string fields, int offset)
         {
             var context = new ApplicationDbContext();
             var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;

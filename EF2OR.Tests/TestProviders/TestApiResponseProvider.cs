@@ -48,6 +48,21 @@ namespace EF2OR.Tests.TestProviders
             //return result;
         }
 
+        Task<IEdFiOdsData> IApiResponseProvider.GetApiData<T>(string apiEndpoint, bool forceNew, string fields)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IApiResponseProvider.GetApiPrefix()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<JArray> IApiResponseProvider.GetCustomApiData(string customUrl)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<JArray> IApiResponseProvider.GetPagedApiData(string apiEndpoint, int offset, string fields)
         {
             throw new NotImplementedException();
