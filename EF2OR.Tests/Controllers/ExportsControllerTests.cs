@@ -653,7 +653,7 @@ namespace EF2OR.Controllers.Tests
         private async Task<ExportsViewModel> GetDefaultExportsViewModel()
         {
             ExportsViewModel result = new ExportsViewModel();
-            var courses = await ApiCalls.GetCourses();
+            var courses = await ApiCalls.GetCourses(null,null,null,false);
             result.SelectedCourses = string.Join(",", courses);
             var schools = await ApiCalls.GetSchools();
             result.SelectedSchools = string.Join(",", schools.Select(p => p.SchoolId));
@@ -701,7 +701,7 @@ namespace EF2OR.Controllers.Tests
                 var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
                 var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
                 var partialResult = await controller.GetTeachersPartial(schoolIds: schoolIds, schoolYears: schoolYears, terms: null,
-                    boxesAlreadyChecked: null);
+                    boxesAlreadyChecked: null, getMore: false);
                 Assert.IsNotNull(partialResult, "Invalid result");
                 Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Invalid result type");
                 PartialViewResult partialViewResult = partialResult as PartialViewResult;
@@ -727,7 +727,7 @@ namespace EF2OR.Controllers.Tests
                 var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
                 var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
                 var partialResult = await controller.GetSectionsPartial(schoolIds: schoolIds,
-                    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
+                    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null, getMore: false);
                 Assert.IsNotNull(partialResult, "Invalid result");
                 Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
                 PartialViewResult partialViewResult = partialResult as PartialViewResult;
@@ -753,7 +753,7 @@ namespace EF2OR.Controllers.Tests
             var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
             var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
             var partialResult = await controller.GetCoursesPartial(schoolIds: schoolIds,
-                schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
+                schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null, getMore:false);
             Assert.IsNotNull(partialResult, "Invalid result");
             Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
             PartialViewResult partialViewResult = partialResult as PartialViewResult;
@@ -779,7 +779,7 @@ namespace EF2OR.Controllers.Tests
                 var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
                 var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
                 var partialResult = await controller.GetSubjectsPartial(schoolIds: schoolIds,
-                    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
+                    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null, getMore: false);
                 Assert.IsNotNull(partialResult, "Invalid result");
                 Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
                 PartialViewResult partialViewResult = partialResult as PartialViewResult;

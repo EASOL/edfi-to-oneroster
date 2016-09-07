@@ -1,4 +1,5 @@
-﻿using EF2OR.Enums;
+﻿using EF2OR.Entities;
+using EF2OR.Enums;
 using EF2OR.Models;
 using EF2OR.Utils;
 using EF2OR.ViewModels;
@@ -11,6 +12,11 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using SchoolsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Schools;
+using SectionsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Sections;
+using StaffsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Staffs;
+using StudentsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Students;
+using EdFiOdsApiNS = EF2OR.Entities.EdFiOdsApi;
 
 namespace EF2OR.Providers
 {
@@ -18,22 +24,22 @@ namespace EF2OR.Providers
     {
         internal static ApplicationDbContext db = new ApplicationDbContext();
 
-        public ApiResponseProvider ()
+        public ApiResponseProvider()
         {
         }
 
-        public async Task<JArray> GetApiData(string apiEndpoint, bool forceNew = false, string fields = null)
+        public async Task<EdFiOdsApiNS.IEdFiOdsData> GetApiData<T>(string apiEndpoint, bool forceNew = false, string fields = null) where T : class, EdFiOdsApiNS.IEdFiOdsData, new()
         {
             if (CommonUtils.ExistingResponses.ContainsKey(apiEndpoint) && !forceNew)
             {
                 return CommonUtils.ExistingResponses[apiEndpoint];
             }
 
-            var response = await GetApiResponse(apiEndpoint, fields);
+            var response = await GetApiResponse<T>(apiEndpoint, fields);
             if (response.TokenExpired)
             {
                 Providers.ApiResponseProvider.GetToken(true);
-                response = await GetApiResponse(apiEndpoint, fields);
+                response = await GetApiResponse<T>(apiEndpoint, fields);
             }
 
             if (CommonUtils.ExistingResponses.ContainsKey(apiEndpoint))
@@ -41,9 +47,9 @@ namespace EF2OR.Providers
                 CommonUtils.ExistingResponses.Remove(apiEndpoint);
             }
 
-            CommonUtils.ExistingResponses.Add(apiEndpoint, response.ResponseArray);
+            CommonUtils.ExistingResponses.Add(apiEndpoint, response);
 
-            return response.ResponseArray;
+            return response;
         }
 
         public async Task<JArray> GetPagedApiData(string apiEndpoint, int offset, string fields = null)
@@ -173,7 +179,7 @@ namespace EF2OR.Providers
             return await GetPagedJArray(token, fullUrl, apiBaseUrl, offset);
         }
 
-        public async Task<ApiResponse> GetApiResponse(string apiEndpoint, string fields)
+        public async Task<EdFiOdsApiNS.IEdFiOdsData> GetApiResponse<T>(string apiEndpoint, string fields) where T : class, EdFiOdsApiNS.IEdFiOdsData, new()
         {
             var context = new ApplicationDbContext();
             var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
@@ -194,64 +200,218 @@ namespace EF2OR.Providers
             }
 
             var token = tokenModel.Token;
-
-            return await GetFullJArray(token, fullUrl, apiBaseUrl, maxRecordLimit);
+            await Task.Yield();
+            return GetFullJArray<T>(token, fullUrl, apiBaseUrl, maxRecordLimit);
         }
 
-        private async Task<ApiResponse> GetFullJArray(string token, string fullUrl, string apiBaseUrl, int maxRecordLimit)
+        private EdFiOdsApiNS.IEdFiOdsData GetFullJArray<T>(string token, string fullUrl, string apiBaseUrl, int maxRecordLimit) where T : class, EdFiOdsApiNS.IEdFiOdsData, new()
         {
-
-            var finalResponse = new JArray();
-            
-            using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
+            var offset = 0;
+            bool getMoreRecords = true;
+            List<ApiResponse> lstInvalidTokenResponses = new List<ApiResponse>();
+            List<Exception> lstExceptions = new List<Exception>();
+            //JArray finalResponse = new JArray();
+            List<EdFiOdsApiNS.IEdFiOdsData> lstJsonResponses = new List<EdFiOdsApiNS.IEdFiOdsData>();
+            Object SyncObject = new Object();
+            Action<int, Type> actSinglePageRequest = (requestOffset, entityType) =>
             {
-                client.DefaultRequestHeaders.Authorization =
-                       new AuthenticationHeaderValue("Bearer", token);
-
-                var offset = 0;
-                bool getMoreRecords = true;
-                while (getMoreRecords)
+                using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
                 {
-                    var apiResponse = await client.GetAsync(fullUrl + "&offset=" + offset);
-
+                    client.DefaultRequestHeaders.Authorization =
+                           new AuthenticationHeaderValue("Bearer", token);
+                    Task<HttpResponseMessage> requestTask = client.GetAsync(fullUrl + "&offset=" + requestOffset);
+                    requestTask.Wait();
+                    var apiResponse = requestTask.Result;
+                    lock (lstInvalidTokenResponses)
                     if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
-                    {
-                        return new ApiResponse
                         {
-                            TokenExpired = true,
-                            ResponseArray = null
-                        };
-                    }
-
+                            lstInvalidTokenResponses.Add(new ApiResponse
+                            {
+                                TokenExpired = true,
+                                ResponseArray = null
+                            });
+                        }
+                    lock (lstExceptions)
                     if (apiResponse.IsSuccessStatusCode == false)
-                    {
-                        throw new Exception(apiResponse.ReasonPhrase);
-                    }
+                        {
+                            lstExceptions.Add(new Exception(apiResponse.ReasonPhrase));
+                        }
 
-                    var responseJson = await apiResponse.Content.ReadAsStringAsync();
+                    Task<string> contentTask = apiResponse.Content.ReadAsStringAsync();
+                    contentTask.Wait();
+                    var responseJson = contentTask.Result;
                     var responseArray = JArray.Parse(responseJson);
 
+                    lock (SyncObject)
                     if (responseArray != null && responseArray.Count() > 0)
-                    {
-                        finalResponse = new JArray(finalResponse.Union(responseArray));
-                        offset += maxRecordLimit;
-                    }
-                    else
-                    {
-                        getMoreRecords = false;
-                    }
+                        {
+                            EdFiOdsApiNS.IEdFiOdsData entityToInsert = null;
+                            if (entityType == typeof(EdFiOdsApiNS.TermDescriptors))
+                            {
+                                var tResult = Newtonsoft.Json.JsonConvert.DeserializeObject<EdFiOdsApiNS.Class1[]>(responseJson);
+                                entityToInsert = new EdFiOdsApiNS.TermDescriptors()
+                                {
+                                    Property1 = tResult
+                                };
+                            }
+                            if (entityType == typeof(SchoolsNS.Schools))
+                            {
+                                var tResult = Newtonsoft.Json.JsonConvert.DeserializeObject<SchoolsNS.Class1[]>(responseJson);
+                                entityToInsert = new SchoolsNS.Schools()
+                                {
+                                    Property1 = tResult
+                                };
+                            }
+                            if (entityType == typeof(SectionsNS.Sections))
+                            {
+                                var tResult = Newtonsoft.Json.JsonConvert.DeserializeObject<SectionsNS.Class1[]>(responseJson);
+                                entityToInsert = new SectionsNS.Sections()
+                                {
+                                    Property1 = tResult
+                                };
+                            }
+                            if (entityType == typeof(StaffsNS.Staffs))
+                            {
+                                var tResult = Newtonsoft.Json.JsonConvert.DeserializeObject<StaffsNS.Class1[]>(responseJson);
+                                entityToInsert = new StaffsNS.Staffs()
+                                {
+                                    Property1 = tResult
+                                };
+                            }
+                            if (entityType == typeof(StudentsNS.Students))
+                            {
+                                var tResult = Newtonsoft.Json.JsonConvert.DeserializeObject<StudentsNS.Class1[]>(responseJson);
+                                entityToInsert = new StudentsNS.Students()
+                                {
+                                    Property1 = tResult
+                                };
+                            }
+                            if (entityToInsert != null)
+                            {
+                                lstJsonResponses.Add(entityToInsert);
+                            }
+                            else
+                            {
+                                throw new Exception(string.Format("No matching entity type for {0}", entityType.FullName));
+                            }
+                        }
+                        else
+                        {
+                            getMoreRecords = false;
+                        }
 
                     if (responseArray.Count() != maxRecordLimit)//  || finalResponse.Count() >= stopFetchingRecordsAt)
                     {
                         getMoreRecords = false;
                     }
                 }
-                return new ApiResponse
+            };
+            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start();
+            Type type = typeof(T);
+            while (getMoreRecords)
+            {
+                Action[] actionsToExecute = new Action[]
                 {
-                    TokenExpired = false,
-                    ResponseArray = finalResponse
+                    ()=> { actSinglePageRequest(offset, type);},
+                    ()=> { actSinglePageRequest(offset + 100, type);},
+                    ()=> { actSinglePageRequest(offset + 200, type);},
+                    ()=> { actSinglePageRequest(offset + 300, type);},
+                    ()=> { actSinglePageRequest(offset + 400, type);},
+                    ()=> { actSinglePageRequest(offset + 500, type);}
                 };
+                Parallel.Invoke(actionsToExecute);
+                offset += maxRecordLimit * actionsToExecute.Count();
             }
+            stopWatch.Stop();
+            var ellapsed = stopWatch.Elapsed;
+            //JArray finalResponse = new JArray();
+            //while (lstJsonResponses.Count > 0)
+            //{
+            //    var firstItem = lstJsonResponses[0];
+            //    var jArrayElement = JArray.Parse(firstItem);
+            //    while (jArrayElement.Count > 0)
+            //    {
+            //        finalResponse.Add(jArrayElement[0]);
+            //        jArrayElement.RemoveAt(0);
+            //    }
+            //    lstJsonResponses.RemoveAt(0);
+            //}
+            //    while (getMoreRecords)
+            //    {
+            //        var apiResponse = await client.GetAsync(fullUrl + "&offset=" + offset);
+
+            //        if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
+            //        {
+            //            return new ApiResponse
+            //            {
+            //                TokenExpired = true,
+            //                ResponseArray = null
+            //            };
+            //        }
+
+            //        if (apiResponse.IsSuccessStatusCode == false)
+            //        {
+            //            throw new Exception(apiResponse.ReasonPhrase);
+            //        }
+
+            //        var responseJson = await apiResponse.Content.ReadAsStringAsync();
+            //        var responseArray = JArray.Parse(responseJson);
+
+            //        if (responseArray != null && responseArray.Count() > 0)
+            //        {
+            //            finalResponse = new JArray(finalResponse.Union(responseArray));
+            //            offset += maxRecordLimit;
+            //        }
+            //        else
+            //        {
+            //            getMoreRecords = false;
+            //        }
+
+            //        if (responseArray.Count() != maxRecordLimit)//  || finalResponse.Count() >= stopFetchingRecordsAt)
+            //        {
+            //            getMoreRecords = false;
+            //        }
+            //    }
+            T result = new T();
+            try
+            {
+                if (typeof(T) == typeof(SchoolsNS.Schools))
+                {
+                    var termDescriptorsResult = lstJsonResponses.Cast<SchoolsNS.Schools>();
+                    var tResult = result as SchoolsNS.Schools;
+                    tResult.Property1 = termDescriptorsResult.SelectMany(p => p.Property1).ToArray();
+                }
+                if (typeof(T) == typeof(SectionsNS.Sections))
+                {
+                    var termDescriptorsResult = lstJsonResponses.Cast<SectionsNS.Sections>();
+                    var tResult = result as SectionsNS.Sections;
+                    tResult.Property1 = termDescriptorsResult.SelectMany(p => p.Property1).ToArray();
+                }
+                if (typeof(T) == typeof(StaffsNS.Staffs))
+                {
+                    var termDescriptorsResult = lstJsonResponses.Cast<StaffsNS.Staffs>();
+                    var tResult = result as StaffsNS.Staffs;
+                    tResult.Property1 = termDescriptorsResult.SelectMany(p => p.Property1).ToArray();
+                }
+                if (typeof(T) == typeof(StudentsNS.Students))
+                {
+                    var termDescriptorsResult = lstJsonResponses.Cast<StudentsNS.Students>();
+                    var tResult = result as StudentsNS.Students;
+                    tResult.Property1 = termDescriptorsResult.SelectMany(p => p.Property1).ToArray();
+                }
+                if (typeof(T) == typeof(EdFiOdsApiNS.TermDescriptors))
+                {
+                    var termDescriptorsResult = lstJsonResponses.Cast<EdFiOdsApiNS.TermDescriptors>();
+                    var tResult = result as EdFiOdsApiNS.TermDescriptors;
+                    tResult.Property1 = termDescriptorsResult.SelectMany(p => p.Property1).ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
         }
 
         private async Task<ApiResponse> GetPagedJArray(string token, string fullUrl, string apiBaseUrl, int offset)

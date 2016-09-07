@@ -2,12 +2,13 @@
 using EF2OR.ViewModels;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using EF2OR.Entities.EdFiOdsApi;
 
 namespace EF2OR.Providers
 {
     public interface IApiResponseProvider
     {
-        Task<JArray> GetApiData(string apiEndpoint, bool forceNew = false, string fields = null);
+        Task<IEdFiOdsData> GetApiData<T>(string apiEndpoint, bool forceNew = false, string fields = null) where T : class, IEdFiOdsData, new();
         Task<JArray> GetPagedApiData(string apiEndpoint, int offset, string fields = null);
     }
 }

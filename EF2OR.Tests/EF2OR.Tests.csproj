@@ -174,6 +174,10 @@
     <Compile Include="Utils\SessionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EF2OR.Entities\EF2OR.Entities.csproj">
+      <Project>{f093c3db-1219-45a5-9ce3-3e7c337353a8}</Project>
+      <Name>EF2OR.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EF2OR\EF2OR.csproj">
       <Project>{704C8D23-F2B7-42FC-AB2B-E1050CABAAFC}</Project>
       <Name>EF2OR</Name>

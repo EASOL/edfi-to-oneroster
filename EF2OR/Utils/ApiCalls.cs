@@ -12,6 +12,11 @@ using EF2OR.Models;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System.Configuration;
+using StaffNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Staffs;
+using SchoolsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Schools;
+using SectionsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Sections;
+using StudentsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Students;
+using EF2OR.Entities.EdFiOdsApi;
 
 namespace EF2OR.Utils
 {
@@ -22,7 +27,7 @@ namespace EF2OR.Utils
         static ApiCalls()
         {
             Providers.ApiResponseProvider.db = ApiCalls.db;
-            CommonUtils.ExistingResponses = new Dictionary<string, JArray>();
+            CommonUtils.ExistingResponses = new Dictionary<string, Entities.EdFiOdsApi.IEdFiOdsData>();
     }
         private static string UserId
         {
@@ -74,13 +79,13 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllSchools"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Schools, false, fields);
-                var schools = (from s in responseArray
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SchoolsNS.Schools>(ApiEndPoints.Schools, false, fields) as SchoolsNS.Schools;
+                var schools = (from s in responseArray.Property1
                                select new ExportsCheckbox
                                {
-                                   Id = (string)s["id"],
-                                   SchoolId = (string)s["id"],
-                                   Text = (string)s["nameOfInstitution"],
+                                   Id = s.id,
+                                   SchoolId = Convert.ToString(s.schoolId),
+                                   Text = s.nameOfInstitution,
                                    Visible = true
                                }).OrderBy(x => x.Text).ToList();
 
@@ -97,10 +102,10 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.SchoolYears, false, fields);
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.SchoolYears, false, fields) as SectionsNS.Sections;
 
-                var schoolYearsStrings = (from s in responseArray
-                                          select (string)s["sessionReference"]["schoolYear"]).Distinct();
+                var schoolYearsStrings = (from s in responseArray.Property1
+                                          select Convert.ToString(s.sessionReference.schoolYear)).Distinct();
 
                 var schoolYears = (from s in schoolYearsStrings
                                    select new ExportsCheckbox
@@ -122,9 +127,9 @@ namespace EF2OR.Utils
         {
             if (CommonUtils.HttpContextProvider.Current.Session["AllTerms"] == null)
             {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.SchoolYears);
-                var termStrings = (from s in responseArray
-                                   select (string)s["sessionReference"]["termDescriptor"]).Distinct();
+                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.SchoolYears) as SectionsNS.Sections;
+                var termStrings = (from s in responseArray.Property1
+                                   select Convert.ToString(s.sessionReference.termDescriptor)).Distinct();
 
                 var terms = (from s in termStrings
                              select new ExportsCheckbox
@@ -260,12 +265,12 @@ namespace EF2OR.Utils
 
                 var distinctStaffSections = staffSections.GroupBy(x => x.StaffId).Select(group => group.First());
 
-                var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.Staff, false, "id,firstName,lastSurname");
-                var staffInfo = from s in staffResponse
+                var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData<StaffNS.Staffs>(ApiEndPoints.Staff, false, "id,firstName,lastSurname") as StaffNS.Staffs;
+                var staffInfo = from s in staffResponse.Property1
                                 select new
                                 {
-                                    Id = (string)s["id"],
-                                    Name = (string)s["firstName"] + " " + (string)s["lastSurname"]
+                                    Id = s.id,
+                                    Name = s.firstName + " " + s.lastSurname
                                 };
 
                 var teachers = (from ss in distinctStaffSections
@@ -406,8 +411,8 @@ namespace EF2OR.Utils
         #region ResultsMethods
         public static async Task<List<string>> GetTermDescriptors(bool forceNew = false)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.TermDescriptors, forceNew);
-            var terms = responseArray.Select(x => (string)x["description"]).Distinct();
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<TermDescriptors>(ApiEndPoints.TermDescriptors, forceNew) as TermDescriptors;
+            var terms = responseArray.Property1.Select(x => x.description).Distinct();
             CommonUtils.ExistingResponses.Remove(ApiEndPoints.TermDescriptors);  //now we have one in there with only termDescriptor
             return terms.ToList();
         }
@@ -458,22 +463,22 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvOrgs>> GetCsvOrgs(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvOrgs);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SchoolsNS.Schools>(ApiEndPoints.CsvOrgs) as SchoolsNS.Schools;
 
             var context = new ApplicationDbContext();
             var identifierSetting = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.OrgsIdentifier)?.SettingValue;
             bool blankIdentifier = identifierSetting == null || identifierSetting == OrgIdentifierSettings.blank;
             context.Dispose();
 
-            var listOfObjects = (from o in responseArray
+            var listOfObjects = (from o in responseArray.Property1
                                  select new CsvOrgs
                                  {
-                                     sourcedId = (string)o["id"],
-                                     name = (string)o["nameOfInstitution"],
+                                     sourcedId = o.id,
+                                     name = o.nameOfInstitution,
                                      type = "school",
-                                     identifier = blankIdentifier ? "" : (string)o["stateOrganizationId"],
-                                     parentSourcedId = (string)o["localEducationAgencyReference"]["id"],
-                                     SchoolId = (string)o["id"]
+                                     identifier = blankIdentifier ? "" : o.stateOrganizationId,
+                                     parentSourcedId = (string)o.localEducationAgencyReference.id,
+                                     SchoolId = (string)o.id
                                  });
 
             if (inputs != null && inputs.Schools != null)
@@ -485,22 +490,22 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
         {
-            var enrollmentsResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvUsers);
+            var enrollmentsResponse = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvUsers) as SectionsNS.Sections;
 
-            var enrollmentsList = (from o in enrollmentsResponse
-                                   let students = o["students"].Children().Select(x => (string)x["id"])
-                                   let staffs = o["staff"].Children().Select(x => (string)x["id"])
-                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
+            var enrollmentsList = (from o in enrollmentsResponse.Property1
+                                   let students = o.students.Select(x => x.id)
+                                   let staffs = o.staff.Select(x => x)
+                                   let teachers = o.staff.Select(x => x.id)
                                    select new
                                    {
                                        students = students,
                                        staffs = staffs,
-                                       SchoolId = (string)o["schoolReference"]["id"],
-                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                       Subject = (string)o["academicSubjectDescriptor"],
-                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"],
+                                       SchoolId = o.schoolReference.id,
+                                       SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
+                                       Term = o.courseOfferingReference.termDescriptor,
+                                       Subject = o.academicSubjectDescriptor,
+                                       Course = o.courseOfferingReference.localCourseCode,
+                                       Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
 
@@ -529,47 +534,47 @@ namespace EF2OR.Utils
             }
             enrollmentsList = enrollmentsList.ToList();
 
-            var studentsResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvUsersStudents);
-            var studentsResponseInfo = (from s in studentsResponse
-                                        let mainTelephone = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
-                                        let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
-                                        let emailAddress = (s["electronicMails"] == null || s["electronicMails"].Count() == 0) ? "" : (string)s["electronicMails"][0]["electronicMailAddress"] //TODO: just pick 0?.  or get based on electronicMailType field.
-                                        let mobile = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
-                                        let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+            var studentsResponse = await CommonUtils.ApiResponseProvider.GetApiData<StudentsNS.Students>(ApiEndPoints.CsvUsersStudents) as StudentsNS.Students;
+            var studentsResponseInfo = (from s in studentsResponse.Property1
+                                        let mainTelephone = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.orderOfPriority == "1")
+                                        let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone.telephoneNumber
+                                        let emailAddress = (s.electronicMails == null || s.electronicMails.Count() == 0) ? "" : (string)s.electronicMails[0].electronicMailAddress //TODO: just pick 0?.  or get based on electronicMailType field.
+                                        let mobile = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => (string)x.telephoneNumberType == "Mobile")
+                                        let mobileNumber = mobile == null ? "" : mobile.telephoneNumber
                                         select new
                                         {
-                                            id = (string)s["id"],
-                                            userId = (string)s["studentUniqueId"],
-                                            givenName = (string)s["firstName"],
-                                            familyName = (string)s["lastSurname"],
-                                            middleName = (string)s["middleName"],
-                                            identifier = (string)s["studentUniqueId"],
+                                            id = s.id,
+                                            userId = s.studentUniqueId,
+                                            givenName = s.firstName,
+                                            familyName = s.lastSurname,
+                                            middleName = s.middleName,
+                                            identifier = s.studentUniqueId,
                                             email = emailAddress,
                                             sms = mobileNumber,
                                             phone = mainTelephoneNumber,
-                                            username = (string)s["loginId"]
+                                            username = s.loginId
                                         }).ToList();
 
 
-            var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvUsersStaff);
-            var staffResponseInfo = (from s in staffResponse
-                                     let mainTelephone = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["orderOfPriority"] == "1")
-                                     let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone["telephoneNumber"]
-                                     let emailAddress = (s["electronicMails"] == null || s["electronicMails"].Count() == 0) ? "" : (string)s["electronicMails"][0]["electronicMailAddress"] //TODO: just pick 0?.  or get based on electronicMailType field.
-                                     let mobile = (s["telephones"] == null || s["telephones"].Count() == 0) ? null : s["telephones"].Children().FirstOrDefault(x => (string)x["telephoneNumberType"] == "Mobile")
-                                     let mobileNumber = mobile == null ? "" : (string)mobile["telephoneNumber"]
+            var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData<StudentsNS.Students>(ApiEndPoints.CsvUsersStaff) as StudentsNS.Students;
+            var staffResponseInfo = (from s in staffResponse.Property1
+                                     let mainTelephone = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.orderOfPriority == "1")
+                                     let mainTelephoneNumber = mainTelephone == null ? "" : mainTelephone.telephoneNumber
+                                     let emailAddress = (s.electronicMails == null || s.electronicMails.Count() == 0) ? "" : s.electronicMails[0].electronicMailAddress //TODO: just pick 0?.  or get based on electronicMailType field.
+                                     let mobile = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.telephoneNumberType == "Mobile")
+                                     let mobileNumber = mobile == null ? "" : mobile.telephoneNumber
                                      select new
                                      {
-                                         id = (string)s["id"],
-                                         userId = (string)s["staffUniqueId"],
-                                         givenName = (string)s["firstName"],
-                                         familyName = (string)s["lastSurname"],
-                                         middleName = (string)s["middleName"],
-                                         identifier = (string)s["staffUniqueId"],
+                                         id = s.id,
+                                         userId = s.studentUniqueId,
+                                         givenName = s.firstName,
+                                         familyName = s.lastSurname,
+                                         middleName = s.middleName,
+                                         identifier = s.studentUniqueId,
                                          email = emailAddress,
                                          sms = mobileNumber,
                                          phone = mainTelephoneNumber,
-                                         username = (string)s["loginId"]
+                                         username = s.loginId
                                      }).ToList();
 
             var studentInfo = (from e in enrollmentsList
@@ -594,10 +599,10 @@ namespace EF2OR.Utils
 
             var staffInfo = (from e in enrollmentsList
                              from s in e.staffs
-                             from si in staffResponseInfo.Where(x => x.id == s)
+                             from si in staffResponseInfo.Where(x => x.id == s.id)
                              select new CsvUsers
                              {
-                                 sourcedId = s,
+                                 sourcedId = s.id,
                                  orgSourcedIds = e.SchoolId,
                                  enabledUser = "TRUE",
                                  role = "teacher",
@@ -621,23 +626,23 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvCourses);
-            var enrollmentsList = (from o in responseArray
-                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvCourses) as SectionsNS.Sections;
+            var enrollmentsList = (from o in responseArray.Property1
+                                   let teachers = o.staff.Select(x => x.id)
                                    select new CsvCourses
                                    {
-                                       sourcedId = (string)o["courseOfferingReference"]["id"],
-                                       schoolYearId = (string)o["sessionReference"]["id"],
-                                       title = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       courseCode = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       orgSourcedId = (string)o["schoolReference"]["id"],
-                                       subjects = (string)o["academicSubjectDescriptor"],
-                                       SchoolId = (string)o["schoolReference"]["id"],
-                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                       Subject = (string)o["academicSubjectDescriptor"],
-                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"],
+                                       sourcedId = o.courseOfferingReference.id,
+                                       schoolYearId = o.sessionReference.id,
+                                       title = o.courseOfferingReference.localCourseCode,
+                                       courseCode = o.courseOfferingReference.localCourseCode,
+                                       orgSourcedId = o.schoolReference.id,
+                                       subjects = o.academicSubjectDescriptor,
+                                       SchoolId = o.schoolReference.id,
+                                       SchoolYear = o.courseOfferingReference.id,
+                                       Term = o.courseOfferingReference.termDescriptor,
+                                       Subject = o.academicSubjectDescriptor,
+                                       Course = o.courseOfferingReference.localCourseCode,
+                                       Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
 
@@ -672,25 +677,25 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvClasses>> GetCsvClasses(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvClasses);
-            var enrollmentsList = (from o in responseArray
-                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvClasses) as SectionsNS.Sections;
+            var enrollmentsList = (from o in responseArray.Property1
+                                   let teachers = o.staff.Select(x => x.id)
                                    select new CsvClasses
                                    {
-                                       sourcedId = (string)o["id"],
-                                       title = (string)o["uniqueSectionCode"],
-                                       courseSourcedId = (string)o["courseOfferingReference"]["id"],
-                                       classCode = (string)o["uniqueSectionCode"],
+                                       sourcedId = o.id,
+                                       title = o.uniqueSectionCode,
+                                       courseSourcedId = o.courseOfferingReference.id,
+                                       classCode = o.uniqueSectionCode,
                                        classType = "scheduled",
-                                       schoolSourcedId = (string)o["schoolReference"]["id"],
-                                       termSourcedId = (string)o["sessionReference"]["id"],
-                                       subjects = (string)o["academicSubjectDescriptor"],
-                                       SchoolId = (string)o["schoolReference"]["id"],
-                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                       Subject = (string)o["academicSubjectDescriptor"],
-                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"],
+                                       schoolSourcedId = o.schoolReference.id,
+                                       termSourcedId = o.sessionReference.id,
+                                       subjects = o.academicSubjectDescriptor,
+                                       SchoolId = o.schoolReference.id,
+                                       SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
+                                       Term = o.courseOfferingReference.termDescriptor,
+                                       Subject = o.academicSubjectDescriptor,
+                                       Course = o.courseOfferingReference.localCourseCode,
+                                       Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
 
@@ -723,23 +728,23 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvEnrollments);
-            var enrollmentsList = (from o in responseArray
-                                   let students = o["students"].Children()
-                                   let staffs = o["staff"].Children()
-                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvEnrollments)as SectionsNS.Sections;
+            var enrollmentsList = (from o in responseArray.Property1
+                                   let students = o.students
+                                   let staffs = o.staff
+                                   let teachers = o.staff.Select(x => x.id)
                                    select new
                                    {
-                                       classSourcedId = (string)o["id"],
-                                       schoolSourcedId = (string)o["schoolReference"]["id"],
+                                       classSourcedId = o.id,
+                                       schoolSourcedId = o.schoolReference.id,
                                        students = students,
                                        staffs = staffs,
-                                       SchoolId = (string)o["schoolReference"]["id"],
-                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                       Subject = (string)o["academicSubjectDescriptor"],
-                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"],
+                                       SchoolId = o.schoolReference.id,
+                                       SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
+                                       Term = o.courseOfferingReference.termDescriptor,
+                                       Subject = o.academicSubjectDescriptor,
+                                       Course = o.courseOfferingReference.localCourseCode,
+                                       Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
 
@@ -771,10 +776,10 @@ namespace EF2OR.Utils
                                from s in e.students
                                select new CsvEnrollments
                                {
-                                   sourcedId = (string)s["studentSectionAssociation_id"],
+                                   sourcedId = s.studentSectionAssociation_id,
                                    classSourcedId = e.classSourcedId,
                                    schoolSourcedId = e.schoolSourcedId,
-                                   userSourcedId = (string)s["id"],
+                                   userSourcedId = s.id,
                                    role = "student"
                                });
 
@@ -782,10 +787,10 @@ namespace EF2OR.Utils
                              from s in e.staffs
                              select new CsvEnrollments
                              {
-                                 sourcedId = (string)s["staffSectionAssociation_id"],
+                                 sourcedId = (string)s.staffSectionAssociation_id,
                                  classSourcedId = e.classSourcedId,
                                  schoolSourcedId = e.schoolSourcedId,
-                                 userSourcedId = (string)s["id"],
+                                 userSourcedId = s.id,
                                  role = "teacher"
                              });
 
@@ -796,32 +801,32 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvAcademicSessions);
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvAcademicSessions) as SectionsNS.Sections;
 
             var context = new ApplicationDbContext();
             var typeDictionary = context.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
 
-            var enrollmentsList = (from o in responseArray
-                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
-                                   let termDescriptor = (string)o["sessionReference"]["termDescriptor"]
+            var enrollmentsList = (from o in responseArray.Property1
+                                   let teachers = o.staff.Select(x => x.id)
+                                   let termDescriptor = o.sessionReference.termDescriptor
                                    let type = typeDictionary.ContainsKey(termDescriptor) ? typeDictionary[termDescriptor] : ""
-                                   let startDate = (DateTime)o["sessionReference"]["beginDate"]
-                                   let endDate = (DateTime)o["sessionReference"]["endDate"]
+                                   let startDate = DateTime.Parse(o.sessionReference.beginDate)
+                                   let endDate = DateTime.Parse(o.sessionReference.endDate)
                                    select new CsvAcademicSessions
                                    {
-                                       sourcedId = (string)o["sessionReference"]["id"],
-                                       title = (string)o["sessionReference"]["schoolYear"] + " " + termDescriptor,
+                                       sourcedId = o.sessionReference.id,
+                                       title = o.sessionReference.schoolYear + " " + termDescriptor,
                                        type = type,
                                        startDate = startDate.ToString("yyyy-MM-dd"),
                                        endDate = endDate.ToString("yyyy-MM-dd"),
-                                       SchoolId = (string)o["schoolReference"]["id"],
-                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                       Subject = (string)o["academicSubjectDescriptor"],
-                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"],
+                                       SchoolId = o.schoolReference.id,
+                                       SchoolYear = o.courseOfferingReference.schoolYear,
+                                       Term = o.courseOfferingReference.termDescriptor,
+                                       Subject = o.academicSubjectDescriptor,
+                                       Course = o.courseOfferingReference.localCourseCode,
+                                       Section = o.uniqueSectionCode,
                                        Teachers = teachers,
-                                       schoolYear = (string)o["sessionReference"]["schoolYear"]
+                                       schoolYear = o.sessionReference.schoolYear
                                    });
 
             if (inputs != null)
