@@ -35,10 +35,10 @@
 
  <div>
      @Html.HiddenFor(x => x.SelectedSchools)
-     @Html.HiddenFor(x => x.SelectedSchoolYears)
-     @Html.HiddenFor(x => x.SelectedTerms)
-     @Html.HiddenFor(x => x.SelectedSubjects)
-     @Html.HiddenFor(x => x.SelectedCourses)
+     @*@Html.HiddenFor(x => x.SelectedSchoolYears)*@
+     @*@Html.HiddenFor(x => x.SelectedTerms)*@
+     @*@Html.HiddenFor(x => x.SelectedSubjects)*@
+     @*@Html.HiddenFor(x => x.SelectedCourses)*@
      @Html.HiddenFor(x => x.SelectedTeachers)
      @Html.HiddenFor(x => x.SelectedSections)
      @Html.HiddenFor(x => x.NewTemplateName)
@@ -51,7 +51,7 @@
     { HtmlFieldPrefix = "Schools" }
 })
 
-     @Html.Partial("_CriteriaSection", Model.SchoolYearsCriteriaSection, new ViewDataDictionary()
+     @*@Html.Partial("_CriteriaSection", Model.SchoolYearsCriteriaSection, new ViewDataDictionary()
 {
     TemplateInfo = new TemplateInfo()
     { HtmlFieldPrefix = "School_Years" }
@@ -61,9 +61,9 @@
 {
     TemplateInfo = new TemplateInfo()
     { HtmlFieldPrefix = "Terms" }
-})
+})*@
 
-     <div id="SubjectsContainer">
+     @*<div id="SubjectsContainer">
          @Html.Partial("_CriteriaSection", Model.SubjectsCriteriaSection, new ViewDataDictionary()
    {
        TemplateInfo = new TemplateInfo()
@@ -77,7 +77,7 @@
        TemplateInfo = new TemplateInfo()
        { HtmlFieldPrefix = "Courses" }
    })
-     </div>
+     </div>*@
 
      <div id="TeachersContainer">
          @Html.Partial("_CriteriaSection", Model.TeachersCriteriaSection, new ViewDataDictionary()
@@ -146,9 +146,9 @@
 <script src="~/Scripts/jquery.modal.min.js"></script>
         <script>
             var urls = {
-                "Subjects": "@Url.Action("GetSubjectsPartial")",
+                //"Subjects": "@Url.Action("GetSubjectsPartial")",
                 "Teachers": "@Url.Action("GetTeachersPartial")",
-                "Courses": "@Url.Action("GetCoursesPartial")",
+                //"Courses": "@Url.Action("GetCoursesPartial")",
                 "Sections": "@Url.Action("GetSectionsPartial")"
             };
 
@@ -195,64 +195,64 @@
 
             function getMore(divId) {
                 var schoolIds = getCheckedIds("Schools");
-                var schoolYears = getCheckedIds("School_Years");
-                var terms = getCheckedIds("Terms");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
 
-                var coursesAlreadyChecked = getCheckedIds(divId);
+                var boxesAlreadyChecked = getCheckedIds(divId);
                 $("#numSelected_" + divId).text("(Loading...)");
 
                 $("#" + divId + "Container").load(urls[divId], {
                     schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
-                    boxesAlreadyChecked: coursesAlreadyChecked,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
+                    boxesAlreadyChecked: boxesAlreadyChecked,
                     getMore: true
                 });
             }
 
             function topGroupChanged() {
                 var schoolIds = getCheckedIds("Schools");
-                var schoolYears = getCheckedIds("School_Years");
-                var terms = getCheckedIds("Terms");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
 
-                var subjectsAlreadyChecked = getCheckedIds("Subjects");
-                var coursesAlreadyChecked = getCheckedIds("Courses");
+                //var subjectsAlreadyChecked = getCheckedIds("Subjects");
+                //var coursesAlreadyChecked = getCheckedIds("Courses");
                 var teachersAlreadyChecked = getCheckedIds("Teachers");
                 var sectionsAlreadyChecked = getCheckedIds("Sections");
 
-                $("#numSelected_Subjects").text("(Loading...)");
-                $("#numSelected_Courses").text("(Loading...)");
+                //$("#numSelected_Subjects").text("(Loading...)");
+                //$("#numSelected_Courses").text("(Loading...)");
                 $("#numSelected_Teachers").text("(Loading...)");
                 $("#numSelected_Sections").text("(Loading...)");
 
-                $("#SubjectsContainer").load(urls["Subjects"], {
-                    schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
-                    boxesAlreadyChecked: subjectsAlreadyChecked,
-                    getMore : false
-                });
+                //$("#SubjectsContainer").load(urls["Subjects"], {
+                //    schoolIds: schoolIds,
+                //    schoolYears: schoolYears,
+                //    terms: terms,
+                //    boxesAlreadyChecked: subjectsAlreadyChecked,
+                //    getMore : false
+                //});
 
-                $("#CoursesContainer").load(urls["Courses"], {
-                    schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
-                    boxesAlreadyChecked: coursesAlreadyChecked,
-                    getMore : false
-                });
+                //$("#CoursesContainer").load(urls["Courses"], {
+                //    schoolIds: schoolIds,
+                //    schoolYears: schoolYears,
+                //    terms: terms,
+                //    boxesAlreadyChecked: coursesAlreadyChecked,
+                //    getMore : false
+                //});
 
                 $("#TeachersContainer").load(urls["Teachers"], {
                     schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
                     boxesAlreadyChecked: teachersAlreadyChecked,
                     getMore : false
             });
 
                 $("#SectionsContainer").load(urls["Sections"], {
                     schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
                     boxesAlreadyChecked: sectionsAlreadyChecked,
                     getMore : false
                 });
@@ -277,20 +277,20 @@
                 $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
 
                 var schoolIds = getCheckedIds("Schools");
-                var schoolYears = getCheckedIds("School_Years");
-                var terms = getCheckedIds("Terms");
-                var subjects = getCheckedIds("Subjects");
-                var courses = getCheckedIds("Courses");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
+                //var subjects = getCheckedIds("Subjects");
+                //var courses = getCheckedIds("Courses");
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
                 var oneRosterVersion = $("#@Html.IdFor(m => m.OneRosterVersion)").val();
 
                 $("#DataPreview").load("@Url.Action("Preview")", {
                     schoolIds: schoolIds,
-                    schoolYears: schoolYears,
-                    terms: terms,
-                    subjects: subjects,
-                    courses: courses,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
+                    //subjects: subjects,
+                    //courses: courses,
                     teachers: teachers,
                     sections: sections,
                     oneRosterVersion: oneRosterVersion
@@ -300,18 +300,18 @@
 
             function setHiddens() {
                 var schoolIds = getCheckedIds("Schools");
-                var schoolYears = getCheckedIds("School_Years");
-                var terms = getCheckedIds("Terms");
-                var subjects = getCheckedIds("Subjects");
-                var courses = getCheckedIds("Courses");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
+                //var subjects = getCheckedIds("Subjects");
+                //var courses = getCheckedIds("Courses");
                 var teachers = getCheckedIds("Teachers");
                 var sections = getCheckedIds("Sections");
 
                 $("#@Html.IdFor(x => x.SelectedSchools)").val(schoolIds);
-                $("#@Html.IdFor(x => x.SelectedSchoolYears)").val(schoolYears);
+               @* $("#@Html.IdFor(x => x.SelectedSchoolYears)").val(schoolYears);
                 $("#@Html.IdFor(x => x.SelectedTerms)").val(terms);
                 $("#@Html.IdFor(x => x.SelectedSubjects)").val(subjects);
-                $("#@Html.IdFor(x => x.SelectedCourses)").val(courses);
+                $("#@Html.IdFor(x => x.SelectedCourses)").val(courses);*@
                 $("#@Html.IdFor(x => x.SelectedTeachers)").val(teachers);
                 $("#@Html.IdFor(x => x.SelectedSections)").val(sections);
             }

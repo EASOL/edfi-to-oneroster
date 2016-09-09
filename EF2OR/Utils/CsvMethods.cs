@@ -13,10 +13,10 @@ namespace EF2OR.Utils
     {
         //http://stackoverflow.com/questions/1179816/best-practices-for-serializing-objects-to-a-custom-string-format-for-use-in-an-ou
         public async Task<byte[]> GetZipFile(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            List<string> subjects,
-            List<string> courses,
+            //List<string> schoolYears,
+            //List<string> terms,
+            //List<string> subjects,
+            //List<string> courses,
             List<string> teachers,
             List<string> sections,
             string oneRosterVersion)
@@ -25,10 +25,10 @@ namespace EF2OR.Utils
             var inputs = new FilterInputs
             {
                 Schools = schoolIds,
-                SchoolYears = schoolYears,
-                Terms = terms,
-                Subjects = subjects,
-                Courses = courses,
+                //SchoolYears = schoolYears,
+                //Terms = terms,
+                //Subjects = subjects,
+                //Courses = courses,
                 Teachers = teachers,
                 Sections = sections
             };

@@ -47,8 +47,8 @@ namespace EF2OR.Utils
         public static async Task PopulateFilterSection1(ExportsViewModel model)
         {
             var schools = await GetSchools("id,nameOfInstitution");
-            var schoolYears = await GetSchoolYears("id,uniqueSectionCode,academicSubjectDescriptor,sessionReference,courseOfferingReference,locationReference,schoolReference,staff");
-            var terms = await GetTerms();
+            //var schoolYears = await GetSchoolYears("id,uniqueSectionCode,academicSubjectDescriptor,sessionReference,courseOfferingReference,locationReference,schoolReference,staff");
+            //var terms = await GetTerms();
 
             model.SchoolsCriteriaSection = new ApiCriteriaSection
             {
@@ -58,21 +58,21 @@ namespace EF2OR.Utils
                 AllDataReceived = true
             };
 
-            model.SchoolYearsCriteriaSection = new ApiCriteriaSection
-            {
-                FilterCheckboxes = schoolYears,
-                SectionName = "School Years",
-                IsExpanded = true,
-                AllDataReceived = true
-            };
+            //model.SchoolYearsCriteriaSection = new ApiCriteriaSection
+            //{
+            //    FilterCheckboxes = schoolYears,
+            //    SectionName = "School Years",
+            //    IsExpanded = true,
+            //    AllDataReceived = true
+            //};
 
-            model.TermsCriteriaSection = new ApiCriteriaSection
-            {
-                FilterCheckboxes = terms,
-                SectionName = "Terms",
-                IsExpanded = true,
-                AllDataReceived = true
-            };
+            //model.TermsCriteriaSection = new ApiCriteriaSection
+            //{
+            //    FilterCheckboxes = terms,
+            //    SectionName = "Terms",
+            //    IsExpanded = true,
+            //    AllDataReceived = true
+            //};
         }
 
         public static async Task<List<ExportsCheckbox>> GetSchools(string fields = null)
@@ -98,139 +98,139 @@ namespace EF2OR.Utils
             return allSchools;
         }
 
-        public static async Task<List<ExportsCheckbox>> GetSchoolYears(string fields = null)
-        {
-            if (CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] == null)
-            {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.SchoolYears, false, fields) as SectionsNS.Sections;
+        //public static async Task<List<ExportsCheckbox>> GetSchoolYears(string fields = null)
+        //{
+        //    if (CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] == null)
+        //    {
+        //        var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.SchoolYears, false, fields) as SectionsNS.Sections;
 
-                var schoolYearsStrings = (from s in responseArray.Property1
-                                          select Convert.ToString(s.sessionReference.schoolYear)).Distinct();
+        //        var schoolYearsStrings = (from s in responseArray.Property1
+        //                                  select Convert.ToString(s.sessionReference.schoolYear)).Distinct();
 
-                var schoolYears = (from s in schoolYearsStrings
-                                   select new ExportsCheckbox
-                                   {
-                                       Id = s,
-                                       Text = s,
-                                       Visible = true
-                                   }).OrderBy(x => x.Text).ToList();
-                CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] = schoolYears;
-            }
+        //        var schoolYears = (from s in schoolYearsStrings
+        //                           select new ExportsCheckbox
+        //                           {
+        //                               Id = s,
+        //                               Text = s,
+        //                               Visible = true
+        //                           }).OrderBy(x => x.Text).ToList();
+        //        CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"] = schoolYears;
+        //    }
 
-            var allSchoolYears = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"];
-            allSchoolYears.ForEach(c => c.Selected = false); // make sure all are unchecked first
+        //    var allSchoolYears = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllSchoolYears"];
+        //    allSchoolYears.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
-            return allSchoolYears;
-        }
+        //    return allSchoolYears;
+        //}
 
-        public static async Task<List<ExportsCheckbox>> GetTerms()
-        {
-            if (CommonUtils.HttpContextProvider.Current.Session["AllTerms"] == null)
-            {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.SchoolYears) as SectionsNS.Sections;
-                var termStrings = (from s in responseArray.Property1
-                                   select Convert.ToString(s.sessionReference.termDescriptor)).Distinct();
+        //public static async Task<List<ExportsCheckbox>> GetTerms()
+        //{
+        //    if (CommonUtils.HttpContextProvider.Current.Session["AllTerms"] == null)
+        //    {
+        //        var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.SchoolYears) as SectionsNS.Sections;
+        //        var termStrings = (from s in responseArray.Property1
+        //                           select Convert.ToString(s.sessionReference.termDescriptor)).Distinct();
 
-                var terms = (from s in termStrings
-                             select new ExportsCheckbox
-                             {
-                                 Id = s,
-                                 Text = s,
-                                 Visible = true
-                             }).OrderBy(x => x.Text).ToList();
-                CommonUtils.HttpContextProvider.Current.Session["AllTerms"] = terms;
-            }
+        //        var terms = (from s in termStrings
+        //                     select new ExportsCheckbox
+        //                     {
+        //                         Id = s,
+        //                         Text = s,
+        //                         Visible = true
+        //                     }).OrderBy(x => x.Text).ToList();
+        //        CommonUtils.HttpContextProvider.Current.Session["AllTerms"] = terms;
+        //    }
 
-            var allTerms = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllTerms"];
-            allTerms.ForEach(c => c.Selected = false); // make sure all are unchecked first
+        //    var allTerms = (List<ExportsCheckbox>)CommonUtils.HttpContextProvider.Current.Session["AllTerms"];
+        //    allTerms.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
-            return allTerms;
-        }
+        //    return allTerms;
+        //}
 
-        public static async Task<ApiCriteriaSection> GetSubjects(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            bool getMore)
-        {
-            string sectionName = "Subjects";
-            var model = GetSessionModel(sectionName, getMore);
+        //public static async Task<ApiCriteriaSection> GetSubjects(List<string> schoolIds,
+        //    List<string> schoolYears,
+        //    List<string> terms,
+        //    bool getMore)
+        //{
+        //    string sectionName = "Subjects";
+        //    var model = GetSessionModel(sectionName, getMore);
 
-            while (model.FilterCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived)
-            {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Subjects, model.CurrentOffset);
-                var checkboxes = (from s in responseArray
-                                  select new ExportsCheckbox
-                                {
-                                    Id = (string)s["academicSubjectDescriptor"],
-                                    SchoolId = (string)s["schoolReference"]["id"],
-                                    SchoolYear = (string)s["sessionReference"]["schoolYear"],
-                                    Term = (string)s["sessionReference"]["termDescriptor"],
-                                    Text = (string)s["academicSubjectDescriptor"],
-                                    Visible = true
-                                }).OrderBy(x => x.Text).ToList();
+        //    while (model.FilterCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived)
+        //    {
+        //        var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Subjects, model.CurrentOffset);
+        //        var checkboxes = (from s in responseArray
+        //                          select new ExportsCheckbox
+        //                        {
+        //                            Id = (string)s["academicSubjectDescriptor"],
+        //                            SchoolId = (string)s["schoolReference"]["id"],
+        //                            SchoolYear = (string)s["sessionReference"]["schoolYear"],
+        //                            Term = (string)s["sessionReference"]["termDescriptor"],
+        //                            Text = (string)s["academicSubjectDescriptor"],
+        //                            Visible = true
+        //                        }).OrderBy(x => x.Text).ToList();
 
-                if (checkboxes.Count < _maxApiCallSize)
-                {
-                    model.AllDataReceived = true;
-                }
+        //        if (checkboxes.Count < _maxApiCallSize)
+        //        {
+        //            model.AllDataReceived = true;
+        //        }
 
-                model.CurrentOffset += _maxApiCallSize;
-                model.AllCheckboxes.AddRange(checkboxes);
-                model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds, schoolYears, terms);
-            }
+        //        model.CurrentOffset += _maxApiCallSize;
+        //        model.AllCheckboxes.AddRange(checkboxes);
+        //        model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds, schoolYears, terms);
+        //    }
 
-            model.FilterCheckboxes = model.FilterCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
-            model.FilterCheckboxes.ForEach(c => c.Selected = false); // make sure all are unchecked first
+        //    model.FilterCheckboxes = model.FilterCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
+        //    model.FilterCheckboxes.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
-            CommonUtils.HttpContextProvider.Current.Session["SubjectsModel"] = model;
+        //    CommonUtils.HttpContextProvider.Current.Session["SubjectsModel"] = model;
 
-            return model;
-        }
+        //    return model;
+        //}
 
-        public static async Task<ApiCriteriaSection> GetCourses(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            bool getMore)
-        {
-            string sectionName = "Courses";
-            var model = GetSessionModel(sectionName, getMore);
+        //public static async Task<ApiCriteriaSection> GetCourses(List<string> schoolIds,
+        //    List<string> schoolYears,
+        //    List<string> terms,
+        //    bool getMore)
+        //{
+        //    string sectionName = "Courses";
+        //    var model = GetSessionModel(sectionName, getMore);
 
-            while (model.FilterCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived)
-            {
-                var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Courses, model.CurrentOffset);
-                var checkboxes = (from s in responseArray
-                                select new ExportsCheckbox
-                                {
-                                    Id = (string)s["courseOfferingReference"]["localCourseCode"],
-                                    SchoolId = (string)s["schoolReference"]["id"],
-                                    SchoolYear = (string)s["sessionReference"]["schoolYear"],
-                                    Term = (string)s["sessionReference"]["termDescriptor"],
-                                    Text = (string)s["courseOfferingReference"]["localCourseCode"],
-                                    Subject = (string)s["academicSubjectDescriptor"],
-                                    Visible = true
-                                }).OrderBy(x => x.Text).ToList();
+        //    while (model.FilterCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived)
+        //    {
+        //        var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Courses, model.CurrentOffset);
+        //        var checkboxes = (from s in responseArray
+        //                        select new ExportsCheckbox
+        //                        {
+        //                            Id = (string)s["courseOfferingReference"]["localCourseCode"],
+        //                            SchoolId = (string)s["schoolReference"]["id"],
+        //                            SchoolYear = (string)s["sessionReference"]["schoolYear"],
+        //                            Term = (string)s["sessionReference"]["termDescriptor"],
+        //                            Text = (string)s["courseOfferingReference"]["localCourseCode"],
+        //                            Subject = (string)s["academicSubjectDescriptor"],
+        //                            Visible = true
+        //                        }).OrderBy(x => x.Text).ToList();
 
-                if (checkboxes.Count < _maxApiCallSize)
-                {
-                    model.AllDataReceived = true;
-                }
+        //        if (checkboxes.Count < _maxApiCallSize)
+        //        {
+        //            model.AllDataReceived = true;
+        //        }
 
-                model.CurrentOffset += _maxApiCallSize;
-                model.AllCheckboxes.AddRange(checkboxes);
-                model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds, schoolYears, terms);
-            }
+        //        model.CurrentOffset += _maxApiCallSize;
+        //        model.AllCheckboxes.AddRange(checkboxes);
+        //        model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds, schoolYears, terms);
+        //    }
 
-            model.FilterCheckboxes = model.FilterCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
-            model.FilterCheckboxes.ForEach(c => c.Selected = false); // make sure all are unchecked first
+        //    model.FilterCheckboxes = model.FilterCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
+        //    model.FilterCheckboxes.ForEach(c => c.Selected = false); // make sure all are unchecked first
 
-            CommonUtils.HttpContextProvider.Current.Session[sectionName + "Model"] = model;
+        //    CommonUtils.HttpContextProvider.Current.Session[sectionName + "Model"] = model;
 
-            return model;
-        }
+        //    return model;
+        //}
 
         public static async Task<ApiCriteriaSection> GetTeachers(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
+            //List<string> schoolYears,
+            //List<string> terms,
             bool getMore)
         {
             string sectionName = "Teachers";
@@ -244,10 +244,10 @@ namespace EF2OR.Utils
                                 select new
                                 {
                                     SchoolId = (string)o["schoolReference"]["id"],
-                                    SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                    Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                    Subject = (string)o["academicSubjectDescriptor"],
-                                    Course = (string)o["courseOfferingReference"]["localCourseCode"],
+                                    //SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
+                                    //Term = (string)o["courseOfferingReference"]["termDescriptor"],
+                                    //Subject = (string)o["academicSubjectDescriptor"],
+                                    //Course = (string)o["courseOfferingReference"]["localCourseCode"],
                                     staffs = staffs
                                 }).ToList();
 
@@ -256,10 +256,10 @@ namespace EF2OR.Utils
                                     select new
                                     {
                                         SchoolId = section.SchoolId,
-                                        SchoolYear = section.SchoolYear,
-                                        Term = section.Term,
-                                        Subject = section.Subject,
-                                        Course = section.Course,
+                                        //SchoolYear = section.SchoolYear,
+                                        //Term = section.Term,
+                                        //Subject = section.Subject,
+                                        //Course = section.Course,
                                         StaffId = (string)staff["id"]
                                     };
 
@@ -279,10 +279,10 @@ namespace EF2OR.Utils
                                 select new ExportsCheckbox
                                 {
                                     SchoolId = ss.SchoolId,
-                                    SchoolYear = ss.SchoolYear,
-                                    Term = ss.Term,
-                                    Subject = ss.Subject,
-                                    Course = ss.Course,
+                                    //SchoolYear = ss.SchoolYear,
+                                    //Term = ss.Term,
+                                    //Subject = ss.Subject,
+                                    //Course = ss.Course,
                                     Text = teacherName,
                                     Id = ss.StaffId
                                 });
@@ -294,7 +294,7 @@ namespace EF2OR.Utils
 
                 model.CurrentOffset += _maxApiCallSize;
                 model.AllCheckboxes.AddRange(teachers);
-                model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds, schoolYears, terms);
+                model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds);//, schoolYears, terms);
             }
 
             model.FilterCheckboxes = model.FilterCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
@@ -306,8 +306,8 @@ namespace EF2OR.Utils
         }
 
         public static async Task<ApiCriteriaSection> GetSections(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
+            //List<string> schoolYears,
+            //List<string> terms,
             bool getMore)
         {
             string sectionName = "Sections";
@@ -320,12 +320,12 @@ namespace EF2OR.Utils
                                   select new ExportsCheckbox
                                   {
                                       Id = (string)s["uniqueSectionCode"], //or is it ["id"]??
-                                      Course = (string)s["courseOfferingReference"]["localCourseCode"],
+                                      //Course = (string)s["courseOfferingReference"]["localCourseCode"],
                                       SchoolId = (string)s["schoolReference"]["id"],
-                                      SchoolYear = (string)s["sessionReference"]["schoolYear"],
-                                      Term = (string)s["sessionReference"]["termDescriptor"],
+                                      //SchoolYear = (string)s["sessionReference"]["schoolYear"],
+                                      //Term = (string)s["sessionReference"]["termDescriptor"],
                                       Text = (string)s["uniqueSectionCode"],
-                                      Subject = (string)s["academicSubjectDescriptor"],
+                                      //Subject = (string)s["academicSubjectDescriptor"],
                                       Visible = true
                                   }).OrderBy(x => x.Text).ToList();
 
@@ -336,7 +336,7 @@ namespace EF2OR.Utils
 
                 model.CurrentOffset += _maxApiCallSize;
                 model.AllCheckboxes.AddRange(checkboxes);
-                model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds, schoolYears, terms);
+                model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds);//, schoolYears, terms);
             }
 
             model.FilterCheckboxes = model.FilterCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
@@ -372,13 +372,13 @@ namespace EF2OR.Utils
         }
 
         private static List<ExportsCheckbox> FilterCheckboxes(List<ExportsCheckbox> allBoxes,
-           List<string> schoolIds,
-           List<string> schoolYears,
-           List<string> terms)
+           List<string> schoolIds)
+           //List<string> schoolYears,
+           //List<string> terms)
         {
             bool allSchools = schoolIds == null || schoolIds.Count() == 0;
-            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
-            bool allTerms = terms == null || terms.Count() == 0;
+            //bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+            //bool allTerms = terms == null || terms.Count() == 0;
 
             var filteredBoxes = new List<ExportsCheckbox>();
             filteredBoxes.AddRange(allBoxes);
@@ -389,17 +389,17 @@ namespace EF2OR.Utils
                 schoolIds.Contains(x.SchoolId)).ToList();
             }
 
-            if (!allSchoolYears)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                schoolYears.Contains(x.SchoolYear)).ToList();
-            }
+            //if (!allSchoolYears)
+            //{
+            //    filteredBoxes = filteredBoxes.Where(x =>
+            //    schoolYears.Contains(x.SchoolYear)).ToList();
+            //}
 
-            if (!allTerms)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                terms.Contains(x.Term)).ToList();
-            }
+            //if (!allTerms)
+            //{
+            //    filteredBoxes = filteredBoxes.Where(x =>
+            //    terms.Contains(x.Term)).ToList();
+            //}
 
             filteredBoxes = filteredBoxes.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
@@ -501,10 +501,10 @@ namespace EF2OR.Utils
                                        students = students,
                                        staffs = staffs,
                                        SchoolId = o.schoolReference.id,
-                                       SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
-                                       Term = o.courseOfferingReference.termDescriptor,
-                                       Subject = o.academicSubjectDescriptor,
-                                       Course = o.courseOfferingReference.localCourseCode,
+                                       //SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
+                                       //Term = o.courseOfferingReference.termDescriptor,
+                                       //Subject = o.academicSubjectDescriptor,
+                                       //Course = o.courseOfferingReference.localCourseCode,
                                        Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
@@ -514,17 +514,17 @@ namespace EF2OR.Utils
                 if (inputs.Schools != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
 
-                if (inputs.SchoolYears != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+                //if (inputs.SchoolYears != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
 
-                if (inputs.Terms != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+                //if (inputs.Terms != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
 
-                if (inputs.Subjects != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+                //if (inputs.Subjects != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
 
-                if (inputs.Courses != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+                //if (inputs.Courses != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
@@ -638,10 +638,10 @@ namespace EF2OR.Utils
                                        orgSourcedId = o.schoolReference.id,
                                        subjects = o.academicSubjectDescriptor,
                                        SchoolId = o.schoolReference.id,
-                                       SchoolYear = o.courseOfferingReference.id,
-                                       Term = o.courseOfferingReference.termDescriptor,
-                                       Subject = o.academicSubjectDescriptor,
-                                       Course = o.courseOfferingReference.localCourseCode,
+                                       //SchoolYear = o.courseOfferingReference.id,
+                                       //Term = o.courseOfferingReference.termDescriptor,
+                                       //Subject = o.academicSubjectDescriptor,
+                                       //Course = o.courseOfferingReference.localCourseCode,
                                        Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
@@ -651,17 +651,17 @@ namespace EF2OR.Utils
                 if (inputs.Schools != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
 
-                if (inputs.SchoolYears != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+                //if (inputs.SchoolYears != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
 
-                if (inputs.Terms != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+                //if (inputs.Terms != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
 
-                if (inputs.Subjects != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+                //if (inputs.Subjects != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
 
-                if (inputs.Courses != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+                //if (inputs.Courses != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
@@ -691,10 +691,10 @@ namespace EF2OR.Utils
                                        termSourcedId = o.sessionReference.id,
                                        subjects = o.academicSubjectDescriptor,
                                        SchoolId = o.schoolReference.id,
-                                       SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
-                                       Term = o.courseOfferingReference.termDescriptor,
-                                       Subject = o.academicSubjectDescriptor,
-                                       Course = o.courseOfferingReference.localCourseCode,
+                                       //SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
+                                       //Term = o.courseOfferingReference.termDescriptor,
+                                       //Subject = o.academicSubjectDescriptor,
+                                       //Course = o.courseOfferingReference.localCourseCode,
                                        Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
@@ -704,17 +704,17 @@ namespace EF2OR.Utils
                 if (inputs.Schools != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
 
-                if (inputs.SchoolYears != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+                //if (inputs.SchoolYears != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
 
-                if (inputs.Terms != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+                //if (inputs.Terms != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
 
-                if (inputs.Subjects != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+                //if (inputs.Subjects != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
 
-                if (inputs.Courses != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+                //if (inputs.Courses != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
@@ -740,10 +740,10 @@ namespace EF2OR.Utils
                                        students = students,
                                        staffs = staffs,
                                        SchoolId = o.schoolReference.id,
-                                       SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
-                                       Term = o.courseOfferingReference.termDescriptor,
-                                       Subject = o.academicSubjectDescriptor,
-                                       Course = o.courseOfferingReference.localCourseCode,
+                                       //SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
+                                       //Term = o.courseOfferingReference.termDescriptor,
+                                       //Subject = o.academicSubjectDescriptor,
+                                       //Course = o.courseOfferingReference.localCourseCode,
                                        Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
@@ -753,17 +753,17 @@ namespace EF2OR.Utils
                 if (inputs.Schools != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
 
-                if (inputs.SchoolYears != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+                //if (inputs.SchoolYears != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
 
-                if (inputs.Terms != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+                //if (inputs.Terms != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
 
-                if (inputs.Subjects != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+                //if (inputs.Subjects != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
 
-                if (inputs.Courses != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+                //if (inputs.Courses != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
@@ -820,10 +820,10 @@ namespace EF2OR.Utils
                                        startDate = startDate.ToString("yyyy-MM-dd"),
                                        endDate = endDate.ToString("yyyy-MM-dd"),
                                        SchoolId = o.schoolReference.id,
-                                       SchoolYear = o.courseOfferingReference.schoolYear,
-                                       Term = o.courseOfferingReference.termDescriptor,
-                                       Subject = o.academicSubjectDescriptor,
-                                       Course = o.courseOfferingReference.localCourseCode,
+                                       //SchoolYear = o.courseOfferingReference.schoolYear,
+                                       //Term = o.courseOfferingReference.termDescriptor,
+                                       //Subject = o.academicSubjectDescriptor,
+                                       //Course = o.courseOfferingReference.localCourseCode,
                                        Section = o.uniqueSectionCode,
                                        Teachers = teachers,
                                        schoolYear = o.sessionReference.schoolYear
@@ -834,17 +834,17 @@ namespace EF2OR.Utils
                 if (inputs.Schools != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
 
-                if (inputs.SchoolYears != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
+                //if (inputs.SchoolYears != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
 
-                if (inputs.Terms != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
+                //if (inputs.Terms != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
 
-                if (inputs.Subjects != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
+                //if (inputs.Subjects != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
 
-                if (inputs.Courses != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
+                //if (inputs.Courses != null)
+                //    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));

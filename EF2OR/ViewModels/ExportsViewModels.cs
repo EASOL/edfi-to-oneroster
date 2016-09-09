@@ -7,8 +7,8 @@ namespace EF2OR.ViewModels
         public ApiCriteriaSection SchoolsCriteriaSection { get; set; }
         public ApiCriteriaSection SchoolYearsCriteriaSection { get; set; }
         public ApiCriteriaSection TermsCriteriaSection { get; set; }
-        public ApiCriteriaSection SubjectsCriteriaSection { get; set; }
-        public ApiCriteriaSection CoursesCriteriaSection { get; set; }
+        //public ApiCriteriaSection SubjectsCriteriaSection { get; set; }
+        //public ApiCriteriaSection CoursesCriteriaSection { get; set; }
         public ApiCriteriaSection TeachersCriteriaSection { get; set; }
         public ApiCriteriaSection SectionsCriteriaSection { get; set; }
         public List<DataPreviewSection> DataPreviewSections { get; set; }
@@ -16,8 +16,8 @@ namespace EF2OR.ViewModels
         public string SelectedSchools { get; set; }
         public string SelectedSchoolYears { get; set; }
         public string SelectedTerms { get; set; }
-        public string SelectedSubjects { get; set; }
-        public string SelectedCourses { get; set; }
+        //public string SelectedSubjects { get; set; }
+        //public string SelectedCourses { get; set; }
         public string SelectedTeachers { get; set; }
         public string SelectedSections { get; set; }
         public string NewTemplateName { get; set; }
@@ -61,8 +61,8 @@ namespace EF2OR.ViewModels
         public List<string> Schools { get; set; }
         public List<string> SchoolYears { get; set; }
         public List<string> Terms { get; set; }
-        public List<string> Subjects { get; set; }
-        public List<string> Courses { get; set; }
+        //public List<string> Subjects { get; set; }
+        //public List<string> Courses { get; set; }
         public List<string> Teachers { get; set; }
         public List<string> Sections { get; set; }
     }
@@ -87,8 +87,8 @@ namespace EF2OR.ViewModels
         public string SchoolId { get; set; }
         public string SchoolYear { get; set; }
         public string Term { get; set; }
-        public string Subject { get; set; }
-        public string Course { get; set; }
+        //public string Subject { get; set; }
+        //public string Course { get; set; }
         public string Teacher { get; set; }
     }
 }

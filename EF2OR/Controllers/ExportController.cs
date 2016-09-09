@@ -36,10 +36,10 @@ namespace EF2OR.Controllers
             var csvUtils = new CsvMethods();
             var bytes = await csvUtils.GetZipFile(
                 filters.Schools,
-                filters.SchoolYears,
-                filters.Terms,
-                filters.Subjects,
-                filters.Courses,
+                //filters.SchoolYears,
+                //filters.Terms,
+                //filters.Subjects,
+                //filters.Courses,
                 filters.Teachers,
                 filters.Sections,
                 template.OneRosterVersion);
