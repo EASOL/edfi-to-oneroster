@@ -234,75 +234,75 @@ namespace EF2OR.Utils
             bool getMore)
         {
             string sectionName = "Teachers";
-            var model = GetSessionModel(sectionName, getMore);
+            var model = GetSessionModel(sectionName, getMore, schoolIds);
 
-            while (model.FilterCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived)
+            if (model.SchoolIds != null && model.SchoolIds.Count() > 0)
             {
-                var sectionsResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Sections, model.CurrentOffset);
-                var sections = (from o in sectionsResponse
-                                let staffs = o["staff"].Children()//.Select(x => (string)x["id"])
-                                select new
-                                {
-                                    SchoolId = (string)o["schoolReference"]["id"],
-                                    //SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                    //Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                    //Subject = (string)o["academicSubjectDescriptor"],
-                                    //Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                    staffs = staffs
-                                }).ToList();
-
-                var staffSections = from section in sections
-                                    from staff in section.staffs
-                                    select new
-                                    {
-                                        SchoolId = section.SchoolId,
-                                        //SchoolYear = section.SchoolYear,
-                                        //Term = section.Term,
-                                        //Subject = section.Subject,
-                                        //Course = section.Course,
-                                        StaffId = (string)staff["id"]
-                                    };
-
-                var distinctStaffSections = staffSections.GroupBy(x => x.StaffId).Select(group => group.First());
-
-                var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData<StaffNS.Staffs>(ApiEndPoints.Staff, false, "id,firstName,lastSurname") as StaffNS.Staffs;
-                var staffInfo = from s in staffResponse.Property1
-                                select new
-                                {
-                                    Id = s.id,
-                                    Name = s.firstName + " " + s.lastSurname
-                                };
-
-                var teachers = (from ss in distinctStaffSections
-                                from si in staffInfo.Where(x => x.Id == ss.StaffId).DefaultIfEmpty()
-                                let teacherName = si == null ? "" : (si.Name ?? "")
-                                select new ExportsCheckbox
-                                {
-                                    SchoolId = ss.SchoolId,
-                                    //SchoolYear = ss.SchoolYear,
-                                    //Term = ss.Term,
-                                    //Subject = ss.Subject,
-                                    //Course = ss.Course,
-                                    Text = teacherName,
-                                    Id = ss.StaffId
-                                });
-
-                if (sections.Count < _maxApiCallSize)
+                if (string.IsNullOrEmpty(model.CurrentSchoolId))
                 {
-                    model.AllDataReceived = true;
+                    model.CurrentSchoolId = model.SchoolIds[0];
                 }
 
-                model.CurrentOffset += _maxApiCallSize;
-                model.AllCheckboxes.AddRange(teachers);
-                model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds);//, schoolYears, terms);
+                var endpoint = string.Format(ApiEndPoints.StaffWithSchoolId, model.CurrentSchoolId);
+                await GetTeachersData(model, endpoint, schoolIds);
+
+                if (model.CurrentSchoolAllDataReceived)
+                {
+                    var currentSchoolIndex = model.SchoolIds.FirstOrDefault(x => x.Value == model.CurrentSchoolId).Key;
+                    if (model.SchoolIds.ContainsKey(currentSchoolIndex + 1))
+                    {
+                        model.CurrentSchoolAllDataReceived = false;
+                        model.CurrentOffset = 0;
+                        model.CurrentSchoolId = model.SchoolIds[currentSchoolIndex + 1];
+                    }
+                    else
+                    {
+                        model.AllDataReceived = true;
+                    }
+                }
+            }
+            else
+            {
+                await GetTeachersData(model, ApiEndPoints.Staff, schoolIds);
             }
 
-            model.FilterCheckboxes = model.FilterCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
+            //model.FilterCheckboxes = FilterCheckboxes(model.AllCheckboxes, schoolIds);//, schoolYears, terms);
+            model.FilterCheckboxes = model.AllCheckboxes.Take(model.NumCheckBoxesToDisplay).ToList();
             model.FilterCheckboxes.ForEach(c => c.Selected = false); // make sure all are unchecked first
+            model.CanGetMore = !model.AllDataReceived || model.FilterCheckboxes.Count() < model.AllCheckboxes.Count();
 
             CommonUtils.HttpContextProvider.Current.Session[sectionName + "Model"] = model;
 
             return model;
+        }
+
+        private static async Task GetTeachersData(ApiCriteriaSection model, string endpoint, List<string> schoolIds)
+        {
+            while (model.AllCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived && !model.CurrentSchoolAllDataReceived)
+            {
+                var staffResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, model.CurrentOffset, "id,firstName,lastSurname");// as StaffNS.Staffs;
+                var staffs = (from s in staffResponse
+                                select new ExportsCheckbox
+                                {
+                                    Id = (string)s["id"],
+                                    Text = (string)s["firstName"] + " " + (string)s["lastSurname"]
+                                }).ToList();
+
+                if (staffs.Count() < _maxApiCallSize)
+                {
+                    if (model.SchoolIds != null && model.SchoolIds.Count() > 0)
+                    {
+                        model.CurrentSchoolAllDataReceived = true;
+                    }
+                    else
+                    {
+                        model.AllDataReceived = true;
+                    }
+                }
+
+                model.CurrentOffset += _maxApiCallSize;
+                model.AllCheckboxes.AddRange(staffs);
+            }
         }
 
         public static async Task<ApiCriteriaSection> GetSections(List<string> schoolIds,
@@ -311,7 +311,7 @@ namespace EF2OR.Utils
             bool getMore)
         {
             string sectionName = "Sections";
-            var model = GetSessionModel(sectionName, getMore);
+            var model = GetSessionModel(sectionName, getMore, schoolIds);
 
             while (model.FilterCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived)
             {
@@ -347,7 +347,7 @@ namespace EF2OR.Utils
             return model;
         }
 
-        private static ApiCriteriaSection GetSessionModel(string sectionName, bool getMore)
+        private static ApiCriteriaSection GetSessionModel(string sectionName, bool getMore, List<string> schoolIds)
         {
             var model = new ApiCriteriaSection();
             if (CommonUtils.HttpContextProvider.Current.Session[sectionName + "Model"] != null && getMore)
@@ -364,10 +364,19 @@ namespace EF2OR.Utils
                     CurrentOffset = 0,
                     NumCheckBoxesToDisplay = _checkboxPageSize,
                     FilterCheckboxes = new List<ExportsCheckbox>(),
-                    AllCheckboxes = new List<ExportsCheckbox>()
+                    AllCheckboxes = new List<ExportsCheckbox>(),
+                    CanGetMore = true
                 };
-            }
 
+                if (schoolIds != null && schoolIds.Count() > 0)
+                {
+                    model.SchoolIds = new Dictionary<int, string>();
+                    for (var i = 0; i < schoolIds.Count(); i++)
+                    {
+                        model.SchoolIds.Add(i, schoolIds[i]);
+                    }
+                }
+            }
             return model;
         }
 

@@ -16,8 +16,10 @@ namespace EF2OR.Entities.EdFiOdsApi.Enrollment.Staffs
     {
         public string id { get; set; }
         public string staffUniqueId { get; set; }
+        public string personalTitlePrefix { get; set; }
         public string firstName { get; set; }
         public string lastSurname { get; set; }
+        public string loginId { get; set; }
         public string sexType { get; set; }
         public DateTime birthDate { get; set; }
         public bool hispanicLatinoEthnicity { get; set; }

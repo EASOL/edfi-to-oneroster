@@ -74,8 +74,12 @@ namespace EF2OR.ViewModels
         public string SectionName { get; set; }
         public bool IsExpanded { get; set; }
         public int CurrentOffset { get; set; }
+        public string CurrentSchoolId { get; set; }
+        public bool CurrentSchoolAllDataReceived { get; set; }
+        public Dictionary<int, string> SchoolIds { get; set; }
         public int NumCheckBoxesToDisplay { get; set; }
         public bool AllDataReceived { get; set; }
+        public bool CanGetMore { get; set; }
     }
 
     public class ExportsCheckbox

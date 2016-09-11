@@ -20,7 +20,7 @@
     <a href="javascript:selectAll('@sectionName');">(select all)</a>
     <a href="javascript:deselectAll('@sectionName');">(deselect all)</a><br />
     @Html.EditorFor(x => x.FilterCheckboxes)
-    @if (!Model.AllDataReceived)
+    @if (Model.CanGetMore)
     {
         <a onclick="javascript: getMore('@sectionName');">More...</a>
     }
