@@ -357,7 +357,7 @@ namespace EF2OR.Utils
                                   {
                                       Id = (string)s["uniqueSectionCode"],
                                       Text = (string)s["uniqueSectionCode"]
-                                  }).OrderBy(x => x.Text).ToList();
+                                  }).ToList();
 
                 if (sections.Count() < _maxApiCallSize)
                 {
