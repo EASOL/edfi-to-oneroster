@@ -8,6 +8,7 @@
         public const string Subjects = "enrollment/sections";
         public const string Courses = "enrollment/sections";
         public const string Sections = "enrollment/sections";
+        public const string SectionsWithSchoolId = "enrollment/schools/{0}/sections";
         public const string Staff = "enrollment/staffs";
         public const string StaffWithSchoolId = "enrollment/schools/{0}/staffs";
         public const string SchoolYears = "enrollment/sections";
