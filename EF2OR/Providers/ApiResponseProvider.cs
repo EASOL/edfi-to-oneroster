@@ -17,6 +17,7 @@ using SectionsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Sections;
 using StaffsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Staffs;
 using StudentsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Students;
 using EdFiOdsApiNS = EF2OR.Entities.EdFiOdsApi;
+using System.Net;
 
 namespace EF2OR.Providers
 {
@@ -30,6 +31,8 @@ namespace EF2OR.Providers
 
         public async Task<EdFiOdsApiNS.IEdFiOdsData> GetApiData<T>(string apiEndpoint, bool forceNew = false, string fields = null) where T : class, EdFiOdsApiNS.IEdFiOdsData, new()
         {
+            int millisecondsToKeepAlive = 3600000;
+            ServicePointManager.SetTcpKeepAlive(true, millisecondsToKeepAlive, millisecondsToKeepAlive);
             if (CommonUtils.ExistingResponses.ContainsKey(apiEndpoint) && !forceNew)
             {
                 return CommonUtils.ExistingResponses[apiEndpoint];
@@ -278,6 +281,7 @@ namespace EF2OR.Providers
                            new AuthenticationHeaderValue("Bearer", token);
                     Task<HttpResponseMessage> requestTask = client.GetAsync(fullUrl + "&offset=" + requestOffset);
                     requestTask.Wait();
+                    YieldTime(500);
                     var apiResponse = requestTask.Result;
                     lock (lstInvalidTokenResponses)
                     if (apiResponse.IsSuccessStatusCode == false && apiResponse.ReasonPhrase == "Invalid token")
@@ -296,6 +300,7 @@ namespace EF2OR.Providers
 
                     Task<string> contentTask = apiResponse.Content.ReadAsStringAsync();
                     contentTask.Wait();
+                    YieldTime(500);
                     var responseJson = contentTask.Result;
                     var responseArray = JArray.Parse(responseJson);
 
@@ -379,6 +384,7 @@ namespace EF2OR.Providers
                 };
                 Parallel.Invoke(actionsToExecute);
                 offset += maxRecordLimit * actionsToExecute.Count();
+                YieldTime(1000);
             }
             stopWatch.Stop();
             var ellapsed = stopWatch.Elapsed;
@@ -469,6 +475,11 @@ namespace EF2OR.Providers
                 throw ex;
             }
             return result;
+        }
+
+        private void YieldTime(int millisecondsToYield)
+        {
+            System.Threading.Thread.Sleep(millisecondsToYield);
         }
 
         private async Task<ApiResponse> GetPagedJArray(string token, string fullUrl, string apiBaseUrl, int offset)
