@@ -22,6 +22,6 @@
     @Html.EditorFor(x => x.FilterCheckboxes)
     @if (Model.CanGetMore)
     {
-        <a onclick="javascript: getMore('@sectionName');">More...</a>
+        <a href="javascript: getMore('@sectionName');">More...</a>
     }
 </div>
