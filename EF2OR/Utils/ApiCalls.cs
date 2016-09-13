@@ -351,7 +351,7 @@ namespace EF2OR.Utils
         {
             while (model.AllCheckboxes.Count() < model.NumCheckBoxesToDisplay && !model.AllDataReceived && !model.CurrentSchoolAllDataReceived)
             {
-                var sectionsResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Sections, model.CurrentOffset);
+                var sectionsResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, model.CurrentOffset);
                 var sections = (from s in sectionsResponse
                                   select new ExportsCheckbox
                                   {
