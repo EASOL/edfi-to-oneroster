@@ -373,16 +373,14 @@ namespace EF2OR.Providers
             Type type = typeof(T);
             while (getMoreRecords)
             {
-                Action[] actionsToExecute = new Action[]
+                List<Action> actionsToExecute = new List<Action>(Properties.Settings.Default.ThreadQty);
+                for (int i=0; i < Properties.Settings.Default.ThreadQty; i++)
                 {
-                    ()=> { actSinglePageRequest(offset, type);},
-                    ()=> { actSinglePageRequest(offset + 100, type);},
-                    ()=> { actSinglePageRequest(offset + 200, type);},
-                    ()=> { actSinglePageRequest(offset + 300, type);},
-                    ()=> { actSinglePageRequest(offset + 400, type);},
-                    ()=> { actSinglePageRequest(offset + 500, type);}
+                    Action actionToAdd = () => actSinglePageRequest(offset + i*100, type);
+                    actionsToExecute.Add(actionToAdd);
                 };
-                Parallel.Invoke(actionsToExecute);
+                Parallel.Invoke(actionsToExecute.ToArray());
+                actionsToExecute.Clear();
                 offset += maxRecordLimit * actionsToExecute.Count();
                 YieldTime(1000);
             }
