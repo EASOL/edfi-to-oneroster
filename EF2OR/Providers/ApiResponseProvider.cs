@@ -25,6 +25,11 @@ namespace EF2OR.Providers
     {
         internal static ApplicationDbContext db = new ApplicationDbContext();
 
+        private class PageInfo
+        {
+            public int Offset { get; set; }
+        }
+
         public ApiResponseProvider()
         {
         }
@@ -264,6 +269,7 @@ namespace EF2OR.Providers
             return GetFullJArray<T>(token, fullUrl, apiBaseUrl, maxRecordLimit);
         }
 
+
         private EdFiOdsApiNS.IEdFiOdsData GetFullJArray<T>(string token, string fullUrl, string apiBaseUrl, int maxRecordLimit) where T : class, EdFiOdsApiNS.IEdFiOdsData, new()
         {
             var offset = 0;
@@ -273,13 +279,13 @@ namespace EF2OR.Providers
             //JArray finalResponse = new JArray();
             List<EdFiOdsApiNS.IEdFiOdsData> lstJsonResponses = new List<EdFiOdsApiNS.IEdFiOdsData>();
             Object SyncObject = new Object();
-            Action<int, Type> actSinglePageRequest = (requestOffset, entityType) =>
+            Action<PageInfo, Type> actSinglePageRequest = (requestOffset, entityType) =>
             {
                 using (var client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) })
                 {
                     client.DefaultRequestHeaders.Authorization =
                            new AuthenticationHeaderValue("Bearer", token);
-                    Task<HttpResponseMessage> requestTask = client.GetAsync(fullUrl + "&offset=" + requestOffset);
+                    Task<HttpResponseMessage> requestTask = client.GetAsync(fullUrl + "&offset=" + requestOffset.Offset);
                     requestTask.Wait();
                     YieldTime(500);
                     var apiResponse = requestTask.Result;
@@ -376,13 +382,14 @@ namespace EF2OR.Providers
                 List<Action> actionsToExecute = new List<Action>(Properties.Settings.Default.ThreadQty);
                 for (int i=0; i < Properties.Settings.Default.ThreadQty; i++)
                 {
-                    Action actionToAdd = () => actSinglePageRequest(offset + i*100, type);
+                    var pi = new PageInfo { Offset = offset + i*100 };
+                    Action actionToAdd = () => actSinglePageRequest(pi, type);
                     actionsToExecute.Add(actionToAdd);
                 };
                 Parallel.Invoke(actionsToExecute.ToArray());
-                actionsToExecute.Clear();
                 offset += maxRecordLimit * actionsToExecute.Count();
                 YieldTime(1000);
+                actionsToExecute.Clear();
             }
             stopWatch.Stop();
             var ellapsed = stopWatch.Elapsed;
