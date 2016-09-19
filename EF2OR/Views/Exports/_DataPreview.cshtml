@@ -10,7 +10,7 @@
                 @previewSection.SectionName
             </div>
             <div class="collapse" id="preview_@previewSection.SectionName">
-                <table id="table_@previewSection.SectionName" data-pagination="true" class="table table-striped table-bordered table-condensed">
+                <table id="table_@previewSection.SectionName" data-pagination="false" class="table table-striped table-bordered table-condensed">
                     <thead>
                         <tr>
                             @foreach (var col in previewSection.ColumnNames)
@@ -20,10 +20,50 @@
                         </tr>
                     </thead>
                 </table>
+                <i onclick="getPreviousPage('@previewSection.SectionName')" id="leftArrow_@previewSection.SectionName" class="fa fa-toggle-left" style="cursor:pointer;display:none;"></i>
+                <span id="pageNumberDisplay_@previewSection.SectionName">Page @previewSection.CurrentPage</span>
+                <input id="pageNumber_@previewSection.SectionName" type="hidden" value="1" />
+                @if (previewSection.TotalPages != 1)
+                {
+                    <i onclick="getNextPage('@previewSection.SectionName')" id="rightArrow_@previewSection.SectionName" class="fa fa-toggle-right" style="cursor:pointer;"></i>
+                }
+                <input type="hidden" id="hdnCurrentPage_@previewSection.SectionName" value="@previewSection.CurrentPage" />
             </div>
     }
 
     <script>
+        function getPage(pageNumber, sectionName) {
+            var url = previewUrls[sectionName] + "?pageNumber=" + pageNumber;
+            $.get( url, function( data ) {
+                var jsonObj = $.parseJSON(data.JsonData);
+                $('#table_' + sectionName).bootstrapTable('load', jsonObj);
+
+                $("#pageNumberDisplay_" + sectionName).text("Page " + data.CurrentPage);
+
+                $("#rightArrow_" + sectionName).show();
+                $("#leftArrow_" + sectionName).show();
+                if (data.CurrentPage == data.TotalPages) {
+                    $("#rightArrow_" + sectionName).hide();
+                }
+
+                if (data.CurrentPage == 1) {
+                    $("#leftArrow_" + sectionName).hide();
+                }
+            });
+        }
+
+        function getNextPage(sectionName) {
+            var nextPage = parseInt($("#pageNumber_" + sectionName).val()) + 1;
+            $("#pageNumber_" + sectionName).val(nextPage);
+            getPage(nextPage, sectionName);
+        }
+
+        function getPreviousPage(sectionName) {
+            var previousPage = parseInt($("#pageNumber_" + sectionName).val()) - 1;
+            $("#pageNumber_" + sectionName).val(previousPage);
+            getPage(previousPage, sectionName);
+        }
+
         $(function () {
             var orgsData = @Html.Raw(Model.JsonPreviews.Orgs);
             $('#table_orgs').bootstrapTable({
@@ -31,7 +71,7 @@
                 data: orgsData
             });
 
-            var usersData = @Html.Raw(Model.JsonPreviews.Users);
+            @*var usersData = @Html.Raw(Model.JsonPreviews.Users);
             $('#table_users').bootstrapTable({
                 undefinedText: '',
                 data: usersData
@@ -53,7 +93,7 @@
             $('#table_enrollments').bootstrapTable({
                 undefinedText: '',
                 data: enrollmentsData
-            });
+            });*@
 
             var academicsessions = @Html.Raw(Model.JsonPreviews.AcademicSessions);
             $('#table_academicsessions').bootstrapTable({

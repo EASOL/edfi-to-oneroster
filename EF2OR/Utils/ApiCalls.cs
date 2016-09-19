@@ -460,7 +460,7 @@ namespace EF2OR.Utils
         {
             var dataResults = await GetDataForPreview(inputs, oneRosterVersion);
             //var dataResults = await GetDataResults(inputs, oneRosterVersion);
-            
+            //_dataPreviewPageSize
 
             var previewModel = new PreveiwJsonResults();
             previewModel.Orgs = JsonConvert.SerializeObject(dataResults.Orgs);
@@ -469,6 +469,14 @@ namespace EF2OR.Utils
             previewModel.Classes = JsonConvert.SerializeObject(dataResults.Classes);
             previewModel.Enrollments = JsonConvert.SerializeObject(dataResults.Enrollments);
             previewModel.AcademicSessions = JsonConvert.SerializeObject(dataResults.AcademicSessions);
+
+            previewModel.OrgsTotalPages = dataResults.Orgs.Count() < _dataPreviewPageSize ? 1 : 0;
+            previewModel.UsersTotalPages = dataResults.Users.Count() < _dataPreviewPageSize ? 1 : 0;
+            previewModel.CoursesTotalPages = dataResults.Courses.Count() < _dataPreviewPageSize ? 1 : 0;
+            previewModel.ClassesTotalPages = dataResults.Classes.Count() < _dataPreviewPageSize ? 1 : 0;
+            previewModel.EnrollmentsTotalPages = dataResults.Enrollments.Count() < _dataPreviewPageSize ? 1 : 0;
+            previewModel.AcademicSessionsTotalPages = dataResults.AcademicSessions.Count() < _dataPreviewPageSize ? 1 : 0;
+
             if (oneRosterVersion == OneRosterVersions.OR_1_1)
             {
                 previewModel.Manifest = JsonConvert.SerializeObject(dataResults.Manifest);
@@ -502,6 +510,30 @@ namespace EF2OR.Utils
             return dataResults;
         }
 
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewAcademicSessionsJsonString(int pageNumber)
+        {
+            var academicSessions = await GetPagedAcademicSessions(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(academicSessions.AcademicSessionsCurrentPage);
+            return new DataPreviewPagedJsonModel
+            {
+                JsonData = serializedList,
+                CurrentPage = pageNumber,
+                TotalPages = academicSessions.TotalPages
+            };
+        }
+
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewOrgsJsonString(int pageNumber)
+        {
+            var orgs = await GetPagedOrgs(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(orgs.OrgsCurrentPage);
+            return new DataPreviewPagedJsonModel
+            {
+                JsonData = serializedList,
+                CurrentPage = pageNumber,
+                TotalPages = orgs.TotalPages
+            };
+        }
+
         public static async Task<DataResults> GetDataForPreview(FilterInputs inputs, string oneRosterVersion)
         {
             var dataResults = new DataResults();
@@ -511,13 +543,17 @@ namespace EF2OR.Utils
                 CommonUtils.ExistingResponses.Clear(); //reset the global dictionary so we get fresh data
             }
 
-            dataResults.Orgs = await GetCsvOrgs(inputs);
+            //dataResults.Orgs = await GetCsvOrgs(inputs);
+            var orgsPage1 = (await GetPagedOrgs(inputs, 0)).OrgsCurrentPage;
             dataResults.Users = await GetCsvUsers(inputs);
             dataResults.Courses = await GetCsvCourses(inputs);
             dataResults.Classes = await GetCsvClasses(inputs);
             dataResults.Enrollments = await GetCsvEnrollments(inputs);
             //dataResults.AcademicSessions = await GetCsvAcademicSessions(inputs);
-            dataResults.AcademicSessions = await GetPagedAcademicSessions(inputs, 0);
+            var academicSessionsPage1 = (await GetPagedAcademicSessions(inputs, 0)).AcademicSessionsCurrentPage;
+
+            dataResults.Orgs = orgsPage1;
+            dataResults.AcademicSessions = academicSessionsPage1;
             if (oneRosterVersion == OneRosterVersions.OR_1_1)
             {
                 dataResults.Manifest = GetCsvManifest(DownloadTypes.bulk);
@@ -554,6 +590,72 @@ namespace EF2OR.Utils
                 listOfObjects = listOfObjects.Where(x => inputs.Schools.Contains(x.SchoolId));
             }
             return listOfObjects.ToList();
+        }
+
+        private static async Task<PagedDataResults> GetPagedOrgs(FilterInputs inputs, int pageNumber)
+        {
+            var model = new PagedDataResults();
+            if (pageNumber != 0)
+            {
+                model = (PagedDataResults)CommonUtils.HttpContextProvider.Current.Session["OrgsDataPreviewResults"];
+            }
+            else
+            {
+                pageNumber = 1;
+                model.Orgs = new List<CsvOrgs>();
+                model.Inputs = inputs;
+                CommonUtils.HttpContextProvider.Current.Session["OrgsDataPreviewResults"] = model;
+            }
+
+            bool getMore = model.Orgs == null || model.Orgs.Count() < (pageNumber * _dataPreviewPageSize);
+            getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            while (getMore)
+            {
+                var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvOrgs, model.CurrentOffset);
+
+                var context = new ApplicationDbContext();
+                var identifierSetting = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.OrgsIdentifier)?.SettingValue;
+                bool blankIdentifier = identifierSetting == null || identifierSetting == OrgIdentifierSettings.blank;
+
+                var orgsList = (from o in responseArray
+                                     select new CsvOrgs
+                                     {
+                                         //sourcedId = (string)o["sessionReference"]["id"],
+                                         sourcedId = (string)o["id"],
+                                         name = (string)o["nameOfInstitution"],
+                                         type = "school",
+                                         identifier = blankIdentifier ? "" : (string)o["nameOfInstitution"],
+                                         parentSourcedId = (string)o["localEducationAgencyReference"]["id"],
+                                         SchoolId = (string)o["id"]
+                                     });
+
+                var recordsReturnedFromApi = orgsList.Count();
+                model.CurrentOffset += _maxApiCallSize;
+
+                if (inputs != null && inputs.Schools != null)
+                {
+                    orgsList = orgsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+                }
+
+                orgsList = orgsList.GroupBy(x => x.sourcedId).Select(group => group.First());//do we need to get all, then filter, then group by, then count?  I think so.  THe model mightneed another property for ALL academic session results...like how i did for checkboxes
+                model.Orgs.AddRange(orgsList);
+
+                if (recordsReturnedFromApi < _maxApiCallSize)
+                {
+                    getMore = false;
+                    model.TotalPages = (model.Orgs.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+                }
+
+                if (model.Orgs.Count() >= (pageNumber * _dataPreviewPageSize))
+                {
+                    getMore = false;
+                }
+                context.Dispose();
+            }
+
+            var startAt = (pageNumber - 1) * _dataPreviewPageSize;
+            model.OrgsCurrentPage = model.Orgs.Skip(startAt).Take(_dataPreviewPageSize).ToList();
+            return model;
         }
 
         private static async Task<List<CsvUsers>> GetCsvUsers(FilterInputs inputs)
@@ -927,7 +1029,7 @@ namespace EF2OR.Utils
             return enrollmentsList.ToList();
         }
 
-        private static async Task<List<CsvAcademicSessions>> GetPagedAcademicSessions(FilterInputs inputs, int pageNumber)
+        private static async Task<PagedDataResults> GetPagedAcademicSessions(FilterInputs inputs, int pageNumber)
         {
             var model = new PagedDataResults();
             if (pageNumber != 0)
@@ -938,6 +1040,7 @@ namespace EF2OR.Utils
             {
                 pageNumber = 1;
                 model.AcademicSessions = new List<CsvAcademicSessions>();
+                model.Inputs = inputs;
                 CommonUtils.HttpContextProvider.Current.Session["AcademicSessionsDataPreviewResults"] = model;
             }
 
@@ -975,9 +1078,8 @@ namespace EF2OR.Utils
 
                 var recordsReturnedFromApi = enrollmentsList.Count();
                 model.CurrentOffset += _maxApiCallSize;
-                FilterEnrollments(inputs, enrollmentsList);
+                FilterEnrollments(model.Inputs, enrollmentsList);
                 enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());//do we need to get all, then filter, then group by, then count?  I think so.  THe model mightneed another property for ALL academic session results...like how i did for checkboxes
-                var abc = enrollmentsList.ToList();
                 model.AcademicSessions.AddRange(enrollmentsList);
 
                 context.Dispose();
@@ -985,7 +1087,7 @@ namespace EF2OR.Utils
                 if (recordsReturnedFromApi < _maxApiCallSize)
                 {
                     getMore = false;
-                    model.TotalPages = (enrollmentsList.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+                    model.TotalPages = (model.AcademicSessions.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
                 }
 
                 if (model.AcademicSessions.Count() >= (pageNumber * _dataPreviewPageSize))
@@ -995,46 +1097,8 @@ namespace EF2OR.Utils
             }
 
             var startAt = (pageNumber - 1) * _dataPreviewPageSize;
-            var returnVal = model.AcademicSessions.Skip(startAt).Take(_dataPreviewPageSize).ToList();
-            return returnVal;
-
-            /*
-             var responseArray = await CommonUtils.ApiResponseProvider.GetApiData(ApiEndPoints.CsvAcademicSessions);
-
-            var context = new ApplicationDbContext();
-            var typeDictionary = context.AcademicSessionTypes.ToDictionary(t => t.TermDescriptor, t => t.Type);
-
-            var enrollmentsList = (from o in responseArray
-                                   let teachers = o["staff"].Children().Select(x => (string)x["id"])
-                                   let termDescriptor = (string)o["sessionReference"]["termDescriptor"]
-                                   let type = typeDictionary.ContainsKey(termDescriptor) ? typeDictionary[termDescriptor] : ""
-                                   let startDate = (DateTime)o["sessionReference"]["beginDate"]
-                                   let endDate = (DateTime)o["sessionReference"]["endDate"]
-                                   select new CsvAcademicSessions
-                                   {
-                                       sourcedId = (string)o["sessionReference"]["id"],
-                                       title = (string)o["sessionReference"]["schoolYear"] + " " + termDescriptor,
-                                       type = type,
-                                       startDate = startDate.ToString("yyyy-MM-dd"),
-                                       endDate = endDate.ToString("yyyy-MM-dd"),
-                                       SchoolId = (string)o["schoolReference"]["id"],
-                                       SchoolYear = (string)o["courseOfferingReference"]["schoolYear"],
-                                       Term = (string)o["courseOfferingReference"]["termDescriptor"],
-                                       Subject = (string)o["academicSubjectDescriptor"],
-                                       Course = (string)o["courseOfferingReference"]["localCourseCode"],
-                                       Section = (string)o["uniqueSectionCode"],
-                                       Teachers = teachers,
-                                       schoolYear = (string)o["sessionReference"]["schoolYear"]
-                                   });
-
-            FilterEnrollments(inputs, enrollmentsList);
-
-            enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
-
-            context.Dispose();
-            return enrollmentsList.ToList();
-            */
-
+            model.AcademicSessionsCurrentPage = model.AcademicSessions.Skip(startAt).Take(_dataPreviewPageSize).ToList();
+            return model;
         }
 
         private static void FilterEnrollments(FilterInputs inputs, IEnumerable<CsvAcademicSessions> enrollmentsList)

@@ -98,32 +98,44 @@ namespace EF2OR.Controllers
                     new DataPreviewSection
                     {
                         SectionName = "orgs",
-                        ColumnNames = orgColumnNames
+                        ColumnNames = orgColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.OrgsTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "users",
-                        ColumnNames = usersColumnNames
+                        ColumnNames = usersColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.UsersTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "courses",
-                        ColumnNames = coursesColumnNames
+                        ColumnNames = coursesColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.CoursesTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "classes",
-                        ColumnNames = classesColumnNames
+                        ColumnNames = classesColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.ClassesTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "enrollments",
-                        ColumnNames = enrollmentsColumnNames
+                        ColumnNames = enrollmentsColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.EnrollmentsTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "academicsessions",
-                        ColumnNames = academicsessionsColumnNames
+                        ColumnNames = academicsessionsColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.AcademicSessionsTotalPages
                     }
                 };
 
@@ -138,6 +150,18 @@ namespace EF2OR.Controllers
             }
 
             return PartialView("_DataPreview", model);
+        }
+
+        public async Task<JsonResult> GetPreviewOrgsJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewOrgsJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewAcademicSessionsJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewAcademicSessionsJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

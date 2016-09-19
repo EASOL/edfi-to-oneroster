@@ -37,12 +37,29 @@ namespace EF2OR.ViewModels
         public string Enrollments { get; set; }
         public string AcademicSessions { get; set; }
         public string Manifest { get; set; }
+
+
+        public int OrgsTotalPages { get; set; }
+        public int UsersTotalPages { get; set; }
+        public int CoursesTotalPages { get; set; }
+        public int ClassesTotalPages { get; set; }
+        public int EnrollmentsTotalPages { get; set; }
+        public int AcademicSessionsTotalPages { get; set; }
     }
 
     public class DataPreviewSection
     {
         public string SectionName { get; set; }
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
         public IEnumerable<string> ColumnNames { get; set; }
+    }
+
+    public class DataPreviewPagedJsonModel
+    {
+        public string JsonData { get; set; }
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
     }
 
     public class DataResults

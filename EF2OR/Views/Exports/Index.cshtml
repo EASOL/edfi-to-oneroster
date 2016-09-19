@@ -152,6 +152,12 @@
                 "Sections": "@Url.Action("GetSectionsPartial")"
             };
 
+            var previewUrls = {
+                "orgs": "@Url.Action("GetPreviewOrgsJsonString")",
+                "academicsessions": "@Url.Action("GetPreviewAcademicSessionsJsonString")"
+            };
+
+
             function toggleDiv(divId) {
                 $('#' + divId).slideToggle('fast');
             }
