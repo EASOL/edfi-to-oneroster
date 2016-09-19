@@ -158,6 +158,30 @@ namespace EF2OR.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        //public async Task<JsonResult> GetPreviewUsersJsonString(int pageNumber)
+        //{
+        //    var model = await ApiCalls.GetPreviewUsersJsonString(pageNumber);
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
+
+        public async Task<JsonResult> GetPreviewCoursesJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewCoursesJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewClassesJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewClassesJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewEnrollmentsJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewEnrollmentsJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         public async Task<JsonResult> GetPreviewAcademicSessionsJsonString(int pageNumber)
         {
             var model = await ApiCalls.GetPreviewAcademicSessionsJsonString(pageNumber);

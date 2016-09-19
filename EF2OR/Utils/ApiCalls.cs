@@ -460,7 +460,6 @@ namespace EF2OR.Utils
         {
             var dataResults = await GetDataForPreview(inputs, oneRosterVersion);
             //var dataResults = await GetDataResults(inputs, oneRosterVersion);
-            //_dataPreviewPageSize
 
             var previewModel = new PreveiwJsonResults();
             previewModel.Orgs = JsonConvert.SerializeObject(dataResults.Orgs);
@@ -471,7 +470,7 @@ namespace EF2OR.Utils
             previewModel.AcademicSessions = JsonConvert.SerializeObject(dataResults.AcademicSessions);
 
             previewModel.OrgsTotalPages = dataResults.Orgs.Count() < _dataPreviewPageSize ? 1 : 0;
-            previewModel.UsersTotalPages = dataResults.Users.Count() < _dataPreviewPageSize ? 1 : 0;
+            previewModel.UsersTotalPages = 0;// dataResults.Users.Count() < _dataPreviewPageSize ? 1 : 0;
             previewModel.CoursesTotalPages = dataResults.Courses.Count() < _dataPreviewPageSize ? 1 : 0;
             previewModel.ClassesTotalPages = dataResults.Classes.Count() < _dataPreviewPageSize ? 1 : 0;
             previewModel.EnrollmentsTotalPages = dataResults.Enrollments.Count() < _dataPreviewPageSize ? 1 : 0;
@@ -510,29 +509,78 @@ namespace EF2OR.Utils
             return dataResults;
         }
 
-        public static async Task<DataPreviewPagedJsonModel> GetPreviewAcademicSessionsJsonString(int pageNumber)
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewOrgsJsonString(int pageNumber)
         {
-            var academicSessions = await GetPagedAcademicSessions(null, pageNumber);
-            var serializedList = JsonConvert.SerializeObject(academicSessions.AcademicSessionsCurrentPage);
+            var data = await GetPagedOrgs(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(data.OrgsCurrentPage);
             return new DataPreviewPagedJsonModel
             {
                 JsonData = serializedList,
                 CurrentPage = pageNumber,
-                TotalPages = academicSessions.TotalPages
+                TotalPages = data.TotalPages
             };
         }
 
-        public static async Task<DataPreviewPagedJsonModel> GetPreviewOrgsJsonString(int pageNumber)
+        //public static async Task<DataPreviewPagedJsonModel> GetPreviewUsersJsonString(int pageNumber)
+        //{
+        //    var data = await GetPagedOrgs(null, pageNumber);
+        //    var serializedList = JsonConvert.SerializeObject(data.OrgsCurrentPage);
+        //    return new DataPreviewPagedJsonModel
+        //    {
+        //        JsonData = serializedList,
+        //        CurrentPage = pageNumber,
+        //        TotalPages = data.TotalPages
+        //    };
+        //}
+
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewCoursesJsonString(int pageNumber)
         {
-            var orgs = await GetPagedOrgs(null, pageNumber);
-            var serializedList = JsonConvert.SerializeObject(orgs.OrgsCurrentPage);
+            var data = await GetPagedCourses(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(data.CoursesCurentPage);
             return new DataPreviewPagedJsonModel
             {
                 JsonData = serializedList,
                 CurrentPage = pageNumber,
-                TotalPages = orgs.TotalPages
+                TotalPages = data.TotalPages
             };
         }
+
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewClassesJsonString(int pageNumber)
+        {
+            var data = await GetPagedClasses(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(data.ClassesCurentPage);
+            return new DataPreviewPagedJsonModel
+            {
+                JsonData = serializedList,
+                CurrentPage = pageNumber,
+                TotalPages = data.TotalPages
+            };
+        }
+
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewEnrollmentsJsonString(int pageNumber)
+        {
+            var data = await GetPagedEnrollments(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(data.EnrollmentsCurentPage);
+            return new DataPreviewPagedJsonModel
+            {
+                JsonData = serializedList,
+                CurrentPage = pageNumber,
+                TotalPages = data.TotalPages
+            };
+        }
+
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewAcademicSessionsJsonString(int pageNumber)
+        {
+            var data = await GetPagedAcademicSessions(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(data.AcademicSessionsCurrentPage);
+            return new DataPreviewPagedJsonModel
+            {
+                JsonData = serializedList,
+                CurrentPage = pageNumber,
+                TotalPages = data.TotalPages
+            };
+        }
+
 
         public static async Task<DataResults> GetDataForPreview(FilterInputs inputs, string oneRosterVersion)
         {
@@ -544,15 +592,23 @@ namespace EF2OR.Utils
             }
 
             //dataResults.Orgs = await GetCsvOrgs(inputs);
-            var orgsPage1 = (await GetPagedOrgs(inputs, 0)).OrgsCurrentPage;
-            dataResults.Users = await GetCsvUsers(inputs);
-            dataResults.Courses = await GetCsvCourses(inputs);
-            dataResults.Classes = await GetCsvClasses(inputs);
-            dataResults.Enrollments = await GetCsvEnrollments(inputs);
+            //dataResults.Users = await GetCsvUsers(inputs);
+            //dataResults.Courses = await GetCsvCourses(inputs);
+            //dataResults.Classes = await GetCsvClasses(inputs);
+            //dataResults.Enrollments = await GetCsvEnrollments(inputs);
             //dataResults.AcademicSessions = await GetCsvAcademicSessions(inputs);
+            var orgsPage1 = (await GetPagedOrgs(inputs, 0)).OrgsCurrentPage;
+            //var usersPage1 = (await GetPagedUsers(inputs, 0)).UsersCurentPage;
+            var coursesPage1 = (await GetPagedCourses(inputs, 0)).CoursesCurentPage;
+            var classesPage1 = (await GetPagedClasses(inputs, 0)).ClassesCurentPage;
+            var enrollmentsPage1 = (await GetPagedEnrollments(inputs, 0)).EnrollmentsCurentPage;
             var academicSessionsPage1 = (await GetPagedAcademicSessions(inputs, 0)).AcademicSessionsCurrentPage;
 
             dataResults.Orgs = orgsPage1;
+            //dataResults.Users = usersPage1;
+            dataResults.Courses = coursesPage1;
+            dataResults.Classes = classesPage1;
+            dataResults.Enrollments = enrollmentsPage1;
             dataResults.AcademicSessions = academicSessionsPage1;
             if (oneRosterVersion == OneRosterVersions.OR_1_1)
             {
@@ -683,18 +739,6 @@ namespace EF2OR.Utils
             {
                 if (inputs.Schools != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
-
-                //if (inputs.SchoolYears != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
-
-                //if (inputs.Terms != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
-
-                //if (inputs.Subjects != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
-
-                //if (inputs.Courses != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
 
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
@@ -845,6 +889,79 @@ namespace EF2OR.Utils
             return enrollmentsList.ToList();
         }
 
+        private static async Task<PagedDataResults> GetPagedCourses(FilterInputs inputs, int pageNumber)
+        {
+            var model = new PagedDataResults();
+            if (pageNumber != 0)
+            {
+                model = (PagedDataResults)CommonUtils.HttpContextProvider.Current.Session["CoursesDataPreviewResults"];
+            }
+            else
+            {
+                pageNumber = 1;
+                model.Courses = new List<CsvCourses>();
+                model.Inputs = inputs;
+                CommonUtils.HttpContextProvider.Current.Session["CoursesDataPreviewResults"] = model;
+            }
+
+            bool getMore = model.Courses == null || model.Courses.Count() < (pageNumber * _dataPreviewPageSize);
+            getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            while (getMore)
+            {
+                var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvCourses, model.CurrentOffset);
+                var enrollmentsList = (from o in responseArray
+                                       let teachers = o["staff"].Children().Select(x => (string)x["id"])
+                                       select new CsvCourses
+                                       {
+                                           sourcedId = (string)o["courseOfferingReference"]["id"],
+                                           schoolYearId = (string)o["sessionReference"]["id"],
+                                           title = (string)o["courseOfferingReference"]["localCourseCode"],
+                                           courseCode = (string)o["courseOfferingReference"]["localCourseCode"],
+                                           orgSourcedId = (string)o["schoolReference"]["id"],
+                                           subjects = (string)o["academicSubjectDescriptor"],
+                                           SchoolId = (string)o["schoolReference"]["id"],
+                                           Section = (string)o["uniqueSectionCode"],
+                                           Teachers = teachers
+                                       });
+
+                var recordsReturnedFromApi = enrollmentsList.Count();
+
+                if (inputs != null)
+                {
+                    if (inputs.Schools != null)
+                        enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                    if (inputs.Sections != null)
+                        enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                    if (inputs.Teachers != null)
+                        enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
+                }
+
+
+                model.CurrentOffset += _maxApiCallSize;
+
+                enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
+                model.Courses.AddRange(enrollmentsList);
+                model.Courses = model.Courses.GroupBy(x => x.sourcedId).Select(group => group.First()).ToList();
+
+                if (recordsReturnedFromApi < _maxApiCallSize)
+                {
+                    getMore = false;
+                    model.TotalPages = (model.Courses.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+                }
+
+                if (model.Courses.Count() >= (pageNumber * _dataPreviewPageSize))
+                {
+                    getMore = false;
+                }
+            }
+
+            var startAt = (pageNumber - 1) * _dataPreviewPageSize;
+            model.CoursesCurentPage = model.Courses.Skip(startAt).Take(_dataPreviewPageSize).ToList();
+            return model;
+        }
+
         private static async Task<List<CsvClasses>> GetCsvClasses(FilterInputs inputs)
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvClasses) as SectionsNS.Sections;
@@ -874,18 +991,6 @@ namespace EF2OR.Utils
                 if (inputs.Schools != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
 
-                //if (inputs.SchoolYears != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.SchoolYears.Contains(x.SchoolYear));
-
-                //if (inputs.Terms != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.Terms.Contains(x.Term));
-
-                //if (inputs.Subjects != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.Subjects.Contains(x.Subject));
-
-                //if (inputs.Courses != null)
-                //    enrollmentsList = enrollmentsList.Where(x => inputs.Courses.Contains(x.Course));
-
                 if (inputs.Sections != null)
                     enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
 
@@ -894,6 +999,80 @@ namespace EF2OR.Utils
             }
 
             return enrollmentsList.ToList();
+        }
+
+        private static async Task<PagedDataResults> GetPagedClasses(FilterInputs inputs, int pageNumber)
+        {
+            var model = new PagedDataResults();
+            if (pageNumber != 0)
+            {
+                model = (PagedDataResults)CommonUtils.HttpContextProvider.Current.Session["ClassesDataPreviewResults"];
+            }
+            else
+            {
+                pageNumber = 1;
+                model.Classes = new List<CsvClasses>();
+                model.Inputs = inputs;
+                CommonUtils.HttpContextProvider.Current.Session["ClassesDataPreviewResults"] = model;
+            }
+
+            bool getMore = model.Classes == null || model.Classes.Count() < (pageNumber * _dataPreviewPageSize);
+            getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            while (getMore)
+            {
+                var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvClasses, model.CurrentOffset);
+                var enrollmentsList = (from o in responseArray
+                                       let teachers = o["staff"].Children().Select(x => (string)x["id"])
+                                       select new CsvClasses
+                                       {
+                                           sourcedId = (string)o["id"],
+                                           title = (string)o["uniqueSectionCode"],
+                                           courseSourcedId = (string)o["courseOfferingReference"]["id"],
+                                           classCode = (string)o["uniqueSectionCode"],
+                                           classType = "scheduled",
+                                           schoolSourcedId = (string)o["schoolReference"]["id"],
+                                           termSourcedId = (string)o["sessionReference"]["id"],
+                                           subjects = (string)o["academicSubjectDescriptor"],
+                                           SchoolId = (string)o["schoolReference"]["id"],
+                                           Section = (string)o["uniqueSectionCode"],
+                                           Teachers = teachers
+                                       });
+
+                var recordsReturnedFromApi = enrollmentsList.Count();
+
+                if (inputs != null)
+                {
+                    if (inputs.Schools != null)
+                        enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                    if (inputs.Sections != null)
+                        enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                    if (inputs.Teachers != null)
+                        enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
+                }
+
+                model.CurrentOffset += _maxApiCallSize;
+
+                enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
+                model.Classes.AddRange(enrollmentsList);
+                model.Classes = model.Classes.GroupBy(x => x.sourcedId).Select(group => group.First()).ToList();
+
+                if (recordsReturnedFromApi < _maxApiCallSize)
+                {
+                    getMore = false;
+                    model.TotalPages = (model.Classes.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+                }
+
+                if (model.Classes.Count() >= (pageNumber * _dataPreviewPageSize))
+                {
+                    getMore = false;
+                }
+            }
+
+            var startAt = (pageNumber - 1) * _dataPreviewPageSize;
+            model.ClassesCurentPage = model.Classes.Skip(startAt).Take(_dataPreviewPageSize).ToList();
+            return model;
         }
 
         private static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
@@ -967,6 +1146,100 @@ namespace EF2OR.Utils
             var allEnrollments = studentInfo.Concat(staffInfo).ToList();
 
             return allEnrollments;
+        }
+
+        private static async Task<PagedDataResults> GetPagedEnrollments(FilterInputs inputs, int pageNumber)
+        {
+            var model = new PagedDataResults();
+            if (pageNumber != 0)
+            {
+                model = (PagedDataResults)CommonUtils.HttpContextProvider.Current.Session["EnrollmentsDataPreviewResults"];
+            }
+            else
+            {
+                pageNumber = 1;
+                model.Enrollments = new List<CsvEnrollments>();
+                model.Inputs = inputs;
+                CommonUtils.HttpContextProvider.Current.Session["EnrollmentsDataPreviewResults"] = model;
+            }
+
+            bool getMore = model.Enrollments == null || model.Enrollments.Count() < (pageNumber * _dataPreviewPageSize);
+            getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            while (getMore)
+            {
+                var responseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvEnrollments, model.CurrentOffset);
+                var enrollmentsList = (from o in responseArray
+                                       let students = o["students"].Children()
+                                       let staffs = o["staff"].Children()
+                                       let teachers = o["staff"].Children().Select(x => (string)x["id"])
+                                       select new
+                                       {
+                                           classSourcedId = (string)o["id"],
+                                           schoolSourcedId = (string)o["schoolReference"]["id"],
+                                           students = students,
+                                           staffs = staffs,
+                                           SchoolId = (string)o["schoolReference"]["id"],
+                                           Section = (string)o["uniqueSectionCode"],
+                                           Teachers = teachers
+                                       });
+
+                var recordsReturnedFromApi = enrollmentsList.Count();
+
+                if (inputs != null)
+                {
+                    if (inputs.Schools != null)
+                        enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                    if (inputs.Sections != null)
+                        enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                    if (inputs.Teachers != null)
+                        enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
+                }
+
+                var studentInfo = (from e in enrollmentsList
+                                   from s in e.students
+                                   select new CsvEnrollments
+                                   {
+                                       sourcedId = (string)s["studentSectionAssociation_id"],
+                                       classSourcedId = e.classSourcedId,
+                                       schoolSourcedId = e.schoolSourcedId,
+                                       userSourcedId = (string)s["id"],
+                                       role = "student"
+                                   });
+
+                var staffInfo = (from e in enrollmentsList
+                                 from s in e.staffs
+                                 select new CsvEnrollments
+                                 {
+                                     sourcedId = (string)s["staffSectionAssociation_id"],
+                                     classSourcedId = e.classSourcedId,
+                                     schoolSourcedId = e.schoolSourcedId,
+                                     userSourcedId = (string)s["id"],
+                                     role = "teacher"
+                                 });
+
+                var concatenatedEnrollments = studentInfo.Concat(staffInfo).ToList();
+
+                model.CurrentOffset += _maxApiCallSize;
+
+                model.Enrollments.AddRange(concatenatedEnrollments);
+
+                if (recordsReturnedFromApi < _maxApiCallSize)
+                {
+                    getMore = false;
+                    model.TotalPages = (model.Enrollments.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+                }
+
+                if (model.Enrollments.Count() >= (pageNumber * _dataPreviewPageSize))
+                {
+                    getMore = false;
+                }
+            }
+
+            var startAt = (pageNumber - 1) * _dataPreviewPageSize;
+            model.EnrollmentsCurentPage = model.Enrollments.Skip(startAt).Take(_dataPreviewPageSize).ToList();
+            return model;
         }
 
         private static async Task<List<CsvAcademicSessions>> GetCsvAcademicSessions(FilterInputs inputs)

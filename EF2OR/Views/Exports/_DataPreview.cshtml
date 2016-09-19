@@ -75,7 +75,7 @@
             $('#table_users').bootstrapTable({
                 undefinedText: '',
                 data: usersData
-            });
+            });*@
 
             var coursesData = @Html.Raw(Model.JsonPreviews.Courses);
             $('#table_courses').bootstrapTable({
@@ -93,7 +93,7 @@
             $('#table_enrollments').bootstrapTable({
                 undefinedText: '',
                 data: enrollmentsData
-            });*@
+            });
 
             var academicsessions = @Html.Raw(Model.JsonPreviews.AcademicSessions);
             $('#table_academicsessions').bootstrapTable({
