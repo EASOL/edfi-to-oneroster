@@ -48,6 +48,7 @@ namespace EF2OR.Utils
             WriteObjectToCsv(model.Classes, tempDirectoryFullName, "classes.csv", oneRosterVersion);
             WriteObjectToCsv(model.Enrollments, tempDirectoryFullName, "enrollments.csv", oneRosterVersion);
             WriteObjectToCsv(model.AcademicSessions, tempDirectoryFullName, "academicSessions.csv", oneRosterVersion);
+            WriteObjectToCsv(model.Demographics, tempDirectoryFullName, "demographics.csv", oneRosterVersion);
             if (oneRosterVersion == OneRosterVersions.OR_1_1)
             {
                 WriteObjectToCsv(model.Manifest, tempDirectoryFullName, "manifest.csv", oneRosterVersion);
@@ -62,6 +63,7 @@ namespace EF2OR.Utils
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\classes.csv", "classes.csv");
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\enrollments.csv", "enrollments.csv");
             zip.CreateEntryFromFile(tempDirectoryFullName + "\\academicSessions.csv", "academicSessions.csv");
+            zip.CreateEntryFromFile(tempDirectoryFullName + "\\demographics.csv", "demographics.csv");
             if (oneRosterVersion == OneRosterVersions.OR_1_1)
             {
                 zip.CreateEntryFromFile(tempDirectoryFullName + "\\manifest.csv", "manifest.csv");
@@ -76,6 +78,8 @@ namespace EF2OR.Utils
 
         private void WriteObjectToCsv<T>(List<T> inputList, string directoryPath, string fileName, string oneRosterVersion)
         {
+            if (inputList == null) inputList = new List<T>();
+
             var filePath = Path.Combine(directoryPath, fileName);
 
             using (StreamWriter sw = new StreamWriter(filePath))

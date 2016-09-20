@@ -272,6 +272,7 @@
     <Compile Include="ViewModels\CsvCourses.cs" />
     <Compile Include="ViewModels\CsvFieldAttributes.cs" />
     <Compile Include="ViewModels\CsvManifest.cs" />
+    <Compile Include="ViewModels\CsvDemographics.cs" />
     <Compile Include="ViewModels\CsvUsers.cs" />
     <Compile Include="ViewModels\EditTemplateViewModel.cs" />
     <Compile Include="ViewModels\InitialSetup.cs" />

@@ -70,6 +70,7 @@ namespace EF2OR.ViewModels
         public List<CsvClasses> Classes { get; set; }
         public List<CsvEnrollments> Enrollments { get; set; }
         public List<CsvAcademicSessions> AcademicSessions { get; set; }
+        public List<CsvDemographics> Demographics { get; set; }
         public List<CsvManifest> Manifest { get; set; }
     }
 
