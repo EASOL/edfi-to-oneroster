@@ -8,7 +8,7 @@ The EASOL Ed-FI to OneRoster Utility provides the ability to easily export data 
 
 ## Use Cases
 
-This utility includes powerful functionality to enable data export from the Ed-Fi Data Standard to OneRoster v1.0/1.1format. The use cases supported include::
+This utility includes powerful functionality to enable data export from the Ed-Fi Data Standard to OneRoster v1.0/1.1format. The use cases supported include:
 - Converting data from the Ed-Fi Data Standard v2.0 to One Roster v1.0/v1.1, with the ability to dynamically view and filter the dataset using domain facets.
 - Simple integration with an Ed-Fi ODS/API instance as the data source, via providing a URL, key and secret.
 - Downloading export packages, structured as per the IMS OneRoster specification.
