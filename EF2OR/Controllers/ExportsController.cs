@@ -385,42 +385,50 @@ namespace EF2OR.Controllers
 
         private async Task InitializeModelForEdit(ExportsViewModel model, int templateId)
         {
-            //var template = db.Templates.First(x => x.TemplateId == templateId);
+            var template = db.Templates.First(x => x.TemplateId == templateId);
 
-            //model.EditTemplateId = templateId;
-            //model.EditTemplateName = template.TemplateName;
-            //model.OneRosterVersion = template.OneRosterVersion;
+            model.EditTemplateId = templateId;
+            model.EditTemplateName = template.TemplateName;
+            model.OneRosterVersion = template.OneRosterVersion;
 
-            //var filters = JsonConvert.DeserializeObject<FilterInputs>(template.Filters);
+            var filters = JsonConvert.DeserializeObject<FilterInputs>(template.Filters);
 
-            //CheckSelectedBoxes(model.SchoolsCriteriaSection.FilterCheckboxes, filters.Schools);
-            //model.SchoolsCriteriaSection.IsExpanded = filters.Schools != null;
+            CheckSelectedBoxes(model.SchoolsCriteriaSection.FilterCheckboxes, filters.Schools);
+            model.SchoolsCriteriaSection.IsExpanded = filters.Schools != null;
 
-            //CheckSelectedBoxes(model.SchoolYearsCriteriaSection.FilterCheckboxes, filters.SchoolYears);
-            //model.SchoolYearsCriteriaSection.IsExpanded = filters.SchoolYears != null;
+            var teachersSection = await ApiCalls.GetTeachers(filters.Schools, false);
+            var alreadyCheckedTeachers = await ApiCalls.GetSpecificTeachers(filters.Teachers);
+            var duplicateTeachers = teachersSection.AllCheckboxes.Where(x => filters.Teachers.Contains(x.Id)).ToList();
+            foreach (var box in duplicateTeachers)
+            {
+                teachersSection.AllCheckboxes.Remove(box);
+            }
+            var duplicateTeachers2 = teachersSection.FilterCheckboxes.Where(x => filters.Teachers.Contains(x.Id)).ToList();
+            foreach (var box in duplicateTeachers2)
+            {
+                teachersSection.FilterCheckboxes.Remove(box);
+            }
+            teachersSection.AllCheckboxes.AddRange(alreadyCheckedTeachers);
+            teachersSection.FilterCheckboxes.AddRange(alreadyCheckedTeachers);
+            teachersSection.IsExpanded = alreadyCheckedTeachers != null && alreadyCheckedTeachers.Count() > 0;
+            model.TeachersCriteriaSection = teachersSection;
 
-            //CheckSelectedBoxes(model.TermsCriteriaSection.FilterCheckboxes, filters.Terms);
-            //model.TermsCriteriaSection.IsExpanded = filters.Terms != null;
-
-            //var allSubjects = await ApiCalls.GetSubjects();
-            //var subjects = GetFilteredCheckboxes(allSubjects, filters.Schools, filters.SchoolYears, filters.Terms, filters.Subjects);
-            //model.SubjectsCriteriaSection.FilterCheckboxes = subjects;
-            //model.SubjectsCriteriaSection.IsExpanded = filters.Subjects != null;
-
-            //var allCourses = await ApiCalls.GetCourses();
-            //var courses = GetFilteredCheckboxes(allCourses, filters.Schools, filters.SchoolYears, filters.Terms, filters.Courses);
-            //model.CoursesCriteriaSection.FilterCheckboxes = courses;
-            //model.CoursesCriteriaSection.IsExpanded = filters.Courses != null;
-
-            //var allTeachers = await ApiCalls.GetTeachers();
-            //var teachers = GetFilteredCheckboxes(allTeachers, filters.Schools, filters.SchoolYears, filters.Terms, filters.Teachers);
-            //model.TeachersCriteriaSection.FilterCheckboxes = teachers;
-            //model.TeachersCriteriaSection.IsExpanded = filters.Teachers != null;
-
-            //var allSections = await ApiCalls.GetSections();
-            //var sections = GetFilteredCheckboxes(allSections, filters.Schools, filters.SchoolYears, filters.Terms, filters.Sections);
-            //model.SectionsCriteriaSection.FilterCheckboxes = sections;
-            //model.SectionsCriteriaSection.IsExpanded = filters.Sections != null;
+            var sectionsSection = await ApiCalls.GetSections(filters.Schools, false);
+            var alreadyCheckedSections = await ApiCalls.GetSpecificSections(filters.Sections);
+            var duplicateSections = sectionsSection.AllCheckboxes.Where(x => filters.Sections.Contains(x.Id)).ToList();
+            foreach (var box in duplicateSections)
+            {
+                sectionsSection.AllCheckboxes.Remove(box);
+            }
+            var duplicateSections2 = sectionsSection.FilterCheckboxes.Where(x => filters.Sections.Contains(x.Id)).ToList();
+            foreach (var box in duplicateSections2)
+            {
+                sectionsSection.FilterCheckboxes.Remove(box);
+            }
+            sectionsSection.AllCheckboxes.AddRange(alreadyCheckedSections);
+            sectionsSection.FilterCheckboxes.AddRange(alreadyCheckedSections);
+            sectionsSection.IsExpanded = alreadyCheckedSections != null && alreadyCheckedSections.Count() > 0;
+            model.SectionsCriteriaSection = sectionsSection;
         }
 
         private async Task InitializeModel(ExportsViewModel model)

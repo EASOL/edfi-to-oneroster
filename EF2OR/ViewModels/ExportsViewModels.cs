@@ -5,8 +5,8 @@ namespace EF2OR.ViewModels
     public class ExportsViewModel
     {
         public ApiCriteriaSection SchoolsCriteriaSection { get; set; }
-        public ApiCriteriaSection SchoolYearsCriteriaSection { get; set; }
-        public ApiCriteriaSection TermsCriteriaSection { get; set; }
+        //public ApiCriteriaSection SchoolYearsCriteriaSection { get; set; }
+        //public ApiCriteriaSection TermsCriteriaSection { get; set; }
         //public ApiCriteriaSection SubjectsCriteriaSection { get; set; }
         //public ApiCriteriaSection CoursesCriteriaSection { get; set; }
         public ApiCriteriaSection TeachersCriteriaSection { get; set; }

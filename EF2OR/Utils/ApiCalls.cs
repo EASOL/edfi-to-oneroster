@@ -228,6 +228,24 @@ namespace EF2OR.Utils
 
         //    return model;
         //}
+        public static async Task<List<ExportsCheckbox>> GetSpecificTeachers(List<string> ids)
+        {
+            var teachers = new List<ExportsCheckbox>();
+            foreach (var id in ids)
+            {
+                var endpoint = string.Format(ApiEndPoints.StaffWithId, id);
+                var staffResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, 0, "id,firstName,lastSurname");
+                var oneTeacher = (from s in staffResponse
+                              select new ExportsCheckbox
+                              {
+                                  Id = (string)s["id"],
+                                  Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
+                                  Selected = true
+                              }).FirstOrDefault();
+                teachers.Add(oneTeacher);
+            }
+            return teachers;
+        }
 
         public static async Task<ApiCriteriaSection> GetTeachers(List<string> schoolIds,
             bool getMore)
@@ -301,6 +319,27 @@ namespace EF2OR.Utils
                 model.CurrentOffset += _maxApiCallSize;
                 model.AllCheckboxes.AddRange(staffs);
             }
+        }
+
+        public static async Task<List<ExportsCheckbox>> GetSpecificSections(List<string> ids)
+        {
+            var sections = new List<ExportsCheckbox>();
+            foreach (var id in ids)
+            {
+                var endpoint = string.Format(ApiEndPoints.Sections, id);
+                var fields = "uniqueSectionCode";
+                var additionalParam = "&uniqueSectionCode=" + id;
+                var sectionsResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, 0, fields + additionalParam);
+                var oneSection = (from s in sectionsResponse
+                                select new ExportsCheckbox
+                                {
+                                    Id = (string)s["uniqueSectionCode"],
+                                    Text = (string)s["uniqueSectionCode"],
+                                    Selected = true
+                                }).FirstOrDefault();
+                sections.Add(oneSection);
+            }
+            return sections;
         }
 
         public static async Task<ApiCriteriaSection> GetSections(List<string> schoolIds,
