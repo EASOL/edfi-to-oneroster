@@ -39,7 +39,7 @@ namespace EF2OR.Utils
 
         private static int _checkboxPageSize = Convert.ToInt32(ConfigurationManager.AppSettings["CheckboxPageSize"]);
         private static int _maxApiCallSize = Convert.ToInt32(ConfigurationManager.AppSettings["ApiMaxCallSize"]);
-        private static int _dataPreviewPageSize = 10;// Convert.ToInt32(ConfigurationManager.AppSettings["DataPreviewPageSize"]);
+        private static int _dataPreviewPageSize = Convert.ToInt32(ConfigurationManager.AppSettings["DataPreviewPageSize"]);
 
         #endregion
 
