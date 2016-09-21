@@ -1,22 +1,31 @@
 # EASOL Ed-Fi to OneRoster Utility
 
 
-With the recently announced [IMS Global](imsglobal.org) partnership, [Ed-Fi](http://www.ed-fi.org/) is expanding support for the [IMS Global OneRoster format](https://www.imsglobal.org/activity/onerosterlis). The OneRoster format provisions teaching and learning tools with essential roster information (education organization, course, class/section and teacher/student enrollment) with a well-known format.  
 
-**EASOL Ed-FI to OneRoster Utility** provides an ability to easily convert [Ed-Fi](http://www.ed-fi.org/) Data to support [IMS Global](imsglobal.org) [One Roster v1.0](https://www.imsglobal.org/lis/imsOneRosterv1p0/imsOneRosterCSV-v1p0.html) CSV format.
+The EASOL Ed-FI to OneRoster Utility provides the ability to easily export data stored in an Ed-Fi Operational Data Store to the IMS  [One Roster](https://www.imsglobal.org/lis/imsOneRosterv1p0/imsOneRosterCSV-v1p0.html) CSV format.
 
 <img src="http://www.ed-fi.org/wp-content/themes/ed-fi/assets/i/ed-fi-branding-logo.png" width="102"/>  <img src="https://s31.postimg.org/dijcpqdnv/full_IMSglobalregistered.jpg" width="150"/>
 
+## Use Cases
+
+This utility includes powerful functionality to enable data export from the Ed-Fi Data Standard to OneRoster v1.0/1.1format. The use cases supported include::
+- Converting data from the Ed-Fi Data Standard v2.0 to One Roster v1.0/v1.1, with the ability to dynamically view and filter the dataset using domain facets.
+- Simple integration with an Ed-Fi ODS/API instance as the data source, via providing a URL, key and secret.
+- Downloading export packages, structured as per the IMS OneRoster specification.
+- Support for creating and managing export templates for reuse and scheduled download by vendors.
+- Ability for vendors to download data sets in an automated, scheduled manner.
+- Ability to log and track application usage and template download activity across all of the vendors who were provided with an auth key. 
+
 ## Functionality
 ### Users
-Current version of the application only supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `AOx91piOvWdXB+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `aU8n&9$nw#72gFb&2ib%j3`. Afterwards, we strongly suggest to change it by using Settings section of the application
+The current version of the application supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `AOx91piOvWdXB+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `aU8n&9$nw#72gFb&2ib%j3`. Afterwards, we strongly suggest to change it by using Settings section of the application
 
 
-Additionally, to improve security there is implemented an auto-lock, which is enabled after 5 unsuccessful attempts.The auto-lock is disabled after 1 hour or by changing a value in the database.
+Additionally, to improve security an auto-lock feature is implemented, which is enabled after 5 unsuccessful attempts.The auto-lock is disabled after 1 hour or by changing a value in the database.
 
 ### Export Utility
 
-An administrator defines filters to retrieve a data-set from the Ed-Fi Operational Data Store (ODS) API, which is converted and packaged into One Roster v1.0 format. It's possible both to preview the data on the page and also download it as an archive.
+An administrator defines filters to retrieve a data-set from the Ed-Fi API, which is converted and packaged into One Roster v1.0 format. It is possible to preview the data on the page and  download it as an archive.
 
 ![Export Utility](https://s32.postimg.org/f2yvzemw5/Screen_Shot_2016_08_01_at_19_26_54.png)
 
@@ -37,9 +46,9 @@ Logs allow auditing of application operations and troubleshooting if errors are 
 
 Settings allow the Administrator to do the following:
 * Change password
-* Change Ed-FI ODS API Connection details
-* Manage Ed-FI to One-Roster related Mapping parameters
-* Change Database Connection Details
+* Change Ed-Fi ODS API connection details
+* Manage Ed-Fi to One-Roster related mapping parameters
+* Change database connection details
 
 ## Getting Started
 
@@ -48,7 +57,7 @@ The instructions below will describe how to setup and deploy **EASOL Ed-Fi to On
 
 ### Prerequisites
 
-1. [Ed-Fi ODS API 2.1](https://techdocs.ed-fi.org/display/ODSAPI21/) - configured and running instance
+1. [Ed-Fi ODS API v2.1](https://techdocs.ed-fi.org/display/ODSAPI21/) (or higher) - configured and running instance
 2. IIS 8.5+
 3. SQL Server 2012+ 
 4. [.NET 4.5 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=42643)
