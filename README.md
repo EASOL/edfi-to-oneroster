@@ -6,6 +6,8 @@ The EASOL Ed-FI to OneRoster Utility provides the ability to easily export data 
 
 <img src="http://www.ed-fi.org/wp-content/themes/ed-fi/assets/i/ed-fi-branding-logo.png" width="102"/>  <img src="https://s31.postimg.org/dijcpqdnv/full_IMSglobalregistered.jpg" width="150"/>
 
+###### Important - with higher amounts of data the application gets slower. The following enhancements described in this [ticket] (https://tracker.ed-fi.org/browse/ODS-932) will be applied in order to improve it.
+
 ## Use Cases
 
 This utility includes powerful functionality to enable data export from the Ed-Fi Data Standard to OneRoster v1.0/1.1format. The use cases supported include:
@@ -17,11 +19,6 @@ This utility includes powerful functionality to enable data export from the Ed-F
 - Ability to log and track application usage and template download activity across all of the vendors who were provided with an auth key. 
 
 ## Functionality
-### Users
-The current version of the application supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `AOx91piOvWdXB+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `aU8n&9$nw#72gFb&2ib%j3`. Afterwards, we strongly suggest to change it by using Settings section of the application
-
-
-Additionally, to improve security an auto-lock feature is implemented, which is enabled after 5 unsuccessful attempts.The auto-lock is disabled after 1 hour or by changing a value in the database.
 
 ### Export Utility
 
@@ -37,6 +34,12 @@ curl -o filename.zip  http://domain/Export/$template_id -H "Token:<template toke
 ``` 
 
 ![Templates](https://s32.postimg.org/51i627ath/Screen_Shot_2016_08_01_at_19_25_00.png)
+### Users
+The current version of the application supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `AOx91piOvWdXB+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `aU8n&9$nw#72gFb&2ib%j3`. Afterwards, we strongly suggest to change it by using Settings section of the application
+
+
+Additionally, to improve security an auto-lock feature is implemented, which is enabled after 5 unsuccessful attempts.The auto-lock is disabled after 1 hour or by changing a value in the database.
+
 
 ### Logs
 
