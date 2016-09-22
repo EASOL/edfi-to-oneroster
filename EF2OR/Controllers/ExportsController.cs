@@ -410,6 +410,8 @@ namespace EF2OR.Controllers
             }
             teachersSection.AllCheckboxes.AddRange(alreadyCheckedTeachers);
             teachersSection.FilterCheckboxes.AddRange(alreadyCheckedTeachers);
+            teachersSection.AllCheckboxes = teachersSection.AllCheckboxes.OrderByDescending(x => x.Selected).ToList();
+            teachersSection.FilterCheckboxes = teachersSection.FilterCheckboxes.OrderByDescending(x => x.Selected).ToList();
             teachersSection.IsExpanded = alreadyCheckedTeachers != null && alreadyCheckedTeachers.Count() > 0;
             model.TeachersCriteriaSection = teachersSection;
 
@@ -427,6 +429,8 @@ namespace EF2OR.Controllers
             }
             sectionsSection.AllCheckboxes.AddRange(alreadyCheckedSections);
             sectionsSection.FilterCheckboxes.AddRange(alreadyCheckedSections);
+            sectionsSection.AllCheckboxes = sectionsSection.AllCheckboxes.OrderByDescending(x => x.Selected).ToList();
+            sectionsSection.FilterCheckboxes = sectionsSection.FilterCheckboxes.OrderByDescending(x => x.Selected).ToList();
             sectionsSection.IsExpanded = alreadyCheckedSections != null && alreadyCheckedSections.Count() > 0;
             model.SectionsCriteriaSection = sectionsSection;
         }
