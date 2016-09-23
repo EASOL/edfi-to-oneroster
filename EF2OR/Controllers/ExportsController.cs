@@ -68,7 +68,7 @@ namespace EF2OR.Controllers
             model.JsonPreviews = await ApiCalls.GetJsonPreviews(inputs, oneRosterVersion);
 
             IEnumerable<string> orgColumnNames;
-            //IEnumerable<string> usersColumnNames;
+            IEnumerable<string> usersColumnNames;
             IEnumerable<string> coursesColumnNames;
             IEnumerable<string> classesColumnNames;
             IEnumerable<string> enrollmentsColumnNames;
@@ -77,7 +77,7 @@ namespace EF2OR.Controllers
             if (oneRosterVersion == OneRosterVersions.OR_1_0)
             {
                 orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
-                //usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
                 coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
                 classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
                 enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR10IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
@@ -86,7 +86,7 @@ namespace EF2OR.Controllers
             else
             {
                 orgColumnNames = typeof(CsvOrgs).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
-                //usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
+                usersColumnNames = typeof(CsvUsers).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
                 coursesColumnNames = typeof(CsvCourses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
                 classesColumnNames = typeof(CsvClasses).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
                 enrollmentsColumnNames = typeof(CsvEnrollments).GetProperties().Where(x => Attribute.IsDefined(x, typeof(OR11IncludeFieldAttribute))).Select(x => x.Name.Replace("__", "."));
@@ -102,13 +102,13 @@ namespace EF2OR.Controllers
                         CurrentPage = 1,
                         TotalPages = model.JsonPreviews.OrgsTotalPages
                     },
-                    //new DataPreviewSection
-                    //{
-                    //    SectionName = "users",
-                    //    ColumnNames = usersColumnNames,
-                    //    CurrentPage = 1,
-                    //    TotalPages = model.JsonPreviews.UsersTotalPages
-                    //},
+                    new DataPreviewSection
+                    {
+                        SectionName = "users",
+                        ColumnNames = usersColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.UsersTotalPages
+                    },
                     new DataPreviewSection
                     {
                         SectionName = "courses",
@@ -158,11 +158,11 @@ namespace EF2OR.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        //public async Task<JsonResult> GetPreviewUsersJsonString(int pageNumber)
-        //{
-        //    var model = await ApiCalls.GetPreviewUsersJsonString(pageNumber);
-        //    return Json(model, JsonRequestBehavior.AllowGet);
-        //}
+        public async Task<JsonResult> GetPreviewUsersJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewUsersJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
 
         public async Task<JsonResult> GetPreviewCoursesJsonString(int pageNumber)
         {

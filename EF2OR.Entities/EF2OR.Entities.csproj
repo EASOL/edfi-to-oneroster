@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EdFiOdsApi\BaseEdFiOdsData.cs" />
+    <Compile Include="EdFiOdsApi\Enrollment\SectionEnrollments\SectionEnrollments.cs" />
     <Compile Include="EdFiOdsApi\Enrollment\Staffs\Staffs.cs" />
     <Compile Include="EdFiOdsApi\Enrollment\Students\Students.cs" />
     <Compile Include="EdFiOdsApi\TermDescriptors.cs" />

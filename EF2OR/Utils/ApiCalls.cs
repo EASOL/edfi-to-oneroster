@@ -17,6 +17,7 @@ using SchoolsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Schools;
 using SectionsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Sections;
 using StudentsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Students;
 using EF2OR.Entities.EdFiOdsApi;
+using SectionEnrollmentsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.SectionEnrollments;
 
 namespace EF2OR.Utils
 {
@@ -28,7 +29,7 @@ namespace EF2OR.Utils
         {
             Providers.ApiResponseProvider.db = ApiCalls.db;
             CommonUtils.ExistingResponses = new Dictionary<string, Entities.EdFiOdsApi.IEdFiOdsData>();
-    }
+        }
         private static string UserId
         {
             get
@@ -236,12 +237,12 @@ namespace EF2OR.Utils
                 var endpoint = string.Format(ApiEndPoints.StaffWithId, id);
                 var staffResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, 0, "id,firstName,lastSurname");
                 var oneTeacher = (from s in staffResponse
-                              select new ExportsCheckbox
-                              {
-                                  Id = (string)s["id"],
-                                  Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
-                                  Selected = true
-                              }).FirstOrDefault();
+                                  select new ExportsCheckbox
+                                  {
+                                      Id = (string)s["id"],
+                                      Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
+                                      Selected = true
+                                  }).FirstOrDefault();
                 teachers.Add(oneTeacher);
             }
             return teachers;
@@ -298,11 +299,11 @@ namespace EF2OR.Utils
             {
                 var staffResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, model.CurrentOffset, "id,firstName,lastSurname");// as StaffNS.Staffs;
                 var staffs = (from s in staffResponse
-                                select new ExportsCheckbox
-                                {
-                                    Id = (string)s["id"],
-                                    Text = (string)s["firstName"] + " " + (string)s["lastSurname"]
-                                }).ToList();
+                              select new ExportsCheckbox
+                              {
+                                  Id = (string)s["id"],
+                                  Text = (string)s["firstName"] + " " + (string)s["lastSurname"]
+                              }).ToList();
 
                 if (staffs.Count() < _maxApiCallSize)
                 {
@@ -331,12 +332,12 @@ namespace EF2OR.Utils
                 var additionalParam = "&uniqueSectionCode=" + id;
                 var sectionsResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, 0, fields + additionalParam);
                 var oneSection = (from s in sectionsResponse
-                                select new ExportsCheckbox
-                                {
-                                    Id = (string)s["uniqueSectionCode"],
-                                    Text = (string)s["uniqueSectionCode"],
-                                    Selected = true
-                                }).FirstOrDefault();
+                                  select new ExportsCheckbox
+                                  {
+                                      Id = (string)s["uniqueSectionCode"],
+                                      Text = (string)s["uniqueSectionCode"],
+                                      Selected = true
+                                  }).FirstOrDefault();
                 sections.Add(oneSection);
             }
             return sections;
@@ -393,11 +394,11 @@ namespace EF2OR.Utils
             {
                 var sectionsResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, model.CurrentOffset);
                 var sections = (from s in sectionsResponse
-                                  select new ExportsCheckbox
-                                  {
-                                      Id = (string)s["uniqueSectionCode"],
-                                      Text = (string)s["uniqueSectionCode"]
-                                  }).ToList();
+                                select new ExportsCheckbox
+                                {
+                                    Id = (string)s["uniqueSectionCode"],
+                                    Text = (string)s["uniqueSectionCode"]
+                                }).ToList();
 
                 if (sections.Count() < _maxApiCallSize)
                 {
@@ -509,7 +510,7 @@ namespace EF2OR.Utils
             previewModel.AcademicSessions = JsonConvert.SerializeObject(dataResults.AcademicSessions);
 
             previewModel.OrgsTotalPages = dataResults.Orgs.Count() < _dataPreviewPageSize ? 1 : 0;
-            previewModel.UsersTotalPages = 0;// dataResults.Users.Count() < _dataPreviewPageSize ? 1 : 0;
+            previewModel.UsersTotalPages = dataResults.Users.Count() < _dataPreviewPageSize ? 1 : 0;
             previewModel.CoursesTotalPages = dataResults.Courses.Count() < _dataPreviewPageSize ? 1 : 0;
             previewModel.ClassesTotalPages = dataResults.Classes.Count() < _dataPreviewPageSize ? 1 : 0;
             previewModel.EnrollmentsTotalPages = dataResults.Enrollments.Count() < _dataPreviewPageSize ? 1 : 0;
@@ -560,17 +561,17 @@ namespace EF2OR.Utils
             };
         }
 
-        //public static async Task<DataPreviewPagedJsonModel> GetPreviewUsersJsonString(int pageNumber)
-        //{
-        //    var data = await GetPagedOrgs(null, pageNumber);
-        //    var serializedList = JsonConvert.SerializeObject(data.OrgsCurrentPage);
-        //    return new DataPreviewPagedJsonModel
-        //    {
-        //        JsonData = serializedList,
-        //        CurrentPage = pageNumber,
-        //        TotalPages = data.TotalPages
-        //    };
-        //}
+        public static async Task<DataPreviewPagedJsonModel> GetPreviewUsersJsonString(int pageNumber)
+        {
+            var data = await GetPagedUsers(null, pageNumber);
+            var serializedList = JsonConvert.SerializeObject(data.UsersCurentPage);
+            return new DataPreviewPagedJsonModel
+            {
+                JsonData = serializedList,
+                CurrentPage = pageNumber,
+                TotalPages = data.TotalPages
+            };
+        }
 
         public static async Task<DataPreviewPagedJsonModel> GetPreviewCoursesJsonString(int pageNumber)
         {
@@ -642,7 +643,7 @@ namespace EF2OR.Utils
             var classesPage1 = (await GetPagedClasses(inputs, 0)).ClassesCurentPage;
             var enrollmentsPage1 = (await GetPagedEnrollments(inputs, 0)).EnrollmentsCurentPage;
             var academicSessionsPage1 = (await GetPagedAcademicSessions(inputs, 0)).AcademicSessionsCurrentPage;
-
+            var usersPage1 = (await GetPagedUsers(inputs, 0)).UsersCurentPage;
             dataResults.Orgs = orgsPage1;
             //dataResults.Users = usersPage1;
             dataResults.Courses = coursesPage1;
@@ -713,16 +714,16 @@ namespace EF2OR.Utils
                 bool blankIdentifier = identifierSetting == null || identifierSetting == OrgIdentifierSettings.blank;
 
                 var orgsList = (from o in responseArray
-                                     select new CsvOrgs
-                                     {
-                                         //sourcedId = (string)o["sessionReference"]["id"],
-                                         sourcedId = (string)o["id"],
-                                         name = (string)o["nameOfInstitution"],
-                                         type = "school",
-                                         identifier = blankIdentifier ? "" : (string)o["nameOfInstitution"],
-                                         parentSourcedId = (string)o["localEducationAgencyReference"]["id"],
-                                         SchoolId = (string)o["id"]
-                                     });
+                                select new CsvOrgs
+                                {
+                                    //sourcedId = (string)o["sessionReference"]["id"],
+                                    sourcedId = (string)o["id"],
+                                    name = (string)o["nameOfInstitution"],
+                                    type = "school",
+                                    identifier = blankIdentifier ? "" : (string)o["nameOfInstitution"],
+                                    parentSourcedId = (string)o["localEducationAgencyReference"]["id"],
+                                    SchoolId = (string)o["id"]
+                                });
 
                 var recordsReturnedFromApi = orgsList.Count();
                 model.CurrentOffset += _maxApiCallSize;
@@ -1116,7 +1117,7 @@ namespace EF2OR.Utils
 
         private static async Task<List<CsvEnrollments>> GetCsvEnrollments(FilterInputs inputs)
         {
-            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvEnrollments)as SectionsNS.Sections;
+            var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvEnrollments) as SectionsNS.Sections;
             var enrollmentsList = (from o in responseArray.Property1
                                    let students = o.students
                                    let staffs = o.staff
@@ -1339,6 +1340,125 @@ namespace EF2OR.Utils
 
             context.Dispose();
             return enrollmentsList.ToList();
+        }
+
+        private static async Task<UsersPagedDataResults> GetPagedUsers(FilterInputs inputs, int pageNumber)
+        {
+            var model = new UsersPagedDataResults();
+            if (pageNumber != 0)
+            {
+                model = (UsersPagedDataResults)CommonUtils.HttpContextProvider.Current.Session["UsersDataPreviewResults"];
+            }
+            else
+            {
+                pageNumber = 1;
+                model.Users = new List<CsvUsers>();
+                model.Inputs = inputs;
+                CommonUtils.HttpContextProvider.Current.Session["UsersDataPreviewResults"] = model;
+            }
+            bool getMore = model.Users == null || model.Users.Count() < (pageNumber * _dataPreviewPageSize);
+            getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            while (getMore)
+            {
+                try
+                {
+                    var enrollmentsResponseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvEnrollments, model.EnrollmentsPagedDataResults.CurrentOffset);
+                    var enrollmentsResponse = enrollmentsResponseArray.ToObject<SectionsNS.Sections>();
+                    var enrollmentsList = (from o in enrollmentsResponse.Property1
+                                           let students = o.students.Select(x => x.id)
+                                           let staffs = o.staff.Select(x => x)
+                                           let teachers = o.staff.Select(x => x.id)
+                                           select new
+                                           {
+                                               students = students,
+                                               staffs = staffs,
+                                               SchoolId = o.schoolReference.id,
+                                               //SchoolYear = Convert.ToString(o.courseOfferingReference.schoolYear),
+                                               //Term = o.courseOfferingReference.termDescriptor,
+                                               //Subject = o.academicSubjectDescriptor,
+                                               //Course = o.courseOfferingReference.localCourseCode,
+                                               Section = o.uniqueSectionCode,
+                                               Teachers = teachers
+                                           });
+                    if (inputs != null)
+                    {
+                        if (inputs.Schools != null)
+                            enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+
+                        if (inputs.Sections != null)
+                            enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+
+                        if (inputs.Teachers != null)
+                            enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
+                    }
+                    enrollmentsList = enrollmentsList.ToList();
+
+                    var studentsResponseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvUsersStudents, model.StudentsPagedDataResults.CurrentOffset);
+                    var studentsResponse = studentsResponseArray.ToObject<StudentsNS.Students>();
+                    var studentsResponseInfo = (from s in studentsResponse.Property1
+                                                let mainTelephone = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.orderOfPriority == "1")
+                                                let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone.telephoneNumber
+                                                let emailAddress = (s.electronicMails == null || s.electronicMails.Count() == 0) ? "" : (string)s.electronicMails[0].electronicMailAddress //TODO: just pick 0?.  or get based on electronicMailType field.
+                                                let mobile = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => (string)x.telephoneNumberType == "Mobile")
+                                                let mobileNumber = mobile == null ? "" : mobile.telephoneNumber
+                                                select new
+                                                {
+                                                    id = s.id,
+                                                    userId = s.studentUniqueId,
+                                                    givenName = s.firstName,
+                                                    familyName = s.lastSurname,
+                                                    middleName = s.middleName,
+                                                    identifier = s.studentUniqueId,
+                                                    email = emailAddress,
+                                                    sms = mobileNumber,
+                                                    phone = mainTelephoneNumber,
+                                                    username = s.loginId
+                                                }).ToList();
+
+                    var studentInfo = (from e in enrollmentsList
+                                       from s in e.students
+                                       from si in studentsResponseInfo.Where(x => x.id == s)
+                                       select new CsvUsers
+                                       {
+                                           sourcedId = s,
+                                           orgSourcedIds = e.SchoolId,
+                                           enabledUser = "TRUE",
+                                           role = "student",
+                                           userId = si.userId,
+                                           givenName = si.givenName,
+                                           familyName = si.familyName,
+                                           middleNames = si.middleName,
+                                           identifier = si.identifier,
+                                           email = si.email,
+                                           sms = si.sms,
+                                           phone = si.phone,
+                                           username = si.username
+                                       }).ToList();
+
+                    List<CsvUsers> lstCSVUsers = new List<CsvUsers>();
+                    lstCSVUsers.AddRange(studentInfo);
+                    model.StudentsPagedDataResults.CurrentOffset += _maxApiCallSize;
+                    if (studentInfo.Count < _maxApiCallSize)
+                    {
+                        //end of students. We can now start processing teachers
+                        var teachersResponseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Staff, model.StaffPagedDataResults.CurrentOffset);
+                        var lstTeachers = teachersResponseArray.ToObject<List<StaffNS.Class1>>();
+                    }
+                    else
+                    {
+                        
+                    }
+                    //var sectionsResponseArray = a
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+            var startAt = (pageNumber - 1) * _dataPreviewPageSize;
+            model.UsersCurentPage = model.Users.Skip(startAt).Take(_dataPreviewPageSize).ToList();
+            return model;
         }
 
         private static async Task<PagedDataResults> GetPagedAcademicSessions(FilterInputs inputs, int pageNumber)

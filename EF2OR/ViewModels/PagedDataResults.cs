@@ -5,6 +5,14 @@ using System.Web;
 
 namespace EF2OR.ViewModels
 {
+    public class UsersPagedDataResults : PagedDataResults
+    {
+        public PagedDataResults SchoolsPagedDataResults { get; set; } = new PagedDataResults();
+        public PagedDataResults SectionsPagedDataResults { get; set; } = new PagedDataResults();
+        public PagedDataResults StudentsPagedDataResults { get; set; } = new PagedDataResults();
+        public PagedDataResults StaffPagedDataResults { get; set; } = new PagedDataResults();
+        public PagedDataResults EnrollmentsPagedDataResults { get; set; } = new PagedDataResults();
+    }
     public class PagedDataResults
     {
         public int TotalPages { get; set; }

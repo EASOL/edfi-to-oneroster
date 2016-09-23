@@ -34,7 +34,8 @@ namespace EF2OR.Providers
         {
         }
 
-        public async Task<EdFiOdsApiNS.IEdFiOdsData> GetApiData<T>(string apiEndpoint, bool forceNew = false, string fields = null) where T : class, EdFiOdsApiNS.IEdFiOdsData, new()
+        public async Task<EdFiOdsApiNS.IEdFiOdsData> GetApiData<T>(string apiEndpoint, bool forceNew = false, string fields = null, 
+            Dictionary<string, string> filters = null) where T : class, EdFiOdsApiNS.IEdFiOdsData, new()
         {
             int millisecondsToKeepAlive = 3600000;
             ServicePointManager.SetTcpKeepAlive(true, millisecondsToKeepAlive, millisecondsToKeepAlive);
@@ -60,13 +61,13 @@ namespace EF2OR.Providers
             return response;
         }
 
-        public async Task<JArray> GetPagedApiData(string apiEndpoint, int offset, string fields = null)
+        public async Task<JArray> GetPagedApiData(string apiEndpoint, int offset, string fields = null, Dictionary<string,string> filters = null)
         {
-            var response = await GetPagedApiResponse(apiEndpoint, fields, offset);
+            var response = await GetPagedApiResponse(apiEndpoint, fields, offset, filters);
             if (response.TokenExpired)
             {
                 Providers.ApiResponseProvider.GetToken(true);
-                response = await GetPagedApiResponse(apiEndpoint, fields, offset);
+                response = await GetPagedApiResponse(apiEndpoint, fields, offset, filters);
             }
 
             return response.ResponseArray;
@@ -220,7 +221,7 @@ namespace EF2OR.Providers
             }
         }
 
-        private async Task<ApiResponse> GetPagedApiResponse(string apiEndpoint, string fields, int offset)
+        private async Task<ApiResponse> GetPagedApiResponse(string apiEndpoint, string fields, int offset, Dictionary<string,string> filters = null)
         {
             var context = new ApplicationDbContext();
             var apiBaseUrl = context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiBaseUrl)?.SettingValue;
@@ -231,7 +232,13 @@ namespace EF2OR.Providers
             {
                 fullUrl += "&fields=" + fields;
             }
-
+            if (filters != null)
+            {
+                foreach (var item in filters)
+                {
+                    fullUrl += string.Format("&{0}={1}", item.Key, item.Value);
+                }
+            }
             var tokenModel = GetToken();
             if (!tokenModel.IsSuccessful)
             {
