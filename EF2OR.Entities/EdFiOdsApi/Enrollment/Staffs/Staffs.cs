@@ -14,6 +14,9 @@ namespace EF2OR.Entities.EdFiOdsApi.Enrollment.Staffs
 
     public class Class1
     {
+        public string studentUniqueId;
+        public string middleName;
+
         public string id { get; set; }
         public string staffUniqueId { get; set; }
         public string personalTitlePrefix { get; set; }
@@ -28,8 +31,16 @@ namespace EF2OR.Entities.EdFiOdsApi.Enrollment.Staffs
         public Identificationcode[] identificationCodes { get; set; }
         public object[] languages { get; set; }
         public object[] races { get; set; }
-        public object[] telephones { get; set; }
+        public Telephone[] telephones { get; set; }
         public Classification[] classifications { get; set; }
+    }
+
+    public class  Telephone
+    {
+        public string telephoneNumber;
+        public string telephoneNumberType;
+
+        public string orderOfPriority { get; set; }
     }
 
     public class Electronicmail

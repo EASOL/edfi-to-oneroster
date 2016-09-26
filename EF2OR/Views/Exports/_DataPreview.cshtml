@@ -71,11 +71,11 @@
                 data: orgsData
             });
 
-            @*var usersData = @Html.Raw(Model.JsonPreviews.Users);
+            var usersData = @Html.Raw(Model.JsonPreviews.Users);
             $('#table_users').bootstrapTable({
                 undefinedText: '',
                 data: usersData
-            });*@
+            });
 
             var coursesData = @Html.Raw(Model.JsonPreviews.Courses);
             $('#table_courses').bootstrapTable({

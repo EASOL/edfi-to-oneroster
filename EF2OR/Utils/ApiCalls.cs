@@ -645,7 +645,7 @@ namespace EF2OR.Utils
             var academicSessionsPage1 = (await GetPagedAcademicSessions(inputs, 0)).AcademicSessionsCurrentPage;
             var usersPage1 = (await GetPagedUsers(inputs, 0)).UsersCurentPage;
             dataResults.Orgs = orgsPage1;
-            //dataResults.Users = usersPage1;
+            dataResults.Users = usersPage1;
             dataResults.Courses = coursesPage1;
             dataResults.Classes = classesPage1;
             dataResults.Enrollments = enrollmentsPage1;
@@ -1358,13 +1358,19 @@ namespace EF2OR.Utils
             }
             bool getMore = model.Users == null || model.Users.Count() < (pageNumber * _dataPreviewPageSize);
             getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            List<CsvUsers> lstCSVUsers = new List<CsvUsers>();
             while (getMore)
             {
                 try
                 {
                     var enrollmentsResponseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvEnrollments, model.EnrollmentsPagedDataResults.CurrentOffset);
-                    var enrollmentsResponse = enrollmentsResponseArray.ToObject<SectionsNS.Sections>();
-                    var enrollmentsList = (from o in enrollmentsResponse.Property1
+                    var enrollmentsResponse = enrollmentsResponseArray.ToObject<List<SectionsNS.Class1>>();
+                    if (enrollmentsResponse.Count == 0)
+                    {
+                        getMore = false;
+                        continue;
+                    }
+                    var enrollmentsList = (from o in enrollmentsResponse
                                            let students = o.students.Select(x => x.id)
                                            let staffs = o.staff.Select(x => x)
                                            let teachers = o.staff.Select(x => x.id)
@@ -1392,62 +1398,126 @@ namespace EF2OR.Utils
                             enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
                     }
                     enrollmentsList = enrollmentsList.ToList();
-
+                    if (enrollmentsList.Count() == 0)
+                    {
+                        getMore = false;
+                        continue;
+                    }
                     var studentsResponseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvUsersStudents, model.StudentsPagedDataResults.CurrentOffset);
-                    var studentsResponse = studentsResponseArray.ToObject<StudentsNS.Students>();
-                    var studentsResponseInfo = (from s in studentsResponse.Property1
-                                                let mainTelephone = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.orderOfPriority == "1")
-                                                let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone.telephoneNumber
-                                                let emailAddress = (s.electronicMails == null || s.electronicMails.Count() == 0) ? "" : (string)s.electronicMails[0].electronicMailAddress //TODO: just pick 0?.  or get based on electronicMailType field.
-                                                let mobile = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => (string)x.telephoneNumberType == "Mobile")
-                                                let mobileNumber = mobile == null ? "" : mobile.telephoneNumber
-                                                select new
-                                                {
-                                                    id = s.id,
-                                                    userId = s.studentUniqueId,
-                                                    givenName = s.firstName,
-                                                    familyName = s.lastSurname,
-                                                    middleName = s.middleName,
-                                                    identifier = s.studentUniqueId,
-                                                    email = emailAddress,
-                                                    sms = mobileNumber,
-                                                    phone = mainTelephoneNumber,
-                                                    username = s.loginId
-                                                }).ToList();
+                    var studentsResponse = studentsResponseArray.ToObject<List<StudentsNS.Class1>>();
+                    if (studentsResponse.Count > 0)
+                    {
+                        var studentsResponseInfo = (from s in studentsResponse
+                                                    let mainTelephone = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.orderOfPriority == "1")
+                                                    let mainTelephoneNumber = mainTelephone == null ? "" : (string)mainTelephone.telephoneNumber
+                                                    let emailAddress = (s.electronicMails == null || s.electronicMails.Count() == 0) ? "" : (string)s.electronicMails[0].electronicMailAddress //TODO: just pick 0?.  or get based on electronicMailType field.
+                                                    let mobile = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => (string)x.telephoneNumberType == "Mobile")
+                                                    let mobileNumber = mobile == null ? "" : mobile.telephoneNumber
+                                                    select new
+                                                    {
+                                                        id = s.id,
+                                                        userId = s.studentUniqueId,
+                                                        givenName = s.firstName,
+                                                        familyName = s.lastSurname,
+                                                        middleName = s.middleName,
+                                                        identifier = s.studentUniqueId,
+                                                        email = emailAddress,
+                                                        sms = mobileNumber,
+                                                        phone = mainTelephoneNumber,
+                                                        username = s.loginId
+                                                    }).ToList();
 
-                    var studentInfo = (from e in enrollmentsList
-                                       from s in e.students
-                                       from si in studentsResponseInfo.Where(x => x.id == s)
-                                       select new CsvUsers
-                                       {
-                                           sourcedId = s,
-                                           orgSourcedIds = e.SchoolId,
-                                           enabledUser = "TRUE",
-                                           role = "student",
-                                           userId = si.userId,
-                                           givenName = si.givenName,
-                                           familyName = si.familyName,
-                                           middleNames = si.middleName,
-                                           identifier = si.identifier,
-                                           email = si.email,
-                                           sms = si.sms,
-                                           phone = si.phone,
-                                           username = si.username
-                                       }).ToList();
-
-                    List<CsvUsers> lstCSVUsers = new List<CsvUsers>();
-                    lstCSVUsers.AddRange(studentInfo);
-                    model.StudentsPagedDataResults.CurrentOffset += _maxApiCallSize;
-                    if (studentInfo.Count < _maxApiCallSize)
+                        var studentInfo = (from e in enrollmentsList
+                                           from s in e.students
+                                           from si in studentsResponseInfo.Where(x => x.id == s)
+                                           select new CsvUsers
+                                           {
+                                               sourcedId = s,
+                                               orgSourcedIds = e.SchoolId,
+                                               enabledUser = "TRUE",
+                                               role = "student",
+                                               userId = si.userId,
+                                               givenName = si.givenName,
+                                               familyName = si.familyName,
+                                               middleNames = si.middleName,
+                                               identifier = si.identifier,
+                                               email = si.email,
+                                               sms = si.sms,
+                                               phone = si.phone,
+                                               username = si.username
+                                           }).ToList();
+                        var distinctStudents = studentInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First()).ToList();
+                        if (distinctStudents.Count > 0)
+                            lstCSVUsers.AddRange(distinctStudents);
+                        else
+                            model.StudentsPagedDataResults.CurrentOffset += _maxApiCallSize;
+                    }
+                    if (lstCSVUsers.Count < _maxApiCallSize)
                     {
                         //end of students. We can now start processing teachers
-                        var teachersResponseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.Staff, model.StaffPagedDataResults.CurrentOffset);
-                        var lstTeachers = teachersResponseArray.ToObject<List<StaffNS.Class1>>();
+                        var staffResponseArray = await CommonUtils.ApiResponseProvider.GetPagedApiData(ApiEndPoints.CsvUsersStaff, model.StaffPagedDataResults.CurrentOffset);
+                        var staffResponse = staffResponseArray.ToObject<List<StaffNS.Class1>>();
+                        if (staffResponse.Count == 0)
+                        {
+                            getMore = false;
+                            continue;
+                        }
+                        var staffResponseInfo = (from s in staffResponse
+                                                 let mainTelephone = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.orderOfPriority == "1")
+                                                 let mainTelephoneNumber = mainTelephone == null ? "" : mainTelephone.telephoneNumber
+                                                 let emailAddress = (s.electronicMails == null || s.electronicMails.Count() == 0) ? "" : s.electronicMails[0].electronicMailAddress //TODO: just pick 0?.  or get based on electronicMailType field.
+                                                 let mobile = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.telephoneNumberType == "Mobile")
+                                                 let mobileNumber = mobile == null ? "" : mobile.telephoneNumber
+                                                 select new
+                                                 {
+                                                     id = s.id,
+                                                     userId = s.studentUniqueId,
+                                                     givenName = s.firstName,
+                                                     familyName = s.lastSurname,
+                                                     middleName = s.middleName,
+                                                     identifier = s.studentUniqueId,
+                                                     email = emailAddress,
+                                                     sms = mobileNumber,
+                                                     phone = mainTelephoneNumber,
+                                                     username = s.loginId
+                                                 }).ToList();
+                        var staffInfo = (from e in enrollmentsList
+                                         from s in e.staffs
+                                         from si in staffResponseInfo.Where(x => x.id == s.id)
+                                         select new CsvUsers
+                                         {
+                                             sourcedId = s.id,
+                                             orgSourcedIds = e.SchoolId,
+                                             enabledUser = "TRUE",
+                                             role = "teacher",
+                                             userId = si.userId,
+                                             givenName = si.givenName,
+                                             familyName = si.familyName,
+                                             middleNames = si.middleName,
+                                             identifier = si.identifier,
+                                             email = si.email,
+                                             sms = si.sms,
+                                             phone = si.phone,
+                                             username = si.username
+                                         }).ToList();
+                        var distinctStaff = staffInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First()).ToList();
+                        if (distinctStaff.Count > 0)
+                            lstCSVUsers.AddRange(distinctStaff);
+                        if (lstCSVUsers.Count < _maxApiCallSize)
+                            model.StaffPagedDataResults.CurrentOffset += _maxApiCallSize;
+                        else
+                        {
+                            getMore = false;
+                        }
                     }
                     else
                     {
-                        
+                        getMore = false;   
                     }
+                    if (lstCSVUsers.Count >= _dataPreviewPageSize)
+                        getMore = false;
+                    model.Users = lstCSVUsers;
+                    model.TotalPages = (model.Users.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
                     //var sectionsResponseArray = a
                 }
                 catch (Exception ex)
