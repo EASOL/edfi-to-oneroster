@@ -982,8 +982,12 @@ namespace EF2OR.Utils
                 model.CurrentOffset += _maxApiCallSize;
 
                 enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());
-                model.Courses.AddRange(enrollmentsList);
-                model.Courses = model.Courses.GroupBy(x => x.sourcedId).Select(group => group.First()).ToList();
+                if (enrollmentsList.Count() > 0)
+                {
+                    var enrollmentsToAdd = enrollmentsList.Where(p0 => model.Courses.Where(p1 => p1.sourcedId == p0.sourcedId).Count() == 0);
+                    model.Courses.AddRange(enrollmentsToAdd);
+                    model.Courses = model.Courses.GroupBy(x => x.sourcedId).Select(group => group.First()).ToList();
+                }
 
                 if (recordsReturnedFromApi < _maxApiCallSize)
                 {
@@ -1225,16 +1229,16 @@ namespace EF2OR.Utils
 
                 var recordsReturnedFromApi = enrollmentsList.Count();
 
-                if (inputs != null)
+                if (model.Inputs != null)
                 {
-                    if (inputs.Schools != null)
-                        enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+                    if (model.Inputs.Schools != null)
+                        enrollmentsList = enrollmentsList.Where(x => model.Inputs.Schools.Contains(x.SchoolId));
 
-                    if (inputs.Sections != null)
-                        enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+                    if (model.Inputs.Sections != null)
+                        enrollmentsList = enrollmentsList.Where(x => model.Inputs.Sections.Contains(x.Section));
 
-                    if (inputs.Teachers != null)
-                        enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
+                    if (model.Inputs.Teachers != null)
+                        enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(model.Inputs.Teachers).Any());
                 }
 
                 var studentInfo = (from e in enrollmentsList
@@ -1652,9 +1656,11 @@ namespace EF2OR.Utils
 
                 var recordsReturnedFromApi = enrollmentsList.Count();
                 model.CurrentOffset += _maxApiCallSize;
-                FilterEnrollments(model.Inputs, enrollmentsList);
+                FilterEnrollments(model.Inputs, ref enrollmentsList);
                 enrollmentsList = enrollmentsList.GroupBy(x => x.sourcedId).Select(group => group.First());//do we need to get all, then filter, then group by, then count?  I think so.  THe model mightneed another property for ALL academic session results...like how i did for checkboxes
-                model.AcademicSessions.AddRange(enrollmentsList);
+                var enrollmentsToAdd = enrollmentsList.Where(p0 => model.AcademicSessions.Where(p1 => p1.sourcedId == p0.sourcedId).Count() == 0);
+                if (enrollmentsList.Count() > 0)
+                    model.AcademicSessions.AddRange(enrollmentsToAdd);
 
                 context.Dispose();
 
@@ -1675,7 +1681,7 @@ namespace EF2OR.Utils
             return model;
         }
 
-        private static void FilterEnrollments(FilterInputs inputs, IEnumerable<CsvAcademicSessions> enrollmentsList)
+        private static void FilterEnrollments(FilterInputs inputs, ref IEnumerable<CsvAcademicSessions> enrollmentsList)
         {
             if (inputs != null)
             {
