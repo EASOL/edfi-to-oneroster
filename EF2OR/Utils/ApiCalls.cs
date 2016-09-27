@@ -1393,7 +1393,9 @@ namespace EF2OR.Utils
             enrollmentsList = enrollmentsList.ToList();
             List<KeyValuePair<int, List<StudentsNS.Class1>>> studentsPages = new List<KeyValuePair<int, List<StudentsNS.Class1>>>();
             List<KeyValuePair<int, List<StaffNS.Class1>>> staffPages = new List<KeyValuePair<int, List<StaffNS.Class1>>>();
-            bool calculateTotalPages = false;
+            //bool calculateTotalPages = false;
+            bool allStudentsPagesProcessed = false;
+            bool allTeachersPagesProcessed = false;
             while (getMore)
             {
                 try
@@ -1465,7 +1467,7 @@ namespace EF2OR.Utils
                             }
                             model.Users.AddRange(lstCSVUsers);
                         }
-                        if (distinctStudents.Count() < _maxApiCallSize || distinctStudents.Count == 0)
+                        if (studentsResponse.Count() < _maxApiCallSize)
                         {
                             getMoreStudents = false;
                             lastStudentsPageForCurrentEnrollmentPage = true;
@@ -1475,6 +1477,8 @@ namespace EF2OR.Utils
                         if (getMoreStudents || distinctStudents.Count > 0)
                             model.StudentsPagedDataResults.CurrentOffset += _maxApiCallSize;
                     }
+                    if (lastStudentsPageForCurrentEnrollmentPage)
+                        allStudentsPagesProcessed = true;
                     if (lstCSVUsers.Count < _maxApiCallSize)
                     {
                         bool getMoreStaff = true;
@@ -1541,36 +1545,30 @@ namespace EF2OR.Utils
                                 }
                                 model.Users.AddRange(lstCSVUsers);
                             }
-                            if (distinctStaff.Count() < _maxApiCallSize)
+                            if (staffResponse.Count() < _maxApiCallSize)
                             {
                                 getMoreStaff = false;
                                 lastStaffPageForCurrentEnrollmentPage = true;
                             }
-                            if (distinctStaff.Count() >= _maxApiCallSize || distinctStaff.Count == 0)
-                            {
+                            if (lstCSVUsers.Count >= _maxApiCallSize)
                                 getMoreStaff = false;
-                            }
-                            if (getMoreStaff || distinctStaff.Count > 0)
+                            if (getMoreStaff && distinctStaff.Count > 0)
                                 model.StaffPagedDataResults.CurrentOffset += _maxApiCallSize;
                         }
-                    }
-                    else
-                    {
-                        lastStudentsPageForCurrentEnrollmentPage = true;
+                        if (lastStaffPageForCurrentEnrollmentPage)
+                            allTeachersPagesProcessed = true;
                     }
                     if (lstCSVUsers.Count >= _dataPreviewPageSize)
                         getMore = false;
                     //var sectionsResponseArray = a
 
-                    if (lastStaffPageForCurrentEnrollmentPage & lastStudentsPageForCurrentEnrollmentPage)
-                        calculateTotalPages = true;
                 }
                 catch (Exception ex)
                 {
 
                 }
             }
-            if (calculateTotalPages)
+            if (allStudentsPagesProcessed && allTeachersPagesProcessed)
                 model.TotalPages = (model.Users.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
             var startAt = (pageNumber - 1) * _dataPreviewPageSize;
             model.UsersCurentPage = model.Users.Skip(startAt).Take(_dataPreviewPageSize).ToList();
