@@ -1356,8 +1356,8 @@ namespace EF2OR.Utils
                 model.Inputs = inputs;
                 CommonUtils.HttpContextProvider.Current.Session["UsersDataPreviewResults"] = model;
             }
-            bool getMore = true;// model.Users == null || model.Users.Count() < (pageNumber * _dataPreviewPageSize);
-            //getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            bool getMore = model.Users == null || model.Users.Count() < (pageNumber * _dataPreviewPageSize);
+            getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
             List<CsvUsers> lstCSVUsers = new List<CsvUsers>();
             SectionsNS.Sections enrollmentsResponse = CommonUtils.HttpContextProvider.Current.Session["PagedUsersEnrollments"] as SectionsNS.Sections;
             if (enrollmentsResponse == null)
@@ -1393,6 +1393,7 @@ namespace EF2OR.Utils
             enrollmentsList = enrollmentsList.ToList();
             List<KeyValuePair<int, List<StudentsNS.Class1>>> studentsPages = new List<KeyValuePair<int, List<StudentsNS.Class1>>>();
             List<KeyValuePair<int, List<StaffNS.Class1>>> staffPages = new List<KeyValuePair<int, List<StaffNS.Class1>>>();
+            bool calculateTotalPages = false;
             while (getMore)
             {
                 try
@@ -1456,7 +1457,14 @@ namespace EF2OR.Utils
                                            }).ToList();
                         var distinctStudents = studentInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First()).ToList();
                         if (distinctStudents.Count > 0)
+                        {
                             lstCSVUsers.AddRange(distinctStudents);
+                            if (model.Users == null)
+                            {
+                                model.Users = new List<CsvUsers>();
+                            }
+                            model.Users.AddRange(lstCSVUsers);
+                        }
                         if (distinctStudents.Count() < _maxApiCallSize || distinctStudents.Count == 0)
                         {
                             getMoreStudents = false;
@@ -1525,7 +1533,14 @@ namespace EF2OR.Utils
                                              }).ToList();
                             var distinctStaff = staffInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First()).ToList();
                             if (distinctStaff.Count > 0)
+                            {
                                 lstCSVUsers.AddRange(distinctStaff);
+                                if (model.Users == null)
+                                {
+                                    model.Users = new List<CsvUsers>();
+                                }
+                                model.Users.AddRange(lstCSVUsers);
+                            }
                             if (distinctStaff.Count() < _maxApiCallSize)
                             {
                                 getMoreStaff = false;
@@ -1546,14 +1561,17 @@ namespace EF2OR.Utils
                     if (lstCSVUsers.Count >= _dataPreviewPageSize)
                         getMore = false;
                     //var sectionsResponseArray = a
+
+                    if (lastStaffPageForCurrentEnrollmentPage & lastStudentsPageForCurrentEnrollmentPage)
+                        calculateTotalPages = true;
                 }
                 catch (Exception ex)
                 {
 
                 }
             }
-            model.Users = lstCSVUsers;
-            model.TotalPages = (model.Users.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+            if (calculateTotalPages)
+                model.TotalPages = (model.Users.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
             var startAt = (pageNumber - 1) * _dataPreviewPageSize;
             model.UsersCurentPage = model.Users.Skip(startAt).Take(_dataPreviewPageSize).ToList();
             return model;
