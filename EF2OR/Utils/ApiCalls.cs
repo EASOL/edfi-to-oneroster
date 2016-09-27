@@ -1583,20 +1583,20 @@ namespace EF2OR.Utils
             if (allStudentsPagesProcessed && allTeachersPagesProcessed)
             {
                 model.TotalPages = (model.Users.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
-                try
-                {
-                    string path = CommonUtils.PathProvider.MapPath("~/usersPreview.xml");
-                    using (System.IO.StreamWriter writer = new System.IO.StreamWriter(path, false))
-                    {
-                        System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(model.Users.GetType());
-                        serializer.Serialize(writer, model.Users);
-                        writer.Close();
-                    }
-                }
-                catch ( Exception ex)
-                {
+                //try
+                //{
+                //    string path = CommonUtils.PathProvider.MapPath("~/usersPreview.xml");
+                //    using (System.IO.StreamWriter writer = new System.IO.StreamWriter(path, false))
+                //    {
+                //        System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(model.Users.GetType());
+                //        serializer.Serialize(writer, model.Users);
+                //        writer.Close();
+                //    }
+                //}
+                //catch ( Exception ex)
+                //{
 
-                }
+                //}
             }
             var startAt = (pageNumber - 1) * _dataPreviewPageSize;
             model.UsersCurentPage = model.Users.Skip(startAt).Take(_dataPreviewPageSize).ToList();
