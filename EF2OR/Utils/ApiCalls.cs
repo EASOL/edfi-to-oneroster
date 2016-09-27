@@ -1460,12 +1460,16 @@ namespace EF2OR.Utils
                         var distinctStudents = studentInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First()).ToList();
                         if (distinctStudents.Count > 0)
                         {
-                            lstCSVUsers.AddRange(distinctStudents);
                             if (model.Users == null)
                             {
                                 model.Users = new List<CsvUsers>();
                             }
-                            model.Users.AddRange(lstCSVUsers);
+                            var studentsToAdd = distinctStudents.Where(p0 => model.Users.Where(p1 => p1.sourcedId == p0.sourcedId).Count() == 0);
+                            if (studentsToAdd.Count() > 0)
+                            {
+                                lstCSVUsers.AddRange(studentsToAdd);
+                                model.Users.AddRange(studentsToAdd);
+                            }
                         }
                         if (studentsResponse.Count() < _maxApiCallSize)
                         {
@@ -1538,12 +1542,16 @@ namespace EF2OR.Utils
                             var distinctStaff = staffInfo.GroupBy(x => new { x.sourcedId, x.SchoolId }).Select(group => group.First()).ToList();
                             if (distinctStaff.Count > 0)
                             {
-                                lstCSVUsers.AddRange(distinctStaff);
                                 if (model.Users == null)
                                 {
                                     model.Users = new List<CsvUsers>();
                                 }
-                                model.Users.AddRange(lstCSVUsers);
+                                var staffToAdd = distinctStaff.Where(p0 => model.Users.Where(p1 => p1.sourcedId == p0.sourcedId).Count() == 0);
+                                if (staffToAdd.Count() > 0)
+                                {
+                                    lstCSVUsers.AddRange(staffToAdd);
+                                    model.Users.AddRange(staffToAdd);
+                                }
                             }
                             if (staffResponse.Count() < _maxApiCallSize)
                             {
@@ -1568,8 +1576,28 @@ namespace EF2OR.Utils
 
                 }
             }
+            if (model.Users != null && model.Users.Count < 0)
+            {
+                model.Users = model.Users.Distinct().ToList();
+            }
             if (allStudentsPagesProcessed && allTeachersPagesProcessed)
+            {
                 model.TotalPages = (model.Users.Count() + _dataPreviewPageSize - 1) / _dataPreviewPageSize; //http://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+                try
+                {
+                    string path = CommonUtils.PathProvider.MapPath("~/usersPreview.xml");
+                    using (System.IO.StreamWriter writer = new System.IO.StreamWriter(path, false))
+                    {
+                        System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(model.Users.GetType());
+                        serializer.Serialize(writer, model.Users);
+                        writer.Close();
+                    }
+                }
+                catch ( Exception ex)
+                {
+
+                }
+            }
             var startAt = (pageNumber - 1) * _dataPreviewPageSize;
             model.UsersCurentPage = model.Users.Skip(startAt).Take(_dataPreviewPageSize).ToList();
             return model;
