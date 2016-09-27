@@ -1356,8 +1356,8 @@ namespace EF2OR.Utils
                 model.Inputs = inputs;
                 CommonUtils.HttpContextProvider.Current.Session["UsersDataPreviewResults"] = model;
             }
-            bool getMore = model.Users == null || model.Users.Count() < (pageNumber * _dataPreviewPageSize);
-            getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
+            bool getMore = true;// model.Users == null || model.Users.Count() < (pageNumber * _dataPreviewPageSize);
+            //getMore = getMore && model.TotalPages == 0; //total pages is 0 until we got them all and know the max
             List<CsvUsers> lstCSVUsers = new List<CsvUsers>();
             SectionsNS.Sections enrollmentsResponse = CommonUtils.HttpContextProvider.Current.Session["PagedUsersEnrollments"] as SectionsNS.Sections;
             if (enrollmentsResponse == null)
@@ -1464,9 +1464,9 @@ namespace EF2OR.Utils
                         }
                         if (lstCSVUsers.Count >= _maxApiCallSize)
                             getMoreStudents = false;
+                        if (getMoreStudents || distinctStudents.Count > 0)
+                            model.StudentsPagedDataResults.CurrentOffset += _maxApiCallSize;
                     }
-                    if (getMoreStudents)
-                        model.StudentsPagedDataResults.CurrentOffset += _maxApiCallSize;
                     if (lstCSVUsers.Count < _maxApiCallSize)
                     {
                         bool getMoreStaff = true;
@@ -1535,9 +1535,9 @@ namespace EF2OR.Utils
                             {
                                 getMoreStaff = false;
                             }
+                            if (getMoreStaff || distinctStaff.Count > 0)
+                                model.StaffPagedDataResults.CurrentOffset += _maxApiCallSize;
                         }
-                        if (getMoreStaff)
-                            model.StaffPagedDataResults.CurrentOffset += _maxApiCallSize;
                     }
                     else
                     {
