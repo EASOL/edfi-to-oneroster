@@ -1383,16 +1383,16 @@ namespace EF2OR.Utils
                                        Section = o.uniqueSectionCode,
                                        Teachers = teachers
                                    });
-            if (inputs != null)
+            if (model.Inputs != null)
             {
-                if (inputs.Schools != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Schools.Contains(x.SchoolId));
+                if (model.Inputs.Schools != null)
+                    enrollmentsList = enrollmentsList.Where(x => model.Inputs.Schools.Contains(x.SchoolId));
 
-                if (inputs.Sections != null)
-                    enrollmentsList = enrollmentsList.Where(x => inputs.Sections.Contains(x.Section));
+                if (model.Inputs.Sections != null)
+                    enrollmentsList = enrollmentsList.Where(x => model.Inputs.Sections.Contains(x.Section));
 
-                if (inputs.Teachers != null)
-                    enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(inputs.Teachers).Any());
+                if (model.Inputs.Teachers != null)
+                    enrollmentsList = enrollmentsList.Where(x => x.Teachers.Intersect(model.Inputs.Teachers).Any());
             }
             enrollmentsList = enrollmentsList.ToList();
             List<KeyValuePair<int, List<StudentsNS.Class1>>> studentsPages = new List<KeyValuePair<int, List<StudentsNS.Class1>>>();
