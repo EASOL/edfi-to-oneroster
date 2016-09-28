@@ -24,7 +24,7 @@ This utility includes powerful functionality to enable data export from the Ed-F
 
 An administrator defines filters to retrieve a data-set from the Ed-Fi API, which is converted and packaged into One Roster v1.0 format. It is possible to preview the data on the page and  download it as an archive.
 
-![Export Utility](https://s32.postimg.org/f2yvzemw5/Screen_Shot_2016_08_01_at_19_26_54.png)
+![Export Utility](https://cloud.githubusercontent.com/assets/5213372/18935012/ddfc8b96-85e5-11e6-8981-427c8ec26021.png)
 
 ### Templates
 
