@@ -810,7 +810,7 @@ namespace EF2OR.Utils
                                         }).ToList();
 
 
-            var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData<StudentsNS.Students>(ApiEndPoints.CsvUsersStaff) as StudentsNS.Students;
+            var staffResponse = await CommonUtils.ApiResponseProvider.GetApiData<StaffNS.Staffs>(ApiEndPoints.CsvUsersStaff) as StaffNS.Staffs;
             var staffResponseInfo = (from s in staffResponse.Property1
                                      let mainTelephone = (s.telephones == null || s.telephones.Count() == 0) ? null : s.telephones.FirstOrDefault(x => x.orderOfPriority == "1")
                                      let mainTelephoneNumber = mainTelephone == null ? "" : mainTelephone.telephoneNumber
@@ -820,11 +820,11 @@ namespace EF2OR.Utils
                                      select new
                                      {
                                          id = s.id,
-                                         userId = s.studentUniqueId,
+                                         userId = s.staffUniqueId,
                                          givenName = s.firstName,
                                          familyName = s.lastSurname,
                                          middleName = s.middleName,
-                                         identifier = s.studentUniqueId,
+                                         identifier = s.staffUniqueId,
                                          email = emailAddress,
                                          sms = mobileNumber,
                                          phone = mainTelephoneNumber,
