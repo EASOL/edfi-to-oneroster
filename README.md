@@ -33,7 +33,7 @@ Templates allow third-party vendors to access data remotely with pre-defined fil
 curl -o filename.zip  http://domain/Export/$template_id -H "Token:<template token>"
 ``` 
 
-![Templates](https://s32.postimg.org/51i627ath/Screen_Shot_2016_08_01_at_19_25_00.png)
+![Templates](https://cloud.githubusercontent.com/assets/5213372/18935057/278890de-85e6-11e6-881a-e540db44f173.png)
 ### Users
 The current version of the application supports a single user (admin), which is configured during the application set-up. In case if the password is lost, the admin should manually connect to the database and change the `PasswordHash` field for the only row in `AspNetUsers` table to `AOx91piOvWdXB+CDudmdhPxBjAZz5aiTtE6xklBQPM4f6ayntGp3psQtTSV4CfeqDw==`. This would change the password to `aU8n&9$nw#72gFb&2ib%j3`. Afterwards, we strongly suggest to change it by using Settings section of the application
 
