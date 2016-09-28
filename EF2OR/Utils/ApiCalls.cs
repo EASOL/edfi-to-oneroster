@@ -232,19 +232,20 @@ namespace EF2OR.Utils
         public static async Task<List<ExportsCheckbox>> GetSpecificTeachers(List<string> ids)
         {
             var teachers = new List<ExportsCheckbox>();
-            foreach (var id in ids)
-            {
-                var endpoint = string.Format(ApiEndPoints.StaffWithId, id);
-                var staffResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, 0, "id,firstName,lastSurname");
-                var oneTeacher = (from s in staffResponse
-                                  select new ExportsCheckbox
-                                  {
-                                      Id = (string)s["id"],
-                                      Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
-                                      Selected = true
-                                  }).FirstOrDefault();
-                teachers.Add(oneTeacher);
-            }
+            if (ids != null)
+                foreach (var id in ids)
+                {
+                    var endpoint = string.Format(ApiEndPoints.StaffWithId, id);
+                    var staffResponse = await CommonUtils.ApiResponseProvider.GetPagedApiData(endpoint, 0, "id,firstName,lastSurname");
+                    var oneTeacher = (from s in staffResponse
+                                      select new ExportsCheckbox
+                                      {
+                                          Id = (string)s["id"],
+                                          Text = (string)s["firstName"] + " " + (string)s["lastSurname"],
+                                          Selected = true
+                                      }).FirstOrDefault();
+                    teachers.Add(oneTeacher);
+                }
             return teachers;
         }
 
