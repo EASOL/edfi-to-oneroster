@@ -24,7 +24,7 @@ namespace EF2OR.Tests.TestProviders
             switch (apiEndpoint)
             {
                 case "enrollment/schools":
-                    var schools = 
+                    var schools =
                         Newtonsoft.Json.JsonConvert.DeserializeObject<List<SchoolsNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
                     if (typeof(T) == typeof(SchoolsNS.Schools))
                     {
@@ -74,9 +74,37 @@ namespace EF2OR.Tests.TestProviders
             throw new NotImplementedException();
         }
 
-        Task<JArray> IApiResponseProvider.GetPagedApiData(string apiEndpoint, int offset, string fields = null, Dictionary<string, string> filters = null)
+        async Task<JArray> IApiResponseProvider.GetPagedApiData(string apiEndpoint, int offset, string fields = null, Dictionary<string, string> filters = null)
         {
-            throw new NotImplementedException();
+            JArray result = null;
+            JArray apiResponse = null;
+            switch (apiEndpoint)
+            {
+                case "enrollment/schools":
+                    apiResponse =
+                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
+                    result = await Task.FromResult(apiResponse);
+                    break;
+                case "enrollment/staffs":
+                    apiResponse =
+                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
+                    result = await Task.FromResult(apiResponse);
+                    break;
+                case "enrollment/students":
+                    apiResponse =
+                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Students);
+                    result = await Task.FromResult(apiResponse);
+                    break;
+                case "enrollment/sections":
+                    apiResponse =
+                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
+                    result = await Task.FromResult(apiResponse);
+                    break;
+                default:
+                    Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
+                    break;
+            }
+            return result;
         }
     }
 }

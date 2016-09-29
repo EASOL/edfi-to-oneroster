@@ -684,6 +684,7 @@ namespace EF2OR.Controllers.Tests
         [TestMethod()]
         public async Task ExportsController_GetTeachersPartialTest()
         {
+            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
             ExportsController controller = new ExportsController();
             SetupController(controller);
             ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -709,6 +710,7 @@ namespace EF2OR.Controllers.Tests
         [TestMethod()]
         public async Task ExportsController_GetSectionsPartialTest()
         {
+            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
             ExportsController controller = new ExportsController();
             SetupController(controller);
             ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -733,6 +735,7 @@ namespace EF2OR.Controllers.Tests
         [TestMethod()]
         public async Task ExportsController_GetCoursesPartialTest()
         {
+            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
             ExportsController controller = new ExportsController();
             SetupController(controller);
             ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -744,14 +747,14 @@ namespace EF2OR.Controllers.Tests
             Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
             ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
             var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
-            var partialResult = await controller.GetPreviewCoursesJsonString(1);
+            var partialResult = await controller.GetPreviewCoursesJsonString(0);
             Assert.IsNotNull(partialResult, "Invalid result");
             Assert.IsInstanceOfType(partialResult, typeof(JsonResult), "Unexpected result type");
             JsonResult partialViewResult = partialResult as JsonResult;
             Assert.IsNotNull(partialViewResult.Data, "Invalid model");
-            Assert.IsInstanceOfType(partialViewResult.Data, typeof(ApiCriteriaSection), "Unexpected model type");
-            ApiCriteriaSection apiCriteriaResult = partialViewResult.Data as ApiCriteriaSection;
-            Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
+            Assert.IsInstanceOfType(partialViewResult.Data, typeof(ViewModels.DataPreviewPagedJsonModel), "Unexpected model type");
+            ViewModels.DataPreviewPagedJsonModel apiCriteriaResult = partialViewResult.Data as ViewModels.DataPreviewPagedJsonModel;
+            Assert.IsTrue(apiCriteriaResult.TotalPages > 0, "No data found");
         }
 
     }
