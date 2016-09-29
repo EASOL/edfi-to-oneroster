@@ -20,46 +20,52 @@ namespace EF2OR.Tests.TestProviders
     {
         async Task<IEdFiOdsData> IApiResponseProvider.GetApiData<T>(string apiEndpoint, bool forceNew = false, string fields = null, Dictionary<string, string> filters = null)
         {
+            bool foundMatch = false;
             T result = new T();
-            switch (apiEndpoint)
+            if (apiEndpoint == "enrollment/schools" ||
+                System.Text.RegularExpressions.Regex.IsMatch(input: apiEndpoint, pattern: string.Format("enrollment/schools/{0}/sections", @"\d*")))
             {
-                case "enrollment/schools":
-                    var schools =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<List<SchoolsNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
-                    if (typeof(T) == typeof(SchoolsNS.Schools))
-                    {
-                        var tResult = result as SchoolsNS.Schools;
-                        tResult.Property1 = schools.ToArray();
-                    }
-                    break;
-                case "enrollment/staffs":
-                    var staffs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<StaffNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
-                    if (typeof(T) == typeof(StaffNS.Staffs))
-                    {
-                        var tResult = result as StaffNS.Staffs;
-                        tResult.Property1 = staffs.ToArray();
-                    }
-                    break;
-                case "enrollment/students":
-                    var students = Newtonsoft.Json.JsonConvert.DeserializeObject<List<StudentNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Students);
-                    if (typeof(T) == typeof(StudentNS.Students))
-                    {
-                        var tResult = result as StudentNS.Students;
-                        tResult.Property1 = students.ToArray();
-                    }
-                    break;
-                case "enrollment/sections":
-                    var sections = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SectionsNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
-                    if (typeof(T) == typeof(SectionsNS.Sections))
-                    {
-                        var tResult = result as SectionsNS.Sections;
-                        tResult.Property1 = sections.ToArray();
-                    }
-                    break;
-                default:
-                    Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
-                    break;
+                var schools =
+                    Newtonsoft.Json.JsonConvert.DeserializeObject<List<SchoolsNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
+                if (typeof(T) == typeof(SchoolsNS.Schools))
+                {
+                    var tResult = result as SchoolsNS.Schools;
+                    tResult.Property1 = schools.ToArray();
+                }
+                foundMatch = true;
             }
+            if (apiEndpoint == "enrollment/staffs")
+            {
+                var staffs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<StaffNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
+                if (typeof(T) == typeof(StaffNS.Staffs))
+                {
+                    var tResult = result as StaffNS.Staffs;
+                    tResult.Property1 = staffs.ToArray();
+                }
+                foundMatch = true;
+            }
+            if (apiEndpoint == "enrollment/students")
+            {
+                var students = Newtonsoft.Json.JsonConvert.DeserializeObject<List<StudentNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Students);
+                if (typeof(T) == typeof(StudentNS.Students))
+                {
+                    var tResult = result as StudentNS.Students;
+                    tResult.Property1 = students.ToArray();
+                }
+                foundMatch = true;
+            }
+            if (apiEndpoint == "enrollment/sections")
+            {
+                var sections = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SectionsNS.Class1>>(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
+                if (typeof(T) == typeof(SectionsNS.Sections))
+                {
+                    var tResult = result as SectionsNS.Sections;
+                    tResult.Property1 = sections.ToArray();
+                }
+                foundMatch = true;
+            }
+            if (!foundMatch)
+                Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
             await Task.Yield();
             return result;
         }
@@ -76,34 +82,42 @@ namespace EF2OR.Tests.TestProviders
 
         async Task<JArray> IApiResponseProvider.GetPagedApiData(string apiEndpoint, int offset, string fields = null, Dictionary<string, string> filters = null)
         {
+            bool foundMatch = false;
             JArray result = null;
             JArray apiResponse = null;
-            switch (apiEndpoint)
+            if (apiEndpoint == "enrollment/schools")
             {
-                case "enrollment/schools":
-                    apiResponse =
-                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
-                    result = await Task.FromResult(apiResponse);
-                    break;
-                case "enrollment/staffs":
-                    apiResponse =
-                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
-                    result = await Task.FromResult(apiResponse);
-                    break;
-                case "enrollment/students":
-                    apiResponse =
-                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Students);
-                    result = await Task.FromResult(apiResponse);
-                    break;
-                case "enrollment/sections":
-                    apiResponse =
-                        JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
-                    result = await Task.FromResult(apiResponse);
-                    break;
-                default:
-                    Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
-                    break;
+                apiResponse =
+                    JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Schools);
+                result = await Task.FromResult(apiResponse);
+                foundMatch = true;
             }
+            if (apiEndpoint == "enrollment/staffs" ||
+                System.Text.RegularExpressions.Regex.IsMatch(input: apiEndpoint, pattern: string.Format("enrollment/schools/{0}/staffs", @"\d*")))
+            {
+                apiResponse =
+                    JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Staffs);
+                result = await Task.FromResult(apiResponse);
+                foundMatch = true;
+            }
+            if (apiEndpoint == "enrollment/students")
+            {
+                apiResponse =
+                    JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Students);
+                result = await Task.FromResult(apiResponse);
+                foundMatch = true;
+            }
+            if (apiEndpoint == "enrollment/sections" ||
+                System.Text.RegularExpressions.Regex.IsMatch(input: apiEndpoint, pattern: string.Format("enrollment/schools/{0}/sections", @"\d*"))
+                )
+            {
+                apiResponse =
+                    JArray.Parse(EF2OR.Tests.Properties.Resources.Enrollment_Sections);
+                result = await Task.FromResult(apiResponse);
+                foundMatch = true;
+            }
+            if (!foundMatch)
+                Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
             return result;
         }
     }
