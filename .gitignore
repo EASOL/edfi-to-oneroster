@@ -13,10 +13,10 @@
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
+EF2OR/[Bb]in/
 x64/
 x86/
 bld/
-[Bb]in/
 [Oo]bj/
 
 # Visual Studio 2015 cache/options directory
@@ -234,3 +234,4 @@ _Pvt_Extensions
 .fake/
 ED2OR/ED2OR/Config/
 EF2OR/Config/
+EF2OR.Entities/bin/
