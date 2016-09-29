@@ -1,0 +1,50 @@
+﻿@model EF2OR.ViewModels.InitialSetup
+<div class="form-group">
+    <p><strong>Note: Modifying the Database Settings will restart your application</strong></p>
+    @Html.LabelFor(m => m.DatabaseServer, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DatabaseServer, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.DatabaseName, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DatabaseName, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.IntegratedSecuritySSPI, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.CheckBoxFor(m => m.IntegratedSecuritySSPI, new { @class = "form-control", id = "chkIntegratedSecurity" })
+    </div>
+</div>
+<div class="databaseCredentials">
+    <div class="form-group">
+        @Html.LabelFor(m => m.DatabaseUserId, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.DatabaseUserId, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DatabaseUserPassword, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.PasswordFor(m => m.DatabaseUserPassword, new { @class = "form-control" })
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.DatabaseApplicationName, new { @class = "col-md-3 control-label" })
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.DatabaseApplicationName, new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-3 col-md-9">
+        <span id="testDatabaseConnectionResult" class="TestDatabaseConnectionResult">@ViewBag.Error</span>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-3 col-md-9 div-Padding" >
+        <input type="button" value="Test Database Connection" onclick="testDatabaseConnection()" class="btn btn-default"/>
+    </div>
+</div>

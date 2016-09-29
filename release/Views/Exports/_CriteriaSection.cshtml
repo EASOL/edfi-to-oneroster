@@ -1,0 +1,27 @@
+﻿@model EF2OR.ViewModels.ApiCriteriaSection
+
+@{
+    var numCheckboxes = Model.FilterCheckboxes == null ? 0 : Model.FilterCheckboxes.Count();
+    var numSelected = Model.FilterCheckboxes == null ? 0 : Model.FilterCheckboxes.Where(x => x.Selected).Count();
+    var numSelectedText = numSelected.ToString() + " of " + numCheckboxes.ToString() + " selected";
+    var itemWord = numCheckboxes == 1 ? "item" : "items";
+    numSelectedText = numSelected == 0 ? numCheckboxes.ToString() + " " + itemWord + " - No Filters Applied" : numSelectedText;
+    var displayStyle = Model.IsExpanded ? "" : "display:none;";
+    var sectionName = Model.SectionName.Replace(" ", "_");
+}
+
+@Html.HiddenFor(x => x.SectionName)
+
+<div class="btn btn-primary accordionHeader" href="#@sectionName" onclick="toggleDiv('@sectionName')">
+    @Model.SectionName <span id="numSelected_@sectionName">(@numSelectedText)</span>
+</div>
+
+<div id="@sectionName" class="collapsableSection" style="overflow-y:hidden; @displayStyle">
+    <a href="javascript:selectAll('@sectionName');">(select all)</a>
+    <a href="javascript:deselectAll('@sectionName');">(deselect all)</a><br />
+    @Html.EditorFor(x => x.FilterCheckboxes)
+    @if (Model.CanGetMore)
+    {
+        <a href="javascript: getMore('@sectionName');">More...</a>
+    }
+</div>

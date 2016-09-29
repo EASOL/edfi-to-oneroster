@@ -1,0 +1,9 @@
+﻿@model EF2OR.ViewModels.ExportsCheckbox
+
+<div class="col-md-4">
+    @Html.CheckBoxFor(x => x.Selected, new { data_filterid = Model.Id, onchange = "checkboxChanged(this);" })
+    @Html.LabelFor(x => x.Selected, Model.Text)
+    @Html.HiddenFor(x => x.Text)
+    @Html.HiddenFor(x => x.Id)
+</div>
+

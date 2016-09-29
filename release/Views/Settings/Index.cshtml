@@ -1,0 +1,180 @@
+﻿@using EF2OR.Enums
+@model EF2OR.ViewModels.SettingsViewModel
+
+@{
+    ViewBag.Title = "Settings";
+}
+
+<style>
+    .connectionFailed {
+        font-weight: bold;
+        color: darkred;
+    }
+
+    .connectionSuccessful {
+        font-weight: bold;
+        color: darkgreen;
+    }
+</style>
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success" role="alert" style="margin-top:10px;">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+<h3>@ViewBag.Title</h3>
+
+@using (Html.BeginForm("Index", "Settings", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.OldPassword, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.NewPassword, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApiBaseUrl, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.ApiBaseUrl, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApiKey, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.ApiKey, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ApiSecret, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.ApiSecret, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <input type="button" value="Test Connection" onclick="testConnection()" class="btn btn-default" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-3">
+            <span id="testConnectionResult"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-3 control-label">
+            @Html.LabelFor(m => m.ApiPrefix) <i>(eg: @SettingDefaults.ApiPrefix)</i>
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.ApiPrefix, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DefaultOneRosterVersion, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.DropDownListFor(m => m.DefaultOneRosterVersion, (List<SelectListItem>)ViewBag.OneRosterVersions, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-3 control-label">
+            <label>Orgs Identifier</label> <i>(This determines the "identifier" field in the "orgs" result.  It will either map to the "stateOrganizationId" field, or return blank)</i>
+        </div>
+        <div class="col-md-9">
+            <label>@Html.RadioButtonFor(model => model.OrgsIdentifier, OrgIdentifierSettings.stateOrganizationId) &nbsp;stateOrganizationId</label>
+            <br />
+            <label>@Html.RadioButtonFor(model => model.OrgsIdentifier, OrgIdentifierSettings.blank) &nbsp;blank</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-3 control-label">
+            <label>Academic Session Types</label> <i>(This determines the "type" field in the "academicsessions" result.  It will display the Type that matches the Term Descriptor returned)</i>
+        </div>
+        <div class="col-md-9">
+            @if (Model.IsError)
+            {
+                <p style="font-weight: bold; color: darkred;">@Model.ErrorMessage</p>
+            }
+            else if (Model.AcademicSessionTypes != null && Model.AcademicSessionTypes.Count > 0)
+            {
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Term Descriptor</th>
+                        <th>Type</th>
+                    </tr>
+                    @Html.EditorFor(m => m.AcademicSessionTypes)
+                </table>
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+}
+<h3>Database Settings</h3>
+@using (Html.BeginForm(actionName: "SaveDatabaseSettiings", controllerName: "Settings", method: FormMethod.Post))
+{
+    ViewDataDictionary databaseSettingsViewData = new ViewDataDictionary(Model.DatabaseSettings);
+    databaseSettingsViewData.Add("FieldsPrefix", "DatabaseSettings");
+    @Html.EditorFor(p => p.DatabaseSettings, templateName: "DatabaseSettings")
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9 div-Padding">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/PreConfiguration/PreConfiguration.js"></script>
+    <script>
+        function testConnection() {
+            $('#testConnectionResult').html('<div style="text-align:center; color:black;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 32px;" /><p>Loading...</p></div>');
+
+            var apiBaseUrl = $("#@Html.IdFor(m => m.ApiBaseUrl)").val();
+            var apiKey = $("#@Html.IdFor(m => m.ApiKey)").val();
+            var apiSecret = $("#@Html.IdFor(m => m.ApiSecret)").val();
+
+            $.ajax({
+                url: '@Url.Action("TestConnection")',
+                type: 'POST',
+                data: { apiBaseUrl: apiBaseUrl, apiKey: apiKey, apiSecret: apiSecret },
+                success: function (result) {
+                    $('#testConnectionResult').html('');
+                    if (result["IsSuccessful"]) {
+                        $("#testConnectionResult").text("Connection Successful").removeClass("connectionFailed").addClass("connectionSuccessful");
+                    }
+                    else {
+                        var errorMsg = result["ErrorMessage"];
+                        $("#testConnectionResult").text("Connection Failed: " + errorMsg).removeClass("connectionSuccessful").addClass("connectionFailed");
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+        function testDatabaseConnection() {
+            DatabaseSettings.TestDatabaseConnection('@Url.Action("TestDatabaseConnection")', '.TestDatabaseConnectionResult');
+        }
+    </script>
+}

@@ -1,0 +1,230 @@
+﻿@model List<EF2OR.ViewModels.TemplateViewModel>
+@{
+    ViewBag.Title = "Templates";
+    var exportActionUrl = Url.Action("Index", "Export", new { }, Request.Url.Scheme) + "/";
+    int clipIconCounter = 0;
+}
+
+<style>
+    .accordionHeader {
+        width: 100%;
+        text-align: left;
+    }
+
+    #previewWindowContent .table td {
+        white-space: nowrap;
+    }
+
+    .modal a.close-modal {
+        top: 30px;
+        right: 30px;
+    }
+</style>
+
+<h3>@ViewBag.Title</h3>
+<link href="~/Content/jquery.modal.min.css" rel="stylesheet" />
+
+<div>
+    <table id="templateTable" class="table table-striped">
+        <tr>
+            <th>Template Name</th>
+            <th>Vendor</th>
+            <th>OneRoster Version</th>
+            <th>Access URL</th>
+            <th>Access Token</th>
+            <th># of Downloads</th>
+            <th>Last Access</th>
+            <th>Created Date</th>
+            <th>Last Modified</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var template in Model)
+        {
+            bool tokenExists = !string.IsNullOrEmpty(template.AccessToken);
+            var tokenText = tokenExists ? "Generate New Token" : "Assign Token";
+            <tr>
+                <td>@template.TemplateName</td>
+                <td>@template.VendorName</td>
+                <td>@template.OneRosterVersion</td>
+                <td>
+                    @if (tokenExists)
+                    {
+                        <table>
+                            <tr>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a data-toggle="tooltip" title="Click to copy" href="javascript: copyToClipboard('@(exportActionUrl + template.AccessUrl)', @clipIconCounter)"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;"><span id="urlSpan_@clipIconCounter.ToString()">@(exportActionUrl + template.AccessUrl)</span></td>
+                            </tr>
+                        </table>
+                        clipIconCounter++;
+                    }
+                </td>
+                <td>
+                    @if (tokenExists)
+                    {
+                        <table>
+                            <tr>
+                                <td style="border:none; padding:0px; padding-right:2px;"><a data-toggle="tooltip" title="Click to copy" href="javascript: copyToClipboard('@template.AccessToken', @clipIconCounter)"><i class="fa fa-clipboard"></i></a></td>
+                                <td style="border:none; padding:0px;"><span id="urlSpan_@clipIconCounter.ToString()">@template.AccessToken</span></td>
+                            </tr>
+                        </table>
+                        clipIconCounter++;
+                    }
+                </td>
+                <td>@template.NumberOfDownloads</td>
+                <td>@template.LastAccess</td>
+                <td>@template.CreatedDateString</td>
+                <td>@template.LastModifiedDate</td>
+                <td>
+                    <a href="javascript:dataPreview(@template.TemplateId);">Preview</a> |
+                    <a href="javascript:dataDownload(@template.TemplateId);">Download</a> |
+                    <a href="@Url.Action("Index", "Logs", new { templateId = template.TemplateId })">View Log</a> |
+                    <a href="javascript:openCloneWindow(@template.TemplateId);">Clone</a> |
+                    <a href="javascript:openEditWindow(@template.TemplateId, '@template.TemplateName.Replace("'", "\\'")', '@template.VendorName.Replace("'", "\\'")');">Edit</a> |
+                    <a href="javascript:deleteTemplate(@template.TemplateId, '@template.TemplateName.Replace("'", "\\'")');">Delete</a> |
+                    @Html.ActionLink(tokenText, "AssignToken", new { templateId = template.TemplateId })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div id="previewWindow" style="display:none; overflow-y: auto; width:100%;">
+    <div id="previewWindowContent" class="container"></div>
+</div>
+
+
+
+@section BodyOutsideOfContainer{
+    <input type="text" id="copytextbox" value="" style="position:fixed; bottom:5px; left: 5px;" />
+
+    <div style="position:fixed; bottom:40px; padding:10px; background-color: white; width:100%; border-top:2px solid #eee;">
+        <div class="container">
+            <a href="@Url.Action("Index", "Exports")" class="btn btn-primary-blue">Create New Template</a>
+        </div>
+    </div>
+}
+
+
+<div id="editWindow" style="display:none; overflow-y: auto;">
+    <form id="templateEditForm"  method="post">
+        <input type="hidden" id="editTemplateId" name="editTemplateId" />
+
+    <h4 align="center" id="modalHeader"></h4>
+
+    <div class="form-group">
+        <label class="col-md-6 control-label">Template Name:</label>
+        <div class="col-md-6">
+                <input type="text" class="form-control" id="editTemplateName" name="editTemplateName" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        <label class="col-md-6 control-label">Vendor Name:</label>
+        <div class="col-md-6">
+                <input type="text" class="form-control" id="editTemplateVendorName" name="editTemplateVendorName" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div style="text-align:center;">
+        <button type="button" class="btn btn-primary" id="cloneSave" onclick="cloneTemplate()">Save and Review Filters</button>
+        <button type="button" class="btn btn-primary" id="editSave" onclick="editTemplate()">Save</button>
+        <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
+    </div>
+    </form>
+</div>
+
+
+@section scripts{
+<script src="~/Scripts/jquery.modal.min.js"></script>
+  <script>
+
+      function copyToClipboard(copyValue, counter) {
+          $("#copytextbox").val(copyValue);
+          var copyTextarea = document.querySelector('#copytextbox');
+          copyTextarea.select();
+          document.execCommand('copy');
+
+          $("#urlSpan_" + counter)
+          .attr('data-original-title', "Copied")
+          .tooltip('fixTitle')
+          .tooltip('show');
+
+          setTimeout(function () {
+              $("#urlSpan_" + counter).tooltip('hide')
+              .attr('data-original-title', "")
+              .tooltip('fixTitle');
+          }, 1000);
+      }
+
+      function dataPreview(templateId) {
+          $('#previewWindowContent').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+
+          $("#previewWindow").modal({
+              showClose: true
+          });
+
+          $("#previewWindowContent").load("@Url.Action("PreviewFromTemplate", "Exports")", {
+              templateId: templateId
+          });
+      }
+
+      function dataDownload(templateId) {
+          window.location = "@Url.Action("Download")?templateId=" + templateId;
+      }
+
+      function openEditWindow(templateId, templateName, vendorName) {
+          $("#editTemplateId").val(templateId);
+          $("#editTemplateName").val(templateName);
+          $("#editTemplateVendorName").val(vendorName);
+          $("#cloneSave").hide();
+          $("#editSave").show();
+          $("#modalHeader").text("Edit Template");
+
+          $("#editWindow").modal({
+              showClose: false
+          });
+      }
+
+      function openCloneWindow(templateId) {
+          $("#editTemplateId").val(templateId);
+          $("#editTemplateName").val("");
+          $("#editTemplateVendorName").val("");
+          $("#editSave").hide();
+          $("#cloneSave").show();
+          $("#modalHeader").text("Clone Template");
+
+          $("#editWindow").modal({
+              showClose: false
+          });
+      }
+
+      function editTemplate() {
+          var frm = document.getElementById('templateEditForm') || null;
+          if (frm) {
+              frm.action = '@Url.Action("Edit")';
+          }
+          document.getElementById('templateEditForm').submit();
+      }
+
+      function cloneTemplate() {
+          var frm = document.getElementById('templateEditForm') || null;
+          if (frm) {
+              frm.action = '@Url.Action("Clone")';
+          }
+          document.getElementById('templateEditForm').submit();
+      }
+
+      function deleteTemplate(templateId, templateName) {
+          if (confirm("Are you sure you want to delete the template \"" + templateName + "\"?")) {
+              var url = "@Url.Action("Delete")?templateId=" + templateId;
+              window.location.href = url;
+          }
+      }
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>   
+}

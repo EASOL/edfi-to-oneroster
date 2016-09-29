@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - EASOL Ed-Fi to OneRoster Utility</title>
+    <link rel="icon" type="img/ico" href="~/Content/Images/easollogo.png">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#44a657;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a style="float:left;" target="_blank" href="https://easol.org"><img style="height:45px; margin:3px;" src="~/Content/Images/easollogo.png" /></a>
+                @Html.ActionLink("EASOL Ed-Fi to OneRoster Utility", "Index", "Templates", new { area = "" }, new { @class = "navbar-brand", style = "color:#FFFFFF; float:left; margin-left:10px;" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @*<ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>*@
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="padding-bottom: 80px;">
+        @if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Request.IsSecureConnection == false)
+        {
+            <div class="alert alert-danger" role="alert" style="margin-top:10px;">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                Website is not using HTTPS
+            </div>
+        }
+        @RenderBody()
+    </div>
+
+    <footer class="footer">
+        <div class="container" style="text-align:left;">
+            <a href="https://github.com/easol/edfi-to-oneroster" target="_blank"><i class="fa fa-github" style="font-size:24px;"></i></a>
+            &nbsp;&nbsp;
+            <a target="_blank" href="http://www.ed-fi.org"><img src="~/Content/Images/EdFi-logo-Powered-RGB-TM.png" style="height:32px; position:relative; bottom:6px;" /></a>
+            <a target="_blank" style="float:right;" href="https://learningtapestry.com/"><img src="~/Content/Images/powered-by.png" style="height:32px; position:relative; bottom:4px;" /></a>
+        </div>
+    </footer>
+
+    @RenderSection("BodyOutsideOfContainer", required: false)
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://use.fontawesome.com/3f9dc1a524.js"></script>
+    <script type="text/javascript">
+        var urls = {
+            //"Subjects": "@Url.Action("GetSubjectsPartial")",
+            "Teachers": "@Url.Action("GetTeachersPartial")",
+            //"Courses": "@Url.Action("GetCoursesPartial")",
+            "Sections": "@Url.Action("GetSectionsPartial")"
+        };
+
+        var previewUrls = {
+            "orgs": "@Url.Action(actionName:"GetPreviewOrgsJsonString", controllerName: "Exports")",
+            "users": "@Url.Action(actionName: "GetPreviewUsersJsonString", controllerName: "Exports")",
+            "classes": "@Url.Action(actionName: "GetPreviewClassesJsonString", controllerName: "Exports")",
+            "courses": "@Url.Action(actionName: "GetPreviewCoursesJsonString", controllerName: "Exports")",
+            "enrollments": "@Url.Action(actionName: "GetPreviewEnrollmentsJsonString", controllerName: "Exports")",
+            "academicsessions": "@Url.Action(actionName: "GetPreviewAcademicSessionsJsonString", controllerName: "Exports")"
+        };
+    </script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

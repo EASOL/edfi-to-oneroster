@@ -1,0 +1,144 @@
+﻿@model EF2OR.ViewModels.ExportsViewModel
+@{
+    var pageSize = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["DataPreviewPageSize"]);
+}
+
+@if (Model.DataPreviewSections != null)
+{
+    <h3>Data Preview</h3>
+
+    foreach (var previewSection in Model.DataPreviewSections)
+    {
+        <div class="btn btn-primary accordionHeader" data-toggle="collapse" href="#preview_@previewSection.SectionName">
+            @previewSection.SectionName
+        </div>
+        <div class="collapse" id="preview_@previewSection.SectionName">
+            <table id="table_@previewSection.SectionName" data-pagination="false" class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        @foreach (var col in previewSection.ColumnNames)
+                        {
+                            <th data-field="@col">@col</th>
+                        }
+                    </tr>
+                </thead>
+            </table>
+            <i onclick="getPreviousPage('@previewSection.SectionName')" id="leftArrow_@previewSection.SectionName" class="fa fa-toggle-left" style="cursor:pointer;display:none;"></i>
+            <span id="pageNumberDisplay_@previewSection.SectionName">Page @previewSection.CurrentPage</span>
+            <input id="pageNumber_@previewSection.SectionName" type="hidden" value="1" />
+            @if (previewSection.TotalPages != 1)
+            {
+                <i onclick="getNextPage('@previewSection.SectionName')" id="rightArrow_@previewSection.SectionName" class="fa fa-toggle-right" style="cursor:pointer;"></i>
+            }
+            @{
+                var jsonPreviewsType = Model.JsonPreviews.GetType();
+                var upperCasedSectionName = previewSection.SectionName.ToUpper();
+                var jsonPreviewProperties = jsonPreviewsType.GetProperties();
+                int pageStartRow = ((previewSection.CurrentPage - 1) * pageSize) + 1;
+                int pageEndRow = 0;
+                foreach (var singleProperty in jsonPreviewProperties)
+                {
+                    if (singleProperty.Name.ToUpper() == upperCasedSectionName)
+                    {
+                        var jsonPreviewSectionData = singleProperty.GetValue(Model.JsonPreviews) as string;
+                        var jsonArray = Newtonsoft.Json.Linq.JArray.Parse(jsonPreviewSectionData);
+                        pageEndRow = (pageStartRow - 1) + jsonArray.Count;
+                        break;
+                    }
+                }
+            }
+            <div class="pull-right">
+                <span id="pageRowStart_@previewSection.SectionName">@pageStartRow</span>-<span id="pageRowEnd_@previewSection.SectionName">@pageEndRow</span>
+            </div>
+            <input type="hidden" id="hdnCurrentPage_@previewSection.SectionName" value="@previewSection.CurrentPage" />
+        </div>
+                }
+
+                <script>
+                    function getPage(pageNumber, sectionName) {
+                        var url = previewUrls[sectionName] + "?pageNumber=" + pageNumber;
+                        $.get( url, function( data ) {
+                            var jsonObj = $.parseJSON(data.JsonData);
+                            $('#table_' + sectionName).bootstrapTable('load', jsonObj);
+                            $("#pageNumberDisplay_" + sectionName).text("Page " + data.CurrentPage);
+                            var pageStartRowNbr = ((pageNumber-1) * @pageSize)+1;
+                            var pageEndRowNbr = (pageStartRowNbr-1) + jsonObj.length;
+                            $("#pageRowStart_" + sectionName).text(pageStartRowNbr);
+                            $("#pageRowEnd_" + sectionName).text(pageEndRowNbr);
+                            $("#rightArrow_" + sectionName).show();
+                            $("#leftArrow_" + sectionName).show();
+                            if (data.CurrentPage == data.TotalPages) {
+                                $("#rightArrow_" + sectionName).hide();
+                            }
+
+                            if (data.CurrentPage == 1) {
+                                $("#leftArrow_" + sectionName).hide();
+                            }
+                        });
+                    }
+
+                    function getNextPage(sectionName) {
+                        var nextPage = parseInt($("#pageNumber_" + sectionName).val()) + 1;
+                        $("#pageNumber_" + sectionName).val(nextPage);
+                        getPage(nextPage, sectionName);
+                    }
+
+                    function getPreviousPage(sectionName) {
+                        var previousPage = parseInt($("#pageNumber_" + sectionName).val()) - 1;
+                        $("#pageNumber_" + sectionName).val(previousPage);
+                        getPage(previousPage, sectionName);
+                    }
+
+                    $(function () {
+                        var orgsData = @Html.Raw(Model.JsonPreviews.Orgs);
+                        $('#table_orgs').bootstrapTable({
+                            undefinedText: '',
+                            data: orgsData
+                        });
+
+                        var usersData = @Html.Raw(Model.JsonPreviews.Users);
+                        $('#table_users').bootstrapTable({
+                            undefinedText: '',
+                            data: usersData
+                        });
+
+                        var coursesData = @Html.Raw(Model.JsonPreviews.Courses);
+                        $('#table_courses').bootstrapTable({
+                            undefinedText: '',
+                            data: coursesData
+                        });
+
+                        var classesData = @Html.Raw(Model.JsonPreviews.Classes);
+                        $('#table_classes').bootstrapTable({
+                            undefinedText: '',
+                            data: classesData
+                        });
+
+                        var enrollmentsData = @Html.Raw(Model.JsonPreviews.Enrollments);
+                        $('#table_enrollments').bootstrapTable({
+                            undefinedText: '',
+                            data: enrollmentsData
+                        });
+
+                        var academicsessions = @Html.Raw(Model.JsonPreviews.AcademicSessions);
+                        $('#table_academicsessions').bootstrapTable({
+                            undefinedText: '',
+                            data: academicsessions
+                        });
+
+                        @if (Model.DataPreviewSections.Any(x => x.SectionName == "manifest"))
+                {
+                <text>
+                        var manifest = @Html.Raw(Model.JsonPreviews.Manifest);
+                        $('#table_manifest').bootstrapTable({
+                            undefinedText: '',
+                            data: manifest
+                        });
+                        </text>
+                }
+
+
+                    });
+                </script>
+
+                }

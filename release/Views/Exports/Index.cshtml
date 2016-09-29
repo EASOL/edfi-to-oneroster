@@ -1,0 +1,351 @@
+﻿@model EF2OR.ViewModels.ExportsViewModel
+
+@{
+    ViewBag.Title = "Exports";
+    bool isEditTemplate = Model.EditTemplateId != 0;
+}
+
+<style>
+    .accordionHeader {
+        width:100%;
+        text-align: left;
+    }
+
+    .table td {
+        white-space:nowrap;
+    }
+</style>
+<link href="~/Content/jquery.modal.min.css" rel="stylesheet" />
+
+@using (Html.BeginForm("DownloadCsv", "Exports", FormMethod.Post, new { id = "exportsForm" }))
+{
+    if (isEditTemplate)
+    {
+        <h3 style="float:left;margin-top:0px;">Edit Template - @Model.EditTemplateName</h3>
+    }
+    else
+    {
+        <h3 style="float:left;margin-top:0px;">Data Selection</h3>
+    }
+
+    <div style="float:right;">
+        <label class="control-label">OneRoster Version</label>&nbsp;
+        @Html.DropDownListFor(m => m.OneRosterVersion, (List<SelectListItem>)ViewBag.OneRosterVersions, new { @class = "form-control", style ="display: inline; width: inherit;" })
+    </div>
+
+ <div>
+     @Html.HiddenFor(x => x.SelectedSchools)
+     @*@Html.HiddenFor(x => x.SelectedSchoolYears)*@
+     @*@Html.HiddenFor(x => x.SelectedTerms)*@
+     @*@Html.HiddenFor(x => x.SelectedSubjects)*@
+     @*@Html.HiddenFor(x => x.SelectedCourses)*@
+     @Html.HiddenFor(x => x.SelectedTeachers)
+     @Html.HiddenFor(x => x.SelectedSections)
+     @Html.HiddenFor(x => x.NewTemplateName)
+     @Html.HiddenFor(x => x.NewTemplateVendorName)
+     @Html.HiddenFor(x => x.EditTemplateId)
+  
+     @Html.Partial("_CriteriaSection", Model.SchoolsCriteriaSection, new ViewDataDictionary()
+{
+    TemplateInfo = new TemplateInfo()
+    { HtmlFieldPrefix = "Schools" }
+})
+
+     @*@Html.Partial("_CriteriaSection", Model.SchoolYearsCriteriaSection, new ViewDataDictionary()
+{
+    TemplateInfo = new TemplateInfo()
+    { HtmlFieldPrefix = "School_Years" }
+})
+
+     @Html.Partial("_CriteriaSection", Model.TermsCriteriaSection, new ViewDataDictionary()
+{
+    TemplateInfo = new TemplateInfo()
+    { HtmlFieldPrefix = "Terms" }
+})*@
+
+     @*<div id="SubjectsContainer">
+         @Html.Partial("_CriteriaSection", Model.SubjectsCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Subjects" }
+   })
+     </div>
+
+     <div id="CoursesContainer">
+         @Html.Partial("_CriteriaSection", Model.CoursesCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Courses" }
+   })
+     </div>*@
+
+     <div id="TeachersContainer">
+         @Html.Partial("_CriteriaSection", Model.TeachersCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Teachers" }
+   })
+     </div>
+
+     <div id="SectionsContainer">
+         @Html.Partial("_CriteriaSection", Model.SectionsCriteriaSection, new ViewDataDictionary()
+   {
+       TemplateInfo = new TemplateInfo()
+       { HtmlFieldPrefix = "Sections" }
+   })
+     </div>
+     <br />
+     <div id="DataPreview"></div>
+ </div>
+
+
+<div id="editWindow" style="display:none; overflow-y: auto;">
+    <h4 align="center">Save New Template</h4>
+
+    <div class="form-group">
+        <label class="col-md-6 control-label">Template Name:</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="newTemplateName" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        <label class="col-md-6 control-label">Vendor Name:</label>
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="newTemplateVendorName" />
+        </div>
+    </div>
+    <br />
+    <br />
+    <div style="text-align:center;">
+        <button type="button" class="btn btn-primary" id="editSave" onclick="saveTemplate()">Save</button>
+        <a href="#" class="btn btn-primary" rel="modal:close">Cancel</a>
+    </div>
+</div>
+}
+
+@section BodyOutsideOfContainer{
+    <div style="position:fixed; bottom:40px; padding: 10px; background-color: white; width:100%; z-index:2; border-top:2px solid #eee;">
+        <div class="container">
+            <button type="button" class="btn btn-primary-blue" onclick="dataPreview()">Preview Data</button>
+            <button type="button" class="btn btn-primary-blue" onclick="downloadCsv()">Download CSV Package</button>
+            @if (isEditTemplate)
+            {
+                <button type="button" class="btn btn-primary-blue" id="btnSaveTemplate" onclick="updateTemplate()">Update Template</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-primary-blue" id="btnSaveTemplate" onclick="openSaveTemplateWindow()">Save Template</button>
+            }
+        </div>
+    </div>
+}
+
+@section scripts{
+<script src="~/Scripts/jquery.modal.min.js"></script>
+        <script>
+
+
+            function toggleDiv(divId) {
+                $('#' + divId).slideToggle('fast');
+            }
+
+            function deselectAll(divId) {
+                $("#" + divId).find("input:checkbox").prop("checked", false);
+                checkboxRecount(divId);
+                if (divId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
+                    topGroupChanged();
+                }
+            }
+
+            function selectAll(divId) {
+                $("#" + divId).find("input:checkbox").prop("checked", true);
+                checkboxRecount(divId);
+                if (divId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
+                    topGroupChanged();
+                }
+            }
+
+            function checkboxRecount(divId) {
+                var numCheckedBoxes = $("#" + divId).find("input:checkbox:checked").length;
+                var numTotalBoxes = $("#" + divId).find("input:checkbox").length;
+                var itemWord = numTotalBoxes == 1 ? "item" : "items";
+
+                var txt = "(" + numCheckedBoxes + " of " + numTotalBoxes + " selected)"
+                txt = numCheckedBoxes == 0 ? "(" + numTotalBoxes + " " + itemWord + " - No Filters Applied)" : txt;
+                $("#numSelected_" + divId).text(txt);
+            }
+
+            function getCheckedIds(divId) {
+                var checkedBoxes = $("#" + divId).find("input:checkbox:checked");
+
+                var arr = [];
+                checkedBoxes.each(function () {
+                    var $this = $(this);
+                    arr.push($this.data('filterid'));
+                });
+                return arr;
+            }
+
+            function getMore(divId) {
+                var schoolIds = getCheckedIds("Schools");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
+
+                var boxesAlreadyChecked = getCheckedIds(divId);
+                $("#numSelected_" + divId).text("(Loading...)");
+
+                $("#" + divId + "Container").load(urls[divId], {
+                    schoolIds: schoolIds,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
+                    boxesAlreadyChecked: boxesAlreadyChecked,
+                    getMore: true
+                });
+            }
+
+            function topGroupChanged() {
+                var schoolIds = getCheckedIds("Schools");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
+
+                //var subjectsAlreadyChecked = getCheckedIds("Subjects");
+                //var coursesAlreadyChecked = getCheckedIds("Courses");
+                var teachersAlreadyChecked = getCheckedIds("Teachers");
+                var sectionsAlreadyChecked = getCheckedIds("Sections");
+
+                //$("#numSelected_Subjects").text("(Loading...)");
+                //$("#numSelected_Courses").text("(Loading...)");
+                $("#numSelected_Teachers").text("(Loading...)");
+                $("#numSelected_Sections").text("(Loading...)");
+
+                //$("#SubjectsContainer").load(urls["Subjects"], {
+                //    schoolIds: schoolIds,
+                //    schoolYears: schoolYears,
+                //    terms: terms,
+                //    boxesAlreadyChecked: subjectsAlreadyChecked,
+                //    getMore : false
+                //});
+
+                //$("#CoursesContainer").load(urls["Courses"], {
+                //    schoolIds: schoolIds,
+                //    schoolYears: schoolYears,
+                //    terms: terms,
+                //    boxesAlreadyChecked: coursesAlreadyChecked,
+                //    getMore : false
+                //});
+
+                $("#TeachersContainer").load(urls["Teachers"], {
+                    schoolIds: schoolIds,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
+                    boxesAlreadyChecked: teachersAlreadyChecked,
+                    getMore : false
+            });
+
+                $("#SectionsContainer").load(urls["Sections"], {
+                    schoolIds: schoolIds,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
+                    boxesAlreadyChecked: sectionsAlreadyChecked,
+                    getMore : false
+                });
+            }
+
+            function checkboxChanged(that) {
+                var parentDivId = $(that).parent().parent("div").attr("id");
+                if (parentDivId == "Schools" || parentDivId == "School_Years" || parentDivId == "Terms") {
+                    topGroupChanged();
+                }
+                checkboxRecount(parentDivId);
+
+                //if ($(this).is(':checked')) {
+                //    console.log($(this).val() + ' is now checked');
+                //} else {
+                //    console.log($(this).val() + ' is now unchecked');
+                //}
+            }
+
+            function dataPreview() {
+                $('.collapsableSection').hide('fast');
+                $('#DataPreview').html('<div style="width: 100%; text-align:center;"><img src="@Url.Content("~/Content/Images/loading.gif")" style="width: 64px;" /><h4>Loading...</h4></div>');
+
+                var schoolIds = getCheckedIds("Schools");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
+                //var subjects = getCheckedIds("Subjects");
+                //var courses = getCheckedIds("Courses");
+                var teachers = getCheckedIds("Teachers");
+                var sections = getCheckedIds("Sections");
+                var oneRosterVersion = $("#@Html.IdFor(m => m.OneRosterVersion)").val();
+
+                $("#DataPreview").load("@Url.Action("Preview")", {
+                    schoolIds: schoolIds,
+                    //schoolYears: schoolYears,
+                    //terms: terms,
+                    //subjects: subjects,
+                    //courses: courses,
+                    teachers: teachers,
+                    sections: sections,
+                    oneRosterVersion: oneRosterVersion
+                });
+
+            }
+
+            function setHiddens() {
+                var schoolIds = getCheckedIds("Schools");
+                //var schoolYears = getCheckedIds("School_Years");
+                //var terms = getCheckedIds("Terms");
+                //var subjects = getCheckedIds("Subjects");
+                //var courses = getCheckedIds("Courses");
+                var teachers = getCheckedIds("Teachers");
+                var sections = getCheckedIds("Sections");
+
+                $("#@Html.IdFor(x => x.SelectedSchools)").val(schoolIds);
+               @* $("#@Html.IdFor(x => x.SelectedSchoolYears)").val(schoolYears);
+                $("#@Html.IdFor(x => x.SelectedTerms)").val(terms);
+                $("#@Html.IdFor(x => x.SelectedSubjects)").val(subjects);
+                $("#@Html.IdFor(x => x.SelectedCourses)").val(courses);*@
+                $("#@Html.IdFor(x => x.SelectedTeachers)").val(teachers);
+                $("#@Html.IdFor(x => x.SelectedSections)").val(sections);
+            }
+
+            function saveTemplate() {
+                setHiddens();
+                var newTemplateName = $("#newTemplateName").val();
+                var newTemplateVendorName = $("#newTemplateVendorName").val();
+                $("#@Html.IdFor(x => x.NewTemplateName)").val(newTemplateName);
+                $("#@Html.IdFor(x => x.NewTemplateVendorName)").val(newTemplateVendorName);
+
+                var frm = document.getElementById('exportsForm') || null;
+                if (frm) {
+                    frm.action = '@Url.Action("SaveTemplate")';
+                }
+                document.getElementById('exportsForm').submit();
+            }
+
+            function updateTemplate() {
+                setHiddens();
+
+                var frm = document.getElementById('exportsForm') || null;
+                if (frm) {
+                    frm.action = '@Url.Action("UpdateTemplate")';
+                }
+                document.getElementById('exportsForm').submit();
+            }
+
+            function openSaveTemplateWindow() {
+                $("#editWindow").modal({
+                    showClose: false
+                });
+            }
+
+            function downloadCsv() {
+                setHiddens();
+                document.getElementById('exportsForm').submit();
+            }
+        </script>
+    }
+
+  

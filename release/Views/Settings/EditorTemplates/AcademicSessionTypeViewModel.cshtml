@@ -1,0 +1,8 @@
+﻿@model EF2OR.ViewModels.AcademicSessionTypeViewModel
+
+    <tr>
+        <td>@Model.TermDescriptor</td>
+        <td>@Html.DropDownListFor(m => m.Type, (List<SelectListItem>)ViewBag.AcademicSessionTypeValues, "Select...", new { @class = "form-control" })</td>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.TermDescriptor)
+    </tr>
