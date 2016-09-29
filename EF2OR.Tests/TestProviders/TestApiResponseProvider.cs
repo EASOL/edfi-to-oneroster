@@ -13,6 +13,9 @@ using SchoolsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Schools;
 using StaffNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Staffs;
 using StudentNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Students;
 using SectionsNS = EF2OR.Entities.EdFiOdsApi.Enrollment.Sections;
+using EF2OR.Models;
+using EF2OR.Enums;
+using System.Configuration;
 
 namespace EF2OR.Tests.TestProviders
 {
@@ -72,13 +75,20 @@ namespace EF2OR.Tests.TestProviders
 
         string IApiResponseProvider.GetApiPrefix()
         {
-            throw new NotImplementedException();
+            using (var context = new ApplicationDbContext())
+            {
+                return context.ApplicationSettings.FirstOrDefault(x => x.SettingName == ApplicationSettingsTypes.ApiPrefix)?.SettingValue;
+            }
         }
 
         Task<JArray> IApiResponseProvider.GetCustomApiData(string customUrl)
         {
             throw new NotImplementedException();
         }
+
+        private static int _checkboxPageSize = Convert.ToInt32(ConfigurationManager.AppSettings["CheckboxPageSize"]);
+        private static int _maxApiCallSize = Convert.ToInt32(ConfigurationManager.AppSettings["ApiMaxCallSize"]);
+        private static int _dataPreviewPageSize = Convert.ToInt32(ConfigurationManager.AppSettings["DataPreviewPageSize"]);
 
         async Task<JArray> IApiResponseProvider.GetPagedApiData(string apiEndpoint, int offset, string fields = null, Dictionary<string, string> filters = null)
         {
@@ -118,6 +128,12 @@ namespace EF2OR.Tests.TestProviders
             }
             if (!foundMatch)
                 Assert.Fail(string.Format("Unexpected Endpoint: {0}", apiEndpoint));
+            if (offset > 0 && result != null && result.Count > 0)
+            {
+                var offsetData = result.Skip(offset);
+                result = JArray.FromObject(offsetData);
+            }
+            result = JArray.FromObject(result.Take(_maxApiCallSize));
             return result;
         }
     }
