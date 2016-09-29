@@ -2,7 +2,7 @@
 
 
 
-The EASOL Ed-FI to OneRoster Utility provides the ability to easily export data stored in an Ed-Fi Operational Data Store to the IMS  [One Roster](https://www.imsglobal.org/lis/imsOneRosterv1p0/imsOneRosterCSV-v1p0.html) CSV format.
+The EASOL Ed-Fi to OneRoster Utility provides the ability to easily export data stored in an Ed-Fi Operational Data Store to the IMS  [One Roster](https://www.imsglobal.org/lis/imsOneRosterv1p0/imsOneRosterCSV-v1p0.html) CSV format.
 
 <img src="http://www.ed-fi.org/wp-content/themes/ed-fi/assets/i/ed-fi-branding-logo.png" width="102"/>  <img src="https://s31.postimg.org/dijcpqdnv/full_IMSglobalregistered.jpg" width="150"/>
 
