@@ -6,8 +6,6 @@ The EASOL Ed-FI to OneRoster Utility provides the ability to easily export data 
 
 <img src="http://www.ed-fi.org/wp-content/themes/ed-fi/assets/i/ed-fi-branding-logo.png" width="102"/>  <img src="https://s31.postimg.org/dijcpqdnv/full_IMSglobalregistered.jpg" width="150"/>
 
-###### Important - with higher amounts of data the application gets slower. The following enhancements described in this [ticket] (https://tracker.ed-fi.org/browse/ODS-932) will be applied in order to improve it.
-
 ## Use Cases
 
 This utility includes powerful functionality to enable data export from the Ed-Fi Data Standard to OneRoster v1.0/1.1format. The use cases supported include:
@@ -52,6 +50,9 @@ Settings allow the Administrator to do the following:
 * Change Ed-Fi ODS API connection details
 * Manage Ed-Fi to One-Roster related mapping parameters
 * Change database connection details
+
+
+###### Important - with higher amounts of data the application gets slower. The following enhancements described in this [ticket] (https://tracker.ed-fi.org/browse/ODS-932) will be applied in order to improve it.
 
 ## Getting Started
 
