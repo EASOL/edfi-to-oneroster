@@ -61,6 +61,6 @@ namespace EF2OR.ViewModels
         public string Subject { get; set; }
         public string Course { get; set; }
         public string Section { get; set; }
-        public IEnumerable<string> Teachers { get; set; }
+        public List<string> Teachers { get; set; }
     }
 }

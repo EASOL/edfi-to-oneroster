@@ -61,7 +61,8 @@ namespace EF2OR.Controllers
                     academicSessionTypes.Add(
                         new AcademicSessionTypeViewModel
                         {
-                            TermDescriptor = term
+                            TermDescriptor = term,
+                            Type = ""
                         });
                 }
             }
@@ -243,6 +244,8 @@ namespace EF2OR.Controllers
 
                 if (baseUrlChanged || apiKeyChanged || apiSecretChanged)
                 {
+                    Session.Clear();
+                    CommonUtils.ExistingResponses.Clear();
                     Providers.ApiResponseProvider.GetToken(true);
                 }
 

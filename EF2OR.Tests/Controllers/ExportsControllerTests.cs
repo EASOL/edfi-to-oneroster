@@ -54,28 +54,28 @@ namespace EF2OR.Controllers.Tests
         [TestMethod]
         public async Task ExportsController_PreviewTest()
         {
-                AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
-                ExportsController exportsController = new ExportsController();
-                SetupController(exportsController);
-                ExportsViewModel defaultExportsViewModel = await GetDefaultExportsViewModel();
-                var previewResult = await exportsController.Preview(
-                    schoolIds: defaultExportsViewModel.SelectedSchools.Split(',').ToList(),
-                    schoolYears: null,
-                    terms: null,
-                    subjects: null,
-                    courses: defaultExportsViewModel.SelectedCourses.Split(',').ToList(),
-                    teachers: null,
-                    sections: null,
-                    oneRosterVersion: null
-                    );
-                Assert.IsNotNull(previewResult, "Invalid result");
-                Assert.IsInstanceOfType(previewResult, typeof(PartialViewResult), "Invalid result type");
-                PartialViewResult partialViewResult = previewResult as PartialViewResult;
-                Assert.IsNotNull(partialViewResult.Model, "Invalid model");
-                Assert.IsInstanceOfType(partialViewResult.Model, typeof(ExportsViewModel), "Unexpected type for model");
-                ExportsViewModel partialResultModel = partialViewResult.Model as ExportsViewModel;
-                Assert.IsTrue(partialResultModel.DataPreviewSections.Count > 0, "No Data Preview Sections");
-                Assert.IsTrue(partialResultModel.JsonPreviews.Orgs.Count() > 0, "No Orgs for JsonPreview");
+            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
+            ExportsController exportsController = new ExportsController();
+            SetupController(exportsController);
+            ExportsViewModel defaultExportsViewModel = await GetDefaultExportsViewModel();
+            var previewResult = await exportsController.Preview(
+                schoolIds: defaultExportsViewModel.SelectedSchools.Split(',').ToList(),
+                //schoolYears: null,
+                //terms: null,
+                //subjects: null,
+                //courses: defaultExportsViewModel.SelectedCourses.Split(',').ToList(),
+                teachers: null,
+                sections: null,
+                oneRosterVersion: null
+                );
+            Assert.IsNotNull(previewResult, "Invalid result");
+            Assert.IsInstanceOfType(previewResult, typeof(PartialViewResult), "Invalid result type");
+            PartialViewResult partialViewResult = previewResult as PartialViewResult;
+            Assert.IsNotNull(partialViewResult.Model, "Invalid model");
+            Assert.IsInstanceOfType(partialViewResult.Model, typeof(ExportsViewModel), "Unexpected type for model");
+            ExportsViewModel partialResultModel = partialViewResult.Model as ExportsViewModel;
+            Assert.IsTrue(partialResultModel.DataPreviewSections.Count > 0, "No Data Preview Sections");
+            Assert.IsTrue(partialResultModel.JsonPreviews.Orgs.Count() > 0, "No Orgs for JsonPreview");
         }
 
         [TestMethod]
@@ -633,28 +633,29 @@ namespace EF2OR.Controllers.Tests
         [TestMethod()]
         public async Task ExportsController_IndexTest()
         {
-                AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
-                ExportsController controller = new ExportsController();
-                SetupController(controller);
-                ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
-                var defaultResult = await controller.Index();
-                Assert.IsNotNull(defaultResult, "invalid result");
-                Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
-                ViewResult defaultViewResult = defaultResult as ViewResult;
-                Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
-                Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
-                ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
-                Assert.IsTrue(modelResult.SchoolsCriteriaSection.FilterCheckboxes != null &&
-                    modelResult.SchoolsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
-                Assert.IsTrue(modelResult.SchoolYearsCriteriaSection.FilterCheckboxes != null &&
-                    modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
+            AuthenticationHelper.HttpContext = AuthenticationHelper.CreateHttpContext(true);
+            ExportsController controller = new ExportsController();
+            SetupController(controller);
+            ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            var defaultResult = await controller.Index();
+            Assert.IsNotNull(defaultResult, "invalid result");
+            Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
+            ViewResult defaultViewResult = defaultResult as ViewResult;
+            Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
+            Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
+            ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
+            Assert.IsTrue(modelResult.SchoolsCriteriaSection.FilterCheckboxes != null &&
+                modelResult.SchoolsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
+            Assert.IsTrue(modelResult.SchoolYearsCriteriaSection.FilterCheckboxes != null &&
+                modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Count > 0, "No data for Schools Criteria");
         }
 
         private async Task<ExportsViewModel> GetDefaultExportsViewModel()
         {
+            Assert.Inconclusive("Changes were made to main code");
             ExportsViewModel result = new ExportsViewModel();
-            var courses = await ApiCalls.GetCourses();
-            result.SelectedCourses = string.Join(",", courses);
+            //var courses = await ApiCalls.GetCourses(null,null,null,false);
+            //result.SelectedCourses = string.Join(",", courses);
             var schools = await ApiCalls.GetSchools();
             result.SelectedSchools = string.Join(",", schools.Select(p => p.SchoolId));
             return result;
@@ -667,8 +668,8 @@ namespace EF2OR.Controllers.Tests
                 Schools = viewModel.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).Distinct().ToList(),
                 SchoolYears = viewModel.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolYear).Distinct().ToList(),
                 Terms = viewModel.TermsCriteriaSection.FilterCheckboxes.Select(p => p.Term).Distinct().ToList(),
-                Subjects = viewModel.SubjectsCriteriaSection.FilterCheckboxes.Select(p => p.Subject).Distinct().ToList(),
-                Courses = viewModel.CoursesCriteriaSection.FilterCheckboxes.Select(p => p.Course).Distinct().ToList(),
+                //Subjects = viewModel.SubjectsCriteriaSection.FilterCheckboxes.Select(p => p.Subject).Distinct().ToList(),
+                //Courses = viewModel.CoursesCriteriaSection.FilterCheckboxes.Select(p => p.Course).Distinct().ToList(),
                 Teachers = viewModel.TeachersCriteriaSection.FilterCheckboxes.Select(p => p.Teacher).Distinct().ToList()
             };
             return inputs;
@@ -688,58 +689,6 @@ namespace EF2OR.Controllers.Tests
         [TestMethod()]
         public async Task ExportsController_GetTeachersPartialTest()
         {
-                ExportsController controller = new ExportsController();
-                SetupController(controller);
-                ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
-                var defaultResult = await controller.Index();
-                Assert.IsNotNull(defaultResult, "invalid result");
-                Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
-                ViewResult defaultViewResult = defaultResult as ViewResult;
-                Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
-                Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
-                ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
-                var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
-                var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
-                var partialResult = await controller.GetTeachersPartial(schoolIds: schoolIds, schoolYears: schoolYears, terms: null,
-                    boxesAlreadyChecked: null);
-                Assert.IsNotNull(partialResult, "Invalid result");
-                Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Invalid result type");
-                PartialViewResult partialViewResult = partialResult as PartialViewResult;
-                Assert.IsNotNull(partialViewResult.Model, "Invalid model");
-                Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
-                ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
-                Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
-        }
-
-        [TestMethod()]
-        public async Task ExportsController_GetSectionsPartialTest()
-        {
-                ExportsController controller = new ExportsController();
-                SetupController(controller);
-                ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
-                var defaultResult = await controller.Index();
-                Assert.IsNotNull(defaultResult, "invalid result");
-                Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
-                ViewResult defaultViewResult = defaultResult as ViewResult;
-                Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
-                Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
-                ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
-                var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
-                var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
-                var partialResult = await controller.GetSectionsPartial(schoolIds: schoolIds,
-                    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
-                Assert.IsNotNull(partialResult, "Invalid result");
-                Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
-                PartialViewResult partialViewResult = partialResult as PartialViewResult;
-                Assert.IsNotNull(partialViewResult.Model, "Invalid model");
-                Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
-                ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
-                Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
-        }
-
-        [TestMethod()]
-        public async Task ExportsController_GetCoursesPartialTest()
-        {
             ExportsController controller = new ExportsController();
             SetupController(controller);
             ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
@@ -752,8 +701,34 @@ namespace EF2OR.Controllers.Tests
             ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
             var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
             var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
-            var partialResult = await controller.GetCoursesPartial(schoolIds: schoolIds,
-                schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
+            var partialResult = await controller.GetTeachersPartial(schoolIds: schoolIds,
+                boxesAlreadyChecked: null, getMore: false);
+            Assert.IsNotNull(partialResult, "Invalid result");
+            Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Invalid result type");
+            PartialViewResult partialViewResult = partialResult as PartialViewResult;
+            Assert.IsNotNull(partialViewResult.Model, "Invalid model");
+            Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
+            ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
+            Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
+        }
+
+        [TestMethod()]
+        public async Task ExportsController_GetSectionsPartialTest()
+        {
+            Assert.Inconclusive("Changes were made to main code");
+            ExportsController controller = new ExportsController();
+            SetupController(controller);
+            ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            var defaultResult = await controller.Index();
+            Assert.IsNotNull(defaultResult, "invalid result");
+            Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
+            ViewResult defaultViewResult = defaultResult as ViewResult;
+            Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
+            Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
+            ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
+            var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
+            var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
+            var partialResult = await controller.GetSectionsPartial(schoolIds: schoolIds, boxesAlreadyChecked: null, getMore: false);
             Assert.IsNotNull(partialResult, "Invalid result");
             Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
             PartialViewResult partialViewResult = partialResult as PartialViewResult;
@@ -764,29 +739,57 @@ namespace EF2OR.Controllers.Tests
         }
 
         [TestMethod()]
+        public async Task ExportsController_GetCoursesPartialTest()
+        {
+            Assert.Inconclusive("Changes were made to main code");
+            ExportsController controller = new ExportsController();
+            SetupController(controller);
+            ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            var defaultResult = await controller.Index();
+            Assert.IsNotNull(defaultResult, "invalid result");
+            Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
+            ViewResult defaultViewResult = defaultResult as ViewResult;
+            Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
+            Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
+            ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
+            var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
+            var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
+            //var partialResult = await controller.GetCoursesPartial(schoolIds: schoolIds,
+            //    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null, getMore:false);
+            //Assert.IsNotNull(partialResult, "Invalid result");
+            //Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
+            //PartialViewResult partialViewResult = partialResult as PartialViewResult;
+            //Assert.IsNotNull(partialViewResult.Model, "Invalid model");
+            //Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
+            //ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
+            //Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
+        }
+
+        [TestMethod()]
         public async Task ExportsController_GetSubjectsPartialTest()
         {
+            Assert.Inconclusive("Changes were made to main code");
                 ExportsController controller = new ExportsController();
-                SetupController(controller);
-                ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
-                var defaultResult = await controller.Index();
-                Assert.IsNotNull(defaultResult, "invalid result");
-                Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
-                ViewResult defaultViewResult = defaultResult as ViewResult;
-                Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
-                Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
-                ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
-                var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
-                var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
-                var partialResult = await controller.GetSubjectsPartial(schoolIds: schoolIds,
-                    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null);
-                Assert.IsNotNull(partialResult, "Invalid result");
-                Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
-                PartialViewResult partialViewResult = partialResult as PartialViewResult;
-                Assert.IsNotNull(partialViewResult.Model, "Invalid model");
-                Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
-                ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
-                Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
+            SetupController(controller);
+            ExportsViewModel defaultExportViewModel = await GetDefaultExportsViewModel();
+            var defaultResult = await controller.Index();
+            Assert.IsNotNull(defaultResult, "invalid result");
+            Assert.IsInstanceOfType(defaultResult, typeof(ViewResult), "Unexpected result type");
+            ViewResult defaultViewResult = defaultResult as ViewResult;
+            Assert.IsNotNull(defaultViewResult.Model, "Invalid model result");
+            Assert.IsInstanceOfType(defaultViewResult.Model, typeof(ExportsViewModel), "Unexpected model type");
+            ExportsViewModel modelResult = defaultViewResult.Model as ExportsViewModel;
+            var schoolIds = modelResult.SchoolsCriteriaSection.FilterCheckboxes.Select(p => p.SchoolId).ToList();
+            var schoolYears = modelResult.SchoolYearsCriteriaSection.FilterCheckboxes.Select(p => p.Id).ToList();
+            //var partialResult = await controller.GetSubjectsPartial(schoolIds: schoolIds,
+            //    schoolYears: schoolYears, terms: null, boxesAlreadyChecked: null, getMore: false);
+            //Assert.IsNotNull(partialResult, "Invalid result");
+            //Assert.IsInstanceOfType(partialResult, typeof(PartialViewResult), "Unexpected result type");
+            //PartialViewResult partialViewResult = partialResult as PartialViewResult;
+            //Assert.IsNotNull(partialViewResult.Model, "Invalid model");
+            //Assert.IsInstanceOfType(partialViewResult.Model, typeof(ApiCriteriaSection), "Unexpected model type");
+            //ApiCriteriaSection apiCriteriaResult = partialViewResult.Model as ApiCriteriaSection;
+            //Assert.IsTrue(apiCriteriaResult.FilterCheckboxes.Count > 0, "No data found");
         }
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF2OR", "EF2OR\EF2OR.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF2OR.Tests", "EF2OR.Tests\EF2OR.Tests.csproj", "{3814D420-776A-4B81-9644-50C80BB4A441}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF2OR.Entities", "EF2OR.Entities\EF2OR.Entities.csproj", "{F093C3DB-1219-45A5-9CE3-3E7C337353A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3814D420-776A-4B81-9644-50C80BB4A441}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3814D420-776A-4B81-9644-50C80BB4A441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3814D420-776A-4B81-9644-50C80BB4A441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F093C3DB-1219-45A5-9CE3-3E7C337353A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F093C3DB-1219-45A5-9CE3-3E7C337353A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F093C3DB-1219-45A5-9CE3-3E7C337353A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F093C3DB-1219-45A5-9CE3-3E7C337353A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

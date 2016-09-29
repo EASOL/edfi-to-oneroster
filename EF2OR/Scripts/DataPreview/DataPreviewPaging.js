@@ -1,0 +1,3 @@
+﻿var DataPreviewPagingSettings = new function () 
+{
+});

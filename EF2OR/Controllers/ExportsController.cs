@@ -34,10 +34,10 @@ namespace EF2OR.Controllers
 
             return await Preview(
                 filters.Schools,
-                filters.SchoolYears,
-                filters.Terms,
-                filters.Subjects,
-                filters.Courses,
+                //filters.SchoolYears,
+                //filters.Terms,
+                //filters.Subjects,
+                //filters.Courses,
                 filters.Teachers,
                 filters.Sections,
                 template.OneRosterVersion);
@@ -45,10 +45,10 @@ namespace EF2OR.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Preview(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            List<string> subjects,
-            List<string> courses,
+            //List<string> schoolYears,
+            //List<string> terms,
+            //List<string> subjects,
+            //List<string> courses,
             List<string> teachers,
             List<string> sections,
             string oneRosterVersion)
@@ -57,10 +57,10 @@ namespace EF2OR.Controllers
             var inputs = new FilterInputs
             {
                 Schools = schoolIds,
-                SchoolYears = schoolYears,
-                Terms = terms,
-                Subjects = subjects,
-                Courses = courses,
+                //SchoolYears = schoolYears,
+                //Terms = terms,
+                //Subjects = subjects,
+                //Courses = courses,
                 Teachers = teachers,
                 Sections = sections
             };
@@ -98,32 +98,44 @@ namespace EF2OR.Controllers
                     new DataPreviewSection
                     {
                         SectionName = "orgs",
-                        ColumnNames = orgColumnNames
+                        ColumnNames = orgColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.OrgsTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "users",
-                        ColumnNames = usersColumnNames
+                        ColumnNames = usersColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.UsersTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "courses",
-                        ColumnNames = coursesColumnNames
+                        ColumnNames = coursesColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.CoursesTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "classes",
-                        ColumnNames = classesColumnNames
+                        ColumnNames = classesColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.ClassesTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "enrollments",
-                        ColumnNames = enrollmentsColumnNames
+                        ColumnNames = enrollmentsColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.EnrollmentsTotalPages
                     },
                     new DataPreviewSection
                     {
                         SectionName = "academicsessions",
-                        ColumnNames = academicsessionsColumnNames
+                        ColumnNames = academicsessionsColumnNames,
+                        CurrentPage = 1,
+                        TotalPages = model.JsonPreviews.AcademicSessionsTotalPages
                     }
                 };
 
@@ -140,19 +152,56 @@ namespace EF2OR.Controllers
             return PartialView("_DataPreview", model);
         }
 
+        public async Task<JsonResult> GetPreviewOrgsJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewOrgsJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewUsersJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewUsersJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewCoursesJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewCoursesJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewClassesJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewClassesJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewEnrollmentsJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewEnrollmentsJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetPreviewAcademicSessionsJsonString(int pageNumber)
+        {
+            var model = await ApiCalls.GetPreviewAcademicSessionsJsonString(pageNumber);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public async Task<ActionResult> DownloadCsv(ExportsViewModel model)
         {
             var schools = model.SelectedSchools?.Split(',').ToList();
-            var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
-            var terms = model.SelectedTerms?.Split(',').ToList();
-            var subjects = model.SelectedSubjects?.Split(',').ToList();
-            var courses = model.SelectedCourses?.Split(',').ToList();
+            //var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
+            //var terms = model.SelectedTerms?.Split(',').ToList();
+            //var subjects = model.SelectedSubjects?.Split(',').ToList();
+            //var courses = model.SelectedCourses?.Split(',').ToList();
             var teachers = model.SelectedTeachers?.Split(',').ToList();
             var sections = model.SelectedSections?.Split(',').ToList();
 
             var csvUtils = new CsvMethods();
-            var bytes = await csvUtils.GetZipFile(schools, schoolYears, terms, subjects, courses, teachers, sections, model.OneRosterVersion);
+            //var bytes = await csvUtils.GetZipFile(schools, schoolYears, terms, subjects, courses, teachers, sections, model.OneRosterVersion);
+            var bytes = await csvUtils.GetZipFile(schools, teachers, sections, model.OneRosterVersion);
 
             var downloadFileName = "EdFiExport_" + string.Format("{0:MM_dd_yyyy}", DateTime.Now) + ".zip";
             return File(bytes, "application/zip", downloadFileName);
@@ -162,20 +211,20 @@ namespace EF2OR.Controllers
         public ActionResult UpdateTemplate(ExportsViewModel model)
         {
             var schoolIds = model.SelectedSchools?.Split(',').ToList();
-            var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
-            var terms = model.SelectedTerms?.Split(',').ToList();
-            var subjects = model.SelectedSubjects?.Split(',').ToList();
-            var courses = model.SelectedCourses?.Split(',').ToList();
+            //var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
+            //var terms = model.SelectedTerms?.Split(',').ToList();
+            //var subjects = model.SelectedSubjects?.Split(',').ToList();
+            //var courses = model.SelectedCourses?.Split(',').ToList();
             var teachers = model.SelectedTeachers?.Split(',').ToList();
             var sections = model.SelectedSections?.Split(',').ToList();
 
             var inputs = new FilterInputs
             {
                 Schools = schoolIds,
-                SchoolYears = schoolYears,
-                Terms = terms,
-                Subjects = subjects,
-                Courses = courses,
+                //SchoolYears = schoolYears,
+                //Terms = terms,
+                //Subjects = subjects,
+                //Courses = courses,
                 Teachers = teachers,
                 Sections = sections
             };
@@ -195,20 +244,20 @@ namespace EF2OR.Controllers
         public ActionResult SaveTemplate(ExportsViewModel model)
         {
             var schoolIds = model.SelectedSchools?.Split(',').ToList();
-            var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
-            var terms = model.SelectedTerms?.Split(',').ToList();
-            var subjects = model.SelectedSubjects?.Split(',').ToList();
-            var courses = model.SelectedCourses?.Split(',').ToList();
+            //var schoolYears = model.SelectedSchoolYears?.Split(',').ToList();
+            //var terms = model.SelectedTerms?.Split(',').ToList();
+            //var subjects = model.SelectedSubjects?.Split(',').ToList();
+            //var courses = model.SelectedCourses?.Split(',').ToList();
             var teachers = model.SelectedTeachers?.Split(',').ToList();
             var sections = model.SelectedSections?.Split(',').ToList();
 
             var inputs = new FilterInputs
             {
                 Schools = schoolIds,
-                SchoolYears = schoolYears,
-                Terms = terms,
-                Subjects = subjects,
-                Courses = courses,
+                //SchoolYears = schoolYears,
+                //Terms = terms,
+                //Subjects = subjects,
+                //Courses = courses,
                 Teachers = teachers,
                 Sections = sections
             };
@@ -229,119 +278,101 @@ namespace EF2OR.Controllers
             return RedirectToAction("Index", "Templates");
         }
 
-        public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            List<string> boxesAlreadyChecked)
-        {
-            ViewData.TemplateInfo.HtmlFieldPrefix = "Subjects";
+        //public async Task<ActionResult> GetSubjectsPartial(List<string> schoolIds,
+        //    List<string> schoolYears,
+        //    List<string> terms,
+        //    List<string> boxesAlreadyChecked,
+        //    bool getMore)
+        //{
+        //    ViewData.TemplateInfo.HtmlFieldPrefix = "Subjects";
 
-            var model = new ApiCriteriaSection
-            {
-                SectionName = "Subjects",
-                IsExpanded = true
-            };
+        //    var model = await ApiCalls.GetSubjects(schoolIds, schoolYears, terms, getMore);
+        //    CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
 
-            var allBoxes = await ApiCalls.GetSubjects();
-            model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
-            
-            return PartialView("_CriteriaSection", model);
-        }
+        //    return PartialView("_CriteriaSection", model);
+        //}
 
-        public async Task<ActionResult> GetCoursesPartial(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            List<string> boxesAlreadyChecked)
-        {
-            ViewData.TemplateInfo.HtmlFieldPrefix = "Courses";
+        //public async Task<ActionResult> GetCoursesPartial(List<string> schoolIds,
+        //    List<string> schoolYears,
+        //    List<string> terms,
+        //    List<string> boxesAlreadyChecked,
+        //    bool getMore)
+        //{
+        //    ViewData.TemplateInfo.HtmlFieldPrefix = "Courses";
 
-            var model = new ApiCriteriaSection
-            {
-                SectionName = "Courses",
-                IsExpanded = true
-            };
+        //    var model = await ApiCalls.GetCourses(schoolIds, schoolYears, terms, getMore);
+        //    CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
 
-            var allBoxes = await ApiCalls.GetCourses();
-            model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
-
-            return PartialView("_CriteriaSection", model);
-        }
+        //    return PartialView("_CriteriaSection", model);
+        //}
 
         public async Task<ActionResult> GetTeachersPartial(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            List<string> boxesAlreadyChecked)
+            //List<string> schoolYears,
+            //List<string> terms,
+            List<string> boxesAlreadyChecked,
+            bool getMore)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Teachers";
 
-            var model = new ApiCriteriaSection
-            {
-                SectionName = "Teachers",
-                IsExpanded = true
-            };
-
-            var allBoxes = await ApiCalls.GetTeachers();
-            model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
+            //var model = await ApiCalls.GetTeachers(schoolIds, schoolYears, terms, getMore);
+            var model = await ApiCalls.GetTeachers(schoolIds, getMore);
+            CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
 
             return PartialView("_CriteriaSection", model);
         }
 
         public async Task<ActionResult> GetSectionsPartial(List<string> schoolIds,
-            List<string> schoolYears,
-            List<string> terms,
-            List<string> boxesAlreadyChecked)
+            //List<string> schoolYears,
+            //List<string> terms,
+            List<string> boxesAlreadyChecked,
+            bool getMore)
         {
             ViewData.TemplateInfo.HtmlFieldPrefix = "Sections";
 
-            var model = new ApiCriteriaSection
-            {
-                SectionName = "Sections",
-                IsExpanded = true
-            };
-
-            var allBoxes = await ApiCalls.GetSections();
-            model.FilterCheckboxes = GetFilteredCheckboxes(allBoxes, schoolIds, schoolYears, terms, boxesAlreadyChecked);
+            //var model = await ApiCalls.GetSections(schoolIds, schoolYears, terms, getMore);
+            var model = await ApiCalls.GetSections(schoolIds, getMore);
+            CheckSelectedBoxes(model.FilterCheckboxes, boxesAlreadyChecked);
 
             return PartialView("_CriteriaSection", model);
         }
 
-        private List<ExportsCheckbox> GetFilteredCheckboxes(List<ExportsCheckbox> allBoxes,
-           List<string> schoolIds,
-           List<string> schoolYears,
-           List<string> terms,
-           List<string> boxesAlreadyChecked)
-        {
-            bool allSchools = schoolIds == null || schoolIds.Count() == 0;
-            bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
-            bool allTerms = terms == null || terms.Count() == 0;
+        //private List<ExportsCheckbox> GetFilteredCheckboxes(List<ExportsCheckbox> allBoxes,
+        //   List<string> schoolIds,
+        //   List<string> schoolYears,
+        //   List<string> terms,
+        //   List<string> boxesAlreadyChecked)
+        //{
+        //    bool allSchools = schoolIds == null || schoolIds.Count() == 0;
+        //    bool allSchoolYears = schoolYears == null || schoolYears.Count() == 0;
+        //    bool allTerms = terms == null || terms.Count() == 0;
 
-            var filteredBoxes = new List<ExportsCheckbox>();
-            filteredBoxes.AddRange(allBoxes);
+        //    var filteredBoxes = new List<ExportsCheckbox>();
+        //    filteredBoxes.AddRange(allBoxes);
 
-            if (!allSchools)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                schoolIds.Contains(x.SchoolId)).ToList();
-            }
+        //    if (!allSchools)
+        //    {
+        //        filteredBoxes = filteredBoxes.Where(x =>
+        //        schoolIds.Contains(x.SchoolId)).ToList();
+        //    }
 
-            if (!allSchoolYears)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                schoolYears.Contains(x.SchoolYear)).ToList();
-            }
+        //    if (!allSchoolYears)
+        //    {
+        //        filteredBoxes = filteredBoxes.Where(x =>
+        //        schoolYears.Contains(x.SchoolYear)).ToList();
+        //    }
 
-            if (!allTerms)
-            {
-                filteredBoxes = filteredBoxes.Where(x =>
-                terms.Contains(x.Term)).ToList();
-            }
+        //    if (!allTerms)
+        //    {
+        //        filteredBoxes = filteredBoxes.Where(x =>
+        //        terms.Contains(x.Term)).ToList();
+        //    }
 
-            filteredBoxes = filteredBoxes.GroupBy(x => x.Text).Select(group => group.First()).ToList();
+        //    filteredBoxes = filteredBoxes.GroupBy(x => x.Text).Select(group => group.First()).ToList();
 
-            CheckSelectedBoxes(filteredBoxes, boxesAlreadyChecked);
+        //    CheckSelectedBoxes(filteredBoxes, boxesAlreadyChecked);
 
-            return filteredBoxes;
-        }
+        //    return filteredBoxes;
+        //}
 
         private void CheckSelectedBoxes(List<ExportsCheckbox> boxes, List<string> boxesAlreadyChecked)
         {
@@ -365,46 +396,67 @@ namespace EF2OR.Controllers
             CheckSelectedBoxes(model.SchoolsCriteriaSection.FilterCheckboxes, filters.Schools);
             model.SchoolsCriteriaSection.IsExpanded = filters.Schools != null;
 
-            CheckSelectedBoxes(model.SchoolYearsCriteriaSection.FilterCheckboxes, filters.SchoolYears);
-            model.SchoolYearsCriteriaSection.IsExpanded = filters.SchoolYears != null;
+            if (filters.Teachers != null)
+            {
+                var teachersSection = await ApiCalls.GetTeachers(filters.Schools, false);
+                var alreadyCheckedTeachers = await ApiCalls.GetSpecificTeachers(filters.Teachers);
+                var duplicateTeachers = teachersSection.AllCheckboxes.Where(x => filters.Teachers.Contains(x.Id)).ToList();
+                foreach (var box in duplicateTeachers)
+                {
+                    teachersSection.AllCheckboxes.Remove(box);
+                }
+                var duplicateTeachers2 = teachersSection.FilterCheckboxes.Where(x => filters.Teachers.Contains(x.Id)).ToList();
+                foreach (var box in duplicateTeachers2)
+                {
+                    teachersSection.FilterCheckboxes.Remove(box);
+                }
+                teachersSection.AllCheckboxes.AddRange(alreadyCheckedTeachers);
+                teachersSection.FilterCheckboxes.AddRange(alreadyCheckedTeachers);
+                teachersSection.AllCheckboxes = teachersSection.AllCheckboxes.OrderByDescending(x => x.Selected).ToList();
+                teachersSection.FilterCheckboxes = teachersSection.FilterCheckboxes.OrderByDescending(x => x.Selected).ToList();
+                teachersSection.IsExpanded = alreadyCheckedTeachers != null && alreadyCheckedTeachers.Count() > 0;
+                model.TeachersCriteriaSection = teachersSection;
+            }
 
-            CheckSelectedBoxes(model.TermsCriteriaSection.FilterCheckboxes, filters.Terms);
-            model.TermsCriteriaSection.IsExpanded = filters.Terms != null;
-
-            var allSubjects = await ApiCalls.GetSubjects();
-            var subjects = GetFilteredCheckboxes(allSubjects, filters.Schools, filters.SchoolYears, filters.Terms, filters.Subjects);
-            model.SubjectsCriteriaSection.FilterCheckboxes = subjects;
-            model.SubjectsCriteriaSection.IsExpanded = filters.Subjects != null;
-
-            var allCourses = await ApiCalls.GetCourses();
-            var courses = GetFilteredCheckboxes(allCourses, filters.Schools, filters.SchoolYears, filters.Terms, filters.Courses);
-            model.CoursesCriteriaSection.FilterCheckboxes = courses;
-            model.CoursesCriteriaSection.IsExpanded = filters.Courses != null;
-
-            var allTeachers = await ApiCalls.GetTeachers();
-            var teachers = GetFilteredCheckboxes(allTeachers, filters.Schools, filters.SchoolYears, filters.Terms, filters.Teachers);
-            model.TeachersCriteriaSection.FilterCheckboxes = teachers;
-            model.TeachersCriteriaSection.IsExpanded = filters.Teachers != null;
-
-            var allSections = await ApiCalls.GetSections();
-            var sections = GetFilteredCheckboxes(allSections, filters.Schools, filters.SchoolYears, filters.Terms, filters.Sections);
-            model.SectionsCriteriaSection.FilterCheckboxes = sections;
-            model.SectionsCriteriaSection.IsExpanded = filters.Sections != null;
+            if (filters.Schools != null)
+            {
+                var sectionsSection = await ApiCalls.GetSections(filters.Schools, false);
+                if (filters.Sections != null)
+                {
+                    var alreadyCheckedSections = await ApiCalls.GetSpecificSections(filters.Sections);
+                    var duplicateSections = sectionsSection.AllCheckboxes.Where(x => filters.Sections.Contains(x.Id)).ToList();
+                    foreach (var box in duplicateSections)
+                    {
+                        sectionsSection.AllCheckboxes.Remove(box);
+                    }
+                    var duplicateSections2 = sectionsSection.FilterCheckboxes.Where(x => filters.Sections.Contains(x.Id)).ToList();
+                    foreach (var box in duplicateSections2)
+                    {
+                        sectionsSection.FilterCheckboxes.Remove(box);
+                    }
+                    sectionsSection.AllCheckboxes.AddRange(alreadyCheckedSections);
+                    sectionsSection.FilterCheckboxes.AddRange(alreadyCheckedSections);
+                    sectionsSection.AllCheckboxes = sectionsSection.AllCheckboxes.OrderByDescending(x => x.Selected).ToList();
+                    sectionsSection.FilterCheckboxes = sectionsSection.FilterCheckboxes.OrderByDescending(x => x.Selected).ToList();
+                    sectionsSection.IsExpanded = alreadyCheckedSections != null && alreadyCheckedSections.Count() > 0;
+                    model.SectionsCriteriaSection = sectionsSection;
+                }
+            }
         }
 
         private async Task InitializeModel(ExportsViewModel model)
         {
             await ApiCalls.PopulateFilterSection1(model);
 
-            model.SubjectsCriteriaSection = new ApiCriteriaSection
-            {
-                SectionName = "Subjects"
-            };
+            //model.SubjectsCriteriaSection = new ApiCriteriaSection
+            //{
+            //    SectionName = "Subjects"
+            //};
 
-            model.CoursesCriteriaSection = new ApiCriteriaSection
-            {
-                SectionName = "Courses"
-            };
+            //model.CoursesCriteriaSection = new ApiCriteriaSection
+            //{
+            //    SectionName = "Courses"
+            //};
 
             model.TeachersCriteriaSection = new ApiCriteriaSection
             {
