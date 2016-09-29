@@ -1515,11 +1515,11 @@ namespace EF2OR.Utils
                                                      select new
                                                      {
                                                          id = s.id,
-                                                         userId = s.studentUniqueId,
+                                                         userId = s.staffUniqueId,
                                                          givenName = s.firstName,
                                                          familyName = s.lastSurname,
                                                          middleName = s.middleName,
-                                                         identifier = s.studentUniqueId,
+                                                         identifier = s.staffUniqueId,
                                                          email = emailAddress,
                                                          sms = mobileNumber,
                                                          phone = mainTelephoneNumber,
