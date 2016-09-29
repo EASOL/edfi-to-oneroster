@@ -58,6 +58,23 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="https://use.fontawesome.com/3f9dc1a524.js"></script>
+    <script type="text/javascript">
+        var urls = {
+            //"Subjects": "@Url.Action("GetSubjectsPartial")",
+            "Teachers": "@Url.Action("GetTeachersPartial")",
+            //"Courses": "@Url.Action("GetCoursesPartial")",
+            "Sections": "@Url.Action("GetSectionsPartial")"
+        };
+
+        var previewUrls = {
+            "orgs": "@Url.Action(actionName:"GetPreviewOrgsJsonString", controllerName: "Exports")",
+            "users": "@Url.Action(actionName: "GetPreviewUsersJsonString", controllerName: "Exports")",
+            "classes": "@Url.Action(actionName: "GetPreviewClassesJsonString", controllerName: "Exports")",
+            "courses": "@Url.Action(actionName: "GetPreviewCoursesJsonString", controllerName: "Exports")",
+            "enrollments": "@Url.Action(actionName: "GetPreviewEnrollmentsJsonString", controllerName: "Exports")",
+            "academicsessions": "@Url.Action(actionName: "GetPreviewAcademicSessionsJsonString", controllerName: "Exports")"
+        };
+    </script>
     @RenderSection("scripts", required: false)
 
 </body>
