@@ -78,7 +78,7 @@ Important Information for Configuring Application Pool Identities and Permission
 The process of deployment the system on a machine.
 
 #### Download the Source Code
-Download the `release` folder and place it into selected location. Unzip it.
+Download the `release` folder and place it into selected location.
 
 #### Add the Application into IIS 
 
