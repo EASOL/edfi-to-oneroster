@@ -879,7 +879,7 @@ namespace EF2OR.Utils
             return studentsAndStaff.ToList();
         }
 
-        private static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
+        internal static async Task<List<CsvCourses>> GetCsvCourses(FilterInputs inputs)
         {
             var responseArray = await CommonUtils.ApiResponseProvider.GetApiData<SectionsNS.Sections>(ApiEndPoints.CsvCourses) as SectionsNS.Sections;
             var enrollmentsList = (from o in responseArray.Property1
