@@ -286,7 +286,7 @@ namespace EF2OR.Controllers
             var logUtils = new LoggingMethods();
             logUtils.LogUserLogout(UserName, IpAddress);
 
-            CommonUtils.ExistingResponses.Clear();
+            CommonUtils.ExistingResponses?.Clear();
             Session.Clear();
 
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
