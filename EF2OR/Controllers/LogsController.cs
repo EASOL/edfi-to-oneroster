@@ -15,7 +15,7 @@ namespace EF2OR.Controllers
             var templateName = "";
             var logs = (from a in db.AuditLogs
                         from t in db.Templates.Where(x => x.TemplateId == a.TemplateId).DefaultIfEmpty()
-                        let mostRecentOldValues = db.AuditLogs.Where(x => x.TemplateId == a.TemplateId).OrderByDescending(x => x.DateTimeStamp).FirstOrDefault().OldValues
+                        let mostRecentOldValues = db.AuditLogs.Where(x => x.TemplateId == a.TemplateId).OrderByDescending(x => x.DateTimeStamp).Select(d=>d.OldValues).FirstOrDefault()
                         where templateId == null || t.TemplateId == templateId
                        select new TemplateLogViewmodel
                        {
@@ -37,7 +37,7 @@ namespace EF2OR.Controllers
             {
                 if (string.IsNullOrEmpty(log.TemplateName))
                 {
-                    if (log.MostRecentOldValues != null)
+                    if (log.MostRecentOldValues != null && !string.IsNullOrWhiteSpace(log.MostRecentOldValues))
                     {
                         var mostRecentOldValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(log.MostRecentOldValues);
                         if (mostRecentOldValues.ContainsKey("TemplateName"))
@@ -79,9 +79,12 @@ namespace EF2OR.Controllers
                     var newValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(log.NewValues);
                     log.Description = "<ul>";
 
-                    foreach (KeyValuePair<string, object> entry in oldValues)
+                    foreach (KeyValuePair<string, object> entry in newValues)
                     {
-                        var oldValue = GetListItemHtml(entry.Key, entry.Value);
+                        var oldValueEntry = oldValues?.Where(o => o.Key == entry.Key).FirstOrDefault();
+                        string oldValue = null;
+                        if (oldValueEntry.HasValue)
+                            oldValue=GetListItemHtml(oldValueEntry.Value.Key, oldValueEntry.Value.Value);
                         var newValue = GetListItemHtml(entry.Key, newValues[entry.Key]);
                         log.Description += String.Format(lineItemFormat, entry.Key, oldValue, newValue);
                     }

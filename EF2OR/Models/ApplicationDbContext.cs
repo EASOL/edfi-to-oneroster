@@ -85,6 +85,10 @@ namespace EF2OR.Models
                         case "Template":
                             actionType = ActionTypes.TemplateCreated;
                             break;
+                        case "ApplicationSetting":
+                        case "AcademicSessionType":
+                            actionType = ActionTypes.SettingsModified;
+                            break;
                     }
                     break;
                 case EntityState.Modified:
@@ -106,6 +110,9 @@ namespace EF2OR.Models
                             actionType = ActionTypes.TemplateDeleted;
                             break;
                     }
+                    break;
+                default:
+                    actionType = "Test";
                     break;
             }
 
