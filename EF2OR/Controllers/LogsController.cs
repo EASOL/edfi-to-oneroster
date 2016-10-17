@@ -124,7 +124,7 @@ namespace EF2OR.Controllers
         private string GetListItemHtml(string key, object value)
         {
             var returnText = "";
-            if (key == "Filters")
+            if (key == "Filters" && value != null && !string.IsNullOrWhiteSpace(value?.ToString()))
             {
                 returnText += "<ul>";
                 var deserializedFilters = JsonConvert.DeserializeObject<Dictionary<string, object>>(value.ToString());
