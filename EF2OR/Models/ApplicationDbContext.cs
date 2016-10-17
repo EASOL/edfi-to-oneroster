@@ -111,9 +111,6 @@ namespace EF2OR.Models
                             break;
                     }
                     break;
-                default:
-                    actionType = "Test";
-                    break;
             }
 
             dynamic originals = new ExpandoObject();
