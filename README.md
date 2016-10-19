@@ -8,6 +8,8 @@ The EASOL Ed-Fi to OneRoster Utility provides the ability to easily export data 
 
 The application has passed conformance testing by IMS GLOBAL. See [this] (https://www.imsglobal.org/compliance/easol-ed-fi-oneroster-tool) link for more information.
 
+Please email us at ef2or@easol.org if you have any questions,  problems or suggestions
+
 ## Use Cases
 
 This utility includes powerful functionality to enable data export from the Ed-Fi Data Standard to OneRoster v1.0/1.1format. The use cases supported include:
