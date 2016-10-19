@@ -30,7 +30,7 @@ An administrator defines filters to retrieve a data-set from the Ed-Fi API, whic
 
 Templates allow third-party vendors to access data remotely with pre-defined filters.  Each template is assigned with a unique token (which must be specified in the HTTP header) and can be retrieved by using a cURL command such as:
 ```
-curl -o filename.zip  http://domain/Export/$template_id -H "Token:<template token>"
+curl -o filename.zip  https://domain/Export/$template_id -H "Token:<template token>"
 ``` 
 
 ![Templates](https://cloud.githubusercontent.com/assets/5213372/18935057/278890de-85e6-11e6-881a-e540db44f173.png)
